@@ -1,0 +1,30 @@
+// qrak
+
+use uo;
+use basic;
+
+program textcmd_koloruj(who, dane)
+  var split := SplitWords(dane);
+  var kolor := split[1];
+  var zasieg := split[2];
+
+if(!kolor || !zasieg)
+SendSysMessage(who, "uzycie: .koloruj <numer koloru> <zasieg>");
+return;
+endif
+
+
+  zasieg := CInt(zasieg);
+  kolor := CInt(kolor);
+  if(zasieg > 40)
+SendSysMessage(who, "Pojebalo cie? zbyt duzy zasieg, max 40!!!");
+return;
+endif
+
+
+    var tgt := ListItemsNearLocation(who.x, who.y, who.z, zasieg );
+    foreach x in tgt
+     x.color := kolor;
+    endforeach
+    
+endprogram

@@ -1,0 +1,17 @@
+use uo;
+use os;
+
+include "include/poisons";
+
+const EFFECT_SPARKLE := 0x373a;
+const SOUND_EFFECT_RES := 0x215;
+
+program resfield(mobile)
+  set_critical(1);
+  if(mobile.dead)
+    start_script("itemRes", mobile);
+    return;
+  else
+    SendSysMessage(mobile,"Zyj w pokoju...");
+  endif
+endprogram

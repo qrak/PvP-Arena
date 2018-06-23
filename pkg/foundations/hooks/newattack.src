@@ -1,0 +1,413 @@
+use os;
+use vitals;
+use util;
+use attributes;
+use uo;
+use polsys;
+
+include "include/attributes";
+include "include/ladunki";
+include "include/nopvp";
+include "include/psucie";
+
+var wpn_a_elem, wpn_d_elem;
+var wpn_a, wpn_d;
+var npcfg := ReadConfigFile("::npcdesc");
+var itcfg  := ReadConfigFile(":*:itemdesc");
+
+program attackhook( parms )
+	var attacker := parms [1];
+	var defender := parms [2];
+	NewAttack( attacker, defender );
+endprogram
+
+function NewAttack( attacker, defender)
+	var skid;
+	var defskid;
+	var dmg;
+	var weaponattrib := itcfg[attacker.weapon.objtype].Attribute;
+	wpn_a := attacker.weapon;
+	wpn_d := defender.weapon;
+	wpn_a_elem := GetWpnCfgInfo(attacker, wpn_a);
+	wpn_d_elem := GetWpnCfgInfo(defender, wpn_d);
+	if(Cint(GetObjProperty(attacker, "#nocast")) || Cint(GetObjProperty(defender, "#nocast")))
+		return 0;
+	endif
+	
+	var isprojectile := CINT (wpn_a_elem.ProjectileType);
+	SetObjProperty(attacker, "#LastShoot", {attacker.x, attacker.y});
+	var lshoot := GetObjProperty(attacker, "#LastShoot");
+	sleepms(200);
+	if(isprojectile)
+		while(attacker.x <> lshoot[1] || attacker.y <> lshoot[2])
+			return 0;
+		endwhile
+	endif
+
+
+	if(Cint(GetObjProperty(defender, "#team")) && Cint(!GetObjProperty(attacker, "#team"))) // warunek - jezeli broniacy jest na duelu i atakujacy nie jest to nie mozna atakowac
+		SendSysMessage(attacker, "Nie mozesz atakowac osoby na duelu.", 3, 40);
+		return 0;
+	endif
+	if(attacker.paralyzed)
+		return 0;
+	endif
+	if(attacker.hidden)
+		attacker.hidden := 0;
+	endif
+	if(Cint(GetObjProperty(attacker, "jailed")))
+		return 0;
+	endif
+	if(!CheckLineOfSight(attacker, defender))
+		SendSysMessage(attacker, "Nie widzisz tego.",3,40);
+		return 0;
+	endif
+	if((IsNoob(defender) || IsNoob(attacker)) && !defender.npctemplate)
+		return 0;
+	endif
+	EraseObjProperty(attacker, "#journey");
+	if(attacker.npctemplate)
+		skid := npcfg[attacker.npctemplate].AttackAttribute;
+		skid := GetSkillAmount(skid, attacker);
+		dmg := npcfg[attacker.npctemplate].AttackDamage;
+	else
+		skid := Cint(GetDexterity(attacker) + (GetEffectiveSkill(attacker, SKILLID_TACTICS)/2) + (GetEffectiveSkill(attacker, SKILLID_MAGERY)/2));
+		dmg := itcfg[attacker.weapon.objtype].Damage;
+	endif
+	if(defender.npctemplate)
+		defskid := npcfg[defender.npctemplate].AttackAttribute;
+		defskid := GetSkillAmount(defskid, defender);
+	else
+		defskid := Cint(GetDexterity(defender) + (GetEffectiveSkill(defender, SKILLID_TACTICS)/2) + (GetEffectiveSkill(defender, SKILLID_MAGERY)/2));
+	endif
+	if(weaponattrib == "Archery")
+		if(!CheckForAmmo(attacker));
+			SendSysMessage(attacker, "Zabraklo Ci amunicji.",3,40);
+			return 0;
+		endif
+	endif
+	var hit_chance := 0;
+	PlayAttackAnimation(attacker);
+	hit_chance := CInt( ((skid + IncreaseHitChance(attacker) + 50) * 100) / (2 * (defskid + IncreaseHitChance(defender) + 50)) );
+	if(getobjproperty(attacker, "DivineFury"))
+		hit_chance := hit_chance + 20;
+	endif
+
+
+
+	var enemyoo := getobjproperty(attacker, "EnemyOfOne");
+	if(enemyoo == 1)
+		if(defender.npctemplate)
+			EraseObjProperty(attacker, "EnemyOfOne");
+			SetObjProperty(attacker, "#SWrog", defender.graphic);
+			PrintTextAbovePrivate(attacker, "Ten typ NPCa stal sie Twoim smiertelnym wrogiem.",attacker,3,63);
+		endif
+	endif
+	
+	if(RandomInt(100) < hit_chance)
+		var basedamage := CalculateBaseDamage(attacker, defender, dmg);
+		var rawdamage := basedamage;
+		if(defender.npctemplate)
+			if(Cint(GetObjProperty(defender, "#SWrog")) && Cint(GetObjProperty(defender, "#SWrog")) != attacker.graphic)
+				basedamage := basedamage * 1.5;
+			endif
+		endif
+		if(defender.shield)
+			var parry_chance := Cint((GetDexterity(defender) / 3) - defender.shield.ar_base) + IncreaseDefenseChance(defender); 
+			if(RandomInt(Cint(GetDexterity(attacker))) < parry_chance)
+				PrintTextAbove(defender, "*blokuje*");
+				basedamage := basedamage - Cint((defender.shield.ar + defender.shield.ar_mod))/2;
+				SubtractHp(defender, defender.shield);                
+			endif
+		endif
+		PlayHitSounds(attacker, defender);
+		var hitscript := attacker.weapon.hitscript;
+		var hitzone := 0;
+		var roll := RandomInt (100);
+		if (roll < 7)
+			hitzone := LAYER_GLOVES;
+		elseif (roll < 14)
+			hitzone := LAYER_NECK;
+		elseif (roll < 28)
+			hitzone := LAYER_HELM;
+		elseif (roll < 42)
+			hitzone := LAYER_PANTS;
+		elseif (roll < 56)
+			hitzone := LAYER_ARMS;
+		else
+			hitzone := LAYER_CHEST;
+		endif
+		hitzone := GetEquipmentByLayer( defender, hitzone );
+		var zone_ar:=hitzone.ar;
+		var zone_ar_mod := hitzone.ar_mod;
+		if(!hitzone)
+			zone_ar:=0;
+		endif
+		if(defender.ip)
+			if(zone_ar == 0)
+				SendSysMessage(defender, "Dostales w nieoslonieta czesc ciala!", 3, 40);
+			endif
+		endif
+		var level := Cint(GetObjProperty(hitzone, "level"));
+		if(Cint(GetObjProperty(hitzone, "ladunki")))
+			OdejmijLadunek(defender, hitzone); // odejmowanie ladunkow z broni magicznej
+		endif
+		var blocked := zone_ar + zone_ar_mod + defender.ar_mod;
+		if(defender.npctemplate)
+			if(npcfg[defender.npctemplate].AR)
+				blocked := blocked + npcfg[defender.npctemplate].AR;
+			endif
+		endif
+		
+		var absorbed := blocked / 2;
+		blocked := blocked - absorbed; 
+		absorbed := absorbed + RandomInt(blocked+1)+1;
+		rawdamage := rawdamage - absorbed;
+		if ( rawdamage >= 2.0 )
+			if(defender.npctemplate)
+				rawdamage := rawdamage * 0.3;
+			else
+				rawdamage := rawdamage * 0.4;
+			endif
+		endif
+
+		SubtractHp(defender, hitzone);
+		SubtractHp(attacker, attacker.weapon);  
+		var typ := GetObjProperty(hitzone, "typ"); // MAGIK ZBROJA REAKTYWNA - REDUKCJA DMG
+		if(typ == "reactive")
+			PlayObjectCenteredEffect(defender, 0x22C6, 10,10);
+			PlaySoundEffect(defender, 0x1f2);
+			rawdamage := rawdamage - level;
+			PlayObjectCenteredEffect(attacker, 0x22C6, 10,10);
+			ApplyRawDamage(attacker, rawdamage * 0.2);
+		endif
+		var bloodoath := getobjproperty(defender, "bloodoath");
+		if(bloodoath)
+			if(bloodoath  == defender.serial)
+				rawdamage := rawdamage * 0.9;
+				PlayObjectCenteredEffect(attacker, 0x374a, 20,15 );
+				PlayObjectCenteredEffect( defender, 0x374a, 20,15 );
+			endif
+		endif
+		var attune := getobjproperty(defender, "#attune");
+		if(attune)
+			rawdamage := rawdamage * 0.85;
+			PlayObjectCenteredEffect(attacker, 0x374a, 20,15 );
+			PlayObjectCenteredEffect( defender, 0x374a, 20,15 );
+		endif
+		var wraithform := GetObjProperty(defender, "wraith");
+		if(wraithform)
+			rawdamage := rawdamage * 1.2;
+		endif
+		var animation := wpn_a_elem.ProjectileAnim; 
+		if(animation)
+			PlayMovingEffect(attacker, defender, animation, 10, 10);
+		endif
+		
+		/*var arch_dmg_factor := 0;
+		if(isprojectile)
+			arch_dmg_factor := rawdamage - (Distance(attacker, defender) * 2);
+			rawdamage := arch_dmg_factor;
+		endif*/
+
+		PlayHitSounds(attacker, defender);
+		SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, attacker.weapon });
+		if(rawdamage > 0)
+			if(!hitscript)
+				ApplyRawDamage(defender, rawdamage);
+			else
+				var param := {};
+				param.+attacker := attacker;
+				param.+defender := defender;
+				param.+weapon := attacker.weapon;
+				param.+armor := blocked;
+				param.+basedamage := basedamage;
+				param.+rawdamage := rawdamage;
+				if(hitscript[":"])
+					Start_Script(hitscript , param);
+				else
+					Start_Script(":combat:" + hitscript , param);
+				endif
+			endif
+		else
+			ApplyRawDamage(defender, 2);
+		endif
+	else
+		PlayMissSound(attacker);
+	endif
+endfunction
+
+function CalculateBaseDamage(attacker, defender, dmg)
+	var basedamage := ((((RandomDiceRoll(dmg) * attacker.weapon.hp) / attacker.weapon.maxhp) * attacker.weapon.quality) + attacker.weapon.dmg_mod + AddMagicBaseDamage(attacker));
+	var damage_multiplier := GetEffectiveSkill(attacker, SKILLID_TACTICS) + 50.0;
+	if(!attacker.npctemplate)
+		if(Cint(GetEffectiveSkill(attacker, SKILLID_SWORDSMANSHIP)) > 50)
+			damage_multiplier := damage_multiplier + (CDbl(GetStrength(attacker))) * 0.2;
+		else
+			damage_multiplier := damage_multiplier + (CDbl(GetStrength(attacker))) * 0.1;
+		endif
+	endif
+	if(defender.npctemplate)
+		damage_multiplier := damage_multiplier + (CDbl(GetStrength(attacker))) * 0.3;
+	endif
+	damage_multiplier := CDbl(damage_multiplier) * 0.01;
+	if(getobjproperty(attacker.weapon, "#Consecrate"))
+		damage_multiplier := damage_multiplier * 1.1;
+	endif
+	if(Cint(getobjproperty(attacker, "horrificbeast")))
+		damage_multiplier := damage_multiplier * 1.5;
+	endif
+	if(Cint(GetObjProperty(attacker, "#SWrog")) && Cint(GetObjProperty(attacker, "#SWrog")) == defender.graphic)
+		if(defender.npctemplate)
+			damage_multiplier := damage_multiplier * 1.3;
+			PlayStationaryEffect( defender.x,defender.y,defender.z, FX_EXPLODE_3, 7, 0x10 );
+		endif
+	endif
+	basedamage := basedamage * damage_multiplier;
+	return basedamage;
+endfunction
+
+function AddMagicBaseDamage(mobile)
+	var bonusdmg := 0;
+	foreach item in ListEquippedItems(mobile)
+		if(GetObjProperty(item, "typ") == "dmginc")
+			bonusdmg := Cint(GetObjProperty(item, "ladunki")[1])/4;
+		endif
+	endforeach
+	return bonusdmg;
+endfunction
+
+function IncreaseHitChance(mobile) // dodaje szanse na uderzenie
+	var bonushit := 0;
+	foreach item in ListEquippedItems(mobile)
+		if(GetObjProperty(item, "typ") == "reducehit")
+			bonushit := Cint(GetObjProperty(item, "ladunki")[1]);
+		endif
+	endforeach
+	return bonushit;
+endfunction
+
+function IncreaseDefenseChance(mobile)
+	var definc := 0;
+	foreach item in ListEquippedItems(mobile)
+		if(GetObjProperty(item, "typ") == "definc")
+			definc := Cint(GetObjProperty(item, "ladunki")[1]);
+		endif
+	endforeach
+	return definc;
+endfunction
+
+function PlayAttackAnimation(attacker)
+	var attack_anim := 0x5; // Look around for npcs?
+	if ( wpn_a_elem.Anim )
+		var anim_list := GetConfigStringArray(wpn_a_elem, "Anim");
+		attack_anim := anim_list[RandomInt(anim_list.size())+1];
+	elseif( wpn_a_elem.AttackAnimation )
+		var anim_list := GetConfigStringArray(wpn_a_elem, "AttackAnimation");
+		attack_anim := anim_list[RandomInt(anim_list.size())+1];
+	endif
+	
+	if (attacker.graphic != 400 and attacker.graphic != 401 and attacker.graphic != 605 and attacker.graphic != 606 and attacker.graphic != 666 and attacker.graphic != 667 and attacker.graphic != 744 and attacker.graphic != 745)
+		PerformAction (attacker, (RandomInt (3) + 4));
+	else
+		PerformAction(attacker, CInt(attack_anim));
+	endif
+	
+	return attack_anim;
+endfunction
+
+function GetWpnCfgInfo(mobile, weapon)
+	if ( mobile.IsA(POLCLASS_NPC) && weapon.objtype == GetObjTypeByName("Wrestling") )
+		return npcfg[mobile.npctemplate];
+	else
+		return itcfg[weapon.objtype];
+	endif
+endfunction
+
+function PlayMissSound(attacker)
+	if ( wpn_a_elem.MissSound )
+		PlaySoundEffect(attacker, wpn_a_elem.MissSound);
+	else
+		//NPC intrinsic weapon
+		PlaySoundEffect(attacker, wpn_a_elem.AttackMissSound);
+	endif
+endfunction
+
+function PlayHitSounds(attacker, defender)
+	if ( wpn_a_elem.HitSound )
+		PlaySoundEffect(attacker, wpn_a_elem.HitSound);
+	else
+		//NPC intrinsic weapon
+		PlaySoundEffect(attacker, wpn_a_elem.AttackHitSound);
+	endif
+	
+	var damaged_sound;
+	if ( defender.npctemplate )
+		damaged_sound := npcfg[defender.npctemplate].damagedsound;		
+	else
+		var sounds;
+		if ( defender.gender == 0 )
+			// Male
+			sounds := array(341, 342, 343, 345, 346);
+		else
+			// Female
+			sounds := array(332, 333, 334, 335, 336);
+		endif
+		damaged_sound := sounds[RandomInt(sounds.size())+1];
+	endif
+
+		PerformAction(defender, 0x0014);
+	PlaySoundEffect(defender, damaged_sound);
+endfunction
+
+
+function CheckForAmmo (attacker)
+
+	wpn_a := attacker.weapon;
+	wpn_a_elem := GetWpnCfgInfo(attacker, wpn_a);
+	var default_ammotype := CINT (wpn_a_elem.ProjectileType);
+	var quiver := GetEquipmentByLayer(attacker, 0x14); // check for ammo in quiver
+        
+	if (!default_ammotype)
+		return 0;
+	endif
+	
+
+	foreach item in EnumerateItemsInContainer (attacker.backpack)
+		if (item.objtype == default_ammotype)
+			if (SubtractAmount (item, 1))
+				return 1;
+			endif
+		endif
+	endforeach
+	
+	if(quiver)
+		foreach item in EnumerateItemsInContainer (quiver)
+			if (item.objtype == default_ammotype)
+				if (SubtractAmount (item, 1))
+					return 1;
+				endif
+			endif
+		endforeach
+	endif	
+
+	return 0;
+
+endfunction
+
+
+
+function GetSkillAmount(skid, who)
+	var retval;
+	case(skid)
+		"Wrestling": retval := Cint((GetEffectiveSkill(who, SKILLID_WRESTLING)));
+		"Fencing":   retval := Cint((GetEffectiveSkill(who, SKILLID_FENCING)));
+		"Swords":    retval := Cint((GetEffectiveSkill(who, SKILLID_SWORDSMANSHIP)));
+		"Swordsmanship":    retval := Cint((GetEffectiveSkill(who, SKILLID_SWORDSMANSHIP)));
+		"Mace":      retval := Cint((GetEffectiveSkill(who, SKILLID_MACEFIGHTING)));
+		"Macefighting":      retval := Cint((GetEffectiveSkill(who, SKILLID_MACEFIGHTING)));
+		"Archery":    retval := Cint((GetEffectiveSkill(who, SKILLID_ARCHERY)));
+		"Tactics":    retval := Cint((GetEffectiveSkill(who, SKILLID_TACTICS)));
+	endcase 
+	return retval;
+endfunction

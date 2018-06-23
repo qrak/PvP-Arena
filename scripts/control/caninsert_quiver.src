@@ -1,0 +1,30 @@
+use uo;
+use os;
+use cfgfile;
+
+
+program caninsert_quiver (character, container, movetype, inserttype, item, existing_stack, amt_to_add)
+	if (amt_to_add and existing_stack and item and inserttype)
+	endif
+	if (movetype != MOVETYPE_PLAYER)
+		return 1;
+	endif
+	
+	if (container.locked)
+		if (!GetObjProperty (container, "lostandfound"))
+			if (!GetObjProperty (container, "secured"))
+				PrintTextAbovePrivate (container, "*Locked!*", character);
+				return 0;
+			endif
+		endif
+	endif
+	
+	case (item.objtype)
+		0x0f3f:
+		0x1bfb:
+		
+			return 1;
+	endcase
+	SendSysMessage (character, "Mozesz jedynie wkladac tutaj strzaly/belty.", 3, 40);
+	return 0;
+endprogram

@@ -1,0 +1,41 @@
+use uo;
+
+const ROLLEDMAP_OBJTYPE := 0x14ED;
+const ROLLEDMAP2_OBJTYPE := 0x14EE;
+
+include "include/others";
+
+program decodemap(who)
+
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_CARTOGRAPHY));
+	
+	SendSysMessage(who, "Wybierz mape do identyfikacji.", 3, 63);
+	var cel := Target(who);
+	if(!cel)
+		SendSysMessage(who, "Anulowano.", 3, 40);
+		return 0;
+	endif
+	if(cel.container != who.backpack)
+		SendSysMessage(who, "Cel musi byc w Twoim plecaku.", 3, 40);
+		return 0;
+	endif
+	if(cel.objtype != ROLLEDMAP_OBJTYPE && cel.objtype != ROLLEDMAP2_OBJTYPE)
+		SendSysMessage(who, "To nie jest mapa.", 3, 63);
+		return 0;
+	endif
+	SendSysMessage(who, "Zidentyfikowales mape!", 3, 63);
+	var map := CreateItemInContainer(who.backpack, 0x14EB, 1);
+	var level := Cint(GetObjProperty(map, "level"));
+	if(!level)
+		level := RandomInt(5)+1;
+	endif
+	SetName( map, "mapa skarbow poziom: " + level );
+	SetObjProperty( map, "level", level);
+	DestroyItem(cel);
+endprogram
+
+

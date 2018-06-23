@@ -1,0 +1,8 @@
+use uo;
+
+program LeaveRegionZone(who)
+EraseObjProperty(who, "#nocast");
+
+                     return 1;
+
+endprogram

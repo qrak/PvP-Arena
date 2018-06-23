@@ -1,0 +1,15 @@
+[SUMMON] osoba z konta: admin przeniosla Z: Rempero wspolrzedne (X/Y/Z): 6091 2866 22 DO(XYZ): 6090 2866 22
+[05/07 00:22:39] [.CIALO] admin przeniosl Zwloki Exodus Niszczyciel Z: 5848 1164 0 DO:5853 1164 0
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 1340 1068 0 DO(XYZ): 2709 2162 0
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 2729 2193 0 DO(XYZ): 2954 2209 33
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 521 2108 0 DO(XYZ): 452 2120 0
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 2679 2130 0 DO(XYZ): 2678 2017 0
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 1222 579 30 DO(XYZ): 1274 530 30
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 5716 652 0 DO(XYZ): 5688 624 0
+[SUMMON] osoba z konta: pedal przeniosla Z: PrzeKozak wspolrzedne (X/Y/Z): 5707 624 0 DO(XYZ): 1461 1690 0
+[05/10 14:25:02] [SUMMON] osoba z konta: admin przeniosla osobe DYNIAK z wspolrzednych (X/Y/Z): 6111 3060 12 DO(XYZ): 5926 149 22
+[05/11 14:44:02] [SUMMON] osoba z konta: pedal przeniosla osobe Mafioz z wspolrzednych (X/Y/Z): 6190 80 0 DO(XYZ): 2488 588 0
+[05/13 17:14:34] [.CIALO] pedal przeniosl Zwloki Exodus Niszczyciel Z: 3789 1158 5 DO:3796 1139 20
+[05/13 17:22:46] [.CIALO] pedal przeniosl Zwloki KaTaKriS - zyl: 20 lat Z: 3778 1155 0 DO:3779 1130 20
+[05/13 17:22:49] [.CIALO] pedal przeniosl Zwloki KaTaKriS - zyl: 20 lat Z: 3779 1130 20 DO:3779 1130 20
+[05/13 17:23:56] [.CIALO] pedal przeniosl Zwloki KaTaKriS - zyl: 20 lat Z: 3779 1130 20 DO:3696 1221 0

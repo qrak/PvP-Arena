@@ -1,0 +1,36 @@
+use uo;
+
+include ":ctf:equipstone";
+include ":ctf:ctf";
+
+program KamienRzeczy(who)
+
+    if(Cint(!GetObjProperty(who, "CtfTeam")))
+        SendSysMessage(who, "Nie masz druzyny!",3,40);
+        return 0;
+    endif
+
+    if(Cint(GetObjProperty(who, "CtfStuff")))
+        SendSysMessage(who, "Juz otrzymales przedmioty.",3,40);
+        return 0;
+    endif
+    
+    var worek := CreateItemInBackpack(who, 0xE76, 1);
+    CommonStuff(who);
+    
+    if(CheckClass(who) == "warrior")
+        WarriorStuff(who, worek);
+    elseif(CheckClass(who) == "archer")
+        ArcherStuff(who, worek);
+    elseif(CheckClass(who) == "mage")
+        MageStuff(who, worek);
+    endif
+
+    SetCtfStuff(who, worek);    
+    EquipArmor(who, worek);
+    SetObjProperty(who, "CtfStuff", 1);
+    SendSysMessage(who, "Gotowe!",3,40);
+endprogram
+
+
+

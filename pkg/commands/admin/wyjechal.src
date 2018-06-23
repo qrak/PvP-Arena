@@ -1,0 +1,28 @@
+use polsys;
+use uo;
+use basic;
+
+program czekkonto(who, param)
+   var ble := SplitWords(param);
+   var konto := ble[1];
+   var blok := ble[2];
+   if(!konto)
+	SendSysMessage(who, "Uzycie: .wyjechal konto on/off");
+	return;
+   endif
+      var act := FindAccount(konto);
+      if(!act)
+		SendSysMessage(who, "Nie znaleziono konta: " + konto);
+		return;
+      endif
+    case(blok)
+	"on":   act.setprop("WYJECHAL", 1);
+		act.disable();
+		SendSysMessage(who, "Zamrozono konto: " + konto + ".");	
+	"off":  act.eraseprop("WYJECHAL");
+		act.enable();
+		SendSysMessage(who, "Odmrozono konto: " + konto + ".");	
+		var time := ReadGameClock();
+		act.SetProp("LastLogin", time);
+    endcase
+endprogram

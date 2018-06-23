@@ -1,0 +1,43 @@
+use uo;
+use os;
+
+include "include/canAccess";
+include "include/yesNo";
+
+program deed(who)
+
+  var cel := Target(who);
+  
+  if(!cel)
+    SendSysMessage(who, "Anulowano.",3,40);
+    return 0;
+  endif
+
+  if(!can_access(who, cel))
+    return 0;
+  endif
+ 
+  var wlasciciel := Cint(GetObjProperty(cel, "Wlasciciel"));
+  
+  
+  if(!wlasciciel)
+    SendSysMessage(who, "Tego nie mozesz schowac w deeda.",3,40);
+    return 0;
+  endif
+  
+  if(wlasciciel != who.serial)
+    SendSysMessage(who, "Nie jestes wlascicielem tego przedmiotu.",3,40);
+    return 0;  
+  endif
+  
+  var deed := CreateItemInContainer(who.backpack, 0x6262, 1);
+  if(deed)
+    SetObjProperty(deed, "Obiekt", cel.objtype);
+    deed.name := "deed na przedmiot: " + cel.desc;
+    DestroyItem(cel);
+    SendSysMessage(who, "Schowales przedmiot do deeda.",3,63); 
+  else
+    SendSysMessage(who, "Twoj plecak jest pelny!",3,40);
+  endif
+
+endprogram

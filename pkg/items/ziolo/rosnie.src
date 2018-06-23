@@ -1,0 +1,49 @@
+
+Const NEW_PLANT_GROW_TIME			:= 300;
+Const REGROW_TIME					:= 450;
+use basicio;
+use os;
+use polsys;
+use uo;
+
+program control_plant (plant)
+	if (GetObjProperty (plant, "new"))
+        plant.decayat := ReadGameClock() + 1209600;
+
+		SetFinalPlantGraphic (plant);
+	endif
+
+if (plant.decayat < ReadGameClock ())
+DestroyItem (plant);
+endif
+
+
+endprogram
+
+
+
+
+///////////////////
+//  Sets the graphic of the given plant to its 'full grown' image
+///////////////////
+
+function SetFinalPlantGraphic (plant)
+	sleep (NEW_PLANT_GROW_TIME);
+var dorosly := CreateItemAtLocation(plant.x, plant.y, plant.z, 0xBFA8);
+dorosly.graphic := 6373;
+PrintTextAbove(dorosly, "*pyk!*");
+DestroyItem(plant);
+
+
+
+endfunction
+
+
+
+
+
+
+
+
+
+

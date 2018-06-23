@@ -1,0 +1,7 @@
+use uo;
+use os;
+
+program startqrak()
+	print("Uruchamianie wydarzenia ''zlap qraka''...");
+	start_script("startevent");
+endprogram

@@ -1,0 +1,189 @@
+use os;
+use polsys;
+use basic;
+use uo;
+use vitals;
+use attributes;
+
+include ":gumps:gumps";
+include "include/attributes";
+include "include/staty";
+
+
+program status(who)
+	CancelTarget( who );
+	GFInitGump(0, 0);
+	GFPage(0);
+	GFResizePic(100, 90, 3600, 380, 480);
+	GFButtonPage(120, 110, 9727, 9728, 1 );
+	GFButtonPage(300, 110, 9727, 9728, 11 );
+	GFCheckerTrans(110,100,360,480);
+	GFTextLine(160, 115, 95, "Status" );
+	GFTextLine(340, 115, 95, "Umiejetnosci" );
+	var str := GetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH) * 0.1;
+	var dex := GetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY) * 0.1;
+	var int := GetAttributeBaseValue(who, ATTRIBUTEID_INTELLIGENCE) * 0.1;
+	var life := GetVital(who, "Life") / 100;
+	var mana := GetVital(who, "Mana") / 100;
+	var stam := GetVital(who, "Stamina") / 100;
+	var life_max := GetVitalMaximumValue(who, "Life") / 100;
+	var mana_max := GetVitalMaximumValue(who, "Mana") / 100;
+	var stam_max := GetVitalMaximumValue(who, "Stamina") / 100;
+	var wiek := Cint(GetObjProperty(who, "lata"));
+	GFPage(1);
+	GFTextLine( 120, 150, 95, "Statystyki:" );
+	GFGumpPic( 120, 170, 96 ); // linia
+	GFTextLine( 120, 175, 55, "Sila: " + str);
+	GFTextLine( 120, 195, 55, "Zrecznosc: " + dex);
+	GFTextLine( 120, 215, 55, "Inteligencja: " + int);
+	GFTextLine( 120, 350, 95, "Energia zyciowa:" );
+	GFGumpPic( 120, 370, 96 ); // linia
+	GFTextLine( 120, 380, 55, "Life:");
+	GFTextLine( 120, 395, 55, "Mana:");
+	GFTextLine( 120, 415, 55, "Stam:");
+	GFTextLine( 120, 435, 55, "Wiek:");
+	GFTextLine( 180, 435, 55, wiek + " lat");
+	GFTextLine( 260, 435, 55, ( 1440 - Cint(GetObjProperty(who, "wiek")) ) + " minut do urodzin.");
+	if(life <= 10)
+		GFTextLine( 180, 380, 1645, life);
+	else
+		GFTextLine( 180, 380, 50, life);
+	endif
+	if(mana <= 10)
+		GFTextLine( 180, 395, 1645, mana);
+	else
+		GFTextLine( 180, 395, 50, mana);
+	endif
+	if(stam <= 10)
+		GFTextLine( 180, 415, 1645, stam);
+	else
+		GFTextLine( 180, 415, 50, stam);
+	endif
+	GFTextLine( 220, 380, 50, life_max);
+	GFTextLine( 220, 395, 50, mana_max);
+	GFTextLine( 220, 415, 50, stam_max);
+	var str2 := GetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH) / 10;
+	var int2 := GetAttributeBaseValue(who, ATTRIBUTEID_INTELLIGENCE) / 10;
+	if(life_max > str2)
+		GFTextLine( 255, 380, 1645, "+ " + CInt(life_max-str2) + " Anatomia");
+	endif
+	if(mana_max > int2)
+		GFTextLine( 255, 395, 1645, "+ " + CInt(mana_max-int2) + " EvalInt");
+	endif
+	var duelfrags := Cint(GetObjProperty(who, "duelfrags"));
+	var dueldeaths := Cint(GetObjProperty(who, "dueldeaths"));
+	if(!duelfrags)
+		SetObjProperty(who, "duelfrags", 0);
+	endif
+	if(!dueldeaths)
+		SetObjProperty(who, "dueldeaths", 0);
+	endif
+	var Statcap := CheckStatcap(who);
+	GFTextLine(245, 175, 50, "Duel fragi/smierci: " + duelfrags + "/" + dueldeaths); 
+	GFTextLine(245, 195, 50, "Statcap: " + Statcap);
+	var msg1 := "";
+	case(who.criminal)
+		0: msg1 := "nie";
+		1: msg1 := "tak";
+	endcase
+	var msg2;
+	case(who.murderer)
+		0: msg2 := "nie";
+		1: msg2 := "tak";
+	endcase
+	var atack := GetObjProperty(who, "LastHit");
+	var kto := SplitWords(atack[1]);
+	var cios;
+	if(atack)
+		cios := kto[1];
+	else
+		cios := "nikt";
+	endif
+	GFTextLine( 120, 265, 50, "Ostatnio zaatakowales:");
+	GFTextLine( 135, 285, 1645, "- " + cios);
+	var morderstwa := GetObjProperty(who, "Score");
+	if(!morderstwa)
+		morderstwa := 0;
+	endif
+	GFTextLine( 120, 305, 50, "Fragi/Smierci:");
+	GFTextLine( 225, 305, 50, morderstwa[1] + "/" + morderstwa[2]);
+	GFPage(11);
+	BuildSkillsGump(who);
+endprogram
+
+function BuildSkillsGump(who)
+	GFTextLine( 120, 150, 1645, "Uzyj umiejetnosci:" );
+	GFGumpPic( 120, 170, 96 ); // linia
+	// KOLUMNA 1
+	GFTextLine(145,  175, 50, "Anatomia");
+	var anat := GFButtonID(120, 175, 1209, 1210, 1);
+	GFTextLine(145, 200, 50, "Identyfikacja");
+	var ident := GFButtonID(120, 200, 1209, 1210, 1);
+	GFTextLine(145, 225, 50, "Wiedza o broni");
+	var wiedza := GFButtonID(120, 225, 1209, 1210, 1);
+	GFTextLine(145, 250, 50, "Znajdowanie ukrytych");
+	var detect := GFButtonID(120, 250, 1209, 1210, 1);
+	GFTextLine(145, 275, 50, "Madrosc");
+	var ocenianie := GFButtonID(120, 275, 1209, 1210, 1);
+	GFTextLine(145, 300, 50, "Ukrywanie");
+	var ukrywanie := GFButtonID(120, 300, 1209, 1210, 1);
+	GFTextLine(145, 325, 50, "Zatruwanie");
+	var zatruwanie := GFButtonID(120, 325, 1209, 1210, 1);
+	GFTextLine(145, 350, 50, "Mroczna Madrosc");
+	var spirit := GFButtonID(120, 350, 1209, 1210, 1);
+	GFTextLine(145, 375, 50, "Oswajanie");
+	var taming := GFButtonID(120, 375, 1209, 1210, 1);
+	GFTextLine(145, 400, 50, "Tropienie");
+	var tracking := GFButtonID(120, 400, 1209, 1210, 1);
+	GFTextLine(145, 425, 50, "Skradanie");
+	var skradanie := GFButtonID(120, 425, 1209, 1210, 1);
+	GFTextLine(145,  450, 50, "Kartografia");
+	var cart := GFButtonID(120, 450, 1209, 1210, 1);
+	GFTextLine(145,  475, 50, "Wskrzes zwierze");
+	var vet := GFButtonID(120, 475, 1209, 1210, 1);
+	// KOLUMNA 2
+	GFTextLine(325,  150, 1645, "POWERSCROLLE");
+	GFTextLine(325,  175, 50, "Magia +" + (Cint(GetEffectiveSkill(who, SKILLID_MAGERY)) - 100)  );
+	GFTextLine(325,  200, 50, "Leczenie +" + (Cint(GetEffectiveSkill(who, SKILLID_HEALING)) - 100)  );
+	GFTextLine(325,  225, 50, "Taktyka +" + (Cint(GetEffectiveSkill(who, SKILLID_TACTICS)) - 100)  );
+	GFTextLine(325,  250, 50, "Paladynstwo +" + (Cint(GetEffectiveSkill(who, SKILLID_CHIVALRY)) - 100)  );
+	GFTextLine(325,  275, 50, "Nekromancja +" + (Cint(GetEffectiveSkill(who, SKILLID_NECROMANCY)) - 100)  );
+	GFTextLine(325,  300, 50, "Mroczna madrosc +" + (Cint(GetEffectiveSkill(who, SKILLID_SPIRITSPEAK)) - 100)  );
+	GFTextLine(325,  325, 50, "Druidyzm +" + (Cint(GetEffectiveSkill(who, SKILLID_FORENSICS)) - 100)  );
+	GFTextLine(325,  350, 50, "Jasna madrosc +" + (Cint(GetEffectiveSkill(who, SKILLID_ANIMALLORE)) - 100)  );
+	GFTextLine(325,  375, 50, "Magiczna madrosc +" + (Cint(GetEffectiveSkill(who, SKILLID_EVALINT)) - 100)  );
+	GFTextLine(325,  400, 50, "Ochrona przed magia +" + (Cint(GetEffectiveSkill(who, SKILLID_MAGICRESISTANCE)) - 100)  );
+	GFTextLine(325,  425, 50, "Kowalstwo +" + (Cint(GetEffectiveSkill(who, SKILLID_BLACKSMITHY)) - 100)  );
+	GFTextLine(325,  450, 50, "Tworzenie Lukow +" + (Cint(GetEffectiveSkill(who, SKILLID_BOWCRAFT)) - 100)  );
+	GFTextLine(325,  475, 50, "Krawiectwo +" + (Cint(GetEffectiveSkill(who, SKILLID_TAILORING)) - 100)  );
+	var okno := GFSendGump(who);
+	CancelTarget( who );
+	if(okno[0] == anat.keyid)
+		start_script(":anatomy:anatomy",who);
+	elseif(okno[0] == ident.keyid)
+		start_script(":itemid:itemID",who);
+	elseif(okno[0] == wiedza.keyid)
+		start_script(":armslore:armsLore",who);
+	elseif(okno[0] == detect.keyid)
+		start_script(":detecthidden:detectHidden",who);
+	elseif(okno[0] == ocenianie.keyid)
+		start_script(":evalint:evalInt",who);
+	elseif(okno[0] == ukrywanie.keyid)
+		start_script(":hiding:hiding",who);
+	elseif(okno[0] == zatruwanie.keyid)
+		start_script(":poisoning:poisonSkill",who);
+	elseif(okno[0] == spirit.keyid)
+		start_script(":spiritspeak:sSpeak",who);
+	elseif(okno[0] == taming.keyid)
+		start_script(":taming:taming",who);
+	elseif(okno[0] == tracking.keyid)
+		start_script(":tracking:tracking",who);
+	elseif(okno[0] == skradanie.keyid)
+		start_script(":stealth:stealth",who);
+	elseif(okno[0] == cart.keyid)
+		start_script(":cartography:cartography",who);
+	elseif(okno[0] == vet.keyid)
+		start_script(":veterinary:vet",who);
+	endif
+	
+endfunction

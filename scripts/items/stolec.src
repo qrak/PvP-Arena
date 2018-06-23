@@ -1,0 +1,41 @@
+use uo;
+use os;
+
+include "include/dist";
+
+program kurwuj(who, item)
+
+
+
+
+SendSysMessage(who, "Wybierz cel lub na siebie aby posprzatac.", 3, 66);
+var cel := Target(who);
+
+if(!cel)
+	SendSysMessage(who, "Anulowano.",3,33);
+	return;
+endif
+
+if(cel == who)
+PrintTextAbove(who, "*sprzata " + item.desc + "!*" , 3, 40);
+DestroyItem(item);
+return 0;
+endif
+
+if(!cel.ip)
+SendSysMessage(who, "Mozesz rzucac stolcem tylko w innych graczy!",3,33);
+return 0;
+endif
+
+if(Distance(who, cel) > 3)
+	SendSysMessage(who, "Za daleko.",3,33);
+	return;
+endif
+
+PerformAction( who, 0x0021 );
+PrintTextAbove(who, "Rzuca " + item.desc + " w strone " + cel.name + "!", 3, 40);
+sleep(1);
+PrintTextAbove(cel, "*dostaje stolcem w twarz!*", 3, 40);
+DestroyItem(item);
+
+endprogram

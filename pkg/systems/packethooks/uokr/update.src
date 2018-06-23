@@ -1,0 +1,138 @@
+//-------------------------------------------------------------------------------- 
+
+use uo; 
+
+//-------------------------------------------------------------------------------- 
+
+program UOKRPackets() 
+  
+  print("[0x3C]: UO:KR Fix: ContainerContent"); 
+  print("[0x25]: UO:KR Fix: AddContainerItem"); 
+  print("[0x08]: UO:KR Fix: UpdatePlayer"); 
+  print("[0x77]: UO:KR Fix: UpdateEquipped"); 
+  print("[0x78]: UO:KR Fix: DropItem"); 
+  print("[0x20]: UO:KR Fix: DrawPlayer"); 
+  
+  return 1; 
+
+endprogram 
+
+//-------------------------------------------------------------------------------- 
+
+const ITEMS_OFFSET      := 5; 
+const BLOCK_LEN         := 19; 
+const KR_BLOCK_LEN      := 20; 
+
+//-------------------------------------------------------------------------------- 
+
+exported function ContainerContent(who, byref newPacket) 
+
+  var Packet := newPacket; 
+  var Items := array; 
+  var Count := Packet.GetInt16(3); 
+  var i, Item, oOffset, nOffset; 
+
+  for(i:=0; i<Count; i+=1) 
+    Item := struct; 
+    oOffset := ITEMS_OFFSET+i*BLOCK_LEN; 
+    nOffset := ITEMS_OFFSET+i*KR_BLOCK_LEN; 
+
+    Item.+serial := Packet.GetInt32(oOffset); 
+    Item.+model  := Packet.GetInt16(oOffset+4); 
+    Item.+amount := Packet.GetInt16(oOffset+7); 
+    Item.+x      := Packet.GetInt16(oOffset+9); 
+    Item.+y      := Packet.GetInt16(oOffset+11); 
+    Item.+parent := Packet.GetInt32(oOffset+13); 
+    Item.+color  := Packet.GetInt16(oOffset+17); 
+
+    newPacket.SetInt32(nOffset, Item.serial); 
+    newPacket.SetInt16(nOffset+4, Item.model); 
+    newPacket.SetInt8(nOffset+6, 0); 
+    newPacket.SetInt16(nOffset+7, Item.amount); 
+    newPacket.SetInt16(nOffset+9, Item.x); 
+    newPacket.SetInt16(nOffset+11, Item.y); 
+    newPacket.SetInt8(nOffset+13, 0); 
+    newPacket.SetInt32(nOffset+14, Item.parent); 
+    newPacket.SetInt16(nOffset+18, Item.color); 
+    
+  endfor 
+
+  return 0; 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+
+exported function AddContainerItem(who, byref Packet) 
+
+  var parent := Packet.GetInt32(14); 
+  var color  := Packet.GetInt16(18); 
+
+  Packet.SetInt8(14, 0); 
+  Packet.SetInt32(15, parent); 
+  Packet.SetInt16(19, color); 
+
+  return 0; 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+
+exported function DropItem(who, byref Packet) 
+
+  Packet.SetInt32(10, Packet.GetInt32(11)); 
+  Packet.SetInt8(14, 0); 
+  
+  return 0; 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+
+function VerifyStatus(byref Status) 
+
+  if(Status & 0x01) 
+    Status := Status - 0x01; 
+    Status := Status | 0x40; 
+  endif 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+
+exported function UpdatePlayer(who, byref Packet) 
+
+  var Status := Packet.GetInt8(15); 
+  VerifyStatus(Status); 
+  Packet.SetInt8(15, Status); 
+
+  return 0; 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+
+exported function UpdateEquipped(who, byref Packet) 
+
+  var Status := Packet.GetInt8(17); 
+  VerifyStatus(Status); 
+  Packet.SetInt8(17, Status); 
+
+  return 0; 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+
+exported function DrawPlayer(who, byref Packet) 
+
+  var Status := Packet.GetInt8(10); 
+  VerifyStatus(Status); 
+  Packet.SetInt8(10, Status); 
+
+  return 0; 
+
+endfunction 
+
+//-------------------------------------------------------------------------------- 
+

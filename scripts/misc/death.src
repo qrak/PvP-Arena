@@ -1,0 +1,186 @@
+// crash
+
+use vitals;
+use polsys;
+use uo;
+use cfgfile;
+use util;
+
+include "include/attributes";
+include "include/NPCBackpacks";
+include "include/sysEvent";
+include "include/dismount";
+include "include/findCity";
+include "include/slabiak";
+include "include/staty";
+include "include/storage";
+include "include/myUtil";
+include ":loot:includes/lootparser";
+
+var cfg := ReadConfigFile( "::npcdesc" );
+
+program npcdeath(corpse)
+	var killer := GetObjProperty(corpse, "LastHit");
+	var whokilled := SystemFindObjectBySerial(killer[2]);
+	Run_Script_To_Completion(":spawnregion:death", corpse);
+	if(GetObjProperty(corpse, "regspawn"))
+		var spawnname := GetObjProperty(corpse, "regspawn");
+		var numspawns := CInt(GetGlobalProperty(spawnname))-1;
+		SetGlobalProperty(spawnname,numspawns);
+	endif
+	// SPECIAL EVENTS ->
+	if(Cint(GetObjProperty(corpse, "boss")) == 1)
+		KillBoss();
+	endif
+	if(Cint(GetObjProperty(corpse, "ktm")) == 1)
+		KillMonsterKTM(corpse);
+	endif
+	if(Cint(GetObjProperty(corpse, "qrak_npc")) == 1 && Cint(GetGlobalProperty("#QrakActive")))
+		KillQrak(corpse);
+	endif
+	if(GetObjProperty(corpse, "DeathOptions"))
+		var option := GetObjProperty(corpse, "DeathOptions");
+		DeathOptions(corpse, option);
+	endif
+	if(!whokilled.cmdlevel)
+		if(Cint(GetObjProperty(corpse, "GoldInside")))
+			KillSlabiak(whokilled, corpse); // slabiak
+		endif
+	endif
+	if(Cint(GetObjProperty(corpse, "InvasionNPC")))
+		SetGlobalProperty("InvasionNPCs", Cint(GetGlobalProperty("InvasionNPCs")) - 1 );
+		BroadCast("Zostalo do zabicia: " + Cint(GetGlobalProperty("InvasionNPCs"))+ " potworow",3,89);
+		if(Cint(GetGlobalProperty("InvasionNPCs")) <= 0)
+			start_script(":nalot:faza2");
+		endif
+	endif
+	// END <-
+	if(getobjproperty(corpse, "familiar"))
+		var master := systemfindobjectbyserial(getobjproperty(corpse, "master"));
+		EraseObjProperty(master, "familiar");
+		EraseObjProperty(master, "deathadder");
+		EraseObjProperty(master, "darkwolf");
+	endif
+	var char;
+	var mounted_char;
+	var onchars := EnumerateOnlineCharacters();
+	if(GetObjProperty(corpse,"mounted"))
+		char := GetObjProperty(corpse,"mounted_on");
+		foreach person in onchars
+			if(person.serial == CInt(char))
+				mounted_char := person;
+				break;
+			endif
+		endforeach
+		dismount( corpse );
+	endif
+	var elem := GetObjProperty(corpse, "npctemplate");
+	var deathsound := 0;
+	var graphic := GetObjProperty(corpse, "Graphic");
+	if((graphic != 0x190) && (graphic != 0x191))
+		deathsound := cfg[elem]."deathsound";
+		if(deathsound)
+			PlaySoundEffect(corpse, deathsound);
+		endif
+	endif
+	set_critical(1);
+	Dismount( corpse );
+	set_critical(0);
+	if(Cint(GetObjProperty(corpse,"CustomColor")))
+		corpse.color := CInt(GetObjProperty(corpse,"CustomColor"));
+	endif
+	foreach rideables in ListMobilesNearLocation( corpse.x, corpse.y, corpse.z, 0 ); // zabija mounta jezeli mountowana osoba nie jest playerem
+		if(Cint(GetObjProperty(rideables, "rideable")) && rideables != corpse)
+			var mobile := SystemFindObjectBySerial(Cint(GetObjProperty(corpse, "master")), SYSFIND_SEARCH_OFFLINE_MOBILES);
+			if(!GetObjProperty(mobile, "lata"))
+				ApplyRawDamage(rideables, GetMaxHp(rideables)+10);
+			endif
+		endif
+	endforeach
+	if(!GetObjProperty(corpse, "master"))
+		if(!whokilled.cmdlevel)
+			MakeLoot(corpse, cfg[elem].LootGroup);
+		endif
+	endif
+	if(GetObjProperty(corpse, "master"))
+		var caster := SystemFindObjectBySerial(Cint(GetObjProperty(corpse, "master")), SYSFIND_SEARCH_OFFLINE_MOBILES);
+		EraseObjProperty(caster, "#summon");
+	endif
+	if(GetObjProperty(corpse, "summoned") )
+		DestroyItem(corpse);
+	elseif(GetObjProperty(corpse, "nocorpse"))
+		foreach item in EnumerateItemsInContainer(corpse);
+			MoveObjectToLocation(item, corpse.x, corpse.y, corpse.z, item.realm, MOVEOBJECT_FORCELOCATION);
+		endforeach
+		DestroyItem(corpse);
+	endif
+	if(GetObjProperty(corpse, "template"))
+		DestroyItem(corpse);
+		return 0;
+	endif
+	if(Cint(GetObjProperty(corpse, "druided")));
+		var master := systemfindobjectbyserial(getobjproperty(corpse, "master"));
+		EraseObjProperty(master, "chowaniec"); // prop gracza jezeli ma druidowego npca - usuwa propa
+	endif
+	if(Cint(GetObjProperty(corpse, "guardkill")));
+		DestroyItem(corpse);
+	endif
+
+
+	set_critical(0);
+endprogram
+
+function KillBoss() 
+	EraseGlobalProperty("boss");
+endfunction
+
+function KillMonsterKTM(corpse) 
+	PrintTextAbove(corpse, "uhhhh!");
+	EraseGlobalProperty("ktm");
+	start_script(":ktm:faza2");
+endfunction
+
+function DeathOptions(corpse, option)
+	if(option == "Amstaf")
+		var bilet := CreateItemInContainer(corpse, 0x14F1);
+		bilet.color := 1167;
+		bilet.name := "bilet na zwierza Amstaf";
+		SetObjProperty(bilet, "template", "cusidhe");
+		SetObjProperty(bilet, "nazwa", "Amstaf");
+		SetObjProperty(bilet, "Hp", 6000);
+		SetObjProperty(bilet, "Mana", 0);
+		SetObjProperty(bilet, "Stamina", 125);
+		SetObjProperty(bilet, "color", 0);
+		SetObjProperty(bilet, "truecolor", 0);
+		SetObjProperty(bilet, "script", ":ai:ai_killpcs_normal_default");
+		bilet.usescript := ":bilety:makebilet";
+	endif
+endfunction
+
+function KillQrak(corpse)
+	var killer := GetObjProperty(corpse, "LastHit");
+	var whokilled := SystemFindObjectBySerial(killer[2]);
+	PrintTextAbove(corpse, "kukuryku!", 3, 40);
+	var qrak_frags := Cint(GetObjProperty(whokilled, "qrak_frags"));
+	var global_qraks := Cint(GetObjProperty(whokilled, "qrak_frags_global"));
+	var bestqrak_killer := GetGlobalProperty("bestqrak_killer");
+	if(!qrak_frags)
+		qrak_frags := 0;
+		SetObjProperty(whokilled,"qrak_frags", 0);
+	endif
+	if(!global_qraks)
+		global_qraks := 0;
+		SetObjProperty(whokilled,"qrak_frags_global", 0);
+	endif
+	if(!bestqrak_killer)
+		SetGlobalProperty("bestqrak_killer", {0, "brak", 0});
+	endif
+	qrak_frags := qrak_frags + 1;
+	global_qraks := global_qraks + 1;
+	if(qrak_frags > bestqrak_killer[1])
+		SetGlobalProperty("bestqrak_killer", {qrak_frags, whokilled.name, whokilled.serial});
+	endif
+	SendSysMessage(whokilled,"Zabiles " + qrak_frags + " qrakow.", 3, 40);
+	SetObjProperty(whokilled,"qrak_frags",qrak_frags);
+	SetObjProperty(whokilled,"qrak_frags_global",global_qraks);
+endfunction

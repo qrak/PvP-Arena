@@ -1,0 +1,16 @@
+use uo;
+
+program restart(who, text)
+
+	if(text == "on")
+		SetGlobalProperty("restart", 1);
+		SendSysMessage(who, "Wlaczyles zakaz logowania na restarcie.", 3, 40);
+		return 0;
+	elseif(text == "off")
+		EraseGlobalProperty("restart");
+		SendSysMessage(who, "Wylaczyles zakaz logowania na restarcie.", 3, 63);
+		return 0;
+	else
+		SendSysMessage(who, "Uzycie: .resoff on/off", 3, 40);
+  	endif
+endprogram

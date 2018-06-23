@@ -1,0 +1,28 @@
+use uo;
+use os;
+
+Const RESPAWN_TIME := 10800; // 3 godziny
+
+program skrzynia(who, item)
+	if(who.cmdlevel)
+		SendSysMessage(who, "Spierdalaj!", 3, 40);
+		return 0;
+	endif
+	SendSysMessage(who, "Odpowiedzi na zagadki znajduja sie w internecie. Wygrales jedna sztuke krolewskiego! :D",3,63);
+	CreateReward(who);
+	DestroyItem(item);
+	SetGlobalProperty("MysteryChestSerial", {ReadGameClock() + RESPAWN_TIME, 0});
+	SetObjProperty( who, "#Teleported", 1);
+	MoveObjectToLocation(who, 5549, 1138, 0, _DEFAULT_REALM, MOVEOBJECT_FORCELOCATION);
+	EraseObjProperty( who, "#Teleported" );
+	SendSysMessage(who, "Gratulacje!! Udalo Ci sie przejsc caly Loch Madrosci..",3,63);
+	sleep(2);
+	SendSysMessage(who, "To nie lada wyczyn, mozesz byc z siebie dumny!",3,63);
+	sleep(2);
+	SendSysMessage(who, "Skrzynia z glowna nagroda zrespawnuje sie za 3h",3,89);
+endprogram
+
+function CreateReward(who)
+	CreateItemInBackpack(who, 0xeed, 1);
+	
+endfunction

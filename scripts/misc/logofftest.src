@@ -1,0 +1,84 @@
+use uo;
+use os;
+use vitals;
+use unicode;
+
+include "include/eventID";
+include "include/innCheck";
+include "include/frakcja";
+
+program logofftest(who)
+	// MULTIACCOUNT CHECK
+	var z := 0;
+	var account := who.acct; 
+
+	var valid_multi := account.getprop("MAcctAllow");
+	foreach character in EnumerateOnlineCharacters()
+			if(who.ip == character.ip && who != character)
+				z := z + 1;
+			endif
+	endforeach
+
+	if(z > 0 && !valid_multi)
+		SendSysMessage(who, "Posiadanie wiecej kont niz jedno jest zabronione! Prosze wyjasnic to z qrakiem.", 3, 40);
+		start_script(":versionhook:sleeper", who);
+	endif
+	
+    if((who.cmdlevel > 1) || (GetObjProperty(who,"justbanned")))
+        return 0;
+    endif
+    EraseObjProperty(who, "#Online");
+    EraseObjProperty(who, "strangle");
+    EraseObjProperty(who, "casting");
+    if(Cint(GetObjProperty(who, "#team")))
+        if(!who.murderer)
+            MoveObjectToLocation( who, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, _DEFAULT_REALM, MOVEOBJECT_FORCELOCATION );
+        else
+            MoveObjectToLocation( who, FRAKCJA_2_X, FRAKCJA_2_Y, FRAKCJA_2_Z, _DEFAULT_REALM, MOVEOBJECT_FORCELOCATION );                
+        endif
+        EraseObjProperty(who, "#team");
+    endif
+    
+    EraseObjProperty(who, "#openwindow");
+    RecalcVitals(who);
+
+    if(!who.cmdlevel)
+        who.Disable("invul"); // wypierdala invula gracza
+        RevokePrivilege(who, "invul");
+    endif
+  var topxy, botxy;
+  var safelogoff := 0;
+  var item, player;
+  if (CInt(GetObjProperty(who, "#camped"))== 1)
+    EraseObjProperty(who, "#camped");
+    safelogoff := 1;
+  elseif(Inncheck(who))
+    safelogoff := 1;
+  endif
+  if(!safelogoff)
+    if(who.multi.serial)
+      var house := who.multi;
+      if(who.acctname == (GetObjProperty(house, "owneracct")))
+        safelogoff := 1;
+      else
+        foreach player in (GetObjProperty(house, "friendlist"))
+          if(who.serial == player)
+            safelogoff := 1;
+          endif
+        endforeach
+        foreach player in (GetObjProperty(house,"coownlist"))
+          if(who.serial == player)
+            safelogoff := 1;
+          endif
+        endforeach
+      endif
+    endif
+  endif
+  if(!safelogoff)
+    return 300;  // wait 5 minutes
+  elseif(safelogoff == 1)
+    return 30;   // ok to log off (30 sekund)
+  else
+    return safelogoff;
+  endif
+endprogram

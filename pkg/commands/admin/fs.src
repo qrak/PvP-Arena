@@ -1,0 +1,15 @@
+use uo;
+include "util/bank";
+
+program fs(who, text)
+
+  var a := SystemFindObjectBySerial(CInt(text));
+  if(!a)
+    SendSysMessage(who,"no such thing");
+    return;
+  endif
+   var bankbox;
+   bankbox := FindBankBox( a );
+   SendOpenSpecialContainer( who, bankbox );
+
+endprogram

@@ -1,0 +1,51 @@
+// crash
+
+use vitals;
+use npc;
+use util;
+use math;
+use basic;
+use uo;
+
+include "include/eventID";
+include "include/spellRestrictions";
+
+var npccfg := ReadConfigFile("::npcdesc");
+
+program dispel ( parms )
+  var circle := 6;
+  var delivery := "direct";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 41);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var summoned := GetObjProperty( cast_on, "summoned");
+  var czypoly := GetObjProperty(caster, "poly");
+  
+  if(summoned == 1)
+    PlaySoundEffect( caster, 0x202 );
+    PlayStationaryEffect( cast_on.x, cast_on.y, cast_on.z, FX_HEAL_EFFECT, 0xa, 0xa );
+    var master := SystemFindObjectBySerial(CInt(GetObjProperty(cast_on, "master")));
+    if(master)
+      var resist := GetEffectiveSkill(master, SKILLID_MAGICRESISTANCE);
+      if((RandomInt(99) + 1) < resist)
+        MoveObjectToLocation(cast_on,0,0,0, cast_on.realm,MOVEOBJECT_FORCELOCATION);
+        ApplyRawDamage(cast_on, GetMaxHp(cast_on) + 3);
+      endif
+      send_attack(caster, cast_on, 41);
+    endif
+  elseif(czypoly)
+    return;
+    else
+    if(cast_on.isA(POLCLASS_NPC))
+      var element := npccfg[cast_on.npctemplate].elemental;
+      endif
+  endif
+ if(cast_on.criminal == 0)
+ cast_on.SetCriminal(0);
+ endif
+endprogram

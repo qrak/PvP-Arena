@@ -1,0 +1,45 @@
+use uo;
+use os;
+use npc;
+use basic;
+
+program CanInsert(who, backpack, movetype, inserttype, item, existing_stack, amt_to_add);
+  set_critical(1);
+  if(inserttype != INSERT_ADD_ITEM)
+          return 1;
+  endif
+  if(
+	item.objtype == 0x0f7a ||
+	item.objtype == 0x0f7b ||
+	item.objtype == 0x0f84 ||
+	item.objtype == 0x0f85 ||
+	item.objtype == 0x0f86 ||
+	item.objtype == 0x0f88 ||
+	item.objtype == 0x0f8c ||
+	item.objtype == 0x0f8d ||
+	item.objtype == 0x0F78 ||
+	item.objtype == 0x0F79 ||
+	item.objtype == 0x0F7c ||
+	item.objtype == 0x0F7D ||
+	item.objtype == 0x0F7E ||
+	item.objtype == 0x0F7F ||
+	item.objtype == 0x0F80 ||
+	item.objtype == 0x0F81 ||
+	item.objtype == 0x0F82 ||
+	item.objtype == 0x0F83 ||
+	item.objtype == 0x0F87 ||
+	item.objtype == 0x0F89 ||
+	item.objtype == 0x0F8A ||
+	item.objtype == 0x0f8b ||
+	item.objtype == 0x0F8E ||
+	item.objtype == 0x0F8F ||
+	item.objtype == 0x0F90 ||
+	item.objtype == 0x0F91
+    )
+    return 1;
+  else
+    SendSysMessage(who, "W tym pojemniku mozesz trzymac tylko ziola i skladniki magiczne.");
+    return 0;
+  endif
+set_critical(0);
+endprogram

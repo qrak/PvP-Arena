@@ -1,0 +1,35 @@
+use uo;
+use os;
+use util;
+
+include "include/attributes";
+
+program Rotten(who)
+  /*var i := 0;
+  Detach();
+  SetObjProperty(who, "#Syf", 1);
+  while(i < 20 && Cint(GetObjProperty(who, "#Syf")))
+    if(!who.dead)
+      if(who.npctemplate)
+        return 0;
+      endif
+      if(Cint(!GetObjProperty(who, "#Syf")))
+        break;
+      endif
+      SetStamina(who, GetStamina(who) - RandomInt(4));
+      SetMana(who, GetMana(who) - RandomInt(4));
+      PrintTextAbovePrivate(who, "*masz syfa*", who,3,40);
+      foreach mobile in ListMobilesInLineOfSight(who, 2)
+        if(Cint(!GetObjProperty(mobile, "#Syf")) && Cint(GetObjProperty(who, "#Syf")))
+          if(mobile != who && Cint(!GetObjProperty(mobile, "#Syf")) && Cint(GetObjProperty(who, "#Syf")))
+            PrintTextAbove(mobile, "*zaraza sie syfem od " + who.name + "!*",3,40);
+            start_script("rottenControl", mobile);
+          endif
+        endif
+      endforeach
+    endif
+    i := i + 1;
+    sleep(5);
+  endwhile*/
+  EraseObjProperty(who, "#Syf");
+endprogram

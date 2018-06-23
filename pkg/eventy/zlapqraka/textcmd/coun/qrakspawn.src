@@ -1,0 +1,28 @@
+//do spawnowywanie qrakow
+
+use uo;
+use os;
+use vitals;
+use util;
+use cfgfile;
+
+include ":zlapqraka:zlapqraka";
+
+program spawnowanie_qrakow(who)
+	SendSysMessage(who, "Ile stworzyc qrakow?",3,89);
+	var ile := RequestInput(who, who.backpack, "");
+
+	ile := cint(ile);
+	if(!ile || ile < 0)
+		SendSysMessage(who, "Ssij!", 3, 40);
+		return 0;
+	endif
+
+	repeat
+		if(qrakSpawn())
+			ile := ile - 1;
+		endif
+	until(ile <= 0);
+
+endprogram
+

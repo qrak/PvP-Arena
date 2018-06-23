@@ -1,0 +1,44 @@
+include ":spells:summon";
+include "include/spellRestrictions";
+
+
+program summon_earth( parms )
+  var circle := 8;
+  var delivery := "direct";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 101);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+
+
+var gracz := SystemFindObjectBySerial( cast_on.ownerserial, 1);
+
+if(!cast_on.ownerserial)
+  SendSysMessage(caster,  "Musisz wskazac martwe cialo.");
+  return 0;
+endif
+
+if(gracz)
+  SendSysMessage(caster,  "Nie mozesz wskazywac graczy.");
+  return 0;
+endif
+
+
+
+var npcek := CreateNpcFromTemplate("skeletaldragon", cast_on.x, cast_on.y, cast_on.z, 0, cast_on.realm);
+npcek.script := "KillNPCs";
+PlaySoundEffect(npcek, 0x48E);
+SetObjProperty(npcek, "summoned",1);
+SetObjProperty(npcek,"master", caster.serial);
+SetObjProperty(caster, "#summon", 1);
+DestroyItem(cast_on);
+Detach();
+sleep(200);
+MoveObjectToLocation(npcek,0,0,0, npcek.realm, MOVEOBJECT_FORCELOCATION);
+ApplyRawDamage(npcek, GetHp(npcek) + 20);
+
+
+endprogram

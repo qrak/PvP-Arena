@@ -1,0 +1,16 @@
+use uo;
+
+include ":jail:jail";
+include "include/dm/clock";
+
+program wina(who)
+	var jailprops  := GetJailProps(who);
+	var whojailed := FindPlayerBySerial(jailprops[5]);
+	if(jailprops)
+		SendSysMessage(who, "Powod: " + jailprops[4], 3, 63);
+		SendSysMessage(who, "Pozostalo czasu: " + RealTime((jailprops[2] + jailprops[3]) - ReadGameClock ()), 3, 63);
+		SendSysMessage(who, "Zamknal cie: " + ClStr(whojailed.name), 3, 63);
+	else
+		SendSysMessage(who, "Jestes niewinny niczym niemowle.", 3, 63);
+	endif
+endprogram

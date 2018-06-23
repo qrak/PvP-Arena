@@ -1,0 +1,146 @@
+use os;
+use npc;
+use basic;
+use cfgfile;
+use uo;
+
+include ":gumps:gumps";
+include "include/gumpUtil";
+include "include/frakcja";
+
+gfref.x := 50;
+gfref.y := 50;
+
+var townarray := {};
+
+program gumptest(who, item)
+
+  var city := GetObjProperty(item, "City");
+  if(!city)
+    return;
+  endif
+  var cfg := ReadConfigFile(":moongates:moongate");
+  var lands := Cint(cfg["Facets"].value);
+  if(!lands)
+    return;
+  endif
+  case(city)
+    "Moonglow": townarray := array("Britain", "Jhelom", "Yew", "Minoc", "Trinsic", "Skara Brae", "Magincia", "Swieta Ziemia");
+    "Britain":  townarray := array("Moonglow", "Jhelom", "Yew", "Minoc", "Trinsic", "Skara Brae", "Magincia", "Swieta Ziemia");
+    "Jhelom":   townarray := array("Moonglow", "Britain", "Yew", "Minoc", "Trinsic", "Skara Brae", "Magincia", "Swieta Ziemia");
+    "Yew":      townarray := array("Moonglow", "Britain", "Jhelom", "Minoc", "Trinsic", "Skara Brae", "Magincia", "Swieta Ziemia");
+    "Minoc":    townarray := array("Moonglow", "Britain", "Jhelom", "Yew", "Trinsic", "Skara Brae", "Magincia", "Swieta Ziemia");
+    "Trinsic":  townarray := array("Moonglow", "Britain", "Jhelom", "Yew", "Minoc", "Skara Brae", "Magincia", "Swieta Ziemia");
+    "Skara":    townarray := array("Moonglow", "Britain", "Jhelom", "Yew", "Minoc", "Trinsic", "Magincia", "Swieta Ziemia");
+    "Magincia": townarray := array("Moonglow", "Britain", "Jhelom", "Yew", "Minoc", "Trinsic", "Skara Brae", "Swieta Ziemia");
+    "Swieta Ziemia": townarray := array("Moonglow", "Britain", "Jhelom", "Yew", "Minoc", "Trinsic", "Skara Brae", "Magincia");
+  endcase
+  GFInitGump(0, 0);
+  GFPage(0);
+  GFResizePic(100, 100, 5100, 200, 305);
+  GFTextLine(140, 110, 44, "Wybierz cel podrozy:");
+  GFSetRadioGroup(1);
+  GFRadioButton(120, 140, 1209, 1210, 1);
+  GFRadioButton(120, 165, 1209, 1210, 0);
+  GFRadioButton(120, 190, 1209, 1210, 0);
+  GFRadioButton(120, 215, 1209, 1210, 0);
+  GFRadioButton(120, 240, 1209, 1210, 0);
+  GFRadioButton(120, 265, 1209, 1210, 0);
+  GFRadioButton(120, 290, 1209, 1210, 0);
+  GFRadioButton(120, 315, 1209, 1210, 0);
+  GFTextLine(140, 140,  50, townarray[1]);
+  GFTextLine(140, 165,  50, townarray[2]);
+  GFTextLine(140, 190,  50, townarray[3]);
+  GFTextLine(140, 215,  50, townarray[4]);
+  GFTextLine(140, 240,  50, townarray[5]);
+  GFTextLine(140, 265,  50, townarray[6]);
+  GFTextLine(140, 290,  50, townarray[7]);
+  GFTextLine(140, 315,  50, townarray[8]);
+  var ok := GFButtonID(110, 340, 4005, 4007, 1);
+  var cancel := GFButtonID(110, 365, 4005, 4007, 1);
+  GFTextLine(145, 340, 100, "Wybierz");
+  GFTextLine(145, 365, 100, "Anuluj");
+  var res := GFSendGump(who);
+  if(res[cancel.keyid])
+    SendSysMessage(who, "Anulowano.");
+    return;
+  else
+    var holder;
+    foreach thing in (res.keys)
+      if((thing != 0) and (thing != 1025))
+        holder := thing;
+        break;
+      endif
+    endforeach
+    if((who.x == item.x) and (who.y == item.y) and (who.z == item.z))
+	SetObjProperty(who, "#Teleported", 1);
+      case(townarray[Cint(holder - 2048)])
+
+        "Moonglow":   
+        if(makethetele(who))
+        MoveObjectToLocation(who, 4467, 1284,   5, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Britain":    
+        if(makethetele(who))
+        MoveObjectToLocation(who, 1336, 1998,   5, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Jhelom":     
+        if(makethetele(who))
+        MoveObjectToLocation(who, 1499, 3772,   5, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif        
+        "Yew":        
+        if(makethetele(who))
+        MoveObjectToLocation(who,  771,  754,   5, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Minoc":      
+        if(makethetele(who))        
+        MoveObjectToLocation(who, 2701,  694,   5, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Trinsic":    
+        if(makethetele(who))        
+        MoveObjectToLocation(who, 1828, 2949, -20, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Skara Brae": 
+        if(makethetele(who))
+        MoveObjectToLocation(who,  643, 2068,   5, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Magincia":   
+        if(makethetele(who))
+        MoveObjectToLocation(who, 3564, 2141,  33, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+        "Swieta Ziemia":   
+        if(makethetele(who))
+        MoveObjectToLocation(who, FRAKCJA_1_X, FRAKCJA_1_Y,  FRAKCJA_1_Z, who.realm, MOVEOBJECT_FORCELOCATION);
+        endif
+      endcase
+	EraseObjProperty(who, "#Teleported");
+    else
+      SendSysMessage(who, "Anulowano.");
+      return;
+    endif
+  endif
+endprogram
+
+function makethetele(who)
+var czas := 0;
+
+var oldx := who.x;
+var oldy := who.y;
+while(1)
+sleep(1);
+czas := czas+1;
+PlayObjectCenteredEffect( who, 14186, 7, 0x10 );
+    if(czas > 10)
+    czas := 0;
+    return 1;
+    endif
+
+if(oldx != who.x || oldy != who.y)
+SendSysMessage(who, "Ssij.",3,33);
+return 0;
+endif
+endwhile
+
+
+
+endfunction

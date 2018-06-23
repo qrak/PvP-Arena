@@ -1,0 +1,128 @@
+//fromasz - ROZDANIE NAGROD TURNIEJOWYCH
+
+use uo;
+use os;
+
+program rozdanienagrod(who)
+
+SendSysMessage(who, "Wskaz 3 osoby ktorym skrypt ma rozdac nagrody(od 1 do 3 miejsca)",3,89);
+
+var cel1 := Target(who);
+var cel2 := Target(who);
+var cel3 := Target(who);
+
+if (!cel1 % !cel2 & !cel3)
+    SendSysMessage(who, "Anulowano.",3,38);
+    return;
+elseif (!cel1.ip or !cel2.ip or !cel3.ip)
+    SendSysMessage(who, "To nie jest gracz.",3,38);
+    return;
+endif
+
+// MoveObjectToLocation(cel1, 5421, 1206,0);
+// cel1.frozen := 1;
+// MoveObjectToLocation(cel2, 5422, 1206,0);
+ //cel2.frozen := 1;
+// MoveObjectToLocation(cel3, 5423, 1206,0);
+// cel3.frozen := 1;
+ 
+ sleep(1);
+ 
+PlaySoundEffect(cel1, 0x5c3);
+PlaySoundEffect(cel2, 0x5c3);
+PlaySoundEffect(cel3, 0x5c3);
+sleep(2);
+
+// I MIEJSCE
+
+        PlayLightningBoltEffect(cel1);
+	PlaySoundEffect( cel1, 0x0207 );
+        sleepms(500);
+       	PlayLightningBoltEffect(cel1);
+	PlaySoundEffect( cel1, 0x0207 );
+        sleepms(500);
+      	PlayLightningBoltEffect(cel1);
+	PlaySoundEffect( cel1, 0x0207 );
+        sleepms(500);
+        PlaySoundEffect( cel1, 0x5b5 );
+        
+
+     var sakwa := CreateItemInBackpack(cel1, 0xe76, 1);
+     var kula := CreateItemInContainer(sakwa, 0xff13, 15);
+
+     SetObjProperty(kula, "Kula z Tura",1);
+
+     CreateItemInContainer(sakwa, 0xeef, 40000);
+     CreateItemInContainer(sakwa, 0xeed, 60000);
+     CreateItemInContainer(sakwa, 0xeed, 60000);
+     CreateItemInContainer(sakwa, 0xeed, 60000);
+     CreateItemInContainer(sakwa, 0x318d, 5);
+     CreateItemInContainer(sakwa, 0xa415, 2);
+     sakwa.name:= "Nagroda za I miejsce w turnieju";
+     
+sleep(1);
+
+// II Miejsce
+
+        PlayLightningBoltEffect(cel2);
+	PlaySoundEffect( cel2, 0x0207 );
+        sleepms(500);
+       	PlayLightningBoltEffect(cel2);
+	PlaySoundEffect( cel2, 0x0207 );
+        sleepms(500);
+      	PlayLightningBoltEffect(cel2);
+	PlaySoundEffect( cel2, 0x0207 );
+        sleepms(500);
+        PlaySoundEffect( cel2, 0x5b5 );
+
+   var sakwa2 := CreateItemInBackpack(cel2, 0xe76, 1);
+   var kula2 := CreateItemInContainer(sakwa2, 0xff13, 10);
+
+   SetObjProperty(kula2, "Kula z Tura",1);
+
+     CreateItemInContainer(sakwa2, 0xeef, 30000);
+     CreateItemInContainer(sakwa2, 0xeed, 60000);
+     CreateItemInContainer(sakwa2, 0xeed, 60000);
+     CreateItemInContainer(sakwa2, 0x318d, 3);
+     CreateItemInContainer(sakwa2, 0xa415, 1);
+     sakwa2.name:= "Nagroda za II miejsce w turnieju";
+     
+sleep(1);
+
+// III Miejsce
+
+        PlayLightningBoltEffect(cel3);
+	PlaySoundEffect( cel3, 0x0207 );
+        sleepms(500);
+       	PlayLightningBoltEffect(cel3);
+	PlaySoundEffect( cel3, 0x0207 );
+        sleepms(500);
+      	PlayLightningBoltEffect(cel3);
+	PlaySoundEffect( cel3, 0x0207 );
+        sleepms(500);
+        PlaySoundEffect( cel3, 0x5b5 );
+        
+   var sakwa3 := CreateItemInBackpack(cel3, 0xe76, 1);
+   var kula3 := CreateItemInContainer(sakwa3, 0xff13, 5);
+
+   SetObjProperty(kula3, "Kula z Tura",1);
+
+     CreateItemInContainer(sakwa3, 0xeef, 20000);
+     CreateItemInContainer(sakwa3, 0xeed, 60000);
+     CreateItemInContainer(sakwa3, 0xa415, 1);
+     CreateItemInContainer(sakwa3, 0x318d, 2);
+     sakwa3.name:= "Nagroda za III miejsce w turnieju";
+
+sleep(1);
+
+
+ 
+BroadCast("Turniej dobiegl konca. Pierwsze miejsce zajal " + cel1.name + " drugie " +cel2.name + " trzecie "+cel3.name+". GRATULACJE!",3,89);
+ sleep(2);
+BroadCast("Turniej prowadzil " +who.name + ". Dla niego BRAWA!!",3,38);
+ 
+ 
+ 
+ 
+endprogram
+

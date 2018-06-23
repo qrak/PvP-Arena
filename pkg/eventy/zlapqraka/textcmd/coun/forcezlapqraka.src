@@ -1,0 +1,8 @@
+use uo;
+use os;
+
+program forcezlapqraka(who)
+	SendSysMessage(who, "Wystartowales event Zlap qraka by fromasz & qrak",3,89);
+	sleep(1);
+	start_script(":zlapqraka:faza1");
+endprogram

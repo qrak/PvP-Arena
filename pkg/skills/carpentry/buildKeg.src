@@ -1,0 +1,115 @@
+// crash
+
+use attributes;
+use math;
+use basic;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/canAccess";
+
+var layout := array(
+"page 0",
+"resizepic 0 60 9270 500 200      ",
+"button  420 220  241  242 1 0 999",
+"text    180  80  1645    0        ",
+"text     40 131  50    1        ",
+"text    210 131  50    2        ",
+"text    290 131  50    3        ",
+"text    360 131  50    4        ",
+"text     90 220  900    5        ",
+"tilepic  50 160 6464             ",
+"tilepic 220 160 7608             ",
+"tilepic 295 160 4100             ",
+"tilepic 380 160 3854             ",
+"button  100 163  1209 1210 1  0 10",
+"button   70 224    3    4 1  0 10"
+);
+
+var data := {
+  "Menu budowy kega",     // 0
+  "Keg na mikstury",      // 1
+  "Pokrywa",              // 2
+  "Kranik",               // 3
+  "Butelki (10)",         // 4
+  "Rob to co ostatnio"    // 5
+};
+
+program buildkeg(who, item)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, item))
+    return;
+  endif
+  var res := SendDialogGump(who, layout, data);
+  if((res[0] == 0) || (res[0] == 999))
+    SendSysMessage(who, "Anulowano.", FONT_NORMAL, 40);
+    return;
+  endif
+  var bottlecounter := 0;
+  var tapcounter := 0;
+  var lidcounter := 0;
+  var bottles := 0;
+  var lid := 0;
+  var tap := 0;
+  foreach thing in EnumerateItemsInContainer(who.backpack)
+    if(thing.objtype == 0xf0e)
+      if(bottlecounter == 0)
+        if(thing.amount >= 10)
+          if(ReserveItem(thing))
+            bottles := thing;
+            bottlecounter := bottlecounter + 1;
+          endif
+        endif
+      endif
+    elseif(thing.objtype == 0x1db8)
+      if(lidcounter == 0)
+        if(ReserveItem(thing))
+          lid := thing;
+          lidcounter := lidcounter + 1;
+        endif
+      endif
+    elseif(thing.objtype == 0x1004)
+      if(tapcounter == 0)
+        if(ReserveItem(thing))
+          tap := thing;
+          tapcounter := tapcounter + 1;
+        endif
+      endif
+    endif
+    if((bottlecounter == 1) && (tapcounter == 1) && (lidcounter == 1))
+      break;
+    endif
+  endforeach
+  if((bottlecounter == 0) || (tapcounter == 0) || (lidcounter == 0))
+    SendSysMessage(who, "Nie masz wszystkich potrzebnych czesci.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(CheckSkill(who, SKILLID_TINKERING, 52, 25))
+    var checker := 0;
+    if(!SubtractAmount(bottles, 10))
+      checker := 1;
+    endif
+    if(!DestroyItem(tap))
+      checker := 1;
+    endif
+    if(!DestroyItem(lid))
+      checker := 1;
+    endif
+    if(!DestroyItem(item))
+      checker := 1;
+    endif
+    if(checker == 1)
+      SendSysMessage(who, "Nie znaleziono wszystkich czesci.", FONT_NORMAL, 40);
+      return;
+    endif
+    var theitem := CreateItemInBackpack(who, 0x1940, 1);
+      if(!theitem)
+        SendSysMessage(who, "Nie udalo sie stworzyc beczulki.", FONT_NORMAL, 40);
+        return;
+      endif
+      theitem.movable := 1;
+      SendSysMessage( who, "Wykonales przedmiot i wlozyles go do plecaka.", FONT_NORMAL, COLOR_GREEN);
+    endif
+endprogram

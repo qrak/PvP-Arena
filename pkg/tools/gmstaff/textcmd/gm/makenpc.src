@@ -1,0 +1,158 @@
+//////////////////////////////////////////
+// makeNpc.src
+//
+// author: dougall
+// email : dougalloogle@yahoo.com
+//
+//////////////////////////////////////////
+// 
+// - Gump based textcmd.
+// - First select alignment, then select
+//   an NPC template (of this alignment)
+//   for creation.
+// - NPCs with no alignment specified 
+//   default as neutral.
+//
+//////////////////////////////////////////
+
+use uo;
+use os;
+use cfgfile;
+
+const NUM_PER_PAGE:=68;
+const MAX_PAGES:=8;      // up to 544 per alignment!
+
+var npcs:=ReadConfigFile("::npcdesc");
+
+program createnpc(who,npctype)
+  if (!npctype)
+    npctype:=ChooseNPCtype(who);
+    if (!npctype)
+      return;
+    endif
+  endif
+  if (!npcs[npctype])
+    sendsysmessage(who,"There is no "+npctype+" npc template!");
+    return;
+  endif
+  var trgt:=TargetCoordinates(who);
+  if (trgt and npctype)
+    var check:=CreateNpcFromTemplate(npctype, trgt.x, trgt.y, trgt.z);
+    if (check.errortext)
+      sendsysmessage(who,check.errortext);
+    endif
+  endif
+endprogram
+
+function ChooseNPCtype(who)
+  var choose_layout:=array;
+  var choose_data:=array;
+  var npc_selection:=array;
+  var retval:=array;
+  var i,start_i,end_i,pagenum;
+  var selection_length,check_alignment;
+                   
+  while (1)               
+    choose_layout:={
+      "page 0",
+      "nodispose",
+      "resizepic 0 0 3600 180 150",
+      "group 1",
+      "text 40 20 63 0",
+      "button 40 50 210 211 1 0 101",
+      "text 60 50 98 1",
+      "button 40 70 210 211 1 0 102",
+      "text 60 70 98 2",
+      "button 40 90 210 211 1 0 103",
+      "text 60 90 98 3"
+    };
+
+    choose_data:={
+      "Select A Group:",
+      "Good NPCs",
+      "Neutral NPCs",
+      "Evil NPCs"
+    };
+
+    retval:=SendDialogGump(who,choose_layout,choose_data);
+
+    if (!retval)
+      return 0;        // escape while endwhile loop here!
+    endif
+
+    selection_length:=0;
+    npc_selection:={};
+    
+    set_script_option( SCRIPTOPT_NO_RUNAWAY,1 );
+    foreach check_npc in (GetConfigStringKeys(npcs))
+      check_alignment:=lower(npcs[check_npc].alignment);
+      if (  (retval[101] && (check_alignment == "good"))
+         || (retval[102] && (!check_alignment || (check_alignment == "neutral")))
+         || (retval[103] && (check_alignment == "evil")) )
+        npc_selection.append(check_npc);
+        selection_length:=selection_length+1;
+      endif
+    endforeach
+    set_script_option( SCRIPTOPT_NO_RUNAWAY,0 );
+    
+    sleepms(100);
+                      
+    if (!selection_length)
+      sendsysmessage(who,"There are no npcs of that alignment!");
+      return 0;        // escape while endwhile loop here!
+    endif
+
+    var alignment_name;
+    if (retval[101])
+      alignment_name:="Good";
+    elseif (retval[102])
+      alignment_name:="Neutral";
+    elseif (retval[103])
+      alignment_name:="Evil";
+    endif
+  
+    choose_layout:={
+      "page 0",
+      "nodispose",
+      "resizepic 0 0 3600 640 440",
+      "text 160 20 63 0"
+    };
+    choose_data:={"Make "+alignment_name+" NPC from template:"};
+
+    pagenum:=1;
+    while (pagenum and pagenum<MAX_PAGES)
+      choose_layout.append("page "+pagenum);
+      choose_layout.append("gumppic 600 20 "+(2224+pagenum));
+      var start_i:=((pagenum-1)*NUM_PER_PAGE)+1;
+      var end_i:=(pagenum*NUM_PER_PAGE);
+      if (pagenum>1)
+        choose_layout.append("button 620 120 250 251 0 "+(pagenum-1));
+      endif
+      if (end_i<selection_length)
+        choose_layout.append("button 620 370 252 253 0 "+(pagenum+1));
+        pagenum:=pagenum+1;
+      else
+        end_i:=selection_length;
+        pagenum:=0;
+      endif
+      var x:=40;
+      var y:=60;
+      for (i:=start_i;i<=end_i;i:=i+1)
+        choose_layout.append("croppedtext "+x+" "+y+" 136 20 98 "+len(choose_data));
+        choose_data.append(npc_selection[i]);
+        choose_layout.append("button "+(x-12)+" "+(y+2)+" 2103 2104 1 0 "+(i+500));
+        y:=y+20;
+        if (y>380)
+          x:=x+150;
+          y:=60;
+        endif
+      endfor
+    endwhile
+    retval:=SendDialogGump(who,choose_layout,choose_data);
+    for (i:=1;i<=len(npc_selection);i:=i+1)
+      if (retval[i+500])
+        return (npc_selection[i]); // escape while endwhile loop here!
+      endif
+    endfor
+  endwhile
+endfunction

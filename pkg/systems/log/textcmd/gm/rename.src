@@ -1,0 +1,23 @@
+use uo;
+include "include/client";
+
+program textcmd_rename( who, newname )
+    var thetarg := Target(who);
+
+       if (!thetarg)
+    SendSysMessage (who, "Anulowano.", FONT_NORMAL, COLOR_RED);
+    return 0;
+    endif
+
+    if (thetarg == who)
+    SetName(thetarg, newname);
+    SendSysMessage (who, "Zmieniles swoje imie.", FONT_NORMAL, COLOR_GREEN);
+    return 1;
+    endif
+    SendSysMessage (who, "Oooooooo it's done my friend!", FONT_NORMAL, COLOR_GREEN);
+    SetName(thetarg, newname);
+
+    return 1;
+
+
+endprogram

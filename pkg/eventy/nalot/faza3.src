@@ -1,0 +1,79 @@
+//nalot na Brytanie - zakonczenie
+
+use uo;
+use os;
+use vitals;
+
+program faza3()
+
+ BroadCast("Ksiezniczka zostala uwolniona!",3,89);
+ sleep(2);
+ BroadCast("Lord British zaprasza wszystkich do sali tronowej",3,89);
+ sleep(3);
+ BroadCast("Zjawi on sie tam za 2 minuty",3,89);
+ sleep(120);
+ 
+ foreach cisza in ListObjectsInBox(1322, 1618, 50, 1350, 1632, 50);
+
+if (cisza.ip)
+cisza.squelched := 1;
+endif
+
+endforeach
+
+var lord := CreateNpcFromTemplate("lordbrithish", 1323, 1624, 55);
+
+lord.frozen := 1;
+
+PrintTextAbove(lord, "Bardzo dziekuje wam za uwolnienie mojej ukochanej corki Matyldy",3,89);
+sleep(6);
+PrintTextAbove(lord, "Wasze zaslugi sa wielkie, wiec nagroda was nie minie",3,89);
+sleep(6);
+PrintTextAbove(lord, "Ciesze sie ze mozna na was liczyc.",3,89);
+sleep(4);
+PrintTextAbove(lord, "Bywajcie",3,89);
+sleep(1);
+
+ApplyRawDamage(lord, 6000);
+
+ foreach cisza1 in ListObjectsInBox(1322, 1618, 50, 1350, 1632, 50);
+
+if (cisza1.ip)
+cisza1.squelched := 0;
+endif
+
+endforeach
+
+
+foreach gracze in ListObjectsInBox(1322, 1618, 50, 1350, 1632, 50);
+
+if (gracze.ip)
+var sakwa := CreateItemInBackpack(gracze, 0xe76, 1);
+
+   sakwa.name := "Nagroda z questu";
+
+   CreateItemInContainer(sakwa, 0xeef, 15000);
+   CreateItemInContainer(sakwa, 0xeed, 30000);
+   CreateItemInContainer(sakwa, 0xeed, 60000);
+   CreateItemInContainer(sakwa, 0x318d, 5);
+var kula := CreateItemInContainer(sakwa, 0xff13, 5);
+SetObjProperty(kula, "Kulka z questa", 1);
+
+   SendSysMessage(gracze, "W twoim plecaku zostal umieszczony woreczek z nagroda. Gratulacje!",3,63);
+
+endif
+
+endforeach
+
+BroadCast("Dziekujemy za udzial w quescie",3,89);
+sleep(5);
+Broadcast("Nalot na Brytanie zostal stworzony przez: ",3,89);
+sleep(2);
+Broadcast("Fromasza i qraka.",3,89);
+sleep(10);
+BroadCast("Zakaz zabijania bedzie trwal jeszcze 2 minuty");
+sleep(120);
+
+EraseGlobalProperty("#zakazwalk");
+
+endprogram

@@ -1,0 +1,16 @@
+// zajebywanie qrakow!
+
+use uo;
+use os;
+use vitals;
+
+program killqrak(who)
+	foreach qrwaki in ListObjectsInBox(1800,2660, 0, 2068,2891, 40);
+		if (GetObjProperty(qrwaki, "qrak_npc"))
+			ApplyRawDamage(qrwaki,6000);
+		endif
+	endforeach
+	SendSysMessage(who, "Zapierdoliles wszystkie qrwaki!",3,40);
+endprogram
+
+

@@ -1,0 +1,54 @@
+/////////////////////////////////////////////////////////////////////////
+//     CTF v1.0 faza 2 - omowienie zasad i przydzial do druzyny        //
+/////////////////////////////////////////////////////////////////////////
+
+use os;
+use uo;
+
+include ":ctf:ctf";
+
+program Phase2()
+
+    StoneSay("Jestem sobie smutnym kamieniem Capture The Flag. Witam Wszystkich na zawodach CTF :(");
+    sleep(10);
+    StoneSay("Oto zasady na ARENIE:");
+    sleep(6);
+    StoneSay("1) Zakaz zabijania czlonkow swojej druzyny. :(");
+    sleep(6);
+    StoneSay("2) Zakaz wychodzenia z CTFa podczas walk na arenie. :/");
+    sleep(6);
+    StoneSay("3) Zakaz przedluzania CTFa. Jezeli posiadamy flage przeciwnika to nalezy ja odrazu oddac do swojej bazy. :<");
+    sleep(6);
+    StoneSay("4) Za niezastosowanie sie do tych punktow grozi wiezienie na 24h :<");
+    sleep(6);
+    StoneSay("WSKAZOWKI:");
+    sleep(5);
+    StoneSay("Flage zdobywa sie poprzez dwuklik na nia.");
+    sleep(5);
+    StoneSay("Rzeczy otrzymujemy poprzez dwuklik na kamien rzeczy ktory jest na respie.");
+    sleep(10);
+    
+
+    var team := "red";
+    
+        set_critical(1);
+        foreach mobile in ListMobilesNearLocation(CtfStone().x, CtfStone().y, CtfStone().z, 10, CtfStone().realm)
+            if(!mobile.cmdlevel && mobile.ip)
+                if(team == "red")
+                    team := "blue";
+                    SetCtfTeam(mobile, team);
+                elseif(team == "blue")
+                    team := "red";
+                    SetCtfTeam(mobile, team);
+                endif
+            endif
+            SendSysMessage(mobile, "Powodzenia!",3,63);
+            MoveObjectToBase(mobile);
+            sleepms(500);
+        endforeach
+        set_critical(0);
+        
+
+sleep(5);
+
+endprogram

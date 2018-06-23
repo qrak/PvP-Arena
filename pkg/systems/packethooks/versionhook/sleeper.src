@@ -1,0 +1,7 @@
+use uo;
+use os;
+
+program sleeper(who);
+sleep(5);
+DisconnectClient(who);
+endprogram

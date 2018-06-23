@@ -1,0 +1,19 @@
+use uo;
+use os;
+
+program testujgrafe(who)
+
+var i := 156;
+repeat
+  i := i + 1;
+  if(who.connected)
+    who.graphic := i;
+  else
+    break;
+  endif
+  SendSysMessage(who, "Nr: " + i);
+  sleepms(1000);
+  
+until(i > 800);
+
+endprogram

@@ -1,0 +1,11 @@
+use uo;
+
+program JailKeeeper(who)
+
+    if((GetObjProperty(who, "jailtime")) and (GetObjProperty(who, "jailwhox")) or (GetObjProperty(who, "celax") == who.x))
+        if(GetObjProperty(who, "jailtime") > ReadGameClock())
+            SetObjProperty(who, "jailed",1);
+        endif
+    endif
+
+endprogram

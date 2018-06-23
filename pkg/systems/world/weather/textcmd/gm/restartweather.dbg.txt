@@ -1,0 +1,43 @@
+File 0: 
+File 1: e:\gry\pol\skrypty\wod\099\pkg\world\weather\textcmd\gm\restartweather.src
+File 2: ./modules/uo.em
+File 3: ./modules/os.em
+File 4: ./modules/basic.em
+File 5: ./modules/basicio.em
+Ins 0: File 1, Line 4, Block 1 StatementBegin
+Ins 1: File 1, Line 5, Block 1 StatementBegin
+Ins 2: File 1, Line 5, Block 1 
+Ins 3: File 2, Line 371, Block 1 
+Ins 4: File 2, Line 371, Block 1 
+Ins 5: File 1, Line 5, Block 1 
+Ins 6: File 1, Line 5, Block 1 
+Ins 7: File 1, Line 6, Block 1 StatementBegin
+Ins 8: File 1, Line 6, Block 1 
+Ins 9: File 1, Line 6, Block 1 
+Ins 10: File 1, Line 6, Block 1 
+Ins 11: File 1, Line 8, Block 1 StatementBegin
+Ins 12: File 1, Line 8, Block 1 
+Ins 13: File 1, Line 8, Block 1 
+Ins 14: File 1, Line 9, Block 1 StatementBegin
+Ins 15: File 1, Line 9, Block 1 
+Ins 16: File 1, Line 9, Block 1 
+Ins 17: File 1, Line 9, Block 1 
+Ins 18: File 1, Line 10, Block 1 StatementBegin
+Ins 19: File 3, Line 71, Block 1 
+Ins 20: File 1, Line 10, Block 1 
+Ins 21: File 1, Line 10, Block 1 
+Ins 22: File 1, Line 11, Block 1 StatementBegin
+Ins 23: File 1, Line 11, Block 1 
+Ins 24: File 2, Line 371, Block 1 
+Ins 25: File 2, Line 371, Block 1 
+Ins 26: File 1, Line 11, Block 1 
+Ins 27: File 1, Line 11, Block 1 
+Ins 28: File 1, Line 12, Block 1 
+Ins 29: File 1, Line 12, Block 0 
+Block 0:
+  Parent block: 0
+  Local variables 0-4294967295: 
+Block 1:
+  Parent block: 0
+  Local variables 0-0: 
+      0: character

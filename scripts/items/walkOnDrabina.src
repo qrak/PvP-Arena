@@ -1,0 +1,11 @@
+use npc;
+use uo;
+
+program walkon(who, what)
+	var x := what.x;
+	var y := what.y;
+	var z := what.z;
+		SetObjProperty(who, "#Teleported", 1);
+	MoveObjectToLocation(who, x, y, z + 10, who.realm, MOVEOBJECT_FORCELOCATION);
+		EraseObjProperty(who, "#Teleported");
+endprogram

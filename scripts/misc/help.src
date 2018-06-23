@@ -1,0 +1,203 @@
+use uo;
+
+
+include "include/attributes";
+include "include/frakcja";
+include ":gumps:gumps";
+include "include/yesNo"; 
+include "include/findCity";
+
+//"gumppic 40 125 50987",
+//"gumppic 360 125 50987",
+
+program Help(who)
+	if(Cint(!GetObjProperty(who, "#openwindow")))
+	       HelpGump(who);
+	else
+        	SendSysMessage(who, "Zamknij wszystkie inne okna zanim tego uzyjesz.",3,40);
+	        return 0;
+	    endif
+endprogram
+
+function HelpGump(who)
+
+    GFInitGump(0,0);
+    GFpage (0);
+   
+    GFResizePic(10, 60, 9270, 330, 480);
+    GFResizePic(30, 80, 3500, 290, 440);
+     GFGumpPic(85, 40, 10452);
+
+
+    SetObjProperty(who, "#openwindow", 1);
+    
+    GFPage(1); // strona 1
+    GFTextline(80, 140, 63, "Przenies do miasta nowych.");
+    var tele := GFButtonID(60, 140, 1209, 1210,  1);
+    GFTextline(80, 180, 63, "Kup wierzchowca.");
+    var mount := GFButtonID(60, 180, 1209, 1210,  1);
+    GFTextline(80, 220, 63, "Chowaj wierzchowca.");
+    var mroz := GFButtonID(60, 220, 1209, 1210,  1);
+    GFTextline(80, 260, 63, "Zaznacz runo.");
+    var mark := GFButtonID(60, 260, 1209, 1210,  1);
+    GFTextline(80, 300, 63, "Napraw przedmiot.");
+    var napraw := GFButtonID(60, 300, 1209, 1210,  1);
+    GFTextline(80, 340, 63, "Wyslij wiadomosc.");
+    var msg := GFButtonID(60, 340, 1209, 1210,  1);
+    GFTextline(80, 380, 63, "Zarzadaj wpierdolu na PvP.");
+    var wpierd := GFButtonID(60, 380, 1209, 1210,  1);
+
+    GFTextLine(260, 480, 63, "Wyjdz");
+    var anuluj := GFButtonID(240, 480, 1209, 1210, 1);
+
+    var keys := GFSendGump(who);
+
+    if(keys[0] == anuluj.keyid) // wyjscie
+        EraseObjProperty(who, "#openwindow");
+    elseif(keys[0] == tele.keyid)
+        TeleChar(who);
+    elseif(keys[0] == mount.keyid)
+	start_script(":commands:player/mount", who);
+    elseif(keys[0] == mroz.keyid)
+	start_script(":bilety:textcmd/player/mroz", who);
+    elseif(keys[0] == mark.keyid)
+	start_script(":commands:player/mark", who);
+    elseif(keys[0] == napraw.keyid)
+	start_script(":commands:player/napraw", who);
+    elseif(keys[0] == msg.keyid)
+	start_script(":commands:player/msg", who);
+    elseif(keys[0] == wpierd.keyid)
+	Wpierdol(who);
+    endif
+
+    EraseObjProperty(who, "#openwindow");
+
+endfunction
+
+function Wpierdol(who)
+ 	var igrzyska := GetObjProperty(who, "IgTeam");
+    	var CTF := GetObjProperty(who, "CtfTeam");
+    	var KTM := GetObjProperty(who, "KTMTeam");
+	var lastwpierdol := Cint(GetObjProperty(who, "#LastWpierdolMsg"));
+	if((ReadGameClock() < lastwpierdol) && !igrzyska && !CTF && !KTM) 
+        	SendSysMessage(who, "Wiadomosc ta mozesz wysylac co 5 minut online. Musisz odczekac jeszcze " + (lastwpierdol - ReadGameClock()) + " sekund.",3,40 );
+		EraseObjProperty(who, "#openwindow");
+        	return 0;
+    	endif
+	if(yesNo(who, "Czy chcesz podac swoja lokalizacje?" ))
+		Broadcast( who.name + " chce najebac komus na PvP! Znajdziecie go tutaj; X: " + who.x + " Y:" + who.y + " Z: " + who.z + ". Miasto: " + findcity(who) + ".",  3, 89 );
+		SetObjProperty(who, "#LastWpierdolMsg", ReadGameClock() + 300);
+	else
+		SendSysMessage(who, "Anulowano.", 3, 40);
+		EraseObjProperty(who, "#openwindow");
+		return 0;
+	endif
+endfunction
+
+function TeleChar(who)
+
+	var moved := Cint(GetObjProperty(who, "#lastmoved"));
+
+	if(Cint(GetObjProperty(who, "jailed")))
+		SendSysMessage(who, "A ty gdzie?!",3,40);
+		return 0;
+	endif
+
+	if(findcity(who) == "Klasa")
+		return 0;
+	endif
+
+	if(ReadGameClock() > moved);
+		if(przenies(who))
+					SetObjProperty(who, "#Teleported", 1);
+      			MoveObjectToLocation(who, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, who.realm, MOVEOBJECT_FORCELOCATION);
+					EraseObjProperty(who, "#Teleported");
+      			var KTM := GetObjProperty(who, "KTMTeam");
+      			if(KTM)
+        			EraseObjProperty(who, "KTMTeam");
+      			endif
+      			SetObjProperty(who, "#lastmoved", ReadGameClock() + 300);
+    		endif
+	else
+
+		if(moved - ReadGameClock() < 60)
+			SendSysMessage(who, "Mozesz tego uzyc dopiero za " + (moved - ReadGameClock()) + " sekund.",3,40);
+		else
+			SendSysMessage(who, "Mozesz tego uzyc dopiero za " + (moved - ReadGameClock())/60 + " minut(y).",3,40);
+		endif
+	endif
+
+endfunction
+
+
+function przenies(who)
+
+
+var czas := 1;
+
+var oldx := who.x;
+var oldy := who.y;
+var wrogowie := 0;
+var oldhp := GetHp(who);
+
+
+
+while(1)
+
+    if(czas > 10)
+    czas := 0;
+    return 1;
+    endif
+
+    if(oldx != who.x && oldy != who.y)
+        SendSysMessage(who, "Anulowano.",3,40);
+        return 0;
+    endif
+    
+    if(who.hidden)
+        who.hidden := 0;
+        SendSysMessage(who, "A kto to sie tak proboje chowac ladnie?",3,40);
+    endif
+    
+    if(who.warmode)
+        SendSysMessage(who, "Wylacz tryb walki zanim tego uzyjesz.",3,40);    
+        return 0;        
+    endif
+    
+    foreach wrog in ListHostiles( who, 15 );
+        wrogowie := 1;
+    endforeach
+
+    if(wrogowie == 1)
+        SendSysMessage(who, "Gdzie spierdalasz?! Tchorz! Walcz!",3,40);
+        return 0;
+    endif
+    
+    if(GetObjProperty(who, "#team"))
+        SendSysMessage(who, "Z duela chcesz uciekac? Co za lama!",3,40);        
+        return 0;
+    endif
+
+    if(GetObjProperty(who, "IgTeam"))
+        SendSysMessage(who, "Oj z igrzysk nie uciekniesz ta opcja.",3,40);        
+        return 0;
+    endif
+
+    if(GetObjProperty(who, "CtfTeam"))
+        SendSysMessage(who, "Oj z CTFa nie uciekniesz ta opcja.",3,40);        
+        return 0;
+    endif
+    
+    if(GetHp(who) < oldhp)
+        SendSysMessage(who, "Skoro juz uciekasz z pola walki to lepiej zginac a nie zachowywac sie jak ciota.",3,40);       
+        return 0;
+    endif
+
+czas := czas+1;
+PlayObjectCenteredEffect( who, 14186, 7, 0x10 );
+sleep(1);
+endwhile
+
+
+
+endfunction

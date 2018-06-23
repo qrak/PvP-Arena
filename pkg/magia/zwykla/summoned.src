@@ -1,0 +1,11 @@
+// crash
+
+use vitals;
+use os;
+
+include "include/attributes";
+
+program Creature(mod)
+sleep(mod[2]);
+ApplyRawDamage(mod[1], GetHp(mod[1]) + 3);
+endprogram

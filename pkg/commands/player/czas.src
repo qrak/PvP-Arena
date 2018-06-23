@@ -1,0 +1,10 @@
+use uo;
+
+include "include/clock";
+
+program sprawdzczas(who)
+
+    SendSysMessage(who, "Na serwerze jest godzina " + Systime_GetHour() + " minuta " + Systime_GetMinute(),3,63);
+    
+
+endprogram

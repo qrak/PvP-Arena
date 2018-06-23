@@ -1,0 +1,84 @@
+use uo;
+use guilds;
+use cfgfile;
+
+include "include/dawaj";
+include ":bankstone:stonebank";
+include "util/bank";
+
+const MIN_CASHOUT       := 1000;
+const PERCENT_CASHOUT   := 0.02;
+const MAX_CASHOUT       := 30000000;
+
+program BankStone(who, stone)
+    if(Cint(!GetObjProperty(who, "#openwindow")))
+        PrintTextAbovePrivate(stone, "Witaj " + who.name + "! Otwieram menu...", who);
+        BankStoneGump(who);
+    else
+        SendSysMessage(who, "Zamknij wszystkie inne okna zanim tego uzyjesz.",3,40);
+        return 0;
+    endif
+endprogram
+
+function BankStoneGump(who)
+    GFInitGump(0,0);
+    GFNoMove();
+    GFpage (0);
+    GFGumpPic( 50, 50, 30500 );
+    GFResizePic(50, 50, BKGND_GRAY_LIGHT_GOLDROUNDED, 500, 500);
+    GFCheckerTrans(50,50,500,500);
+
+    SetObjProperty(who, "#openwindow", 1);
+    
+    GFPage(1); // strona 1
+    GFTextline(100, 90, 63, "Skrzynia Bankowa");
+    var showbank := GFButtonID(85, 90, 1209, 1210,  1);
+
+    GFTextline(100, 130, 63, "Balans");
+    GFButtonPage(85, 130, 1209, 1210,  2); // do strony 2
+
+    GFTextline(100, 170, 63, "Dawaj");
+    var givestuff := GFButtonID(85, 170, 1209, 1210, 1);
+
+    GFTextLine(445, 500, 63, "Wyjdz");
+    var anuluj := GFButtonID(490, 500, 1209, 1210, 1);
+    
+    GFTextLine(60, 515, 63, "Created by qrak");
+    
+    GFPage(2); // strona 2 - balans, wypisywanie czekow
+    
+    //TEXT
+    GFTextLine(120, 85, 63, "Zloto: " + CheckBalance(who, "zwykle") + " sztuk");
+    GFTextLine(140, 65, 63, "Wypisz czek");
+
+    GFTextLine(120, 150, 63, "Zloto Krolewskie: " + CheckBalance(who, "krolewskie") + " sztuk");
+
+    var wypiszczek := GFButtonID(120, 65, 1209, 1210,  1);
+    //GRAFIKA GUMPA - STRONA 2
+    GFResizePic(65, 65, BKGND_BEIGE_PAPER, 50, 50);
+    GFGumpPic( 52, 120, 96 ); // linia    
+    GFTilePic( 65, 75, 0xEEF );
+    GFResizePic(65, 130, BKGND_BEIGE_PAPER, 50, 50);
+    GFGumpPic( 52, 185, 96 ); // linia        
+    GFTilePic( 65, 133, 0xEEC );    
+    GFTilePic( 70, 140, 0xEEC );
+//    GFTextLine(65, 195, 63, "Bandaze: " + CheckItemAmount(who, 0x0e21) + " sztuk");
+//    GFButtonId(65, 215, 63, ": " + CheckItemAmount(who, 0x0e21));    
+    GFTextLine(445, 500, 63, "Powrot");
+    GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+    
+    var keys := GFSendGump(who);
+
+    if(keys[0] == anuluj.keyid) // wyjscie
+        EraseObjProperty(who, "#openwindow");
+    elseif(keys[0] == showbank.keyid)
+        OpenBank(who);
+    elseif(keys[0] == givestuff.keyid)
+        ItemsMenu(who);
+    elseif(keys[0] == wypiszczek.keyid)
+        WriteCheque(who);
+    endif
+
+    EraseObjProperty(who, "#openwindow");
+endfunction
+

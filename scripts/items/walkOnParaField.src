@@ -1,0 +1,54 @@
+use os;
+use basicio;
+use math;
+use attributes;
+use vitals;
+use basic;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/objtype";
+include "include/spellAttack";
+
+program walkon_parafield(cast_on, field)
+  if(GetHp(cast_on) < 1)
+    return;
+  endif
+  var creater := GetObjProperty(field, "creater");
+  var online := EnumerateOnlineCharacters();
+  var boss;
+  foreach char in online
+    if(creater == char.serial)
+      boss := char;
+      break;
+    endif
+  endforeach
+  if(!boss)
+    boss := SystemFindObjectBySerial(creater, SYSFIND_SEARCH_OFFLINE_MOBILES);
+  endif
+  SetScriptController(boss);
+  var sila := GetEffectiveSkill(boss, SKILLID_MAGERY);
+  if(!cast_on.dead)
+    SetScriptController(boss);
+    send_attack(cast_on, boss, 46);
+    ApplyRawDamage(cast_on, 1);
+    HealDamage(cast_on, 1);
+    if(!GetObjProperty(cast_on,"#pfield"))
+      if(CheckSkill(cast_on, SKILLID_MAGICRESISTANCE, sila, 10))
+        PrintTextAbovePrivate(cast_on, "Rozproszyles magiczna energie!", cast_on);
+	    PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+	    PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 5,5);
+      else
+       SetObjProperty(cast_on,"#pfield", 1);
+       PlayStationaryEffect(cast_on.x, cast_on.y, cast_on.z, FX_CURSE_EFFECT, 10, 0xa, 0 );
+       PlaySoundEffect( cast_on, SFX_SPELL_PARALYZE );
+       cast_on.paralyzed := 1;
+       sleep(CInt((GetEffectiveSkill(boss, SKILLID_MAGERY)/10)+3));
+       cast_on.paralyzed := 0;
+       sleepms(500);
+       EraseObjProperty(cast_on,"#pfield");
+      endif
+    endif
+  endif
+endprogram

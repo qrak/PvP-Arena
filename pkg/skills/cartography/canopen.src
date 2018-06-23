@@ -1,0 +1,50 @@
+// Loot Generator 1.0
+// qrak
+
+use uo;
+use os;
+use cfgfile;
+use util;
+
+var cfgfile := ReadConfigFile( ":combat:itemdesc" );
+
+include "include/attributes";
+
+
+
+program CanOpenTreasureChest(who, chest)
+	var straznicy := GetObjProperty(Chest, "Straznicy");
+	foreach npec in straznicy
+		if(SystemFindObjectBySerial(CInt(npec)))
+			SendSysMessage(who,"Skrzynia wciaz nie jest bezpieczna.",3,40);
+			return 0;
+		endif
+	endforeach
+
+	var oppened := Cint(GetObjProperty(chest, "Oppened"));
+	if(!oppened)
+		MakeLoot(chest);
+	endif
+	SendQuestArrow(who);
+	SendViewContainer(who, chest);
+endprogram
+
+function MakeLoot(chest)
+
+	var chest_level := Cint(GetObjProperty(chest, "level"));
+	var i;
+	for ( i:=1; i<= chest_level; i:=i+1 )
+		CreateItemInContainer(chest, 0xEED, 5000);
+	endfor
+	
+	CreateItemInContainer(chest, "talizman"+Cstr(chest_level), 1);
+	if(chest_level >= 5)
+		CreateItemInContainer(chest, 0x318D, 1); // oczy otchlani
+	endif
+	CreateItemInContainer(chest, "DeadlyPoison", 1); // trutka smiertelna
+	CreateItemInContainer(chest, "zlotokrolewskie", (chest_level*2) * 1000); // zloto krolewskie
+	SetObjProperty(chest, "Oppened", 1);
+	
+endfunction
+
+

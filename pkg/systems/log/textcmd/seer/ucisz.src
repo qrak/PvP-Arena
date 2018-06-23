@@ -1,0 +1,128 @@
+use uo;
+use os;
+
+
+program uczisz(who, text)
+
+SendSysMessage(who, "Wskaz osobe ktora chcesz uciszyc",3,1152);
+var ile := text;
+var cel := Target(who);
+
+if (!text)
+
+    SendSysMessage(who, "Uzyj: uczisz czas(15, 30, 45, 60, 90, 120, 180, 240",3,63);
+
+endif
+
+if (text == "15")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(15);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "30")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(30);
+cel.squelch := 0;
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "45")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(45);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "60")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(60);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "90")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(90);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "120")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(120);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "180")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(180);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+endif
+
+if (text == "240")
+
+cel.squelch(-1);
+
+   SendSysMessage(who, "Uciszyles gracza na " +ile+ " sekund.",3,63);
+   SendSysMessage(cel, "Zostales uciszony na " +ile+ " sekund. Za swoje infantylne zachowanie.",3,63);
+  Detach();
+sleep(240);
+cel.squelch(0);
+   SendSysMessage(cel, "Kultura osobista jest to bardzo wazna sprawa!!",3,63);
+   SendSysMessage(cel, "JESLI KTOS MOWI NIE NALEZY MU PRZERYWAC! Pamietaj o tym.",3,48);
+
+endif
+
+
+endprogram
+
+
+
+
+

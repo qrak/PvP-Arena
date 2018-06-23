@@ -1,0 +1,35 @@
+
+const ilosc_postaci :=3;
+use os;
+use basicio;
+use math;
+use uo;
+
+program postaci(who)
+
+
+
+
+
+
+
+var i; 
+var konto := who.acct; 
+
+var postac := 0; 
+for(i := 1; i <= 5; i := i + 1) 
+var postacie := konto.getcharacter(i); 
+if(!postacie.errortext) 
+postac := postac + 1; 
+endif 
+endfor 
+
+if(postac > ilosc_postaci) 
+SendSysMessage(who, "Masz za duzo postaci na koncie. Dozwolone sa maksymalnie TRZY! Za 5 sekund zostaniesz wylogowany.",3,40);
+print("Konto: " + who.acctname + " ma za duzo postaci, wylogowalem.");
+sleep(5);
+DisconnectClient(who);
+endif
+
+
+endprogram

@@ -1,0 +1,68 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+var npccfg := ReadConfigFile("::npcdesc");
+
+program chrcast_devil( parms )
+  var circle := 1;
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 204);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+
+foreach istota in ListMobilesInLineOfSight( caster, 12 );
+
+if((getobjproperty(istota, "poly") == 2))
+  ConsumeVital(istota, "Stamina", pal / 1.5);
+  ConsumeVital(istota, "Mana", pal / 1.5);
+
+elseif(getobjproperty(istota, "summoned"))
+
+    PlaySoundEffect( caster, 0x202 );
+    PlayStationaryEffect( istota.x, istota.y, istota.z, FX_HEAL_EFFECT, 0xa, 0xa );
+    var master := SystemFindObjectBySerial(CInt(GetObjProperty(istota, "master")));
+    if(master)
+    
+        var resist := (GetEffectiveSkill(master, SKILLID_MAGICRESISTANCE) - pal) / 2;
+        if((RandomInt(99) + 1) > resist)
+        MoveObjectToLocation(istota,0,0,0,istota.realm, MOVEOBJECT_FORCELOCATION);
+        ApplyRawDamage(istota, GetMaxHp(istota) + 3);
+        endif
+
+    endif
+    
+else
+
+   if(istota.isA(POLCLASS_NPC))
+      var element := npccfg[istota.npctemplate].elemental;
+      if(element == "undead")
+        PlayStationaryEffect( istota.x, istota.y, istota.z, FX_HEAL_EFFECT, 0xa, 0xa );
+        var ev := array;
+        ev.+ type;
+        ev.+ source;
+        ev.type := EVID_PEACEMADE;
+        SendEvent(istota, ev);
+        ev.source := caster;
+        SendEvent(istota, ev);
+        ev.type := EVID_ENGAGED;
+        SendEvent(istota, ev);
+        PlaySoundEffect(caster, 0x202);
+        PlayObjectCenteredEffect(istota, 0x37b9, 0x03, 0x0a);
+        
+        ApplyRawDamage(istota, Resisted(circle,caster,istota,pal));
+      endif
+    endif
+endif
+
+
+endforeach
+
+endprogram

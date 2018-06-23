@@ -1,0 +1,6 @@
+
+program my_form( me )
+
+   me.graphic := 0x190;
+
+endprogram

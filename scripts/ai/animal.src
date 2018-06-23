@@ -1,0 +1,34 @@
+use polsys;
+use npc;
+use basic;
+use cfgfile;
+use math;
+use uo;
+use os;
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/NPCUtil";
+include "include/objtype";
+include "include/dist";
+include "include/anchors";
+include "ai/main/mainLoopAnimal";
+include "ai/combat/fight";
+include "ai/combat/defaultCombatEvent";
+include "ai/setup/animalSetup";
+include "ai/main/sleepMode";
+include "ai/main/closeDistance";
+
+const HALT_THRESHOLD := 5; // how close before he attacks?
+var npccfgfile := ReadConfigFile("::npcdesc");
+var idlesnd1 := CInt(npccfgfile[me.npctemplate].idlesound1);
+var idlesnd2 := CInt(npccfgfile[me.npctemplate].idlesound2);
+var next_wander := ReadGameClock() + 5;
+
+program KillPlayers()
+  SetWarMode( 0 );
+  main_AI_loop();
+endprogram
+
+

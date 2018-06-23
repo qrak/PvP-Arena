@@ -1,0 +1,92 @@
+// crash
+
+use util;
+use cfgfile;
+use basic;
+use os;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_incognito(parms)
+  var circle := 5;
+  var delivery := "notarget";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 35);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  if(GetObjProperty(caster, "incognito"))
+         SendSysMessage(caster, "Jestes juz pod dzialaniem tego czaru.");
+	 return;
+  endif
+  var pobliskie := ListMobilesNearLocation(caster.x, caster.y, caster.z, 8);
+  var jest := 0;
+  foreach pobliski in pobliskie
+       if(pobliski.ip && (pobliski.serial != caster.serial))
+            jest := 1;
+          break;
+       endif
+   endforeach
+  if(jest == 1)
+         SendSysMessage(caster, "Nie mozesz uzyc tego czaru gdy ktos jest w poblizu.");
+	 return;
+  endif
+SetObjProperty(caster, "realname", caster.name);
+  SetObjProperty(caster, "incognito", 1);
+var oldguild := SetObjProperty(caster, "oldguild", caster.title_guild);
+    var newname := AssignName(caster);
+  SetName( caster, newname );
+  PlaySoundEffect(caster, 0x1e1);
+
+
+  Detach();
+  set_critical(1);
+  sleep(60 + CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)));
+  SetName(caster, GetObjProperty(caster, "realname"));
+  caster.title_guild := oldguild;
+
+
+  EraseObjProperty(caster, "realname");
+  EraseObjProperty(caster, "incognito");
+  EraseObjProperty(caster, "oldguild");
+  set_critical(0);
+endprogram
+
+function AssignName(caster)
+  var index := "MALE";
+  if(caster.graphic == 401)
+	index := "FEMALE";
+  endif
+  var cfg := ReadConfigFile( "incognito" );
+  if (!cfg)
+	return;
+  endif
+  var elem := FindConfigElem(cfg, index);
+  var number := GetConfigInt(elem, "Count");
+  var dice_str := "1d" + CStr(number);
+  var choice := RandomDiceRoll(dice_str);
+  var entry := "Name" + choice;
+  var str := GetConfigString( elem, entry );
+  var title := PreserveTitle( caster );
+ 
+  str := str.name + (caster.title_suffix := title);
+  return( str );
+endfunction
+
+function PreserveTitle( caster )
+  var myname := caster.name;
+  var start := find( myname, ">", 1 );
+  if( !start )
+    return;
+  endif
+  var title := myname[ start+1, (len( myname ) - 8) ];
+  if( !title )
+    return("");
+  endif
+  return( title );
+endfunction
+

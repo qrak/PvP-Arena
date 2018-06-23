@@ -1,0 +1,65 @@
+use math;
+use attributes;
+use basic;
+use os;
+use vitals;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+var npccfg := ReadConfigFile("::npcdesc");
+
+program cast_poison(parms)
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 20);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  if(Reflected(cast_on))
+    cast_on := caster;
+  endif
+  if((!cast_on.isA(POLCLASS_MOBILE)) || (cast_on.dead))
+    SendSysMessage(caster, "Nie mozesz tego zatruc.");
+    return;
+  endif
+  PlaySoundEffect(cast_on, 0x206);
+  PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 0x0a,0x1e);
+  var p_level :=  0;
+  var skil := 150;
+  if(skil <= 100)
+    p_level := 1;
+  elseif(skil <= 120)
+    p_level := 2;
+  elseif(skil <= 150)
+    p_level := 3;
+  elseif(skil <= 180)
+    p_level := 4;
+  elseif(skil <= 200)
+    p_level := 5;
+  endif
+
+
+  var passparms, newamt;
+  if(cast_on.isA(POLCLASS_NPC))
+    var element := npccfg[cast_on.npctemplate].elemental;
+    if(element == "poison")
+      HealDamage(cast_on, (p_level * 50));
+    else
+      Detach();
+      passparms := {cast_on, caster, "poison spell", newamt};
+      start_script(":spells:poisonDamage", passparms);
+      SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "poison spell" });
+    endif
+  else
+    Detach();
+    passparms := {cast_on, caster, "poison spell", newamt};
+    start_script(":spells:poisonDamage", passparms);
+    SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "poison spell" });
+  endif
+
+endprogram

@@ -1,0 +1,6 @@
+use polsys;
+use uo;
+
+program textcmd_crim(who)
+  SendSysMessage(who, "Time is now: " + ReadGameClock());
+endprogram

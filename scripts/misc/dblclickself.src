@@ -1,0 +1,25 @@
+Use uo;
+Include "include/dismount";
+include "include/myUtil";
+include "include/client";
+include "include/attributes";
+
+Program DblClickSelf( who )
+
+    Var mount := GetEquipmentByLayer( who, 25 );
+
+	If( !mount )
+	OpenPaperdoll( who, who );
+	Return;
+	Endif
+
+	If( who.warmode )
+	OpenPaperdoll( who, who );
+	Return;
+	Endif
+	if(!who.frozen)
+		Dismount( who, mount );
+	endif
+
+Endprogram
+

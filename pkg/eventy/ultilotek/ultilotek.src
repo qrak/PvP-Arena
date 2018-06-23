@@ -1,0 +1,219 @@
+/*
+UltiLotek by Fromasz.
+Poprosu maly totoloek w uo ;]
+*/
+
+use uo;
+use util;
+use os;
+
+
+include "include/attributes";
+include ":gumps:gumps";
+include "include/yesNo";
+include ":arty:kasakrol";
+
+const cenna := 10000;
+const kwotapoczatkowa := 50000;
+
+program ultiLotek(who)
+
+        if(!GetGlobalProperty("LOTERIA"))
+            SendSysMessage(who,"Akutalanie nie odbywa sie Wielka Loteria",3,40);
+             return 0;
+        endif
+        
+BuildGump(who);
+
+endprogram
+
+function BuildGump(who)
+
+	GFInitGump(80,80);
+	GFNoDispose();
+	GFPage(0);
+	GFResizePic(0,20, 2520,510,410);
+	GFResizePic(28,54, 3600,454,340);
+	GFGumpPic(340, 70, 5547);
+	GFGumpPic(250, 100, 5551);
+	GFGumpPic(320, 150, 5569);
+	GFTextLine(220,30,37, "Wielka Loteria");
+	GFTextLine(45,70,550,"Lista uczestinikow");
+	GFTextLine(45,90,550,"Zasady gry.");
+	GFTextLine(45,110,550,"Kup los");
+	GFTextLine(45,130,550,"Pula");
+ 	GFTextLine(45,210,550,"Wyjscie");
+  
+  	GFTextLine(45,340,550,"UltiLotek zostal stworzony przez Fromasza");
+
+
+	var gracze := GFButtonID(200, 70, 1209, 1210, 1);
+	var zasady := GFButtonID(200, 90, 1209, 1210, 98);
+	var kup := GFButtonID(200, 110, 1209, 1210, 1);
+	var wartosc_wyg := GFButtonID(200, 130, 1209, 1210, 1);
+
+	var quit := GFButtonID(200, 210, 1209, 1210, 1);
+ 
+	var keys := GFSendGump(who);
+	if(keys[0] == quit.keyid)
+		SendSysMessage(who, "'Zyczyny duzych wygranych!'",3,40);
+	endif
+	if(keys[gracze.keyid])
+		Uczestnicy(who);
+	endif
+	if(keys[kup.keyid])
+		KupLos(who);
+	endif
+
+	if(keys[zasady.keyid])
+                ZasadyGry(who);
+	endif
+
+	if(keys[wartosc_wyg.keyid])
+               Pula(who);
+	endif
+
+endfunction
+
+function ZasadyGry(who)
+
+	GFInitGump(100, 20);
+	GFNoDispose();
+	GFNoClose();
+	GFPage(0);
+	GFResizePic(0,0, 2520,450,510);
+	GFResizePic(28,34, 3600,394,440);
+	var close := GFButtonID(50, 50, 1209, 1210, 1);
+	GFTextLine(70,50,550,"Opusc menu.");
+
+	GFPage(1);
+	GFTextLine(170,10,40, "Zasady Gry");
+	GFTextLine(45,70,550,"Zeby wziasc udzial w Wielkiej Loterii nalezy kupic los.");
+	GFTextLine(45,90,550,"Kosztuje on " +cenna+ " zlotych monet. Po dokonaniu zakupu");
+ 	GFTextLine(45,110,550,"dostajemy los z naszymi numerami. Otrzymujemy 2 numery");
+   	GFTextLine(45,130,550,"wylosowane z liczb od 1 do 16. Od tego momentu nie pozostaje");
+       	GFTextLine(45,150,550,"nic innego jak czekac na zakonczenie loterii i glowne losowanie");
+       	GFTextLine(45,170,550,"numerow. Jezeli okaze sie ze to wlasnie Ty wygrales dostaniesz");
+       	GFTextLine(45,190,550,"nagrode w wysokosci puli jaka byla do zdobycia. Jesli okaze sie,");
+      	GFTextLine(45,210,550,"ze nikt nie wygral nastepuje kumulacja i przy nastepnym losowaniu");
+      	GFTextLine(45,230,550,"suma glownej wygranej jest znacznie wyzsza. Zapraszamy do gry!");
+           var gumpik := GfSendGump(who);
+	if(gumpik[close.keyid])
+		BuildGump(who);
+	endif
+ 
+ endfunction
+ 
+
+
+function KupLos(who)
+
+if (GetObjProperty(who, "ultilotek"))
+   SendSysMessage(who, "Posiadasz juz los. Czekaj do zakonczenia loterii",3,40);
+   return;
+endif
+    if(!yesNo(who, "Czy chcesz kupic los w UltiLotku? Wyniesie Cie to " +cenna +" krolewskiego zlota"));
+        return 0;
+    endif
+    if(!kasakurwa(who, cenna))
+          return 0;
+    endif
+
+  var liczby := {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}; // liczby
+  var x := liczby[RandomInt(liczby.size())];
+  var x2 := liczby[RandomInt(liczby.size())];
+    
+    var los := CreateItemInBackPack(who, 0xc20, 1);
+    SetObjProperty(los, "numer", x);
+    SendSysMessage(who, "Kupiles los. Twoje szczesliwe liczby to "+x+" i "+x2+".",3,63);
+    los.name := "Los z UltiLotka. Twoje numery to: "+ x +", "+ x2 +".";
+    SetObjProperty(who, "ultilotek", 1);
+    SetObjProperty(who, "numer", x);
+    SetObjProperty(who, "numer2", x2);
+    
+endfunction
+    
+
+
+function Uczestnicy(who)
+	GFInitGump(100, 20);
+	GFNoDispose();
+	GFNoClose();
+	GFPage(0);
+	GFResizePic(0,0, 2520,450,510);
+	GFResizePic(28,34, 3600,394,440);
+	var close := GFButtonID(50, 50, 1209, 1210, 1);
+	GFTextLine(70,50,550,"Opusc menu.");
+	var odstepy_y := 0;
+	var l := 1;
+	var lp := 0;
+	var numer;
+        var numer2;
+
+	GFPage(1);
+ 
+
+  foreach gracze in EnumerateOnlineCharacters()
+if (GetObjProperty(gracze, "ultilotek"))
+			lp := lp +1;
+
+			
+
+      numer := GetObjProperty(gracze, "numer");
+      numer2 := GetObjProperty(gracze, "numer2");
+			if( odstepy_y > 3)
+				l:=l+1;
+				GFButtonPage(40, 70, 5540, 5542, l);
+				odstepy_y := 0;
+				GFPage(l);
+				GFButtonPage(60, 70, 5537, 5539, l-1);
+			endif
+			GFTextLine(150, 70+(odstepy_y*100), 37, lp + ". " + gracze.name);
+			GFTextLine(170, 90+(odstepy_y*100), 550,"numery: " +numer+ ", " +numer2);
+			odstepy_y := odstepy_y + 1;
+endif
+		
+	endforeach
+  var gumpik := GfSendGump(who);
+	if(gumpik[close.keyid])
+		BuildGump(who);
+	endif
+endfunction
+
+
+function pula(who)
+
+	GFInitGump(100, 20);
+	GFNoDispose();
+	GFNoClose();
+	GFPage(0);
+	GFResizePic(0,0, 2520,450,510);
+	GFResizePic(28,34, 3600,394,440);
+	var close := GFButtonID(50, 50, 1209, 1210, 1);
+	GFTextLine(70,50,550,"Opusc menu.");
+	var lp := 0;
+	
+	GFPage(1);
+ 
+   foreach gracze in EnumerateOnlineCharacters()
+           if (GetObjProperty(gracze, "ultilotek"))
+              lp := lp + 1;
+           endif
+   endforeach
+
+             var kwota := kwotapoczatkowa + (cenna*lp) + GetGlobalProperty("kumulacja");
+             SetGlobalProperty("pula", kwota);
+
+	GFTextLine(170,10,40, "Pula do wygrania");
+	GFTextLine(45,70,550,"Pula jak do tej pory wynosi: ");
+        GFTextLine(45,100,37, kwota);
+        GFTextLine(45,130,550, "PULA ZALEZY OD LICZBY ZAKUPIONYCH LOSOW");
+
+
+           var gumpik := GfSendGump(who);
+	if(gumpik[close.keyid])
+		BuildGump(who);
+	endif
+
+endfunction
+

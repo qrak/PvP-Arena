@@ -1,0 +1,95 @@
+use uo;
+use os;
+use util;
+
+include ":gumps:gumps";
+include "util/bank";
+include "include/kasa";
+
+var ile := 1000;
+
+program QuestMenu(who)
+	BuildGump(who);
+endprogram
+
+function BuildGump(who)
+	GFInitGump(80,80);
+	GFPage(0);
+	GFResizePic(0,20, 2520,510,410);
+	GFResizePic(28,54, 3600,454,340);
+	GFGumpPic(340, 70, 5547);
+	GFGumpPic(250, 100, 5551);
+	GFGumpPic(320, 150, 5569);
+	GFPage(1); // lotery
+	GFTextLine(170,30,40, "Losomat");
+  var goldtowin := GetGlobalProperty("GoldLotery");
+	if(!goldtowin)
+		SetGlobalProperty("GoldLotery", {2000000, 0, "Brak", 0});
+		goldtowin := {2000000, 0, "Brak", 0};
+	endif
+	GFTextLine(45,70,550,"Aktualnie do wygrania: " + goldtowin[1] + " sztuk zlota.");
+	GFTextLine(45,90,550,"Razem losowan: " + goldtowin[2]);
+	GFTextLine(45,110,550,"Ostatni zwyciezca: " + goldtowin[3]);
+	GFTextLine(45,130,550,"Wygral: " + goldtowin[4] + " sztuk zlota.");
+	GFTextLine(65,150,550,"losuj!");
+	GFTextLine(65,300,550,"Opusc menu.");
+	var losowanie := GFButtonId(45, 150, 1209, 1210, 1); // 
+	var quit := GFButtonID(40, 300, 1209, 1210, 1);
+	var keys := GFSendGump(who);
+	if(keys[0] == losowanie.keyid)
+		Losuj(who);
+	elseif(keys[0] == quit.keyid)
+		start_script(":GuildQuestCombat:questmenu", who);
+	endif
+endfunction
+
+function Losuj(who)
+	if(!SubtractCash(who, ile))
+		BuildGump(who);
+		return 0;
+	else
+		var goldtowin := GetGlobalProperty("GoldLotery");
+		var los := RandomIntRange(1, 10000);
+		var jakilos := RandomIntRange(1, 10000);
+		SendSysMessage(who, "Losujesz...",3,40);
+		PrintTextAbove(who, "*losuje w swiatowej loterii*", 3, 63);
+		PlaySoundEffect(who, 556);
+		sleep(2);
+		SetGlobalProperty("GoldLotery", {goldtowin[1]+1000, goldtowin[2]+1, goldtowin[3], goldtowin[4]});
+		if(los == jakilos)
+			SendSysMessage(who, "Gratulacje, wygrales! Wygrana zostaje przeniesiona do Twojej skrzyni bankowej.",3,89);
+			BroadCast(who.name + " wygral na loterii " + goldtowin[1] + " sztuk zlota!!!", 3, 89);
+			var cloak := CreateItemInBackpack(who, 0x1515);
+			cloak.color := 1645;
+			cloak.name := "plaszcz zwyciezcy loterii";
+			cloak.newbie := 1;
+			PlaySoundEffect(who, 0x161);
+			sleepms(400);
+			var bankbox := FindBankBox(who);
+			var czek := CreateItemInContainer(bankbox, 0x6261, 1);
+			SetobjProperty(czek, "Value", goldtowin[1]);
+			SetChequeName(czek);
+			SetGlobalProperty("GoldLotery", {0, goldtowin[2], who.name, goldtowin[1]});
+		elseif(los < 100)
+			SendSysMessage(who, "Wygrales drinka!",3,63);
+			CreateItemInBackpack(who, "glassofcider");
+		else
+			SendSysMessage(who, "Wylosowany numer to: "+ los + " miales miec nr: " + jakilos, 3, 40);
+			PlaySoundEffect(who, 911);
+		endif
+	endif
+	BuildGump(who);
+endfunction
+
+function RandomIntRange(mini:=0, maxi:=1)
+	if ( mini < 0 || maxi < 0 )
+		return error{"errortext":="Values must be >= 0"};
+	elseif ( maxi <= mini )
+		return error{"errortext":="Min is not < max."};
+	endif
+
+	var difference := CInt(maxi) - CInt(mini);
+	var random := RandomInt(difference);
+
+	return ( random + mini );
+endfunction

@@ -1,0 +1,98 @@
+/*
+        Created by *Edwards
+        For FantasiaShard.com
+
+        Edwards@FantasiaShard.com
+
+        2008-10-11
+*/
+use uo;
+use os;
+
+include ":newgumps:gumps_ex";
+include ":newgumps:requestgump";
+include ":timeutils:time";
+include "include/commandReport";
+//include ":jailKeeper:jailKeeper";
+include ":datafile:datafile";
+include "include/security";
+
+program textcmd_jail( mobile )
+
+        if( !AuthorizationCode( mobile ))
+                SendSysMessage( mobile, "Cancelled." );
+                return 0;
+        endif
+
+        var gump := GFCreateGump();
+
+	GFResizePic( gump, 0, 0, GFGetCfgConst( "Defaults", "BackGround" ), 310, 420 );
+	GFResizePic( gump, 15, 15, GFGetCfgConst( "Defaults", "ForeGround" ), 280, 390 );
+
+	GFTextLine( gump, 25, 20, 2100, "Player Name" );
+	GFTextLine( gump, 255, 20, 2100, "Activate" );
+
+	var names_list := GetCharactersList( mobile );
+	var num_players := names_list.Size();
+        var list_keys := names_list.Keys();
+	var counter := 0;
+	var y_pos := 45;
+
+	GFPage( gump, 1 );
+	foreach serial in ( list_keys )
+
+                var character := SystemFindObjectBySerial( serial, SYSFIND_SEARCH_OFFLINE_MOBILES );
+		GFTextLine( gump, 25, y_pos, 2100, character.name );
+		GFAddButton( gump, 261, y_pos+3, 2117, 2118, GF_CLOSE_BTN, _serial_iter );
+
+		y_pos += 20;
+		counter += 1;
+
+		if ( counter >= 18 && _serial_iter < num_players )
+			GFAddButton( gump, 283, 385, 0xA92, 0xA93, GF_PAGE_BTN, gump.cur_page+1 );
+			GFPage( gump, gump.cur_page+1 );
+			GFAddButton( gump, 283, 40, 0xA90, 0xA91, GF_PAGE_BTN, gump.cur_page-1 );
+			counter := 0;
+			y_pos := 40;
+		endif
+		SleepMS(2);
+	endforeach
+
+	var input := GFSendGump( mobile, gump );
+	input := input[0];
+
+	if( !input )
+		SendSysMessage( mobile, "Cancelled" );
+		return 0;
+	endif
+
+        var antics := SystemFindObjectBySerial( list_keys[input], SYSFIND_SEARCH_OFFLINE_MOBILES );
+        
+        SetObjProperty( antics, "Antics", ReadGameClock() + SEC_WEEK );
+        var start := start_script( ":antics:antics", { mobile } );
+        if( start.errortext )
+               SendSysMessage( mobile, "Error:: unable to start script [:antics:antics] ->"+start.errortext);
+	endif
+        
+	return 1;
+endprogram
+
+function GetCharactersList( mobile );
+
+	var the_list := dictionary; // Used to store names in ABC order
+ 	foreach acct_name in ( ListAccounts() )
+		var account := FindAccount( acct_name );
+		var i := 1;
+                while( i <= 5 )
+                       var character := account.GetCharacter(i);
+                       if( character && !GetObjProperty( character, "Antics" ))
+                              the_list.Insert( character.serial, character.name );
+                       endif
+                       i += 1;
+                       SleepMS(5);
+                endwhile
+		SleepMS(5);
+	endforeach
+
+	return the_list;
+endfunction

@@ -1,0 +1,73 @@
+// Nalot potowrow na Britanie by Fromasz
+
+use uo;
+use util;
+use os;
+
+include "include/arrays";
+
+// RandomIntRange(1391, 1601);
+// RandomIntRange(1547, 1771);
+// ksiezniczka: 1353, 1589, 72
+
+program testnpc(who)
+	var ile := SendTextEntryGump(who, "Ile potworow naruchac?",TE_CANCEL_ENABLE,TE_STYLE_NUMERICAL, 30);
+	ile := cint(ile);
+	if(!ile || ile < 0)
+		SendSysMessage(who, "Ssij!", 3, 40);
+		return 0;
+	endif
+	SetGlobalProperty("InvasionNPCs", 0);
+	var i := 10;
+	Detach();
+	repeat
+		BroadCast("Za " + i+ " minut nastapi nalot demonow na jedno z miast.",3,63);
+		i := i - 1;
+		sleep(60);
+	until(i <= 5);
+ 
+          GetGlobalProperty("#zakazwalk");
+          SetGlobalProperty("#zakazwalk", 1); //wlaczanie zakazu zabijania
+          BroadCast("Zakaz zabijania zostal wlaczaony.",3,89);
+          
+	var b := 5;
+	repeat
+		BroadCast("Za " + b + " nastapi nalot na Brytanie!! Przybywajcie!!",3,63);
+		b := b - 1;
+		sleep(60);
+	until(b <= 1);
+	
+	BroadCast("Za minute potwory zjawia sie w Brytanii! Waszym zadaniem jest zabicie ich i uwolnienie ksiezniczki. POWODZENIA!!",3,63);
+	sleep(60);
+	repeat
+		if(RandomNPCSpawn())
+			ile := ile - 1;
+		endif
+	until(ile <= 0);
+ 
+        sleep(1);
+	BroadCast("Potwory nadeszly! Ratuj sie kto moze!",3, 40);
+endprogram
+
+function RandomNPCSpawn()
+	var template := {"balron", "exodus", "icefiend", "ancientdeamon", "daemon", "largehordedeamon", "chaosdeamon"}; // tablica npcow
+  var npc_to_spawn := template[RandomInt(template.size())]; // losuje z tablicy npca
+	var x_brit_range := RandomIntRange(1391, 1601);
+	var y_brit_range := RandomIntRange(1547, 1771);
+	var created_npc := CreateNpcFromTemplate(npc_to_spawn, x_brit_range, y_brit_range, 15);
+	if(created_npc);
+		SetGlobalProperty("InvasionNPCs", GetGlobalProperty("InvasionNPCs") + 1);
+		SetObjProperty(created_npc, "InvasionNPC", 1);
+		return 1;
+	else
+		return 0;
+	endif
+endfunction
+
+function RandomIntRange(Mini, Maxi)
+	var RandomVal;
+	repeat
+		RandomVal := RandomInt(Maxi);
+	until (RandomVal > Mini && RandomVal < Maxi);
+	return RandomVal;
+endfunction

@@ -1,0 +1,29 @@
+use uo;
+
+include "include/nopvp";
+
+program antilooting( who, corpse, item )
+  var serial := cint(GetObjProperty(corpse, "serial"));
+  if( serial == who.serial )
+    return 1;	
+  elseif(GetGlobalProperty("QuestLoot") && GetObjProperty(corpse, "Quest"))
+    SendSysMessage(who, "Nie mozesz lootowac tego ciala.",3,40);
+    return 0;
+  elseif(GetObjProperty(corpse, "nopvp"))
+    SendSysMessage(who, "Nie mozesz lootowac tego ciala.",3,40);
+    return 0;
+  elseif(!CheckAttack(who, corpse))
+    SendSysMessage(who, "Nie mozesz go ograbic.",3,40);
+    return 0;
+  elseif(IsNoob(who))
+    SendSysMessage(who, "Jestes nowym graczem, nie mozesz okradac cial w tym miejscu.",3,40);
+    return 0;
+  elseif(Cint(GetObjProperty(corpse, "lata")) == 18 && FindCity(corpse) == "Minoc")
+    SendSysMessage(who, "Wstyd! Nowych graczy chcesz okradac!",3,40);
+    return 0;
+  elseif(Cint(GetObjProperty(corpse, "KTMTeam")))
+    return 0;
+  else
+    return 1;
+  endif
+endprogram

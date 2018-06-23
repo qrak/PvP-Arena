@@ -1,0 +1,31 @@
+use uo;
+use vitals;
+
+include "include/frakcja";
+include ":dm:deathmatch";
+include "include/resurrect";
+include "include/attributes";
+
+program wypierdol()
+    foreach gracz in EnumerateOnlineCharacters()
+        if(Cint(GetObjProperty(gracz, "Deathmatch")))
+            KillDMArenaPid();
+            ApplyRawDamage(gracz, 6000);
+            Resurrect(gracz);
+            DestroyDeathShroud(gracz);
+            SetMaxVitals(gracz);
+            EraseObjProperty(gracz, "Deathmatch");
+            EraseObjProperty(gracz, "#DeathmatchFrag");
+	    SetObjProperty( gracz, "#Teleported", 1 );
+            MoveObjectToLocation(gracz, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, _DEFAULT_REALM, MOVEOBJECT_FORCELOCATION);
+		EraseObjProperty( gracz, "#Teleported" );
+        endif
+    endforeach
+endprogram
+
+function KillDMArenaPid()
+    var thepid := CInt(GetObjProperty(DMStone(), "#DMPhase3PID"));
+    var process := GetProcess(thepid);
+    process.Kill();
+    EraseObjproperty(DMStone(), "#DMPhase3PID"); 
+endfunction

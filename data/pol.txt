@@ -1,0 +1,93 @@
+#
+#  Created by Version: POL098beta-2008-12-08
+#  Mobiles:		 3447
+#  Top-level Items: 18406
+#
+
+System
+{
+	CoreVersion	98
+	CoreVersionString	POL098beta-2008-12-08
+	CompileDate	Dec  8 2008
+	CompileTime	22:15:15
+	LastItemSerialNumber	1830318045
+	LastCharSerialNumber	2530228
+}
+
+GlobalProperties
+{
+	CProp	CtfStoneSerial i1829983424
+	CProp	DMStoneSerial i1828171872
+	CProp	GoldLotery a4:i4564000i2564S4:Braki0
+	CProp	IgStoneSerial i1829983721
+	CProp	InJailPersons a38:i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0i0
+	CProp	InvasionNPCs i0
+	CProp	JailPid i7393
+	CProp	LastItemSerial i1830312710
+	CProp	LastNpcSerial i313891
+	CProp	MostOnline i37
+	CProp	MysteryChestSerial a2:i29534070i1830275701
+	CProp	SpawnSystemInit i1
+	CProp	SystemTeleportersCreated i1
+	CProp	arenabandaz s20
+	CProp	arenaduzex i5412
+	CProp	arenaduzex2 i5412
+	CProp	arenaduzey i1212
+	CProp	arenaduzey2 i1222
+	CProp	arenagracz1x i5414
+	CProp	arenagracz1y i1221
+	CProp	arenagracz1z i0
+	CProp	arenagracz2x i5431
+	CProp	arenagracz2y i1204
+	CProp	arenagracz2z i0
+	CProp	arenamalex i5406
+	CProp	arenamalex2 i5406
+	CProp	arenamaley i1204
+	CProp	arenamaley2 i1214
+	CProp	arenapoczx i731
+	CProp	arenapoczy i523
+	CProp	arenapoczz i-90
+	CProp	arenared i1
+	CProp	arenaregi s70
+	CProp	arenasx i5406
+	CProp	arenasy i1159
+	CProp	arenasz i0
+	CProp	arenaturniej i1
+	CProp	arenawyx i728
+	CProp	arenawyy i512
+	CProp	arenawyz i-90
+	CProp	arenax i5414
+	CProp	arenax2 i5432
+	CProp	arenay i1204
+	CProp	arenay2 i1222
+	CProp	deletedpool a1:i1
+	CProp	gameclock s29713405
+	CProp	ilestoi i898505
+	CProp	liczba_nagrobkow i0
+	CProp	nagrobki a3:i1322i1829i0
+	CProp	news a3:S6:EventyS34:Kalendarz wydarzen (igrzyska, ctf)S33:znajdziesz na naszej stronie www!
+	CProp	nextlockid i13044
+	CProp	oldestplayerever a2:i41S6:Helard
+	CProp	orelist d5:i853d1:i164i8i855d2:i161i1i167i5i856d1:i167i7i857d3:i159i7i160i13i161i7i858d1:i160i1
+	CProp	potworktm u
+	CProp	pudlo_uruchomione i0
+	CProp	pudlo_uruchomione2 i0
+	CProp	pudlo_wiezniowie d0:
+	CProp	punktyblue i172
+	CProp	punktyred i278
+	CProp	raidsonnow a0:
+	CProp	ref i11867
+	CProp	refreshpool a1:i1793092848
+	CProp	restart i1
+	CProp	runeserial a0:
+	CProp	skrzynia i1
+	CProp	slabiak i1
+	CProp	storagestart i1137726
+	CProp	webpageGuild a256:S6:<html>S6:<head>S7:<title>S18:Neverlands' GuildsS8:</title>S7:</head>S63:<body bgcolor=#000000 link=#FF0000 vlink=#FF0000 alink=#FF0000>S44:<table border=0 cellspacing=0 cellpadding=5>S4:<tr>S4:<td>S44:<font face='Verdana' size='1' color=#FFFFFF>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#FF0000'>S44:<font face='Verdana' size='1' color='Black'>S8:<center>S3:<b>S16:Guild StatisticsS4:</b>S9:</center>S7:</font>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S44:<font face='Verdana' size='1' color='White'>S8:<guilds>S4:<br>S9:<members>S4:<br>S18:<averageguildsize>S4:<br>S15:<warriorguilds>S4:<br>S16:<merchantguilds>S4:<br>S14:<newbieguilds>S4:<br>S5:</td>S8:</table>S5:</td>S8:</table>S7:</font>S5:</td>S5:</tr>S4:<tr>S4:<td>S44:<font face='Verdana' size='1' color=#FFFFFF>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#FF0000'>S44:<font face='Verdana' size='1' color='Black'>S8:<center>S3:<b>S15:Smoke Weed [SW]S4:</b>S9:</center>S7:</font>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S28:&nbsp&nbsp<b>»</b>Members: 1S4:<br>S28:<i>Mistrz Gildii Morgoth</i>S4:<br>S44:<font face='Verdana' size='1' color='White'>S31:&nbsp&nbsp<b>»</b>Candidates: 0S4:<br>S32:&nbsp&nbsp<b>»</b>Type: WojujacaS4:<br>S32:&nbsp&nbsp<b>»</b>Faction: ChaosS4:<br>S39:&nbsp&nbsp<b>»</b>Colour: Kolor 05 z 46S4:<br>S35:&nbsp&nbsp<b>»</b>Orb: ZaawansowaneS4:<br>S114:&nbsp&nbsp<b>»</b>Website: <a href='http://uo.polhost.pl/~ultima' target='_blank'>http://uo.polhost.pl/~ultima</a>S4:<br>S5:</td>S8:</table>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S44:<font face='Verdana' size='1' color='White'>S25:&nbsp&nbsp<b>»</b>CharterS4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S1: S4:<br>S5:</td>S8:</table>S5:</td>S8:</table>S7:</font>S5:</td>S5:</tr>S4:<tr>S4:<td>S44:<font face='Verdana' size='1' color=#FFFFFF>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#FF0000'>S44:<font face='Verdana' size='1' color='Black'>S8:<center>S3:<b>S17:Terror Squad [TS]S4:</b>S9:</center>S7:</font>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S28:&nbsp&nbsp<b>»</b>Members: 8S4:<br>S11:<i>Luki</i>S4:<br>S22:<i>Vanion Korakach</i>S4:<br>S14:<i>Migotka</i>S4:<br>S21:<i>Geneve De'Wirx</i>S4:<br>S31:<i>Mistrz Gildii Tigagakash</i>S4:<br>S13:<i>Riviel</i>S4:<br>S14:<i>Grunghi</i>S4:<br>S12:<i>HashI</i>S4:<br>S44:<font face='Verdana' size='1' color='White'>S31:&nbsp&nbsp<b>»</b>Candidates: 0S4:<br>S32:&nbsp&nbsp<b>»</b>Type: WojujacaS4:<br>S32:&nbsp&nbsp<b>»</b>Faction: ChaosS4:<br>S39:&nbsp&nbsp<b>»</b>Colour: Kolor 45 z 46S4:<br>S32:&nbsp&nbsp<b>»</b>Orb: WojownicyS4:<br>S114:&nbsp&nbsp<b>»</b>Website: <a href='http://uo.polhost.pl/~ultima' target='_blank'>http://uo.polhost.pl/~ultima</a>S4:<br>S5:</td>S8:</table>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S44:<font face='Verdana' size='1' color='White'>S25:&nbsp&nbsp<b>»</b>CharterS4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S5:</td>S8:</table>S5:</td>S8:</table>S7:</font>S5:</td>S5:</tr>S4:<tr>S4:<td>S44:<font face='Verdana' size='1' color=#FFFFFF>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#FF0000'>S44:<font face='Verdana' size='1' color='Black'>S8:<center>S3:<b>S29:Naznaczeni Przez Kwidzyn [PC]S4:</b>S9:</center>S7:</font>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S28:&nbsp&nbsp<b>»</b>Members: 5S4:<br>S12:<i>Saber</i>S4:<br>S13:<i>Bijacz</i>S4:<br>S27:<i>Mistrz Gildii Fyodor</i>S4:<br>S13:<i>Mentor</i>S4:<br>S13:<i>Peliar</i>S4:<br>S44:<font face='Verdana' size='1' color='White'>S31:&nbsp&nbsp<b>»</b>Candidates: 0S4:<br>S32:&nbsp&nbsp<b>»</b>Type: WojujacaS4:<br>S32:&nbsp&nbsp<b>»</b>Faction: ChaosS4:<br>S39:&nbsp&nbsp<b>»</b>Colour: Kolor 21 z 46S4:<br>S35:&nbsp&nbsp<b>»</b>Orb: PoszukiwaczeS4:<br>S114:&nbsp&nbsp<b>»</b>Website: <a href='http://uo.polhost.pl/~ultima' target='_blank'>http://uo.polhost.pl/~ultima</a>S4:<br>S5:</td>S8:</table>S57:<table border=0 cellspacing=1 cellpadding=1% width='350'>S22:<td bgcolor='#000000'>S44:<font face='Verdana' size='1' color='White'>S25:&nbsp&nbsp<b>»</b>CharterS4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S0:S4:<br>S5:</td>S8:</table>S5:</td>S8:</table>S7:</font>S5:</td>S5:</tr>S8:</table>S7:</body>S7:</html>
+	CProp	webpageGuildMembers i14
+	CProp	webpageGuildMerchants i0
+	CProp	webpageGuildNewbies i0
+	CProp	webpageGuildWarriors i3
+	CProp	wwwpass stwojstary8
+}
+

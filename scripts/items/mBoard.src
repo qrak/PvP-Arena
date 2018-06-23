@@ -1,0 +1,178 @@
+// crash
+
+use os;
+use npc;
+use polsys;
+use basic;
+use uo;
+use math;
+
+include "include/clock";
+include ":gumps:gumps";
+
+var topicos;
+
+program messageboard( character, quadro )
+
+    if (Distance(character, quadro) > 2)
+        SendSysMessage(character, "Musisz podejsc blizej zeby czytac ogloszenia z tablicy.");
+        return;
+    endif
+
+    GFInitGump( 80, 20 );
+    var newmsg := GFButtonID( 20, 175, 0x1b6b, 0x1b6b, 1 );
+    GFGumpPic( 0, 0, 0x087a );
+    GFTextMid(240, 37, 0, 50, "Tablica ogloszen" );
+
+    topicos := GetObjPropertyNames( quadro );
+    var i := 1;
+    var pulalinha := 0;
+    var botoes := {};
+    topicos := Reverter(topicos);
+
+    foreach topico in topicos
+        if ( i <= 10 )
+            botoes[i] := GFButtonID( 110, 160+pulalinha, 0x1523, 0x1523, 1 );
+            var temp := GetObjProperty(quadro, topico);
+            if (!temp[1])
+                temp[1] := "Bez tematu!";
+            endif
+            GFTextCrop( 130, 158+pulalinha, 240, 20, 50,  temp[1]);
+            i := i + 1;
+            pulalinha := pulalinha + 15;
+        else
+            EraseObjProperty(quadro, topico);
+        endif
+    endforeach
+    if (!topicos.size())
+        GFTextCrop( 130, 158, 240, 20, 50,  "Brak tematu.");
+    endif
+
+    var resultado := GFSendGump( character );
+    if (resultado[0] == newmsg.keyid)
+        Postarmsg(character, quadro);
+    else
+        var index := 1;
+        foreach botao in botoes
+            if ( resultado[0] == botao.keyID)
+                LerMsg(character, quadro, index);
+            endif
+            index := index+1;
+        endforeach
+    endif
+endprogram
+
+function LerMsg(character, quadro, index)
+    var data := GetObjProperty(quadro, topicos[index]);
+    GFInitGump( 80, 0 );
+    GFResizePic( 0, 0, 0x9d8, 400, 330 );
+
+    GFTextLine( 30, 50, 0, "Autor:" );
+    GFTextCrop( 80, 50, 240, 20, 50,  data[5]);
+
+    GFTextLine( 30, 65, 0, "Data:" );
+    var diasatras := ReadGameClock()/(GetDayLength()*60)-data[3];
+    var complemento;
+    case(diasatras)
+        0: complemento := "umieszczony dzis";
+        1: complemento := "umieszczony wczoraj";
+        default: complemento := "umieszczony "+diasatras+" dni temu";
+    endcase
+    GFTextCrop( 80, 65, 240, 20, 50,  data[2]+", "+complemento);
+
+    GFGumpPic( 30, 90, 0x082b );
+    GFGumpPic( 155, 90, 0x082b );
+
+    var i := 0;
+    foreach linha in (data[4])
+        GFTextCrop( 30, 100+i, 330, 20, 0, linha );
+        i := i + 15;
+    endforeach
+
+    var remover := GFButtonID( 300, 305, 0x885, 0x885, 1 );
+    var reply := GFButtonID( 35, 305, 0x884, 0x884, 1 );
+    var resultado := GFSendGump( character );
+    if (resultado[0] == remover.KeyID)
+        if((diasatras > 10)||(data[5] == character.name))
+            EraseObjProperty(quadro, topicos[index]);
+            SendSysMessage(character, "Usunieto wiadomosc!");
+        else
+            SendSysMessage(character, "Wiadomosc musi miec conajmniej dziesiec dni zeby ja usunac.");
+        endif
+    elseif(resultado[0] == reply.KeyID)
+        Replymsg(character, data[5]);
+    endif
+
+endfunction
+
+function Postarmsg(character, quadro);
+    GFInitGump( 80, 20 );
+    GFResizePic( 0, 0, 0x9d8, 400, 300 );
+    GFGumpPic( 150, 15, 0x0883 );
+    GFTextLine( 30, 50, 0, "Temat:" );
+    var subject := GFTextEntry( 90, 50, 270, 20, 50, "Temat" );
+    GFGumpPic( 30, 70, 0x082b );
+    GFGumpPic( 155, 70, 0x082b );
+    var post := GFButtonID( 320, 275, 0x0886, 0x0886, 1);
+    var conteudo := {};
+    var i2 := 1;
+    var i;
+    for (i:=0; i<170; i:=i+15)
+        var temp;
+        temp := GFTextEntry( 30, 80+i, 330, 20, 0);
+        conteudo[i2] := temp.KeyID;
+        i2 := i2+1;
+    endfor
+    var resultado := GFSendGump( character );
+    var texto := {};
+    i := 1;
+    foreach key in conteudo
+        var temp := resultado[key];
+        temp := temp[6, len(temp)];
+        if (temp != error)
+            texto[i] := temp;
+            i := i+1;
+        endif
+    endforeach
+    subject := resultado[subject.KeyID];
+    subject := subject[6, len(subject)];
+    if (resultado[0] == post.KeyID)
+        var topico := {};
+        topico[1] := subject;
+        topico[2] := GetTimeofDay();
+        topico[3] := ReadGameClock()/(GetDayLength()*60);
+        topico[4] := texto;
+        topico[5] := character.name;
+        set_critical(1);
+        SetObjProperty(quadro, CStr(ReadGameClock()), topico);
+        set_critical(0);
+        SendSysMessage(character, "Umieszczono wiadomosc.");
+    else
+        SendSysMessage(character, "Anulowano.");
+    endif
+endfunction
+
+function Replymsg(byref character, nome)
+
+    foreach onlinechr in EnumerateOnlineCharacters()
+        if (onlinechr.name == nome)
+            var themessage := RequestInput(character, character.backpack, "Jaka wiadomosc chcesz wyslac do " + onlinechr.name + "?");
+            if (!themessage)
+                SendSysMessage(character, "Anulowano.");
+                return;
+            endif
+            SendSysMessage(onlinechr, character.name + " odpowiedzial na wiadomosc: " + themessage);
+            return;
+        endif
+    endforeach
+    SendSysMessage(character, "Autora wiadomosci nie ma teraz w swiecie.");
+
+endfunction
+
+function Reverter( byref oldarray )
+    var newarray := array;
+    foreach item in oldarray
+        newarray.insert( 1, item );
+    endforeach
+    return newarray;
+endfunction

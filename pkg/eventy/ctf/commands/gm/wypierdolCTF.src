@@ -1,0 +1,46 @@
+use math;
+use basic;
+use uo;
+use os;
+
+include "include/frakcja";
+
+program wypierdol(who)
+
+while (1)
+var pojeb := Target(who);
+
+if(!pojeb)
+SendSysMessage(who, "Naucz sie celowac debilu!");
+return;
+endif
+
+if(GetObjProperty(pojeb, "CtfTeam"))
+EraseObjProperty(pojeb, "CtfTeam");
+
+
+ if(GetObjProperty(pojeb, "wasred"))
+pojeb.murderer := 1;
+EraseObjProperty(pojeb, "wasred");
+ else
+pojeb.murderer := 0;
+pojeb.criminal := 0;
+ endif
+endif
+
+EraseObjProperty(pojeb, "CtfStuff");
+
+
+
+SendSysMessage(pojeb, "Zostales przeniesiony do swojego miasta. Jezeli trwaja igrzyska to oznacza to ze zostales z nich wyrzucony.",3,40);
+pojeb.setCriminal(0);
+
+
+SetObjProperty( pojeb, "#Teleported", 1 );
+MoveObjectToLocation( pojeb, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, pojeb.realm, MOVEOBJECT_FORCELOCATION );
+EraseObjProperty( pojeb, "#Teleported" );
+start_script(":igrzyska:end/rozbierz", pojeb);
+
+endwhile
+
+endprogram

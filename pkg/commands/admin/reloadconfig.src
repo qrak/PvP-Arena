@@ -1,0 +1,8 @@
+use uo;
+use polsys;
+
+program reload(who)
+   if(ReloadConfiguration())
+	    SendSysMessage(who, "Przeladowano konfiguracje.");
+   endif
+endprogram

@@ -1,0 +1,13 @@
+use os;
+use uo;
+
+include "include/yesNo";
+
+program turniejportal(who)
+	if(!yesNo(who, "Czy chcesz wejsc na KTM?"))
+		return 0;
+	endif
+	MoveObjectToLocation(who, 5729, 1148, 0 );
+	SetObjProperty(who, "KTMTeam", 1);
+	SendSysMessage(who, "Znalazles sie na Turnieju Kill The Monster. Czekaj na dalsze instrukcje!",3,68);
+endprogram

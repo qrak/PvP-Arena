@@ -1,0 +1,68 @@
+/*
+  Name:    Single Click Hook v1.0
+  Author:  Developer Beaud
+  Email:   developerbeaud@gmail.com
+  096 core is required.
+*/
+
+use uo;
+use os;
+use cfgfile;
+use polsys;
+
+const OFFSET_LEN := 1;
+const OFFSET_SERIAL := 3;
+const OFFSET_MODEL := 7;
+const OFFSET_TYPE := 9;
+const OFFSET_TEXTCOLOR := 10;
+const OFFSET_FONT := 12;
+const OFFSET_NAME := 14;
+
+const PKTCMD := 0x1C;
+const DEFAULT_TEXT_COLOR := 0x00;
+const TEXT_FONT := 0x03;
+const TEXT_TYPE := 0x00;
+
+program SingleClickHook()
+	Print("Hooking Single Click Packet 0x09");
+	return 1;
+endprogram
+
+exported function SendSpeechPacket( character, byref packet )
+  var serial := packet.GetInt32(1);
+  var objserial;
+  if(serial)
+  	objserial := SystemFindObjectBySerial(serial);
+  endif
+  var objdesc;
+  if(objserial.IsA(POLCLASS_ITEM))
+	 objdesc := objserial.desc;
+	else
+	 objdesc := objserial.name;
+	endif
+	var objtype := objserial.objtype;
+	
+  var outpkt := CreatePacket(PKTCMD, MSGLEN_VARIABLE);
+	outpkt.SetInt16(OFFSET_LEN, outpkt.GetSize());
+	outpkt.setint32(OFFSET_SERIAL, serial);
+	outpkt.setint16(OFFSET_MODEL, objtype);
+	outpkt.setint8(OFFSET_TYPE, TEXT_TYPE);
+	outpkt.setint16(OFFSET_TEXTCOLOR, DEFAULT_TEXT_COLOR);
+	outpkt.setint16(OFFSET_FONT, TEXT_FONT);
+	var namelen := len(objdesc);
+	var nullint := (30 - namelen);
+	var null := 0;
+	var i;
+	var NEWOFFSET := 14 + namelen;
+	    
+	for(i:=1;i<=nullint;i:=i+1)
+	  outpkt.setint8(NEWOFFSET+i, null);
+	endfor
+	
+	var FINALOFFSET := NEWOFFSET + nullint;
+	outpkt.setstring(FINALOFFSET, objdesc, 1);
+	outpkt.SetInt16(1, outpkt.GetSize());
+	outpkt.sendpacket(character);
+	return 1;
+	
+endfunction

@@ -1,0 +1,104 @@
+// qrak
+
+use attributes;
+use vitals;
+use uo;
+
+include "include/attributes";
+include "include/skillpoints";
+include "include/random";
+
+program meditate (character)
+	if(character.poisoned)
+		SendSysMessage(character, "Nie mozesz medytowac bedac zatrutym.",3,33);
+		return 0;
+	endif
+	EraseObjProperty(character, "HealTimer");
+	Detach();
+	SetObjProperty (character, "#useskill", GetPid());
+	if (GetVital (character, "mana") >= GetVitalMaximumValue (character, "mana"))
+		SendSysMessage (character, "Masz pelne zasoby many.", FONT_NORMAL, COLOR_GREEN);
+		EraseObjProperty (character, "#useskill");
+		return;
+	endif
+	var hp := GetVital (character, "Life");
+	var x := character.x;
+	var y := character.y;
+	var mana := GetVital (character, "mana");
+	var medit := Cint(GetEffectiveSkill(character, SKILLID_MEDITATION));
+	SendSysMessage (character, "Zaczynasz medytowac...", FONT_NORMAL, 90);
+	SetObjProperty (character, "IsMeditating", 1);
+	PlaySoundEffect (character, 0xf8);
+	sleep (2);
+	if (character.x != x or character.y !=y or GetVital (character, "Life") < hp or GetVital (character, "mana") >= GetVitalMaximumValue (character, "mana") or (GetVital (character, "mana") < mana) )
+		SendSysMessage (character, "Straciles koncentracje.", FONT_NORMAL, 40);
+		PlaySoundEffect (character, 0xf6);
+		EraseObjProperty (character, "#useskill");
+		return 0;
+	endif
+	if(Cint(!GetObjProperty(character, "IsMeditating")))
+		SendSysMessage (character, "Straciles koncentracje.", FONT_NORMAL, 40);
+		PlaySoundEffect (character, 0xf6);
+		EraseObjProperty (character, "#useskill");
+		return 0;
+	endif
+	if (CheckSkill (character, SKILLID_MEDITATION, 0, medit) )
+		if( manaloss(character) != "nomed" )
+			SetVital (character, "Mana", GetVital (character, "Mana") + 180+(medit*5)-manaloss(character));
+		else
+			SendSysMessage (character, "Nie mozesz w tym medytowac.", FONT_NORMAL, COLOR_RED);
+			EraseObjProperty (character, "#useskill");
+			return 0;
+		endif
+		if (GetVital (character, "Mana") > GetVitalMaximumValue (character, "Mana"))
+			SetVital (character, "Mana", GetVital (character, "Mana"));
+			SendSysMessage (character, "Zakonczyles medytacje.", FONT_NORMAL, COLOR_GREEN);
+			PlaySoundEffect (character, 0xf6);
+			EraseObjProperty (character, "#useskill");
+			return 0;
+		endif
+		PlaySoundEffect (character, 0xfa);
+		PrintTextAbove(character, "*medytuje*", FONT_NORMAL, COLOR_GREEN);
+		AwardStatPoints( character, 46 );
+		repeat
+			if(manaloss(character) != "nomed")
+				SetVital (character, "Mana", (GetVital(character, "Mana") + 180 + (medit*5)) - manaloss(character));
+			else
+				SendSysMessage (character, "Nie mozesz w tym medytowac.", FONT_NORMAL, COLOR_RED);
+				EraseObjProperty (character, "#useskill");
+				return 0;
+			endif
+			if (GetVital (character, "Mana") >= GetVitalMaximumValue (character, "Mana"))
+				SetVital (character, "Mana", GetVital (character, "Mana"));
+				SendSysMessage (character, "Zakonczyles medytacje.", FONT_NORMAL, COLOR_GREEN);
+				PlaySoundEffect (character, 0xf6);
+				EraseObjProperty (character, "#useskill");
+				return;
+			endif
+			sleepms (300);
+		until (character.x != x or character.y !=y or GetVital (character, "Life") < hp or Cint(!GetObjProperty(character, "IsMeditating")));
+		if (GetVital (character, "Mana") > GetVitalMaximumValue (character, "Mana"))
+			SetVital (character, "Mana", GetVital (character, "Mana"));
+		endif
+		SendSysMessage (character, "Straciles koncentracje.", FONT_NORMAL, 40);
+		PlaySoundEffect (character, 0xf6);
+	else
+		SendSysMessage (character, "Nie jestes w stanie sie skupic.", FONT_NORMAL, 40);
+	endif
+	EraseObjProperty (character, "#useskill");
+endprogram
+
+function manaloss(character)
+	var combatcfg := ReadConfigFile(":*:itemdesc");
+	var loss := 0;
+	var newloss := 0;
+	foreach thing in ListEquippedItems(character)
+		newloss := combatcfg[thing.objtype]."manaregen";
+		if(newloss == "nomed")
+			return newloss;
+		else
+			loss := loss + Cint(newloss);
+		endif
+	endforeach
+	return loss;
+endfunction

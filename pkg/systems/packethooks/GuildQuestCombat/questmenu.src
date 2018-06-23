@@ -1,0 +1,43 @@
+use uo;
+use os;
+
+include ":gumps:gumps";
+
+program QuestMenu(who)
+	GFInitGump(80,80);
+	GFPage(0);
+	GFResizePic(0,20, 2520,510,410);
+	GFResizePic(28,54, 3600,454,340);
+	GFGumpPic(340, 70, 5547);
+	GFGumpPic(250, 100, 5551);
+	GFGumpPic(320, 150, 5569);
+	GFPage(1); // lotery
+	GFTextLine(170,30,40, "Menu Podreczne");
+  GFTextLine(45,70,550,"Zakladka Statystyk");
+  GFTextLine(45,90,550,"Zakladka Loterii");
+	GFTextLine(45,110,550,"Zakladka Wierzchowcow");
+	GFTextLine(45,150,550,"Zmien haslo na konto");
+	GFTextLine(45,170,550,"Zmien e-mail na konto");
+	GFTextLine(45,190,550,"Otworz forum PvP Areny");
+  var stats := GFButtonID(200, 70, 1209, 1210, 1); // 
+  var lotery := GFButtonID(200, 90, 1209, 1210, 1);
+	var mounty := GFButtonID(200, 110, 1209, 1210, 1);
+	var password := GFButtonID(200, 150, 1209, 1210, 1);
+	var email := GFButtonID(200, 170, 1209, 1210, 1);
+	var www := GFButtonID(200, 190, 1209, 1210, 1);
+	
+	var keys := GFSendGump(who);
+  if(keys[0] == stats.keyid)
+		start_script(":kamienstat:kamienstat", who);
+	elseif(keys[0] == lotery.keyid)
+		start_script(":GuildQuestCombat:loterymenu", who);
+	elseif(keys[0] == mounty.keyid)
+		start_script(":commands:player/mount", who);
+	elseif(keys[0] == password.keyid)
+		start_script(":commands:player/haslo", who);
+	elseif(keys[0] == email.keyid)
+		start_script(":commands:player/email", who);
+	elseif(keys[0] == www.keyid)
+		OpenURL(who, "www.arenapvp.fora.pl");
+	endif
+endprogram

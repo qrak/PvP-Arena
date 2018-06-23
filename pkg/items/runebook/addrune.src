@@ -1,0 +1,145 @@
+// crash
+
+use os;
+use npc;
+use basic;
+use math;
+use uo;
+
+include "include/canAccess";
+
+program dodanie(who, tool);
+  if(!can_access(who, tool))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac.", 3, 40);
+    return 0;
+  endif
+  if(tool.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return 0;
+  endif
+  if(!ReserveItem(tool))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return 0;
+  endif
+  SendSysMessage(who, "Wskaz runa, z ktorego informacje chcesz wpisac do ksiegi.", 3, 63 );
+  var run := Target(who);
+  if (!run)
+    SendSysMessage(who, "Anulowano.", 3, 40 );
+    return 0;
+  endif
+  if(Distance(who, run) > 2)
+    SendSysMessage(who, "Za daleko.", 3, 40);
+    return 0;
+  endif
+  if(!ReserveItem(run))
+    return 0;
+  endif
+  if(!Accessible(who, run))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac.", 3, 40);
+    return 0;
+  endif
+  if(run.movable == 0)
+    SendSysMessage(who, "Nie mozesz uzyc tego runa.", 3, 40);
+    return 0;
+  endif
+  if(GetObjProperty(run, "x") == error)
+    SendSysMessage(who, "Musisz wskazac zaznaczona rune przywolania.", 3, 40);
+    return 0;
+  endif
+  SendSysMessage(who, "Wskaz ksiege run.", 3, 63 );
+  var book := Target(who);
+  if (!book)
+    SendSysMessage(who, "Anulowano.", 3, 40 );
+    return 0;
+  endif
+  if(Distance(who, book) > 2)
+    SendSysMessage(who, "Za daleko.", 3, 40);
+    return 0;
+  endif
+  if(!ReserveItem(book))
+    return 0;
+  endif
+  if(!Accessible(who, book))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac.", 3, 40);
+    return 0;
+  endif
+  if(book.graphic != 0xE3B)
+    SendSysMessage(who, "To nie jest ksiega run.", 3, 40);
+    return;
+  endif
+  if(book.movable == 0)
+    SendSysMessage(who, "Nie mozesz wpisywac niczego do tej ksiegi.", 3, 40);
+    return;
+  endif
+  if(AddRune(who, book, run))
+    PlaySoundEffect(who, 0x24a);
+    SendSysMessage(who, "Zapisales informacje z runa do ksiegi.", 3, 62);
+  endif
+endprogram
+
+function AddRune(who, book, rune)
+  var runedefs := GetObjProperty(book, "runedefs");
+  var pojemnosc := CInt(GetObjProperty(book, "maxcharges"));
+  if(!runedefs)
+    runedefs := {};
+  endif
+  if(!pojemnosc)
+    pojemnosc := 10;
+  endif
+  if(len(runedefs) > pojemnosc)
+    SendSysMessage(who,"Ta ksiega nie zmiesci juz ani jednego zapisu runa.", 3, 40);
+    MoveItemToContainer(rune, who.backpack);
+    return 0;
+  endif
+  if(!ReserveItem(rune))
+    SendSysMessage(who,"Anulowano.", 3, 40);
+    MoveItemToContainer(rune, who.backpack);
+    return 0;
+  endif
+  if(!GetObjProperty(rune, "x"))
+    SendSysMessage(who,"Do ksiegi mozesz wpisywac tylko informacje z zaznaczonych run.", 3, 40);
+    MoveItemToContainer(rune, who.backpack);
+    return 0;
+  endif
+  set_critical(1);
+  var x := GetObjProperty(rune, "x");
+  var y := GetObjProperty(rune, "y");
+  var z := GetObjProperty(rune, "z");
+  var rname := rune.desc - "runa do";
+  var new_rune_struct := { rname, x, y, z };
+  if(!runedefs)
+    var new_runedefs := {new_rune_struct};
+    SetObjProperty(book, "runedefs", new_runedefs);
+  elseif(runedefs.size() == 32)
+    SendSysMessage(who, "Ta ksiega jest pelna.", 3, 40);
+    MoveItemToContainer(rune, who.backpack);
+    return;
+  else
+    runedefs.append(new_rune_struct);
+    SetObjProperty(book, "runedefs", runedefs);
+  endif
+  SendSysMessage(who, "Dodales informacje z runa do ksiegi.", 3, 63);
+  DestroyItem(rune);
+  set_critical(0);
+endfunction
+
+function UpdateName(runebook, maxcharges)
+  var name := GetObjProperty(runebook, "name");
+  var rodzaj;
+  case(runebook.objtype)
+	0x6098: rodzaj := "recall";
+	0x6099: rodzaj := "gate";
+  endcase
+  if(!name)
+    name := "ksiega runow " + rodzaj;
+  endif
+  var info;
+  if(maxcharges == 1)
+	info := maxcharges + " miejsce";
+  elseif(maxcharges > 1 and maxcharges < 1)
+	info := maxcharges + " miejsca";
+  elseif(maxcharges >= 5)
+	info := maxcharges + " miejsc";
+  endif
+  runebook.name := "ksiega runow " +rodzaj+ " - " + name + " [" + info + "]";
+endfunction 

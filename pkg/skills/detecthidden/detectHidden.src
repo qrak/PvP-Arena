@@ -1,0 +1,61 @@
+use uo;
+use os;
+use basic;
+use cfgfile;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+include "include/random";
+var item_cfg := ReadConfigFile( ":*:itemdesc" );;
+
+const TRAP   := "hiddentrap";
+const POINTS := 200;
+
+program detect_hidden( who )
+
+
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_DETECTINGHIDDEN));
+		
+	var range  := CInt( GetBaseDexterity(who) / 15 );
+
+	var hiders := ListMobilesNearLocationEx( who.x, who.y, who.z, range, LISTEX_FLAG_HIDDEN );
+	var count  := 0;
+
+
+	foreach mobile in hiders
+		if( mobile.hidden && mobile.serial != who.serial )
+			if( Found( who, mobile ) )
+				mobile.hidden := 0;
+				count := count + 1;
+				PrintTextAbovePrivate( mobile, "Zostales odkryty!", mobile, 3, 40 );
+				PrintTextAbovePrivate( mobile, "Znalazles kogos!", who, 3, 63 );
+			endif
+		endif
+	endforeach
+
+	if( !count )
+		SendSysMessage( who, "Niczego nie znalazles.", 3, 40 );
+	endif
+
+endprogram
+
+
+function Found( finder, hider )
+
+	var finder_skill := GetBaseDexterity( finder );
+	var hider_skill  := GetBaseDexterity( hider );
+
+
+	var chance := finder_skill - CInt( hider_skill / 2 );
+	if( RandomDiceStr( "1d100" ) < chance )
+		return 1;
+	else
+		return 0;
+	endif
+
+endfunction

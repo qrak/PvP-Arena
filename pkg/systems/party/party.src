@@ -1,0 +1,7 @@
+use uo;
+
+exported function OnLootPermChange(who)
+
+
+
+endfunction

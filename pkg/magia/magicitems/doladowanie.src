@@ -1,0 +1,60 @@
+use basic;
+use uo;
+
+include "include/yesNo";
+include "include/canAccess";
+
+program doladuj(who, the_item)
+
+if(!can_access(who, the_item))
+    return 0;
+  endif 
+
+
+SendSysMessage(who, "Wybierz przedmiot.", 3, 67);
+
+var cel := Target(who);
+
+if(!cel)
+SendSysMessage(who, "Anulowano.", 3, 40);
+return 0;
+endif
+
+if(cel == the_item)
+SendSysMessage(who, "Nie mozesz tego zrobic.", 3, 40);
+return 0;
+endif
+
+if(Cint(!GetObjProperty(cel, "magik")))
+SendSysMessage(who, "Musisz wybrac przedmiot magiczny aby go doladowac.", 3, 40);
+return 0;
+endif
+
+if(cel.container != who.backpack)
+SendSysMessage(who, "Musisz miec przedmiot w plecaku.", 3, 40);
+return 0;
+endif
+
+var ladunki := GetObjProperty(cel, "ladunki");
+
+if(ladunki[1] == ladunki[2])
+SendSysMessage(who, "Ten przedmiot ma pelna moc.", 3, 40);
+return 0;
+endif
+
+if(!can_access(who, cel))
+    return 0;
+  endif 
+  
+if(yesNo(who, "Czy chcesz doladowac ten przedmiot? Ladunki/Max Ladunki: " + ladunki[1] + "/" + ladunki[2] + ""))
+PlaySoundEffect(who, 0x3BE);
+
+SetObjProperty(cel, "ladunki", {ladunki[1] := ladunki[2], ladunki[2]} );
+SendSysMessage(who, "Doladowales magiczny przedmiot.", 3, 67);
+SubtractAmount(the_item, 1);
+else
+SendSysMessage(who, "Anulowano.", 3, 40);
+return 0;
+endif
+
+endprogram

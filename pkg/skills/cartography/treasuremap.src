@@ -1,0 +1,49 @@
+use uo;
+use util;
+use cfgfile;
+
+include ":gumps:gumps";
+
+program usemap(who, item)
+	SetTreasureCoords( who, item );
+endprogram
+
+function SetTreasureCoords( who, map )
+	if(GetObjProperty( map, "ChestX"))
+		ShowMapGump(who, map);
+		return 0;
+	endif
+  var cfgfile := ReadConfigFile( "treasure" );
+  var num := GetConfigMaxIntKey( cfgfile );
+  var pick := (RandomInt( num ) + 1);
+  var elem := FindConfigElem( cfgfile, pick );
+  var x := GetConfigInt( elem, "X" );
+  var y := GetConfigInt( elem, "Y" );
+  var z := GetConfigInt( elem, "Z" );
+  SetObjProperty( map, "ChestX", x );
+  SetObjProperty( map, "ChestY", y );
+  SetObjProperty( map, "ChestZ", z );
+	var chest := CreateItemAtLocation(Cint(GetObjProperty(map, "ChestX")), Cint(GetObjProperty(map, "ChestY")), GetWorldHeight(x, y), 0x9B2, 1, _DEFAULT_REALM);
+	SetObjProperty( map, "ChestSerial", chest.serial );
+	SetObjProperty( chest, "level", GetObjProperty( map, "level"));
+	chest.movable := 0;
+	ShowMapGump(who, map);
+endfunction
+
+function ShowMapGump(who, map)
+	var x := Cint(GetObjProperty(map, "ChestX"));
+	var y := Cint(GetObjProperty(map, "ChestY"));
+	GFInitGump(80,80);
+	GFPage(0);
+	GFResizePic(40,40, 2520,400,200);
+	GFTextLine(65,80,550,"Na rozwijanym papierze ukazuje ci sie mapa");
+	GFTextLine(65,100,550,"z zapisanymi kordynatami X: " + x + " Y: " + y);
+	var skrzynia := SystemFindObjectBySerial( Cint(GetObjProperty( map, "ChestSerial")));
+	SendQuestArrow( who, x, y);
+	if(Cint(GetObjProperty( skrzynia, "Oppened")))
+		GFTextLine(65,120,550,"lecz ta mapa wyglada na zuzyta.");
+		SendQuestArrow(who);
+	endif
+
+	GFSendGump(who);
+endfunction

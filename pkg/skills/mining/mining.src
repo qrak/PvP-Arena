@@ -1,0 +1,142 @@
+// MINING ver 2.0
+// autor: qrak
+
+use uo;
+use os;
+use util;
+
+include "mfunctions";
+include "include/attributes";
+include "include/skillpoints";
+include "include/random";
+include "include/psucie";
+include "include/landtiles";
+
+program mining(who, kilof)
+	// OBSLUGA BLEDOW
+	if(!ReserveItem(kilof))
+		SendSysMessage(who, "Ktos juz tego uzywa.",3,40);
+		return 0;
+	endif
+	if(kilof.movable == 0)
+		SendSysMessage(who, "Nie mozesz tego uzyc.",3,40);
+		return 0;
+	endif
+	if(Distance(who, kilof) > 1)
+		SendSysMessage(who, "Przedmiot jest za daleko.",3,40);    
+		return 0;
+	endif
+	if(!CheckIfMounted(who))
+		SendSysMessage(who,"Nie mozesz kopac siedzac na zwierzeciu.", 3, 40);
+		return 0;
+	endif
+	if(!IsToolEquipped(who, kilof))
+		SendSysMessage(who, "Wez narzedzie do reki.", 3, 40);            
+		return 0;
+	endif
+	SendSysMessage(who, "Wybierz miejsce do kopania.",3,63);
+	var dig_here := TargetCoordinates(who);
+	if(!dig_here)
+		return 0;
+	endif
+	if(!CheckLosAt(who, dig_here.x, dig_here.y, dig_here.z))
+		SendSysMessage(who, "Nie widzisz tego.", 3, 40);
+		return 0;
+	endif
+	if(CoordinateDistance(who.x, who.y, dig_here.x, dig_here.y) > MAX_DIG_DISTANCE)
+		SendSysMessage(who, "Za daleko.", 3, 40);    
+		return 0;
+	endif
+	var mapinfo := GetMapInfo(dig_here.x, dig_here.y);
+	if(!IsMinable(mapinfo.landtile, dig_here.objtype))
+		SendSysMessage(who, "Nie mozesz tutaj kopac.", 3, 40);    
+		return 0;
+	endif
+	var checker := 0;
+	var petla := 0;
+	var loops := 4;
+	var fastwork := Cint(GetObjProperty(kilof,"FasterWork"));
+	if(fastwork)
+		loops := 2;
+	endif
+	var startx := who.x;
+	var starty := who.y;    
+	repeat
+		for(petla := 1; petla < loops; petla := petla + 1);
+			PerformAction(who, DIG_ANIMATION);
+			PlaySoundEffect(who, DIG_SOUND);
+			who.hidden := 0;
+			sleepms(1800);
+			if(startx != who.x || starty != who.y)
+				SendSysMessage(who, "Przestales kopac.", 3, 40);
+				return 0;
+			endif
+		endfor
+		checker := HarvestOre(who, dig_here, mapinfo, kilof);
+		SubtractHP(who, kilof);
+		if(kilof.hp == 0)
+			DestroyItem(kilof);
+		endif
+	until(checker == 1 || who.dead);
+endprogram
+
+function HarvestOre(who, dig_here, mapinfo, kilof)
+	if(CoordinateDistance(who.x, who.y, dig_here.x, dig_here.y) > MAX_DIG_DISTANCE)
+		SendSysMessage(who, "Za daleko.", 3, 40);    
+		return 1;
+	endif
+	var oretypes := RandomInt(14)+1;
+	var strength := GetBaseStrength(who);
+	var trudnosc := 0;
+	var typ := 0;
+	var nazwa := "";
+	case(oretypes)
+		1:  trudnosc := -1;   typ := 0x6300;   nazwa := "zelaza";
+		2:  trudnosc := 60;   typ := 0x6301;   nazwa := "matowej miedzi";
+		3:  trudnosc := 61;   typ := 0x6302;   nazwa := "kalcytu";
+		4:  trudnosc := 62;   typ := 0x6303;   nazwa := "miedzi";
+		5:  trudnosc := 63;   typ := 0x6304;   nazwa := "brazu";
+		6:  trudnosc := 64;   typ := 0x63c9;   nazwa := "srebra";
+		7:  trudnosc := 65;   typ := 0x6305;   nazwa := "zlota";
+		8:  trudnosc := 70;   typ := 0x6306;   nazwa := "agapitu";
+		9:  trudnosc := 75;   typ := 0x6307;   nazwa := "veritu";
+		10: trudnosc := 85;   typ := 0x6308;   nazwa := "valoritu";
+		11: trudnosc := 95;   typ := 0x63a9;   nazwa := "magnetytu";
+		12: trudnosc := 105;   typ := 0x63b9;   nazwa := "krwawnika";
+		13: trudnosc := 110;  typ := 0x63d9;   nazwa := "mithrilu";
+		14: trudnosc := 115;  typ := 0x63e9;   nazwa := "namithu";
+	endcase
+	var hardness := GetHarvestDifficulty( "ore", dig_here.x, dig_here.y, mapinfo.landtile );
+	hardness := -1;
+	if(!hardness)
+		SendSysMessage(who,"Zasoby rudy w tym miejscu wyczerpaly sie.", 3, 40);
+		return 1;
+	endif 
+	if(who.dead)
+		return 1;
+	endif
+	var getore := HarvestResource( "ore", dig_here.x, dig_here.y, 1, 1);
+	if(!getore)
+		SendSysMessage(who,"Zasoby rudy w tym miejscu wyczerpaly sie.", 3, 40);
+		return 1;
+	endif
+	var ile := Cint(kilof.dmg_mod) + (strength/20) + 1;
+	if(Cint(GetObjProperty(kilof, "exceptional")))
+		ile := ile + 10;
+	endif
+	if(ile <= 0)
+		ile := 1;
+	endif
+	
+	
+	var ruda := CreateItemInBackpack(who, typ, ile);
+	if(ruda)
+		SendSysMessage(who, "Wlozyles " + ile + " " + nazwa + " do plecaka.",3,63);
+		AwardStatPoints( who, 45 );
+	else
+		ruda := CreateItemAtLocation(who.x, who.y, who.z, typ, ile);
+		SendSysMessage(who, "Nie masz miejsca w plecaku! Polozyles " + nazwa + " na ziemie.", 3, 40);
+	endif
+	DamageTool(who, kilof);
+	RandomEvents(who);
+endfunction

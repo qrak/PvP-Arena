@@ -1,0 +1,24 @@
+use os;
+use basicio;
+use util;
+use uo;
+use cfgfile;
+
+include "include/attributes";
+
+program poisonhit(param)
+  var npccfg := ReadConfigFile("::npcdesc");
+  var attacker := param[1];
+  var defender := param[2];
+  var weapon := param[3];
+  var armor := param[4];
+  var basedamage := param[5];
+  var rawdamage := param[6];
+  var attackerdex := Cint(GetDexterity(attacker));
+  if((RandomInt(attackerdex)) < 10)
+    Detach();
+    PrintTextAbovePrivate(defender, attacker.name +" oslabia twa dusze!", defender,3,40);
+    SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, "soul weapon" });
+    SetStamina(defender, GetStamina(defender) - RandomInt(30));
+  endif
+endprogram

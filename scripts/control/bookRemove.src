@@ -1,0 +1,13 @@
+use basicio;
+use uo;
+use npc;
+use basic;
+
+program on_remove(who, backpack, item, movetype)
+  if(who.cmdlevel >= 2)
+    return 1;
+  else
+    PrintTextAbovePrivate(backpack, "Musialbys to ukrasc.", who);
+    return 0;
+  endif
+endprogram

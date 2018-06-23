@@ -1,0 +1,29 @@
+// crash
+
+use basic;
+use util;
+use uo;
+
+include "include/spellRestrictions";
+
+program create_food(parms)
+  var circle := 1;
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 2);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var food;
+  case(RandomInt(4)+1)
+	1: food := 0x09ea;
+	2: food := 0x09ea;
+	3: food := 0x09b7;
+	4: food := 0x09b7;
+	5: food := 0x09b7;
+  endcase
+     PlaySoundEffect(caster, 0x01e3);
+     CreateItemInBackpack(caster, food, 1);
+endprogram

@@ -1,0 +1,14 @@
+use uo;
+
+include "include/client";
+
+program textcmd_res(speaker)
+  var tgt := TargetCoordinates(speaker);
+  if(tgt.mobile)
+    if(tgt.mobile.dead)
+        Resurrect(tgt.mobile);
+    else
+      SendSysMessage(speaker, "But that's not dead!");
+    endif
+  endif
+endprogram

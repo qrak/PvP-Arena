@@ -1,0 +1,7 @@
+use uo;
+
+program WartoscKumulacji(who)
+
+SendSysMessage(who,"Wartosc kumulacji wynosi:"+GetGlobalProperty("kumulacja"),3,50);
+
+endprogram

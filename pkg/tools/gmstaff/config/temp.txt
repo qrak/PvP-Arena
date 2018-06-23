@@ -1,0 +1,14 @@
+1.
+
+Removed from UOAlchemy&Magic Group Scroll Unnnamed-Should be furs?
+
+item 0x1f73 Unnamed scroll
+item 0x1f74 Unnamed scroll
+item 0x1f75 Unnamed scroll
+item 0x1f76 Unnamed scroll
+item 0x1f77 Unnamed scroll
+item 0x1f78 Unnamed scroll
+item 0x1f79 Unnamed scroll
+item 0x1f7a Unnamed scroll
+
+2.

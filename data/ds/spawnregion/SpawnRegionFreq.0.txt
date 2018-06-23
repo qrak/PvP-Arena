@@ -1,0 +1,255 @@
+Element bagna-bri-minoc
+{
+	bagienne i29625884
+}
+
+Element brit-E
+{
+	drzewa i29587354
+	humanoidy2 i29590908
+}
+
+Element Brit_mrowki
+{
+	mrowki i29586518
+}
+
+Element Brit_trolle
+{
+	troll i29665202
+}
+
+Element Buc_las
+{
+	ogry i29579051
+}
+
+Element Buc_las2
+{
+	lizardmen i29578931
+}
+
+Element Cove_las
+{
+	orki i29682901
+}
+
+Element Destart_rattman
+{
+	ratman i29636909
+}
+
+Element elfy-brit-minoc
+{
+	elfy i29691633
+}
+
+Element fire
+{
+	humanoidy i29187287
+}
+
+Element gargoyle-polnoc-minoc
+{
+	gargojle i29600602
+}
+
+Element hytloth_las
+{
+	mrowki i29185101
+}
+
+Element Labirent_E
+{
+	ogrelord i29612100
+	ogry i29636066
+}
+
+Element labirent_W
+{
+	ogrelord i29605295
+	ogry i29603729
+	troll i29609089
+}
+
+Element labirynt
+{
+	meer i29640221
+}
+
+Element Las_ok.pustyni
+{
+	ettin i29607885
+	meer i29451517
+	mrowki i29496611
+	ogry i29609631
+	troll i29623723
+}
+
+Element lizardmanfort-obokdestard
+{
+	bagienne i29394352
+	jaszczuroludzie i29388385
+}
+
+Element lost_land_kolo_pustyni
+{
+	humanoidy i29187159
+	orki i29186595
+}
+
+Element lost_landy
+{
+	humanoidy i29186119
+}
+
+Element lost_landy_pustynia
+{
+	humanoidy i29186921
+}
+
+Element mega-spawn
+{
+	elfy i29666276
+	humanoidy i29666397
+}
+
+Element Minoc_las2
+{
+	ettin i29675560
+	ogrelord i29615478
+	ogry i29638419
+}
+
+Element Minoc_las3
+{
+	ettin i29627941
+	ogrelord i29611864
+	ogry i29628303
+	troll i29611563
+}
+
+Element Minoc_lizardman
+{
+	lizardmen i29640100
+}
+
+Element minoc_nadgorami
+{
+	ratman i29603849
+}
+
+Element Minoc_ogry
+{
+	ogrelord i29676158
+	ogry i29677904
+}
+
+Element Minoc_piraci
+{
+	pirate i29666166
+}
+
+Element Minoc_piraci2
+{
+	pirate i29613124
+}
+
+Element Minoc_trolle
+{
+	troll i29611618
+}
+
+Element Moonglow_meer
+{
+	meer i29517398
+}
+
+Element nad_occlo
+{
+	wampiry i29499982
+}
+
+Element nad_occlo2
+{
+	wampiry i29498476
+}
+
+Element nad_pustynia_cov2
+{
+	elfy i29637630
+}
+
+Element nad_pustynia_cov_las
+{
+	elfy i29516432
+}
+
+Element nad_trinsit
+{
+	ogrelord i29627456
+	ogry i29627455
+}
+
+Element ocllo2
+{
+	wampiry i29183106
+}
+
+Element ocllo3
+{
+	wampiry i29499623
+}
+
+Element ocllo4_pod
+{
+	wampiry i29183463
+}
+
+Element ogry_za_verps
+{
+	ogry i29615292
+}
+
+Element pustynia1
+{
+	pustynne i29634795
+}
+
+Element trinsic-tropiki
+{
+	straszne i29695533
+}
+
+Element Trinsic_ophy
+{
+	ophidany i29596864
+}
+
+Element valleyofchaos
+{
+	humanoidy i29601735
+}
+
+Element verps_ogry
+{
+	ettin i29610655
+	ogrelord i29612281
+	ogry i29611919
+}
+
+Element Vesper_wampy
+{
+	wampiry i29637331
+}
+
+Element wyspa
+{
+	humanoidy i29069295
+}
+
+Element Yew_las
+{
+	drzewa i29591758
+}
+

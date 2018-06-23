@@ -1,0 +1,864 @@
+
+use vitals;
+use attributes;
+use math;
+use polsys;
+use basicio;
+use storage;
+use os;
+use basic;
+use uo;
+use npc;
+
+include "include/client";
+include "include/objtype";
+include "include/eventID";
+include "include/utility";
+include "include/yesNo";
+include "include/myutil";
+include "include/randName";
+include "include/mrcSpawn";
+include "util/bank";
+
+var me := Self();
+var masterserial := CINT (GetObjProperty (me, "master"));
+var masteracctname := GetObjProperty (me, "masteracctname");
+var mastername := getobjproperty (me, "mn");
+var cont := getobjproperty (me, "cont");
+var inv_fs, inv_pb;
+
+program merchant ()
+        start_script("NPCKeeper", me);
+	if (!me.backpack)
+		DoMerchantOnCreationSetup ();
+	endif
+	if (!masterserial)
+		var waitcounter := 0;
+		repeat
+			sleep (1);
+			waitcounter := waitcounter + 1;
+			masterserial := GetObjProperty (me, "master");
+		until (masterserial or waitcounter > 20);
+	endif
+	if (!masterserial)
+		KillMe ();
+		return;
+	endif
+	AddToAccountMerchants (masterserial);
+	me.graphic := 400 + me.gender;
+	me.hidden := 0;
+	storage := FindStorageArea ("Merchant Storage");
+	if (!storage)
+		exit;
+	endif
+
+	inv_fs := find_or_create_item (storage, me.serial + " FS", 0xE75);
+	inv_pb := find_or_create_item (storage, me.serial + " PB", 0xE75);
+	inv_fs := find_or_create_item (storage, me.serial + " 1C", 0xE75);
+	if (!inv_fs or !inv_pb or !inv_fs)
+    		exit;
+	endif
+	EnableEvents (EVID_ITEM_GIVEN + EVID_MERCHANT_SOLD + EVID_DAMAGED + EVID_ENGAGED + EVID_DOUBLECLICKED);
+	EnableEvents (EVID_SPEECH, 1);
+	LogMyStuff ();
+	var ev;
+	while (me)
+		ev := os::wait_for_event (600);
+		if (ev)
+			case (ev.type)
+
+ 		                EVID_DOUBLECLICKED:
+					if (ev.source.acctname == masteracctname)
+					PrintTextAbove(me, "Oto moj plecak z produktami na sprzedaz!",3,63);
+                                        SendOpenSpecialContainer(ev.source, inv_fs);
+                                        
+                                        endif
+                                        
+
+				EVID_DAMAGED:
+				EVID_ENGAGED:
+					me.hidden := 1;
+					var hidetime := ReadGameClock ();
+					repeat
+						ev := os::wait_for_event (120);
+						if (!me.hidden)
+							me.hidden := 1;
+						endif
+					until (hidetime + 120 < ReadGameClock());
+					me.hidden := 0;
+				EVID_SPEECH:
+					ProcessSpeech (ev, inv_fs, inv_pb);
+				EVID_MERCHANT_SOLD:
+					if (ev.source)
+						if (ev.amount)
+							TurnToward (ev.source);
+							PlaySoundEffect (me, 0x38);
+							PrintTextAbovePrivate (me, "Dziekuje i polecam sie na przyszlosc...", ev.source);
+							TakeSale (ev.amount, ev.source);
+						else
+							TurnToward (ev.source);
+							PrintTextAbovePrivate (me, "Przykro mi, ale teraz nie mozemy handlowac.", ev.source);
+						endif
+					endif
+				EVID_ITEM_GIVEN:
+					if (ev.source.acctname == masteracctname)
+						StockItem (ev.item, ev.source);
+					else
+						buyitem(ev.source, ev.item);
+					endif
+			endcase  
+		endif
+	endwhile
+endprogram
+
+function DoMerchantOnCreationSetup ()
+	sleep (1);
+	me.graphic := 400 + me.gender;
+	if(me.name ["<random>"])
+	SetName(me , RandomName(me) + " - Kupiec");
+var podziel := Splitwords(mastername);
+
+	me.title_suffix := "Wlasciciel: " + podziel[1];	
+	endif
+	if (!me.backpack)
+		var newbackpack := CreateItemAtLocation(5288 , 1176 , 0, 0x0e75, 1);
+		EquipItem(me, newbackpack);
+	endif
+	foreach item in ListEquippedItems (me)
+		SetObjProperty (item, "mine", 1);
+	endforeach
+endfunction
+
+function ProcessSpeech (byref ev, inv_fs, inv_pb);
+    
+    	if (ev.text["kup"]) 
+    
+    var slupek := ListItemsNearLocation(me.x, me.y, me.z, 1);
+    foreach ciota in slupek
+    if(ciota.objtype == 0x19B)
+    TurnToward ( ev.source );
+    SendBuyWindow (ev.source, inv_fs, self(), inv_pb);
+    return;
+    endif
+    endforeach
+
+    say("Nie moge tu sprzedawac.");
+    return;
+
+	elseif (ev.text["wez"])
+		if (ev.source.acctname == masteracctname)
+			TurnToward (ev.source);
+			AddThingsToBuy (ev.source);
+		endif
+
+	elseif (ev.text["zwalnia"])
+		TurnToward (ev.source);
+		if (ev.source.serial == masterserial)
+			Fireme (ev.source);
+		else
+			Say ("Nawet dla Ciebie nie pracuje glupi frajerze.");
+		endif
+
+	elseif (ev.text["sprzed"])
+		TurnToward (ev.source);
+		SpoutBuyList (ev.source);
+
+	elseif (ev.text["kontakt"])
+		TurnToward (ev.source);
+		if (ev.source.acctname == masteracctname)
+			SetNewContactInformation (ev.source);
+		elseif (cont)
+			say ("Mozesz skontaktowac sie z moim pracodawca: " + cont);
+		else
+			Say ("Chcialbym Ci pomoc, ale moj pracodawca nie powiedzial mi gdzie go mozna spotkac.");
+		endif
+
+	elseif (ev.text["zbieraj"] and ev.source.acctname == masteracctname)
+		TurnToward (ev.source);
+		CashOut (ev.source);
+
+	elseif (ev.text["status"] and ev.source.acctname == masteracctname)
+		TurnToward (ev.source);
+		StatusCheck (ev.source);
+
+	elseif (ev.text["ubier"] and ev.source.acctname == masteracctname)
+		TurnToward (ev.source);
+		say ("Co mam ubrac?");
+		var this := target (ev.source);
+		wear_item (this, ev.source);
+	elseif (ev.text["sciagn"] and ev.source.acctname == masteracctname)
+		TurnToward( ev.source );
+		say ("Ooh, wstydze sie!");
+		strip_items (ev.source);
+	elseif (ev.text["rozbier"] and ev.source.acctname == masteracctname)
+		TurnToward (ev.source);
+		say ("To takie upokazajace.");
+		undress_items(ev.source);
+			
+	elseif (ev.text["log"] and ev.source.acctname == masteracctname)
+		TurnToward (ev.source);
+		ViewMessageLog (ev.source);
+	elseif (ev.text["pomoc"])
+		TurnToward (ev.source);
+		say ("Slucham nastepujacych polecen:");
+		sleep(1);
+		say ("zwalniam, kup, sprzedaj, kontakt, zbieraj,");
+		sleep(2);
+		say ("ubierz, sciagnij, rozbierz, podazaj, stoj, status, log i wez");
+	endif
+endfunction
+
+
+function follow (byref mmaster)
+	var d := distance (mmaster, me);
+	SetAttributeTemporaryMod (me, "Dexterity", 5000);
+	var ev;
+	while (mmaster)
+		d:= distance (mmaster, me);
+		if (d > 20)
+			PlayStationaryEffect (me.x, me.y, me.z, FX_SMOKE, speed:=0xA, loop:=0xA);
+			MoveObjectToLocation (me, mmaster.x, mmaster.y, mmaster.z, me.realm);
+			PlayStationaryEffect (me.x, me.y, me.z, FX_SMOKE, speed:=0xA, loop:=0xA);
+			PlaySoundEffect (mmaster, SFX_SPELL_TELEPORT);
+		elseif (d > 1)
+			RunToward (mmaster);
+		else
+			sleep (1);
+		endif
+		ev := wait_for_event(0);
+		if (ev)
+			if (ev.type == EVID_SPEECH)
+				if ((ev.source == mmaster) and (ev.text["stoj"]))
+
+					var near_items := ListItemsNearLocation(me.x, me.y, me.z, 1);
+
+					foreach item in near_items
+					var ofner :=  GetObjProperty(item, "owner");
+					var nazwaowner := SplitWords(ofner);
+					var surse := SplitWords(ev.source.name);
+					if(item.objtype == 0x19b && item.color == 1154 && nazwaowner[1] == surse[1] )
+					TurnToward(ev.source);									
+					
+					say ("Dobrze, zostane zatem tutaj.");
+					return;
+//					else
+//					say ("Nie moge tu sprzedawac. Potrzebuje Twojego stoiska.");
+					endif
+					endforeach
+				
+				
+					
+				endif
+			else
+				say ("Nie moge tutaj sprzedawac. Potrzebuje Twojego stoiska");
+			endif
+		endif
+	endwhile
+
+endfunction
+
+function stockitem (byref item, byref seller)
+	if (item.objtype == 0x0eed)
+		TakeGold (item);
+		return;
+	endif
+	if (IsStackableWithOtherItems (item) )
+		Say ("Sprzedam to po cenie takiej jak reszte takich przedmitow.");
+  
+		CreateItemInInventory (inv_fs, item.objtype, item.amount);
+		DestroyItem (item);
+		return;
+	endif
+	if (item.isa (POLCLASS_CONTAINER))
+		if (item.objtype != UOBJ_SPELLBOOK and item.objtype != 0x7057 and item.objtype != 0x1940)
+			PrintTextAbove(me, "Przykro mi, ale nie moge sprzedac pojemnika");
+                         return;
+		endif
+	endif
+	var cost := CINT (SendTextEntryGump (seller, "Ile mam brac zlota za ten przedmiot?", TE_CANCEL_ENABLE, TE_STYLE_NORMAL));
+	if (cost and cost > 0)
+		item.sellprice := cost;
+	else
+		say ("Wiec po prostu to przechowam.");
+		MoveItemToContainer (item, inv_fs);
+		return;
+	endif
+	if (!item.movable)
+		item.movable := 1;
+	endif
+	MoveItemToContainer (item, inv_fs);
+	PrintTextAbove (seller, "Bede sprzedawac " + item.desc + " za " + item.sellprice + " zlotych monet.");
+	MoveItemToContainer (item, inv_fs);
+endfunction
+
+function IsStackableWithOtherItems (byref item)
+	var old_item := FindObjtypeInContainer (inv_fs, item.objtype);
+	if (!old_item)
+		return 0;
+	endif
+	if (item.amount > 1)
+		return 1;
+	endif
+	if (old_item and old_item.amount > 1)
+		return 1;
+	endif
+	return 0;
+endfunction
+
+function CashOut (mmaster)
+	var mygold := CINT (getobjproperty (me, "g"));
+	var bankbox := FindBankBox(mmaster);
+	if (mygold and mygold > 0)
+		var payamt := mygold;
+		while (payamt > 60000)
+			if (!CreateItemInContainer (bankbox, 0x0eed, 60000))
+ 			PrintTextAbovePrivate (me, "Twoj plecak jest pleny!", mmaster);
+				SetObjProperty (me, "g", payamt);
+				return 0;
+			endif
+			payamt := payamt - 60000;
+		endwhile;
+		if (!CreateItemInContainer (bankbox, 0x0eed, payamt))
+			PrintTextAbovePrivate (me, "Twoj plecak jest pelny!", mmaster);
+			SetObjProperty (me, "g", payamt);
+			return 0;
+		endif
+		PlaySoundEffect (me, 0x38);
+		PrintTextAbovePrivate (me, "Wplacilem " + mygold + " sztuk zlota do Twojego banku.", mmaster);
+		SetObjProperty (me, "g", 0);
+	else
+		PrintTextAbovePrivate (me, "Nie mam zadnego zlota dla Ciebie.", mmaster);
+	endif
+
+	foreach thingie in ListRootItemsInContainer (me.backpack)
+		if (!MoveItemToContainer (thingie, mmaster.backpack))
+			Say ("Twoj plecak jest pelny!");
+			return 0;
+		endif
+	endforeach
+	return 1;
+endfunction
+
+function StatusCheck (mmaster)
+	foreach thingie in ListRootItemsInContainer (me.backpack)
+        	PrintTextAbovePrivate (me, "Mam " + thingie.desc, mmaster);
+		sleepms (500);
+	endforeach
+	var mygold := CINT (getobjproperty(me, "g"));
+	if (!mygold)
+		PrintTextAbovePrivate (me, "Nie mam zadnego zlota.", mmaster);
+	else
+		PrintTextAbovePrivate (me, "Aktualnie trzymam " + mygold + " zlotych monet dla Ciebie.", mmaster);
+	endif
+endfunction
+
+function SetNewContactInformation (byref who)
+	var oldcont := cont;
+	if (!oldcont)
+		oldcont := "Not set";
+	endif
+	var newcont := SendTextEntryGump (who, "Co mam mowic ludzia ktorzy chca sie z Toba skontaktowac? ",
+			TE_CANCEL_DISABLE, TE_STYLE_NORMAL, 50, "(Aktualnie: "+oldcont);
+	if (!newcont)
+		return;
+	endif
+	SetObjProperty (me, "cont", newcont);
+	cont := newcont;
+endfunction
+
+function wear_item (byref item, byref you)
+	foreach thing in ListEquippedItems (you)
+		if (thing == item)
+			Say ("Ale Ty to masz na sobie!");
+			return;
+		endif
+	endforeach
+
+	foreach thing in ListEquippedItems (me)
+		MoveItemToContainer (thing, inv_pb);
+	endforeach
+
+	EquipItem (me, item);
+
+	foreach thingie in ListRootItemsInContainer (inv_pb)
+        	if (!EquipItem (me, thingie))
+			if (GetObjProperty (thingie, "mine"))
+				DestroyItem (thingie);
+			else
+	        	MoveObjectToLocation (thingie, me.x, me.y, me.z, thingie.realm, MOVEOBJECT_FORCELOCATION);
+			endif
+		endif
+	endforeach
+endfunction
+
+function strip_items (mmaster)
+	if (!me.backpack)
+		var newbackpack := CreateItemAtLocation (5288 , 1176 , 0, 0x0e75, 1);
+		if (!EquipItem (me, newbackpack))
+			DestroyItem (newbackpack);
+		endif
+	endif
+	foreach thing in listequippeditems (me)
+		if ( (thing.objtype < 0x203b or thing.objtype > 0x204d) and thing != me.backpack )
+			if (!GetObjProperty (thing, "mine"))
+				if (!MoveItemToContainer (thing, inv_pb))
+					return 0;
+				endif
+			endif
+		endif
+	endforeach
+	foreach item in ListRootItemsInContainer (inv_fs)
+		if (!MoveItemToContainer (item, mmaster.backpack))
+			PrintTextAbovePrivate (me, "Twoj plecak jest pelny!", mmaster);
+			return 0;
+		endif
+	endforeach
+
+	foreach item in ListRootItemsInContainer (inv_pb)
+		if (!MoveItemToContainer (item, mmaster.backpack))
+			PrintTextAbovePrivate (me, "Twoj plecak jest pelny!", mmaster);
+			return 0;
+		endif
+	endforeach
+	foreach item in ListRootItemsInContainer (me.backpack)
+		if (!MoveItemToContainer (item, mmaster.backpack))
+			PrintTextAbovePrivate (me, "Twoj plecak jest pelny!", mmaster);
+			return 0;
+		endif
+	endforeach
+	return 1;
+endfunction
+
+function fireme (mmaster)
+	if (!cashout (mmaster))
+		return;
+	endif
+	if (!YesNo (mmaster, "Zwolnic kupca?"))
+		return;
+	endif
+	if (!strip_items (mmaster))
+		return;
+	endif
+	CreateItemInContainer (mmaster.backpack, 0x7008, 1);
+	PerformAction (me, ANIM_CAST_DIR);
+	say("Kal Aqua");
+	sleep (2);
+	PlaySoundEffect (me, SFX_SPELL_RECALL);
+	RevokePrivilege (me, "invul");
+	KillMe();
+endfunction
+
+function addthingstobuy (master)
+	var buylist := {};
+	var buyprice := { };
+	var buyobj := { };
+	if (GetObjProperty (me,"buylist"))
+		buylist := GetObjProperty (me, "buylist");
+		buyprice := GetObjProperty (me, "buyprice");
+		buyobj := GetObjProperty (me, "buyobj");
+	endif
+	Say("Co mam skupowac?");
+	var what := Target(master);
+    	if(!what or !what.isa(POLCLASS_ITEM) )
+		Say ("Niewazne.");
+		return;
+    	endif
+	if (what.objtype in buyobj)
+		say ("Nie bede juz skupowac " + what.desc);
+		var NewBuyList := { };
+		var NewBuyPrice := { };
+		var NewBuyObj := { };
+		for i := 1 to len (buylist)
+			if (buyobj[i] != what.objtype)
+				newbuylist.append (buylist[i]);
+				newbuyprice.append (buyprice[i]);
+				newbuyobj.append (buyobj[i]);
+			endif
+		endfor
+		if (!len(newbuylist))
+			EraseObjProperty (me, "buylist");
+			EraseObjProperty (me, "buyprice");
+			EraseObjProperty (me, "buyobj");
+			return;
+		endif
+		SetObjProperty (me, "buylist", NewBuyList);
+		SetObjProperty (me, "buyprice", NewBuyPrice);
+		SetObjProperty (me, "buyobj", NewBuyObj);
+		return;
+	endif
+	if (what.amount > 1)
+		Say ("Moze moglbys mi to dawac pojedynczo?");
+		return;
+	endif
+
+	var price := SendTextEntryGump (master, "Ile mam placic za ten przedmiot?",
+			TE_CANCEL_ENABLE, TE_STYLE_NORMAL);
+	price := CINT (price);
+	if (!price)
+		return;
+	endif
+	BuyList.append (what.desc);
+	BuyPrice.append (price);
+	BuyObj.append (what.objtype);
+	SetObjProperty (me, "buylist", BuyList);
+	SetObjProperty (me, "buyprice", BuyPrice);
+	SetObjProperty (me, "buyobj", BuyObj);
+	if (len(BuyList)==1)
+		say("Bede skupowac "+BuyList[1]);
+	elseif (len(BuyList)==2)
+		say("Bede skupowac "+BuyList[1] +" i "+ BuyList[2]);
+	else
+		var buying := "Bede skupowac "+buylist[1];
+		for i := 2 to (len(buylist)-1)
+			buying := buying + ", " +buylist[i];
+		endfor
+		buying := buying + " i " + buylist[len(buylist)];
+		say(buying);
+	endif
+endfunction
+
+function SpoutBuyList (byref you)
+	var buylist := {};
+	var buyprice := {};
+	var i;
+	if (!GetObjProperty(me,"buylist"))
+		say("Nie skupuje niczego.");
+		return;
+	else
+		buylist := GetObjProperty(me,"buylist");
+		buyprice := GetObjProperty(me,"buyprice");
+	endif
+	for (i := 1; i<=len(buylist); i:=i+1)
+		PrintTextAbovePrivate (me, "Zaplace "+ buyprice[i] + " za " + buylist[i], you);
+		sleep(2);
+	endfor
+	Say( "Podaj mi po prostu to co chcesz mi sprzedac." );
+endfunction
+
+function NotifyMaster (themessage)
+	var messagelog := GetObjProperty (me, "messagelog");
+	if (!messagelog)
+		messagelog := {};
+	endif
+	if (len (messagelog) >= 19)
+		var newmessagelog := {};
+		var messlen := len (messagelog);
+		for i := (messlen-19) to messlen
+			newmessagelog.append (messagelog[i]);
+		endfor
+		messagelog := newmessagelog;
+	endif
+	messagelog.append (themessage);
+	SetObjProperty (me, "messagelog", messagelog);
+	foreach onlinechr in EnumerateOnlineCharacters()
+		if (onlinechr.acctname == masteracctname)
+			PlaySoundEffect (me, 0x38);
+			SendSysMessage(onlinechr, me.name + ": " + themessage);
+			return;
+		endif
+	endforeach
+endfunction
+
+function ViewMessageLog (byref you)
+	var messagelog := GetObjProperty (me, "messagelog");
+	if (!messagelog)
+		PrintTextAbovePrivate (me, "Nic ciekawego sie nie dzialo.", you);
+		return;
+	endif
+
+	foreach message in messagelog
+		PrintTextAbovePrivate (me, message, you);
+		sleep (1);
+	endforeach
+	EraseObjProperty (me, "messagelog");
+endfunction
+
+function TakeSale (goldamount, byref who)
+	NotifyMaster (who.name + " kupil przedmioty za " + goldamount + " zlotych monet.");
+	var mygold := cint(getobjproperty (me, "g"));
+	var commission := cint( 0.05 * goldamount);
+	if (CanSellAtThisLocation () == 2)
+		commission := CINT (0.1 * goldamount);
+	endif
+	if (who.acctname == masteracctname)
+		Say ("Nie moge tego zrobic bo pracuje dla Ciebie.");
+		commission := 0;
+	endif
+	mygold := mygold + goldamount - commission;
+	Setobjproperty (me, "g", mygold);
+endfunction
+
+function TakeGold (byref item)
+	var goldamount := item.amount;
+	var mygold := cint(getobjproperty (me, "g"));
+	if (goldamount)
+		mygold := mygold + goldamount;
+		say("Trzymam " + mygold + " zlotych monet dla Ciebie.");
+	endif
+	PlaySoundEffect (me, 0x38);
+	setobjproperty (me, "g", mygold);
+	destroyitem (item);
+endfunction
+
+function BuyItem (byref you, byref it)
+	var itsownerserial := CINT (GetObjProperty (it, "ownerserial"));
+	if (itsownerserial)
+		if (itsownerserial == CINT (masterserial))
+			Say("Widze, ze to nalezalo do mojego pracodawcy.");
+			MoveItemToContainer (it, me.backpack);
+			NotifyMaster (you.name + " dal mi Twoj przedmiot.");
+			return;
+		else
+			Say ("Przykro mi ale to nalezy do kogos innego.");
+			return;
+		endif
+	endif
+	if (!GetObjProperty (me, "buylist"))
+		say ("Nie kupuje niczego.");
+		MoveItemToContainer (it, you.backpack);
+		return;
+	endif
+	var buylist := GetObjProperty (me, "buylist");
+	var buyprice := GetObjProperty (me, "buyprice");
+	var buyobj := GetObjProperty (me, "buyobj");
+	if (!(it.objtype in buyobj))
+		say ("Uh, nie chce tego.");
+		MoveItemToContainer (it, you.backpack);
+		return;
+	endif
+	var index := 0;
+	for i := 1 to len(buylist)
+		if (it.objtype == buyobj[i])
+			index := i;
+			break;
+		endif
+	endfor
+	if (!index)
+		say ("Uh, nie chce tego.");
+		MoveItemToContainer (it, you.backpack);
+		return;
+	endif
+	var mygold := CINT (GetObjProperty (me, "g"));
+	if ( (mygold-250) < (buyprice[index]*it.amount))
+		say ("Przykro mi, ale nie stac mnie teraz na to.");
+		MoveItemToContainer (it,you.backpack);
+		return;
+	endif
+	var itamount := it.amount;
+	var itdesc := it.desc;
+	if ( grabitem (it, me.backpack) )
+		var goldamount := buyprice[index]*itamount;
+		say("Dziekuje, oto Twoje " + goldamount + " zlotych monet.");
+		PlaySoundEffect (me, 0x38);
+		while (goldamount > 60000)
+			CreateItemInBackpack (you, 0x0eed, 60000);
+			goldamount := goldamount - 60000;
+		endwhile
+		CreateItemInBackpack (you, 0x0eed, goldamount);
+		NotifyMaster(you.name + " sprzedal mi wlasnie " + itdesc);
+	else
+		NotifyMaster ("Moj plecak jest pelny!");
+		MoveItemToContainer (it, you.backpack);
+		return;
+	endif
+
+	var theprice := buyprice[index]*itamount;
+	mygold := mygold - theprice;
+	Setobjproperty (me, "g", mygold);
+endfunction
+
+function GrabItem (byref item, byref mypack)
+	if (item.amount > 1 )
+		if (CreateItemInContainer (mypack, item.objtype, item.amount ))
+			DestroyItem (item);
+			return 1;
+		else
+			say ("Moj plecak jest pelny!");
+			return 0;
+		endif
+	else
+		var old_item := FindObjtypeInContainer (mypack, item.objtype);
+		if (old_item and old_item.amount > 1)
+			if (CreateItemInContainer (mypack, item.objtype, item.amount))
+				DestroyItem (item);
+				return 1;
+			else
+				say ("Moj plecak jest pelny!");
+				return 0;
+			endif
+		else
+			if (MoveItemToContainer (item, mypack))
+				return 1;
+			else
+				say ("Moj plecak jest pelny!");
+				return 0;
+			endif
+		endif
+	endif
+endfunction
+
+function undress_items (byref you)
+	if (!me.backpack)
+		var newbackpack := CreateItemAtLocation (5288, 1176, 0, 0x0e75, 1);
+		if (!EquipItem(me, newbackpack))
+			DestroyItem (newbackpack);
+		endif
+	endif
+	foreach thing in listequippeditems (me)
+		if ((thing.objtype < 0x203b or thing.objtype > 0x204d) and thing != me.backpack)
+			if (GetObjProperty (thing, "mine"))
+				DestroyItem (thing);
+			else
+		        	MoveItemToContainer (thing, you.backpack);
+			endif
+		endif
+	endforeach
+endfunction
+
+function CanSellAtThisLocation ()
+	var sign := FindHouseSignAtLocation (me.x, me.y);
+	if (!sign)
+		var sign := ListItemsNearLocationOfType (me.x, me.y, me.z, 10, 0x7009);
+		if (len (sign))
+			return 2;
+		endif
+		return 0;
+	endif
+	var mymaster := SystemFindObjectBySerial (masterserial);
+	if (!mymaster)
+		mymaster := SystemFindObjectBySerial (masterserial, SYSFIND_SEARCH_OFFLINE_MOBILES );
+	endif
+	if (!mymaster)
+		return 0;
+	endif
+	if (IsAFriend (sign, mymaster))
+		return 1;
+	endif
+	sign := ListItemsNearLocationOfType (me.x, me.y, me.z, 10, 0x7009);
+	if (len (sign))
+		return 2;
+	endif
+	return 0;
+endfunction
+
+function LogMyStuff ()
+	set_critical (1);
+	var playermerchantlist := GetGlobalProperty ("#playermerchantlist");
+	if (!playermerchantlist)
+		playermerchantlist := {};
+	endif
+	if (! (me.serial in playermerchantlist) )
+		playermerchantlist.append (me.serial);
+		SetGlobalProperty ("#playermerchantlist", playermerchantlist);
+	endif
+	set_critical (0);
+endfunction
+
+function AddToAccountMerchants (masterserial)
+	set_critical (1);
+	var mymaster := SystemFindObjectBySerial (masterserial);
+	if (!mymaster)
+		mymaster := SystemFindObjectBySerial (masterserial, SYSFIND_SEARCH_OFFLINE_MOBILES );
+	endif
+
+	if (!mymaster)
+		set_critical (0);
+		KillMe ();
+		return;
+	endif
+	masteracctname := mymaster.acctname;
+	if (!masteracctname)
+		set_critical (0);
+		return 0;
+	endif
+	SetObjProperty (me, "masteracctname", masteracctname);
+	var merchants := GetGlobalProperty ("#merchants_of_" + masteracctname);
+	if (!merchants)
+		merchants := {};
+	endif
+	if (me.serial in merchants)
+		set_critical (0);
+		return 1;
+	endif
+	merchants.append (me.serial);
+	SetGlobalProperty ("#merchants_of_" + masteracctname, merchants);
+	set_critical (0);
+	return 1;
+endfunction
+
+function KillMe ()
+	foreach item in ListRootItemsInContainer (me.backpack)
+		if (!item.newbie and item.movable)
+			if ((item.objtype < 0x203b or item.objtype > 0x204d))
+				MoveObjectToLocation (item, me.x, me.y, me.z, item.realm, MOVEOBJECT_FORCELOCATION);
+				if (item.decayat)
+					item.decayat := ReadGameClock() + 600;
+				endif
+			endif
+		endif
+	endforeach
+	MoveObjectToLocation (me, 5288, 1176, me.realm, 0, MOVEOBJECT_FORCELOCATION);
+	SetObjProperty (me, "guardkill", 1);
+	ApplyRawDamage (me, GetVital (me, "Life") + 100);
+endfunction
+
+function FindHouseSignAtLocation (x, y)
+	foreach item in ListObjectsInBox (x-32, y-32, -128, x+32, y+32, +127)
+		case (item.objtype)
+			0x7060:
+			0x0bd2:
+			0x0bd0:
+				if (IsLocationWithinHouseSign (item, x, y))
+					return item;
+				endif
+		endcase
+	endforeach
+	return 0;
+endfunction
+
+function IsAFriend (sign, who)
+	if (who.acctname == GetObjProperty (sign, "account"))
+		return 1;
+	endif
+
+	var friends := GetObjProperty (sign, "friends");
+	if (!friends)
+		return 0;
+	endif
+	var i;
+	for ( i := 2; i <= 10; i := i + 2 )
+		if ( friends[i] == who.serial )
+			return 1;
+		endif
+	endfor
+	return 0;
+endfunction
+
+function IsLocationWithinHouseSign (sign, x, y)
+	var homeinfo := GetObjProperty (sign, "homeinfo");
+	if (!homeinfo)
+		return 0;
+	endif
+	if ( (x >= homeinfo[2] and x <= homeinfo[4]) and
+	     (y >= homeinfo[3] and y <= homeinfo[5]) )
+		return 1;
+	else
+		return 0;
+	endif
+endfunction
+
+function find_or_create_in_pack(name, objtype);
+  var mypack := me.backpack;
+  var check := 0;
+  foreach thing in ListRootItemsInContainer(mypack)
+    if(thing.name == name)
+      check := thing;
+      break;
+    endif
+  endforeach
+  if(check == 0)
+    check := CreateItemInContainer(mypack, objtype, 1);
+    SetName(check, name);
+  endif
+  return check;
+endfunction

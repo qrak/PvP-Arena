@@ -1,0 +1,32 @@
+use uo;
+use os;
+
+include ":bossboxes:functions";
+
+program champbox(who, box)
+    var logsamount := Cint(GetObjProperty(box, "LogsAmount"));
+    var ballamount := Cint(GetObjProperty(box, "BallAmount"));
+    var xilonamount := Cint(GetObjProperty(box, "XilonAmount")); 
+
+    SendSysMessage(who, "Ilosc klod: " + logsamount + "/" + LOGS_AMOUNT,3,40);
+    SendSysMessage(who, "Ilosc kul obrazen: " + ballamount + "/" + DMGBALL_AMOUNT,3,40);
+    SendSysMessage(who, "Ilosc xilonu: " + xilonamount + "/" + XILON_AMOUNT,3,40);    
+    
+    if(logsamount >= LOGS_AMOUNT && ballamount >= DMGBALL_AMOUNT && xilonamount >= XILON_AMOUNT)
+            var kulka := CreateItemInContainer(box, 0xA408, 1);
+            if(kulka)
+                PrintTextAbovePrivate(box, "Stworzyles kulke ushera!", who);
+                PrintTextAbovePrivate(box, "Uzyj ja na wspolrzednych: X = 5703 Y = 639 Z = 0", who);
+                SetObjProperty(box, "LogsAmount", 0);
+                SetObjProperty(box, "BallAmount", 0);
+                SetObjProperty(box, "XilonAmount", 0);                        
+                PlayEffect(who);
+                return 0;
+            endif
+    endif
+    
+    SendViewContainer(who, box);
+    
+    return 1;
+
+endprogram

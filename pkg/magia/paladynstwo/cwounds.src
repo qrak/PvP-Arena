@@ -1,0 +1,37 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_cwounds( parms )
+  var circle := 2;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 202);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+  
+  
+   var healed := CInt(RandomInt(6) + pal / 6) + 5;
+   
+  if(cast_on.isA(POLCLASS_NPC))
+    healed := healed * 4;
+  endif
+
+  HealDamage(cast_on, healed);
+  PlayObjectCenteredEffect(cast_on, 14201, 7, 0x10);
+  PlaySoundEffect(cast_on, SFX_SPELL_HEAL);
+  SendSysMessage(caster, "Uleczyles " + healed + " obrazen.",3,63);
+  EraseObjProperty(cast_on, "#bleeding");
+
+
+
+
+endprogram

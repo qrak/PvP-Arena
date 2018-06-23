@@ -1,0 +1,42 @@
+// Remove players from their guild
+
+use uo;
+use guilds;
+
+include ":playerguilds:settings";
+
+
+var settings := Guild_GetSettingsCfgElem("Settings");
+var votehours := CInt(settings.InVoteTime);
+
+
+program onDelete(character)
+	// find out if they are in a guild - check a couple of ways
+	var guild_id := GetObjProperty(character, "Guild_ID");	//guild number
+	if ( !guild_id )
+		if ( !character.guildid )
+			return 0;
+		endif
+		guild_id := character.guildid;
+	endif
+
+	var guild := FindGuild(guild_id);
+	if ( !guild )
+		return 0;
+	endif
+
+	// test to see if they are the guild master
+	if ( CInt(guild.GetProp("Master")) == CInt(character.serial) )
+		guild.SetProp("Master", "In Vote");
+		guild.SetProp("VotingBegan", ReadGameClock());
+		guild.EraseProp("Votes");
+		guild.EraseProp("Voted");
+		foreach xmember in (guild.members)
+			if ( xmember.ip )
+				SendSysMessage(xmember, "Twoj mistrz opuscil gildie " + guild.GetProp("Name"));
+			endif
+		endforeach
+	endif
+	// remove them from the guild
+	guild.RemoveMember(character);
+	endprogram

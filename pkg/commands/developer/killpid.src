@@ -1,0 +1,11 @@
+use os;
+use basic;
+
+program textcmd_killpid(who, txt)
+  var thepid := CInt(txt);
+  if(!thepid)
+    return;
+  endif
+  var proc := getprocess(thepid);
+  proc.kill();
+endprogram

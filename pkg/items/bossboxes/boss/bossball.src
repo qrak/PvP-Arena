@@ -1,0 +1,122 @@
+use basic;
+use uo;
+use os;
+use file;
+
+const CHAMPION_X := 5703; // gdzie boss ma powstawac
+const CHAMPION_Y := 639;
+const CHAMPION_Z := 0; 
+
+include "include/canAccess";
+include "include/yesNo";
+include "include/packets";
+
+program championball(who, item)
+
+    if(!can_access(who, item))
+        return 0;
+    endif
+
+    if(Cint(GetGlobalProperty("boss")))
+        SendSysMessage(who, "Maksymalnie jeden boss na raz.",3,40);
+        return 0;
+    endif
+
+    if(item.container != who.backpack)
+        SendSysMessage(who, "Musisz miec przedmiot w plecaku.", 3, 40);
+        return;
+    endif
+
+
+    SendSysMessage(who, "Wybierz lacznik.",3,63);
+
+    var lacznik := Target(who);
+
+    if(!lacznik)
+        return 0;
+    endif
+
+    if(Cint(!GetObjProperty(lacznik, "connecter")))
+        SendSysMessage(who, "To nie jest lacznik.",3,40);
+        return 0;
+    endif
+
+    if(lacznik.container != who.backpack)
+        SendSysMessage(who, "Musisz miec lacznik w plecaku.", 3, 40);
+        return;
+    endif
+
+    if(!can_access(who, lacznik))
+        return 0;
+    endif
+
+    if(!yesNo(who, "Otworzyc portal do bossa?"))
+        return 0;
+    endif
+
+    if(who.x != CHAMPION_X || who.y != CHAMPION_Y || who.z != CHAMPION_Z)
+        SendSysMessage(who, "Musisz byc na srodku demonicznego oltarza. Poszukaj go!",3,40);
+        return 0;
+    endif
+    
+    PlayEffect(who);
+    
+    var boz;
+    if(lacznik.objtype == 0xA301)
+        boz := CreateNpcFromTemplate( "ixodynix", CHAMPION_X, CHAMPION_Y, CHAMPION_Z); 
+    elseif(lacznik.objtype == 0xA302)
+        boz := CreateNpcFromTemplate( "69exodus", CHAMPION_X, CHAMPION_Y, CHAMPION_Z); 
+    elseif(lacznik.objtype == 0xA303)
+        boz := CreateNpcFromTemplate( "gorx", CHAMPION_X, CHAMPION_Y, CHAMPION_Z); 
+    endif
+
+    if(!boz)
+        SendSysMessage(who, "Nie udalo sie przywolac championa. Zglos sie do bogow.",3,40);
+        syslog("Nie mozna stworzyc championa. Imie postaci gracza: " + who.name);
+    else
+        Playsoundeffect(boz, 0x5CF);
+        PlayLightningBoltEffect( boz);
+        SubtractAmount(item, 1);
+        SubtractAmount(lacznik, 1);
+        SetGlobalProperty("boss", 1);
+	if(who.cmdlevel)
+	        LogToFile(":log:boss.txt", "[BOSS] osoba z konta: " +who.acctname+" przywolala bossa " + boz.name, 1);
+	endif
+    endif
+
+endprogram
+
+function PlayEffect(who)
+    var i := 5;
+    
+    repeat
+    PlaySoundEffect( who, 776 );
+    PlayStationaryEffect( CHAMPION_X-2, CHAMPION_Y, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X-1, CHAMPION_Y-1, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X, CHAMPION_Y-2, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X+1, CHAMPION_Y-1, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X+2, CHAMPION_Y, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X+1, CHAMPION_Y+1, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X, CHAMPION_Y+2, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X-1, CHAMPION_Y-1, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);
+    PlaySoundEffect( who, 776 );    
+    PlayStationaryEffect( CHAMPION_X-1, CHAMPION_Y+1, CHAMPION_Z, 0x36b0, 0x0a, 0x1e );
+    sleepms(200);    
+    i := i - 1;
+    until(i <= 0);
+endfunction

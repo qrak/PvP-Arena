@@ -1,0 +1,56 @@
+use uo;
+
+program wypijbutle(who, text)
+	if(!text)
+		SendSysMessage(who, "Uzycie: .butla nazwabutli (czerwona, zolta, many, biala, niebieska, fioletowa, pomaranczowa).", 3, 40);
+		SendSysMessage(who, "Pomoc: .butla pomoc.", 3, 40);
+	endif
+	if(text == "czerwona")
+		if(!UseButla(who, 0xdc0f))
+			UseButla(who, 0xdc0e);
+		endif
+	elseif(text == "zolta")
+		if(!UseButla(who, 0xDC03))
+			if(!UseButla(who, 0xDC02))
+				UseButla(who, 0xDC01);
+			endif
+		endif
+	elseif(text == "many");
+		if(!UseButla(who, 0xDC1A))
+			if(!UseButla(who, 0xDC19))
+				UseButla(who, 0xDC18);
+			endif
+		endif
+	elseif(text == "biala");
+		if(!UseButla(who, 0xdc12))
+			UseButla(who, 0xdc11);
+		endif
+	elseif(text == "niebieska");
+		if(!UseButla(who, 0xdc0d))
+			UseButla(who, 0xdc0c);
+		endif
+	elseif(text == "fioletowa");
+		if(!UseButla(who, 0xdc07))
+			if(!UseButla(who, 0xdc09))
+				UseButla(who, 0xdc08);
+			endif
+		endif
+	elseif(text == "pomaranczowa");
+		if(!UseButla(who, 0xdc16))
+			if(!UseButla(who, 0xdc15))
+				UseButla(who, 0xdc14);
+			endif
+		endif	
+	elseif(text == "pomoc")
+		SendSysMessage(who, "Uzywa danej butli z plecaka. Jezeli mamy np. zwykla leczenia i wieksza leczenia to uzyje tej wiekszej.", 3, 63);
+	endif
+endprogram
+
+function UseButla(who, nrobiektu)
+	var butla := FindObjtypeInContainer( who.backpack, nrobiektu );
+	if(!UseItem(butla, who))
+		return 0;
+	else
+		return 1;
+	endif
+endfunction

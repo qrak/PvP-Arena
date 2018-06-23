@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+program GMstaff_Ctrl_Interface(parms)
+  if (parms[1]=="ICP")
+    start_script(":gmstaff:useGmStaff",parms[2]);
+  elseif (parms==-1)
+    return 1; // ICP test run!
+  else
+    syslog("Incorrectly configured ctrl interface!");
+  endif
+endprogram
+

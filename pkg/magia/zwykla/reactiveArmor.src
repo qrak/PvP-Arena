@@ -1,0 +1,42 @@
+// crash
+
+use os;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_reactivearmor( parms )
+  var circle := 1;
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 7);
+  if(result == 0)
+    return;
+  endif
+
+
+
+  var caster := result[1];
+
+if(GetObjProperty(caster, "ReactiveArmor"))
+SendSysMessage(caster, "Jestes juz pod dzialaniem tego czaru.",3,40);
+return;
+endif
+  PlaySoundEffect(caster, SFX_SPELL_REACTIVE_ARMOR);
+  PlayObjectCenteredEffect( caster, FX_SPARK_EFFECT, 7, 0x10 );
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+    var insc := GetEffectiveSkill(caster, SKILLID_INSCRIPTION);
+    var int := GetIntelligence(caster);
+  var mod_amount := (magery / 10) + (insc / 10)+5;
+  var duration := CInt((insc + magery)*2)+int;
+
+  SetObjProperty(caster, "ReactiveArmor", mod_amount);
+  Detach();
+  sleep(duration);
+  if(GetObjProperty(caster, "ReactiveArmor"))
+    PlaySoundEffect(caster, 0x1eb);
+    EraseObjProperty(caster,"ReactiveArmor");
+  endif
+endprogram

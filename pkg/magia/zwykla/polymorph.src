@@ -1,0 +1,274 @@
+// crash
+
+use os;
+use util;
+use math;
+use basic;
+use uo;
+use cfgfile;
+
+include "include/spellRestrictions";
+include "include/attributes";
+include ":gumps:gumps";
+include "include/gumpUtil";
+
+gfref.x := 50;
+gfref.y := 50;
+
+program cast_poly( parms )
+
+  var cfg := ReadConfigFile("::npcdesc");
+  var circle := 7;
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 56);
+
+  if(result == 0)
+    return;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+  if(GetObjProperty(caster, "poly"))
+	SendSysMessage(caster, "Jestes juz pod dzialaniem czaru przemiany.", 3, 40);
+	return;
+  endif
+var wierzchowiec := GetEquipmentByLayer(caster, 25);
+  if(wierzchowiec)
+  SendSysMessage(caster, "Nie mozesz uzywac tego czaru na wierchowcu.", FONT_NORMAL, 40);
+  return;
+  endif
+   if(GetObjProperty(caster, "incognito"))
+  SendSysMessage(caster, "Nie mozesz uzywac tego czaru bedac pod incognito.", FONT_NORMAL, 40);
+	 return;
+  endif
+  var magery     := CInt(GetEffectiveSkill(caster, SKILLID_MAGERY));
+  var evalint    := CInt(GetEffectiveSkill(caster, SKILLID_EVALINT));
+
+  var grupka1 := { 
+			"eagle", 
+			"slime", 
+			"mongbat", 
+			"headless", 
+			"gorilla", 
+			"zombie"
+		  };
+  var grupka2 := { 
+			"giantspider", 
+			"giantscorp", 
+			"giant_serpent", 
+			"shade", 
+			"harpy", 
+			"ettin"
+		  };
+  var grupka3 := { 
+			"gazer", 
+			"earthelemental", 
+			"waterelemental", 
+			"fireelemental", 
+			"airelemental", 
+			"ogre", 	
+			"gargoyle", 
+			"liche", 
+			"daemon", 
+			"dragon1", 
+			"titan"
+		  };
+
+  var names1 := {
+			"Orzel", 
+			"Szlam", 
+			"Nietoperz", 
+			"Bezglowy", 
+			"Goryl", 
+			"Zombi"
+		};
+  var names2 := {
+			"Gigantyczny pajak", 
+			"Gigantyczny skorpion", 
+			"Gigantyczny waz", 
+			"Zmora", 
+			"Harpia", 
+			"Ettin"
+		};
+  var names3 := {
+			"Gazer", 
+			"Zywiolak ziemi", 
+			"Zywiolak wody", 
+			"Zywiolak ognia", 
+			"Zywiolak powietrza", 
+			"Ogr", 
+			"Gargulec", 
+			"Licz", 
+			"Demon", 
+			"Smok", 
+			"Tytan"
+		};
+
+  GFInitGump(0, 0);
+  GFPage(0);
+  GFResizePic(123, 100, 5100, 220, 120);
+  GFTextLine(150, 112, 1645, "Jakiego rodzaju stworzenie:");
+  var grupa1 := GFButtonID(150, 142, 1209, 1210, 1);
+  var grupa2 := GFButtonID(150, 167, 1209, 1210, 2);
+  var grupa3 := GFButtonID(150, 192, 1209, 1210, 3);
+  var kolor := 0;
+  if((magery + evalint) >= 140)
+	kolor := 50;
+  endif
+  GFTextLine(170, 140, kolor, "Slabe");
+  kolor := 0;
+  if((magery + evalint) >= 175)
+	kolor := 50;
+  endif
+  GFTextLine(170, 165, kolor, "Zwykle");
+  kolor := 0;
+  if((magery + evalint) >= 195)
+	kolor := 50;
+  endif
+  GFTextLine(170, 190, kolor, "Silne");
+  var cancel := GFButtonID(260, 185, 242, 241, 1);
+  var res := GFSendGump(caster);
+  var grupa;
+  if(res[cancel.keyid])
+    SendSysMessage(caster, "Anulowano.");
+    return;
+  elseif(res[grupa1.keyid])
+	  if((magery + evalint) >= 140)
+		grupa := 1;
+	  else
+		SendSysMessage(caster, "Jestes jeszcze za slabym magiem.");
+		return;
+	  endif
+  elseif(res[grupa2.keyid])
+	  if((magery + evalint) >= 175)
+		grupa := 2;
+	  else
+		SendSysMessage(caster, "Jestes jeszcze za slabym magiem.");
+		return;
+	  endif
+  elseif(res[grupa3.keyid])
+	  if((magery + evalint) >= 195)
+		grupa := 3;
+	  else
+		SendSysMessage(caster, "Jestes jeszcze za slabym magiem.");
+		return;
+	  endif
+  else
+		SendSysMessage(caster, "Anulowano.");
+		return;
+  endif
+  var los, jakinpc, jakiename;
+  case(grupa)
+	1: los := RandomInt( 6) + 1;
+		jakinpc := grupka1[los];
+		jakiename := names1[los];
+	2: los := RandomInt( 6) + 1;
+		jakinpc := grupka2[los];
+		jakiename := names2[los];
+	3: los := RandomInt(11) + 1;
+		jakinpc := grupka3[los];
+		jakiename := names3[los];
+  endcase
+
+  PlaySoundEffect(caster, SFX_SPELL_POLYMORPH);
+  PlayObjectCenteredEffect(caster, FX_HEAL_EFFECT, 7,7);
+
+  var czas := (magery * 2) + evalint;
+
+  var str := GetBaseStrength(caster);
+  var int := GetBaseIntelligence(caster);
+  var dex := GetBaseDexterity(caster);
+
+  var npc_str 	  := cfg[jakinpc].STR;
+  var npc_int 	  := cfg[jakinpc].INT;
+  var npc_dex 	  := cfg[jakinpc].DEX;
+  var npc_grafika := cfg[jakinpc].ObjType;
+  var npc_color   := cfg[jakinpc].Color;
+  var npc_alig	  := cfg[jakinpc].alignment;
+  var npc_ar	  := cfg[jakinpc].AR;
+
+  var setstr := CInt(npc_str / 2);
+  var setint := CInt(npc_int / 2);
+  var setdex := CInt(npc_dex / 2);
+
+  var set;
+  if(setstr > str)
+      if((setstr - str) > 35)
+	set := 35;
+if(CanMod(cast_on, "str"))
+	DoTempMod(caster, "str", set, czas);
+endif
+      else
+if(CanMod(cast_on, "str"))
+	DoTempMod(caster, "str", setstr, czas);
+endif
+      endif
+  else
+if(CanMod(cast_on, "str"))
+	DoTempMod(caster, "str", 0 - (str - setstr), czas);
+endif
+  endif
+  if(setint > int)
+      if((setint - int) > 35)
+	set := 35;
+if(CanMod(cast_on, "int"))
+	DoTempMod(caster, "int", set, czas);
+endif
+      else
+if(CanMod(cast_on, "int"))
+	DoTempMod(caster, "int", setint, czas);
+endif
+      endif
+  else
+if(CanMod(cast_on, "int"))
+	DoTempMod(caster, "int", 0 - (int - setint), czas);
+endif
+  endif
+  if(setdex > dex)
+      if((setdex - dex) > 35)
+	set := 35;
+if(CanMod(cast_on, "dex"))
+	DoTempMod(caster, "dex", set, czas);
+      else
+endif
+if(CanMod(cast_on, "dex"))
+	DoTempMod(caster, "dex", setdex, czas);
+endif
+      endif
+
+  else
+if(CanMod(cast_on, "dex"))
+	DoTempMod(caster, "dex", 0 - (dex - setdex), czas);
+endif
+  endif
+
+  start_script("::textcmd/player/rozbierz", caster);
+
+  var origform  := caster.graphic;
+  var origcolor := caster.color;
+  var origname  := caster.name;
+  var origtitle := caster.title_suffix;
+  var origgild  := caster.title_guild;
+
+   caster.title_suffix 	:= "";
+  caster.name         	:= jakiename;
+  caster.color   	:= npc_color;
+  caster.graphic 	:= npc_grafika;
+  caster.alignment 	:= npc_alig;
+  caster.ar	  	:= CInt(npc_ar / 2);
+//caster.squelch(czas);
+  caster.title_guild	:= "";
+
+  SetObjProperty(caster, "poly", 1); 
+  SetObjProperty(caster, "poly_name", origname);
+  SetObjProperty(caster, "poly_form", origform);
+  SetObjProperty(caster, "poly_color", origcolor);
+  SetObjProperty(caster, "poly_title", origtitle);
+  SetObjProperty(caster, "poly_guild", origgild);
+  Detach();
+  sleep(czas);
+
+  start_script(":unpoly:unpoly", caster);
+endprogram

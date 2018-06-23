@@ -1,0 +1,55 @@
+// crash
+
+use basicio;
+use cfgfile;
+use math;
+use basic;
+use util;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_paralyze( parms )
+	var circle := 5;
+	var delivery := "direct";
+	var noto := "harmful";
+	var result := maincast(parms, delivery, circle, noto, 38);
+	if(result == 0)
+		return 0;
+	endif
+	var caster := result[1];
+	var cast_on := result[2];
+	SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "paralyze" });
+	if (Reflected(cast_on))
+		cast_on := caster;
+	endif
+	var amt := 1 + RandomInt(CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)/10));
+	var duration := 5;
+  // absorbcja
+	var cfg := ReadConfigFile("::npcdesc");
+	var odbij := cfg[cast_on.npctemplate].Resuje;
+	if(odbij == "umysl")
+		duration := duration / 2;
+		PrintTextAbove(cast_on, "*absorbuje energie*");
+	endif
+	// koniec absorbcji
+	if(IsNoob(caster) || IsNoob(cast_on))
+		return 0;
+	endif
+	if(!CheckAttack(caster, cast_on))
+		return 0;
+	endif
+	var lastparalyzed := Cint(GetObjProperty(cast_on, "#lastparalyzed"));
+	if(ReadGameClock() > lastparalyzed);
+		DoTempMod(cast_on, "p", 1, duration);
+		PlayStationaryEffect( cast_on.x, cast_on.y, cast_on.z, FX_CURSE_EFFECT, 10, 0xa, 0 );
+		PlaySoundEffect( cast_on, 0x5C4 );
+		EraseObjProperty(cast_on, "HealTimer");
+		SetObjProperty(cast_on, "#lastparalyzed", ReadGameClock() + 10);        
+	else
+		SendSysMessage(caster, "Mozesz tego uzyc na nim dopiero za " + (lastparalyzed - ReadGameClock()) + " sekund.",3,40);
+	endif
+endprogram
+
+

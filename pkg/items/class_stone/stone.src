@@ -1,0 +1,138 @@
+// qrak
+// class_stone
+use util;
+use uo;
+
+include "include/attributes";
+include "starteq";
+include "include/yesNo";
+include ":gumps:gumps";
+include "include/staty";
+include "include/frakcja";
+
+program kamienie(who)
+	if(who.dead)
+		Resurrect(who);
+	endif
+	who.frozen := 1;
+	GFInitGump(0,0);
+	GFNoClose();
+	GFNoMove();
+	GFpage (0);
+	GFResizePic(200,170, 2520,510,410);
+	GFResizePic(228,204, 3600,454,340);
+	GFPage(1);
+	GFTextline(320, 360, 40, "Wojownik");
+	GFButtonPage(320, 290, 5547, 5548,  2); // do strony 2
+	GFTextline(430, 360, 40, "Lucznik");
+	GFButtonPage(420, 290, 5551, 5552,  3); // do strony 3
+	GFTextline(535, 360, 40, "Mag");
+	GFButtonPage(520, 290, 5569, 5570,  4); // do strony 4
+	// przycisk anulowania
+	GFTextLine(570,550,550,"Anuluj");
+	var quit := GFButtonID(550, 550, 1209, 1210, 1);
+	// autor
+	GFPage(2); // STRONA WOJA
+	GFResizePic(200,170, 2520,510,410);
+	GFResizePic(228,204, 3600,454,340);
+	GFResizePic(400,224, 9250,260,300);
+	GFGumpPic(245, 220, 5547); // ikona klasy
+	GFGumpPic(320, 220, 11012); // ikona klasy
+	GFTextLine(280, 360, 50, "WOJOWNIK");
+	GFTextLine(420, 244, 50, "- Wlada kazda bronia");
+	GFTextLine(420, 264, 50, "- Zaklada kazda zbroje");
+	GFTextLine(420, 284, 50, "- Czary tylko paladynskie");
+	GFTextLine(420, 304, 50, "- Zuzywa punkty dziesieciny");
+	GFTextLine(420, 324, 50, "  poczas czarowania");
+	var woj := GFButtonID(290, 480, 2130, 2129, 1);
+	GFTextLine(290, 460, 40, "Wybieram");
+	GFTextLine(570, 550, 550, "Powrot");
+	GFButtonPage(550, 550, 1209, 1210,  1); // do strony 0
+	GFPage(3); // STRONA LUCZNIKA
+	GFResizePic(200,170, 2520,510,410);
+	GFResizePic(228,204, 3600,454,340);
+	GFResizePic(400,224, 9250,260,300);
+	GFGumpPic(245, 220, 5551); // ikona klasy
+	//GFGumpPic(320, 220, 11053); // ikona klasy
+	GFTextLine(280, 360, 50, "LUCZNIK");
+	GFTextLine(420, 244, 50, "- Uzywa tylko lukow i kusz, moze zakladac male tarcze.");
+	GFTextLine(420, 264, 50, "- Nie moze zalozyc zbroi plytowej");
+	GFTextLine(420, 284, 50, "- Uzywa czary paladynskie");
+	var lucznik := GFButtonID(290, 480, 2130, 2129, 1);
+	GFTextLine(290, 460, 40, "Wybieram");
+	GFTextLine(570, 550, 550, "Powrot");
+	GFButtonPage(550, 550, 1209, 1210,  1); // do strony 0
+	GFPage(4); // STRONA MAGA
+	GFResizePic(200,170, 2520,510,410);
+	GFResizePic(228,204, 3600,454,340);
+	GFResizePic(400,224, 9250,260,300);
+	GFGumpPic(280, 220, 5569); // ikona klasy
+	GFGumpPic(260, 310, 11011); // ikona klasy
+	GFGumpPic(320, 310, 2234); // ikona klasy
+	GFTextLine(300, 360, 50, "MAG");
+	GFTextLine(420, 244, 50, "- Uzywa tylko piesci/lasek");
+	GFTextLine(420, 264, 50, "- Nie moze zalozyc zbroi plytowej i");
+	GFTextLine(420, 284, 50, "  kolczugi");
+	GFTextLine(420, 304, 50, "- Uzywa czary zwykle i nekromanckie");
+	var mag := GFButtonID(290, 480, 2130, 2129, 1);
+	GFTextLine(290, 460, 40, "Wybieram");
+	GFTextLine(570, 550, 550, "Powrot");
+	GFButtonPage(550, 550, 1209, 1210,  1); // do strony 0
+	var keys := GFSendGump(who);
+	if(keys[0] == woj.keyid)
+		koxaj(who);
+		SetBaseSkill(who, SKILLID_MAGERY, 0);
+		SetBaseSkill(who, SKILLID_NECROMANCY, 0);
+		SetBaseSkill(who, SKILLID_FORENSICS, 0);
+		SetBaseSkill(who, SKILLID_ANIMALLORE, 0);
+		SetBaseSkill(who, SKILLID_ARCHERY, 0);
+	elseif(keys[0] == lucznik.keyid)
+		koxaj(who);                                    
+		SetBaseSkill(who, SKILLID_SWORDSMANSHIP, 0);
+		SetBaseSkill(who, SKILLID_ARCHERY, 100);
+		SetBaseSkill(who, SKILLID_MAGERY, 0);
+		SetBaseSkill(who, SKILLID_HEALING, 100);
+	elseif(keys[0] == mag.keyid)
+		koxaj(who);
+		SetBaseSkill(who, SKILLID_SWORDSMANSHIP, 0);
+		SetBaseSkill(who, SKILLID_ARCHERY, 0);
+		SetBaseSkill(who, SKILLID_CHIVALRY, 0);
+		SetBaseSkill(who, SKILLID_MAGERY, 100);
+		SetBaseSkill(who, SKILLID_HEALING, 0);
+		SetBaseSkill(who, SKILLID_FORENSICS, 0);
+		SetBaseSkill(who, SKILLID_ANIMALLORE, 0);
+		SetBaseSkill(who, SKILLID_TACTICS, 0);   
+		SetBaseSkill(who, SKILLID_FORENSICS, 100);
+		SetBaseSkill(who, SKILLID_ANIMALLORE, 100);
+		var book := CreateItemInBackpack(who,0x0efa, 1);
+		var z;
+		for (z := 0x1f2d; z <= 0x1f6c; z := z + 1)
+			CreateItemInContainer(book,  z, 1);
+		endfor
+	elseif(keys[0] == quit.keyid)
+		who.frozen := 0;
+		return 0;
+	endif
+	SetObjProperty(who, "statcap", CheckStatcap(who) );
+	SetObjProperty(who, "lata", 18);
+	dajrzeczy(who); // daje itemy na start
+	if(who.dead)
+		Resurrect(who);
+	endif
+	SetObjProperty(who, "#Teleported", 1);
+	MoveObjectToLocation(who, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, who.realm, 4);
+	EraseObjProperty(who, "#Teleported");
+	who.frozen := 0;
+endprogram
+
+function koxaj(who)
+	var i;
+	for (i := 0; i <= 50; i := i + 1)
+		var res := SetBaseSkillBaseValue( who, i, 1000 );
+		if (res == error)
+			SendSysMessage( who, "Unable to set skill: " + res.errortext );
+		else
+		endif
+	endfor
+endfunction
+

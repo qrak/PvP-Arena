@@ -1,0 +1,27 @@
+use uo;
+use os;
+
+program nagrodaktm(who)
+
+foreach gracze in ListObjectsInBox(5725, 1141, 0, 5735, 1151, 0)
+
+
+
+var sakwa := CreateItemInBackpack(gracze, 0xE76, 1);
+    CreateItemInContainer(sakwa, 0xeef, 10000);
+      CreateItemInContainer(sakwa, 0xFF13, 1);
+       var statuetka := CreateItemInContainer(sakwa, 0x1225, 1);
+         statuetka.name := "Puchar dla " +who+ " za udzial w turnieju Kill The Monster";
+           statuetka.color := 167;
+      
+       SendSysMessage(who, "Rozdales graczom nagrody", 3, 63);
+     SendSysMessage(gracze, "Wtwoim plecaku zostal umieszczony woreczek z nagroda. Gratulacje!",3,63);
+   BroadCast("Turniej KTM dobiegl konica. Gratulacjedla wszystkich uczestnikow. Zapraszamy ponownie.",3,63);
+       sleep(1);
+         MoveObjectToLocation(gracze, 2519, 558,0);
+
+  
+endforeach
+
+endprogram
+

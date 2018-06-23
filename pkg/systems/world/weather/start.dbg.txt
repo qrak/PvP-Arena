@@ -1,0 +1,21 @@
+File 0: 
+File 1: e:\gry\pol\skrypty\wod\099\pkg\world\weather\start.src
+File 2: ./modules/os.em
+File 3: ./modules/basic.em
+File 4: ./modules/basicio.em
+Ins 0: File 1, Line 3, Block 1 StatementBegin
+Ins 1: File 1, Line 4, Block 1 StatementBegin
+Ins 2: File 1, Line 4, Block 1 
+Ins 3: File 1, Line 6, Block 1 StatementBegin
+Ins 4: File 2, Line 71, Block 1 
+Ins 5: File 1, Line 6, Block 1 
+Ins 6: File 1, Line 6, Block 1 
+Ins 7: File 1, Line 7, Block 1 
+Ins 8: File 1, Line 7, Block 0 
+Block 0:
+  Parent block: 0
+  Local variables 0-4294967295: 
+Block 1:
+  Parent block: 0
+  Local variables 0-0: 
+      0: who

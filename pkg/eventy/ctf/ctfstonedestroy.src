@@ -1,0 +1,12 @@
+use uo;
+use os;
+
+
+program DestroyIgStone(stone)
+    var thepid := CInt(GetObjProperty(stone, "StonePid"));
+    var process := GetProcess(thepid);
+    var result := process.Kill();
+    syslog("Zabito proces: ("+thepid+") = "+result); 
+    EraseGlobalProperty("IgStoneSerial"); // nadaje ID kamieniowi igrzysk
+    return 1;
+endprogram

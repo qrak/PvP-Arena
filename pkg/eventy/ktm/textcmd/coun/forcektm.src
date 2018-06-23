@@ -1,0 +1,10 @@
+use uo;
+use os;
+
+program forcektm(who)
+
+SendSysMessage(who, "Wystartowales EVENT KTM stworzony przez Fromasza. version 2.0",3,63);
+sleep(1);
+start_script("faza1");
+
+endprogram

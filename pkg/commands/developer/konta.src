@@ -1,0 +1,9 @@
+// crash
+
+use polsys;
+use basic;
+use uo;
+
+program konta(who)
+	SendSysMessage(who, "Aktualna liczba kont: " + len(ListAccounts()) + ".");
+endprogram

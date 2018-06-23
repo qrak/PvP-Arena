@@ -1,0 +1,9 @@
+use uo;
+
+program on_remove(who, corpse, item)
+	item := item;
+	var serial := cint(GetObjProperty(corpse, "serial"));
+	if(who.serial == serial)
+		return 0;
+	endif
+endprogram

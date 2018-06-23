@@ -1,0 +1,35 @@
+// crash
+
+use vitals;
+use uo;
+use basic;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_harm( parms )
+  var circle := 2;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 12);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var dmg := CInt((GetEffectiveSkill(caster, SKILLID_MAGERY) / 15) + (GetEffectiveSkill(caster, SKILLID_EVALINT)/15));
+  if(dmg < 1)
+dmg := 2;
+endif
+    if(GetObjProperty(cast_on, "LastHit")[2] != caster.serial)
+  SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "harm" });
+  endif
+  if (Reflected(cast_on))
+	cast_on := caster;
+  endif
+  PlaySoundEffect(cast_on, SFX_SPELL_HARM);
+  PlayObjectCenteredEffect( cast_on, FX_GLOW_SPIKE, 0x0a,0x1e);
+  
+    ApplyRawDamage(cast_on, Resisted(circle,caster,cast_on,dmg));
+// DoTempMod(cast_on, "p", 0, 0);
+endprogram

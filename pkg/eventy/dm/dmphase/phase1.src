@@ -1,0 +1,65 @@
+////////////////////////////////////////////////////
+//     Igrzyska v2.0 faza 1 - tworzenie portalu   //
+////////////////////////////////////////////////////
+
+use os;
+use uo;
+
+include ":dm:deathmatch";
+include "include/frakcja";
+
+program Phase1()
+    
+    var i := 5;
+
+    Detach();
+    SetGlobalProperty("#zakazwalk", 1);
+    repeat
+        BroadCast("Portal na deathmatch otworzy sie za " + i + " minut w minoc.",3,89);
+        i := i - 1;
+        sleep(60);
+    until(i <= 0);
+
+    
+    foreach smieci in ListItemsAtLocation(FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, _DEFAULT_REALM)
+        DestroyItem(smieci);
+    endforeach
+
+    var portal := CreateItemAtLocation( FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, 0xf234, 1, _DEFAULT_REALM );
+    
+    if(portal)
+        SetObjProperty(DMStone(), "FragLimit", GetFragLimit()); // nadaje ilosc rund Ig
+        SetObjProperty(DMStone(), "DMContestants", 0); // nadaje ilosc uczestnikow poczatkowych
+        BroadCast("Portal na deathmatch otwarty! Zamknie sie samoczynnie za dwie minuty i nie bedzie mozliwosci uczestnictwa.",3,89);
+        sleep(120);
+        BroadCast("Portal na deathmatch zamkniety!",3,89);
+        DestroyItem(portal);
+        EraseGlobalProperty("#zakazwalk");
+            sleep(5);
+            var uczestnicy := Cint(GetObjProperty(DMStone(), "DMContestants"));
+            if(uczestnicy < 4)
+                BroadCast("Na deathmatchu jest za malo osob. Anulowano rozgrywki.",3,89);
+                DMStoneSay("LoL! :(");
+                EraseObjProperty(DMStone(), "FragLimit");
+                EraseObjProperty(DMStone(), "DMContestants");
+                RemoveContestants();
+                return 0;
+            endif
+            sleep(5);    
+            start_script(":dm:dmphase/phase2");
+    else
+        DMStoneSay("Blad! Nie moge utworzyc portalu kurwa! :(");
+    endif
+    
+endprogram
+
+function RemoveContestants()
+    foreach gracz in EnumerateOnlineCharacters()
+        if(GetObjProperty(gracz, "Deathmatch"))
+            EraseObjProperty(gracz, "Deathmatch");
+		SetObjProperty( gracz, "#Teleported", 1 );
+            MoveObjectToLocation( gracz, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, gracz.realm, 4 );
+		EraseObjProperty( gracz, "#Teleported" );
+        endif
+    endforeach
+endfunction

@@ -1,0 +1,50 @@
+use npc;
+use basic;
+use math;
+use uo;
+use os;
+
+include "include/client";
+include "include/attributes";
+
+program walk_on_moongate(mobile, gate)
+  if(!mobile.ip)
+    return;
+  endif
+  set_critical(1);
+  if(GetObjProperty(mobile, "#justgated"))
+	return;
+  endif
+  
+  var wrogowie := 0;
+  foreach wrog in ListHostiles( mobile, 10 );
+    if(wrog.npctemplate)
+      wrogowie := 1;
+    endif
+  endforeach
+
+  if(wrogowie == 1)
+    SendSysMessage(mobile, "Gdzie uciekasz?! Tchorz! Walcz!",3,40);
+    return 0;
+  endif
+  
+  var x, y, z;
+  x := GetObjProperty( gate, "DestX" );
+  y := GetObjProperty( gate, "DestY" );
+  z := GetObjProperty( gate, "DestZ" );
+  foreach critter in ListMobilesNearLocation( gate.x, gate.y, gate.z, 8);
+    if(((critter.script == "employed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)) || ((critter.script == "escortee") && (CInt(GetObjProperty(critter, "Escortee")) == mobile.serial)) || ((critter.script == "tamed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)))
+      SetObjProperty(critter, "Pause", 1);
+		SetObjProperty(critter, "#Teleported", 1);
+      MoveObjectToLocation(critter, gate.x, gate.y, gate.z, critter.realm, 4);
+		EraseObjProperty(critter, "#Teleported");
+
+      EraseObjProperty(critter, "Pause");
+    endif
+  endforeach
+
+  SetObjProperty(mobile,"#justgated",1);
+  MoveObjectToLocation(mobile, x, y, z, mobile.realm, 4);
+  sleep(1);
+  EraseObjProperty(mobile,"#justgated");
+endprogram

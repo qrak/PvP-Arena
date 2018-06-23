@@ -1,0 +1,29 @@
+Equipment ksiezniczkaF
+{
+        Equip 0xe75                     //plecak
+	Equip 0x1EFF 	40		//suknia
+	Equip 0x203C	55		//blond wlosy
+	Equip 0x170E	0		//sandalki
+}
+
+Equipment ksiezniczkaM
+{
+        Equip 0xe75                     //plecak
+	Equip 0x1EFF 	40		//suknia
+	Equip 0x203C	55		//blond wlosy
+	Equip 0x170E	0		//sandalki
+}
+
+Equipment lordF
+{
+        Equip 0xe75                     //plecak
+	Equip 0x2042 	0		//szata lorda
+
+}
+
+Equipment lordM
+{
+        Equip 0xe75                     //plecak
+	Equip 0x2042 	0		//szata lorda
+
+}

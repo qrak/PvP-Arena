@@ -1,0 +1,104 @@
+use os;
+use polsys;
+use math;
+use uo;
+use basic;
+use basicio;
+
+program charprofile()
+  Print( "Hooking Character Profile..." );
+  return 1;
+endprogram
+
+const PROFILE_MSGTYPE := 0xB8;
+const PROFILE_TITLE := "Profil dla ";
+const PROFILE_UPDATE_MODE := 1;
+const PROFILE_REQUEST_MODE := 0;
+const HEADER_SIZE := 7;
+const NULL_SIZE := 1;
+const UNULL_SIZE := 2;
+const UCHAR_SIZE := 2;
+
+const OFFSET_MSGTYPE := 0;
+const OFFSET_MSGLEN := 1;
+const OFFSET_MODE := 3;
+const OFFSET_SERIAL_OUT := 3;
+const OFFSET_SERIAL_IN := 4;
+const OFFSET_TITLE_STR := 7;
+const OFFSET_CMDTYPE := 8;
+const OFFSET_NEW_PROFILE_TEXTLEN := 10;
+const OFFSET_NEW_PROFILE := 12;
+
+exported function HandleCharProfileRequest( character, byref packet )
+  var size := packet.GetSize();
+  var mode := packet.GetInt8(OFFSET_MODE); //mode 0 for request, 1 for update
+  var id := packet.GetInt32(OFFSET_SERIAL_IN);  //serial of requested profile
+                                                //character
+  var chr := SystemFindObjectBySerial(id);
+    if(!chr || !chr.isa(POLCLASS_MOBILE))
+      return; //don't bother working on nonexistant or items :P
+    endif
+
+  if(mode == PROFILE_UPDATE_MODE)
+    //profile update
+    var cmdtype := packet.GetInt16(OFFSET_CMDTYPE); //only 1 command, update
+
+    //number of unicode characters
+    var msglen := packet.GetInt16(OFFSET_NEW_PROFILE_TEXTLEN);
+
+    //updated profile str
+    var uctext := packet.GetUnicodeString(OFFSET_NEW_PROFILE,msglen);
+    if(chr.serial == character.serial) //don't allow setting profile for others
+      SetObjProperty(chr,"profile_uctext",uctext); //set my profile
+    endif
+  elseif(mode == PROFILE_REQUEST_MODE)
+    //profile request, send profile back
+    var profile_uctext := GetObjProperty(chr,"profile_uctext");
+    if(profile_uctext == error)
+      profile_uctext := array; //empty array if no profile was set prev.
+    endif
+
+    //create the response packet
+    var title_str := PROFILE_TITLE + chr.name; //goes at the top of scroll
+
+    var outpkt := CreatePacket(PROFILE_MSGTYPE, MSGLEN_VARIABLE);
+
+    outpkt.SetInt16(OFFSET_MSGLEN, outpkt.GetSize()); //set the size of the packet
+    outpkt.SetInt32(OFFSET_SERIAL_OUT, chr.serial); //set the serial of the character
+    outpkt.SetString(OFFSET_TITLE_STR,title_str,1); //set the title string+terminator
+
+    //profile packet includes an uneditable string and an editable one.
+    //if this is "my" profile, put the profile text in the editable
+    //location. if this is another character's profile, put it in the
+    //uneditable location. This is why we reserved 2 bytes twice for the
+    //terminators. only one of the strings will be filled, the other will
+    //only include a 2-byte terminator.
+    var uneditable_profile_offset := OFFSET_TITLE_STR+len(title_str)+NULL_SIZE; //edit comes first
+    var editable_profile_offset;
+
+    if(chr.serial != character.serial)
+      //not me, set the string at the uneditable offset
+      outpkt.SetUnicodeString(uneditable_profile_offset,profile_uctext,1);
+      //calculate the editable string offset
+      editable_profile_offset := uneditable_profile_offset +
+                                 (profile_uctext.size()*UCHAR_SIZE);
+      //set just a double terminator at the editable offset
+      outpkt.SetInt16(editable_profile_offset,0);
+    else
+      //it's my profile, no text at uneditable
+      outpkt.SetInt16(uneditable_profile_offset,0);
+      //editable offset past the 2 byte terminator
+      editable_profile_offset := uneditable_profile_offset + UNULL_SIZE;
+      //set the unicode text
+      outpkt.SetUnicodeString(editable_profile_offset,profile_uctext,1);
+    endif
+
+    //send the packet to the _requesting_ character, not the character
+    //whose profile this is.
+    outpkt.SendPacket(character);
+  else
+    SysLog("Unknown profile mode: " + mode);
+  endif
+
+  return 1;
+endfunction

@@ -1,0 +1,10 @@
+use uo;
+
+program plecak(who)
+	if(!who.backpack)
+		var NewPack := CreateItemAtLocation(who.x, who.y, who.z, 0xE75,1);
+		if(!EquipItem(who, NewPack))
+				DestroyItem(NewPack);
+		endif
+	endif
+endprogram

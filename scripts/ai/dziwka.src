@@ -1,0 +1,160 @@
+use vitals;
+use polsys;
+use util;
+use math;
+use basicio;
+use basic;
+use uo;
+use os;
+use npc;
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/client";
+include "include/anchors";
+include "include/dist";
+include "include/begging";
+include "include/tempMod";
+include "include/mrcSpawn";
+include "util/bank";
+
+var bank;
+var me := Self();
+
+
+
+
+program kelnerka();
+  start_script("NPCKeeper", me);
+  EnableEvents(SYSEVENT_SPEECH,10);
+  EnableEvents(SYSEVENT_ENTEREDAREA,5);
+  EnableEvents(SYSEVENT_DAMAGED);
+  var myanchor := GetObjProperty(me, "Anchor");
+  if(myanchor)
+    MoveObjectToLocation(me, myanchor[1], myanchor[2], myanchor[3], me.realm, MOVEOBJECT_FORCELOCATION);
+  endif
+  drop_anchor();
+
+  var text;
+  while(1)
+    var ev;
+    ev := os::wait_for_event(120);
+    
+    case(ev.type)
+      
+      SYSEVENT_SPEECH:
+      
+      text := lower(ev.text);
+      TurnToward(ev.source);
+      
+      if(text["piwo"] || text["wino"] || text["mleko"] || text["woda"] || text["cider"] || text["wodka"])
+      
+      if(ev.source.z == me.z && !ev.source.concealed && !ev.source.hidden)
+      Podejdz(me, ev.source, text);
+      else
+      PrintTextAbove(me, "Prosze wejsc do baru.");
+      endif
+      elseif(text["menu"])
+      PrintTextAbove(me, "Aktualnie mozesz zamowic:");
+      PrintTextAbove(me, "napoje alkoholowe: piwo, wino, wodka, cider");      
+      PrintTextAbove(me, "bezalkoholowe: mleko, woda");
+      elseif(text["kurwa"] || text["spierdalaj"] || text["dziwk"])
+      PrintTextAbove(me, ev.source.name + " prosze o zachowanie kultury!");
+      endif
+      SYSEVENT_ENTEREDAREA:
+      if(!ev.source.cmdlevel && ev.source.ip && !ev.source.hidden)
+      PrintTextAbove(me, "Witaj " + ev.source.name + " w barze ''U Fromasza!''. Usiadz i popros o ''menu''.");
+      endif
+      if(ev.source.npctemplate && ev.source.script != "tamed")
+      ApplyRawDamage(ev.source, 10000);
+      endif
+      SYSEVENT_DAMAGED:
+      if(!ev.source.cmdlevel && ev.source.ip)
+      ApplyRawDamage(ev.source, 10000);
+      endif
+    endcase
+
+   endwhile
+endprogram
+
+function Podejdz(me, koles, text)
+
+var przystole := 0;
+var NastoleCord := {0,0,0};
+
+var mount := GetEquipmentByLayer(koles, 25);
+if(mount)
+PrintTextAbove(me, "Prosze trzymac wierzchowce na zewnatrz!");
+return 0;
+endif
+
+foreach stolek in ListItemsNearLocation( koles.x, koles.y, koles.z, 0, koles.realm)
+    if(stolek.objtype == 0xB57 || stolek.objtype == 0xB56 || stolek.objtype == 0xB58)
+    przystole := 1;
+    endif
+endforeach
+
+if(!przystole)
+PrintTextAbove(me, "Prosze usiasc do stolu.");
+return 0;
+endif
+
+if(koles.gender == 0)
+PrintTextAbove(me, "Juz podaje prosze Pana.");
+else
+PrintTextAbove(me, "Juz podaje prosze Pani.");
+endif
+
+while(Distance(me, koles) > 1 && koles.z == me.z && !koles.concealed && !koles.hidden)
+    if(koles.z != me.z)
+    PrintTextAbove(me, "Prosze wejsc do baru.");
+    endif
+    WalkToward(koles);
+endwhile
+
+
+foreach stol in ListItemsNearLocation( koles.x, koles.y, koles.z, 1, koles.realm )
+    if(stol.objtype == 0x118F)
+    NastoleCord := {stol.x, stol.y, stol.z};
+    endif
+endforeach
+
+
+PrintTextAbove(me, "Prosze bardzo.");
+
+
+
+var template := 0;
+
+if(text["piwo"])
+template := 0x9EF;
+elseif(text["wino"])
+template := 0x1F8D;
+elseif(text["mleko"])
+template := 0x09ad;
+elseif(text["woda"])
+template := 0x1f9e;
+elseif(text["cider"])
+template := 0x1F7D;
+elseif(text["wodka"])
+template := 0x1F85;
+endif
+CreateItemAtLocation( NastoleCord[1], NastoleCord[2], NastoleCord[3]+3, template, 1, koles.realm);
+
+
+var myanchor := GetObjProperty(me, "Anchor");
+
+while(CoordinateDistance(me.x, me.y, myanchor[1], myanchor[2]))
+
+WalkTowardLocation( myanchor[1], myanchor[2] );
+
+if(me.x == myanchor[1] && me.y == myanchor[2])
+TurnToward(koles);
+endif
+
+
+endwhile
+
+
+clear_event_queue();
+endfunction

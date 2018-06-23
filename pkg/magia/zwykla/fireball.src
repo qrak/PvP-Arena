@@ -1,0 +1,65 @@
+// crash
+
+use vitals;
+use basicio;
+use cfgfile;
+use math;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+
+program cast_fireball(parms)
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 18);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  PlayMovingEffect(caster, cast_on, FX_FIREBALL, 5, 1);
+  PlaySoundEffect(caster, 0x15f);
+  var dmg := CInt((GetEffectiveSkill(caster, SKILLID_MAGERY) / 13) + (GetEffectiveSkill(caster, SKILLID_EVALINT)/13));
+var wodna := Cint(GetObjProperty(cast_on, "#Wodna"));
+	var wodnaqual := wodna * 0.01;
+	if(wodna == 0)
+		EraseObjProperty(cast_on, "#Wodna");
+	endif
+	if(wodna)
+		dmg := dmg - (wodnaqual*100);
+	endif
+
+  if(GetObjProperty(cast_on, "LastHit")[2] != caster.serial)
+  SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "fireball"});
+  endif
+  if(Reflected(cast_on))
+    PlayMovingEffect(cast_on, caster, FX_FIREBALL, 5, 1);
+    PlaySoundEffect(cast_on, 0x15f);
+    cast_on := caster;
+  endif
+  
+    // absorbcja
+var cfg := ReadConfigFile("::npcdesc");
+var odbij := cfg[cast_on.npctemplate].Resuje;
+var miekki := cfg[cast_on.npctemplate].Leszcz;
+
+     if(odbij == "ogien")
+
+     dmg := dmg / 2;
+     PrintTextAbove(cast_on, "*absorbuje energie*");
+     elseif(miekki == "ogien")
+     dmg := dmg * 2;
+     PrintTextAbove(cast_on, "*dostaje podwojny cios energii*");
+
+endif
+// koniec absorbcji
+
+    ApplyRawDamage(cast_on, Resisted(circle,caster,cast_on, dmg));
+
+// DoTempMod(cast_on, "p", 0, 0);
+  
+endprogram

@@ -1,0 +1,91 @@
+// crash
+
+use os;
+use basicio;
+use basic;
+use polsys;
+use uo;
+
+include "include/client";
+include "include/spellRestrictions";
+
+program cast_strength( parms )
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 23);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  if (!cast_on.locked)
+    SendSysMessage(caster,"To nie jest zamkniete!");
+    return;
+  endif
+  if ((cast_on.multi) || (GetObjProperty(cast_on,"houseserial")) || (GetObjProperty(cast_on,"house_serial")))
+    SendSysMessage(caster, "Nie otworzysz tego uzywajac czaru!");
+    PlayLightningBoltEffect(caster);
+    return;
+  endif
+  if (GetObjProperty(cast_on, "#U"))
+    if (GetObjProperty(cast_on, "#U") > ReadGameClock())
+      SendSysMessage(caster, "Musisz poczekac chwile by otworzyc ten zamek!");
+      return;
+    endif
+  endif
+  var diff := CInt(GetObjProperty(cast_on,"MLockPickDiff"));
+  if(diff)
+    PlaySoundEffect(caster, SFX_SPELL_UNLOCK);
+    if(diff <= 25)
+      cast_on.locked := 0;
+      PrintTextAbovePrivate(cast_on, "*Otwarto!*", caster);
+      EraseObjProperty(cast_on, "MLockPickDiff");
+      return;
+    else
+      SendSysMessage(caster, "Ten czar zdaje sie nie dzialac na tym zamku.");
+      return;
+    endif
+  else
+    var diffi := CInt(GetObjProperty(cast_on,"LockPickDiff"));
+    if(diffi)
+      PlaySoundEffect(caster, SFX_SPELL_UNLOCK);
+      if(diffi <= 25)
+        cast_on.locked := 0;
+        return;
+      else
+        SendSysMessage(caster, "Ten czar zdaje sie nie dzialac na tym zamku.");
+        return;
+      endif
+    else
+      if(GetObjProperty(cast_on, "level"))
+        PickTreasureChest(caster, cast_on);
+      else
+        SendSysMessage(cast_on, "Nie mozesz tego otworzyc.");
+        return;
+      endif
+    endif
+  endif
+endprogram
+
+function PickTreasureChest(me, chest)
+  var lvl := GetObjProperty(chest,"level");
+  if(!lvl)
+    SendSysMessage(me, "Nie mozesz tego otworzyc.");
+    return;
+  endif
+  if(!chest.locked)
+    SendSysMessage(me,"To nie jest zamkniete.");
+    return;
+  endif
+  PlaySoundEffect(me, SFX_242);
+  sleep(1);
+  var diff := (lvl * 25) - 10;
+  if(diff <= 25)
+    PlaySoundEffect(chest,SFX_200);
+    chest.locked := 0;
+  else
+    SendSysMessage(me, "Ten czar zdaje sie nie dzialac na tym zamku.");
+    return;
+  endif
+endfunction

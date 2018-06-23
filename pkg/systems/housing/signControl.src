@@ -1,0 +1,533 @@
+
+
+use uo;
+use os;
+use basic;
+
+include "include/attributes";
+include "include/sysEvent";
+include "include/objtype";
+
+program SignListener(sign)
+  var house := GetObjProperty(sign, "house_serial");
+  if (house)
+    house := SystemFindObjectBySerial(house);
+  endif
+  if(!house)
+    return;
+  endif
+  RegisterForSpeechEvents(sign, 30);
+  var owneracct, who, ev, friendinfo, decaytime, indf, indc;
+  while(sign)
+    owneracct := GetObjProperty(house,"owneracct");
+    ev := wait_for_event(120);
+    if(ev)
+      who := ev.source;
+      if((who.multi).serial == house.serial)
+        if(who.acctname == owneracct)
+          handle_speech(ev, house, sign, 3);
+        else
+          if(statuscheck(house, who, 1) == 1)
+            handle_speech(ev, house, sign, 2);
+          elseif(statuscheck(house, who, 2) == 1)
+            handle_speech(ev, house, sign, 1);
+          endif
+        endif
+      endif
+    endif
+    decaytime := GetObjProperty(sign,"decay");
+    if(!decaytime)
+      decaytime := (ReadGameClock() + 864000);
+      SetObjProperty(sign, "decay", decaytime);
+    endif
+    var wyjechal := 0;
+    Var TheOwner := GetObjProperty( house, "ownerserial" );
+    TheOwner := SystemFindObjectBySerial( TheOwner );
+    Var acnt := TheOwner.acct;
+    if(!acnt.GetProp("WYJECHAL"))
+      wyjechal := 1;
+    endif
+    if(!GetObjProperty(sign,"nodecay") || wyjechal == 0)
+      var tname;
+      var newname := GetObjProperty(sign,"signname");
+      if(!newname)
+        newname := "Dom";
+        SetObjProperty(sign, "signname", newname);
+      endif
+      
+      if (ReadGameClock() > decaytime)
+      acnt.EraseProp( "HouseOwner" );
+      demolish(house);
+      
+      elseif( decaytime >= 864000 )
+        tname := newname + ", [Ten dom jest nowy]";
+        SetName(sign, tname);
+      elseif( decaytime >= 691200 && decaytime <= 863999 )
+        tname := newname + ", [Ten dom jest prawie dowy]";
+        SetName(sign, tname);
+      elseif( decaytime > 861000 )
+        tname := newname + ", [Ten dom jest dosyc zajechany]";
+        SetName(sign, tname);
+      elseif( decaytime > 861000 )
+        tname := newname + ", [Ten dom jest zajechany na maxa]";
+        SetName(sign, tname);
+      else
+        tname := newname + ", [Ten dom sie zaraz spierdoli komus na glowe!]";
+        SetName(sign, tname);
+      endif
+      
+    endif
+    cleareventque();
+  endwhile
+endprogram
+
+function cleareventque()
+  var ev;
+  repeat
+  until(!(ev := os::wait_for_event(0)));
+endfunction
+
+function handle_speech(event, house, sign, sec)
+  var text := lower(event.text );
+  if((text["chcialbym to zablokowac"]) && (sec >= 2))
+    HouseFunction(house, event, 1 );
+  elseif((text["chcialbym to odblokowac"]) && (sec >= 2))
+    HouseFunction(house, event, 2 );
+  elseif((text["chcialbym to zabezpieczyc"]) && (sec >= 2))
+    secure(house, event );
+  elseif((text["chcialbym to odbezpieczyc"]) && (sec >= 2))
+    unsecure(house, event);
+  elseif((text["usun kogos"]) && (sec >= 1))
+    remove(house, sign, event);
+  elseif((text["banuje cie"]) && (sec >= 1))
+    housebanning(house, event, sign);
+  elseif((text["chcialbym postawic smietnik"]) && (sec >= 2))
+    trashbarrel(house, event);
+  elseif((text["chcialbym zniszczyc smietnik"]) && (sec >= 2))
+    trashbarreldestroy(house, event);
+  elseif(text["odkrywam cie"])
+    reveal(house, event);
+  endif
+/*
+  if((text["i wish to lock this down"]) && (sec >= 2))
+    HouseFunction(house, event, 1 );
+  elseif((text["i wish to release this"]) && (sec >= 2))
+    HouseFunction(house, event, 2 );
+  elseif((text["i wish to secure this"]) && (sec >= 2))
+    secure(house, event );
+  elseif((text["i wish to unsecure this"]) && (sec >= 2))
+    unsecure(house, event);
+  elseif((text["remove thyself"]) && (sec >= 1))
+    remove(house, sign, event);
+  elseif((text["i ban thee"]) && (sec >= 1))
+    housebanning(house, event, sign);
+  elseif((text["i wish to place a trash barrel"]) && (sec >= 2))
+    trashbarrel(house, event);
+  elseif(text["reveal thyself"])
+    reveal(house, event);
+  endif
+*/
+endfunction
+
+function remove(house, sign, event)
+  var who := event.source;
+  if (who.multi.serial == house.serial)
+    SendSysMessage(who, "Wybierz osobe ktora chcesz wywalic na zbity pysk.",3,40);
+    var idiot := Target(who, TGTOPT_NOCHECK_LOS);
+    if (!idiot)
+      SendSysMessage(who, "Anulowano");
+      return;
+    elseif (GetMana(idiot) == error)
+      SendSysMessage(who,"Nie mozesz wyrzucac przedmiotow z domu (tak jak robi twoja zona).");
+      return;
+    endif
+    if(InHouse(idiot, house))
+      var friend := statuscheck(house, idiot, 2);
+      var coown  := statuscheck(house, idiot, 1);
+      var staff  := who.cmdlevel;
+      var multi  := who.multi;
+      if ((coown == 0) && (friend == 0) && (idiot.serial != who.serial) && (staff < 2))
+        MoveObjectToLocation(idiot, sign.x, sign.y, sign.z, _DEFAULT_REALM, 4);
+        SendSysMessage(idiot,"Zostales wywalony na zbity pysk z tego domu.");
+        return;
+      elseif((friend == 1) || (coown == 1) || (idiot.acctname == GetObjProperty(house,"owneracct")))
+        SendSysMessage(who,"Kumpla chcesz wyjebac?");
+        return;
+      elseif (idiot.serial == who.serial)
+        SendSysMessage(who,"Jak chcesz siebie wyjebac?");
+        return;
+      else
+        SendSysMessage(who,"Nie mozesz tego zrobic.");
+      endif
+    else
+      SendSysMessage(who,"Ta osoba nie jest w Twoim domu.");
+      return;
+    endif
+  else
+    SendSysMessage(who,"Musisz byc w swoim domu aby to zrobic.");
+    return;
+  endif
+endfunction
+
+function trashbarrel(house, event)
+  var who := event.source;
+  var barrelcheck := GetObjProperty(house, "barrelserial");
+  if(barrelcheck)
+    var exists := 0;
+    var existingbarrel;
+    foreach thing in (house.items)
+      if(thing.serial == barrelcheck)
+        exists := 1;
+        break;
+      endif
+    endforeach
+    if(exists == 1)
+      SendSysMessage(who, "Tak jak kazdy nowoczesny dom, ten posiada juz smietnik",3,40);
+      return;
+    endif
+  endif
+  var items := ListItemsNearLocation(who.x, who.y, who.z, 1);
+  var check := 0;
+  foreach thing in items
+    if(thing.objtype == 0x8889)
+      check := 1;
+    endif
+  endforeach
+  if(check == 0)
+    var barrel := CreateItemAtLocation(who.x, who.y, who.z, 0x7007, 1);
+    if(barrel)
+      SetObjProperty(house, "barrelserial", barrel.serial);
+      SetObjProperty(barrel, "houseserial", house.serial);
+    endif
+  else
+    SendSysMessage(who, "Nie mozesz tego tutaj postawic.",3,40);
+  endif
+endfunction
+
+function trashbarreldestroy(house, event)
+  var who := event.source;
+  var barrelcheck := GetObjProperty(house, "barrelserial");
+  var barrel := SystemFindObjectBySerial(barrelcheck);
+  if(barrelcheck)
+    var exists := 0;
+    foreach thing in (house.items)
+      if(thing.serial == barrelcheck)
+        exists := 1;
+        break;
+      endif
+    endforeach
+    if(exists == 0)
+      SendSysMessage(who, "Ten dom nie posiada smietnika.",3,40);
+      return;
+    endif
+  endif
+  if(barrel)
+    DestroyItem(barrel);
+  endif
+endfunction
+
+function HouseFunction(house, event, num)
+  var itemt := Target(event.source, TGTOPT_NOCHECK_LOS);
+  if(!itemt)
+    SendSysMessage(event.source, "Anulowano.",3,40);
+    return;
+  endif
+  var lists := GetObjProperty(house, "footage");
+  var itemlist := {};
+  var holder;
+  foreach thing in lists
+    holder := ListObjectsInBox(thing[1], thing[2], thing[3], thing[4], thing[5],thing[6]);
+    foreach thing in holder
+      itemlist.append(thing);
+    endforeach
+  endforeach
+  if(itemt in itemlist)
+    case(num)
+      1: if(GetObjProperty(house, "numlockdowns") > 0)
+           if(itemt.movable == 1)
+               itemt.movable := 0;
+               SetObjProperty(itemt, "lockeddown", 1);
+               SetObjProperty(itemt, "houseserial", house.serial);
+               SetObjProperty(house, "numlockdowns", GetObjProperty(house, "numlockdowns") - 1);
+               SendSysMessage(event.source, "Locked Down.");
+           elseif((itemt.movable == 0) && (GetObjProperty(itemt,"lockeddown") ==1))
+             SendSysMessage(event.source, "Ten przedmiot jest juz zablokowany",3,40);
+             return;
+           elseif((itemt.movable == 0) && (GetObjProperty(itemt,"secure") ==1))
+             SendSysMessage(event.source, "Ten przedmiot jest juz zabezpieczony!",3,40);
+             return;
+           else
+             SendSysMessage(event.source, "Nie mozesz tego zabezpieczyc.",3,40);
+             return;
+           endif
+         else
+           SendSysMessage(event.source, "W tym domu nie zablokujesz juz wiecej.");
+         endif
+      2: if(GetObjProperty(itemt, "lockeddown") && (itemt.movable == 0))
+           if(GetObjProperty(itemt,"secure") ==1)
+             EraseObjProperty(itemt,"secure");
+             var oldscript := GetObjProperty(itemt,"oldscript");
+             if(oldscript == error)
+               oldscript := "";
+             endif
+             itemt.usescript := oldscript;
+             SetObjProperty(house, "numsecure", GetObjProperty(house, "numsecure") + 1);
+             EraseObjProperty(itemt, "oldscript");
+             EraseObjProperty(itemt, "boxserial");
+           endif
+           EraseObjProperty(itemt, "houseserial");
+           itemt.movable := 1;
+           EraseObjProperty(itemt, "lockeddown");
+           SetObjProperty(house, "numlockdowns", GetObjProperty(house, "numlockdowns") + 1);
+           SendSysMessage(event.source, "Odblokowano.",3,63);
+           return;
+         elseif ((itemt.movable == 0) &&(GetObjProperty(itemt,"secure") ==1))
+           EraseObjProperty(itemt,"secure");
+           var oldscript := GetObjProperty(itemt,"oldscript");
+           if (oldscript == error)
+             oldscript := "";
+           endif
+           itemt.usescript := oldscript;
+           SetObjProperty(house, "numsecure", GetObjProperty(house, "numsecure") + 1);
+           EraseObjProperty(itemt, "houseserial");
+           EraseObjProperty(itemt, "oldscript");
+           itemt.movable := 1;
+           SendSysMessage(event.source, "Odblokowano.",3,63);
+           return;
+         elseif (itemt.movable == 1)
+           SendSysMessage(event.source, "To nie jest zamkniete.",3,40);
+           return;
+         else
+           SendSysMessage(event.source, "Nie mozesz tego odblokowac",3,40);
+           return;
+         endif
+    endcase
+  else
+    SendSysMessage(event.source, "To nie jest w Twoim domu.",3,40);
+  endif
+endfunction
+
+function secure(house, event)
+  var itemt := Target(event.source);
+  if(!itemt)
+    SendSysMessage(event.source, "Anulowano.",3,40);
+    return;
+  endif
+  if(GetObjProperty(house, "numsecure"))
+    var lists := GetObjProperty(house, "footage");
+    var itemlist := {};
+    var holder;
+    foreach thing in lists
+      holder := ListObjectsInBox(thing[1], thing[2], thing[3], thing[4], thing[5],thing[6]);
+      foreach thing in holder
+        itemlist.append(thing);
+      endforeach
+    endforeach
+    if(itemt in itemlist)
+      if(itemt.movable == 0)
+        if(GetObjProperty(itemt,"lockeddown") ==1)
+          SendSysMessage(event.source, "Zabezpieczasz ten pojemnik przed zlodziejami.",3,63);
+          SetObjProperty(house, "numlockdowns", GetObjProperty(house, "numlockdowns") + 1);
+          EraseObjProperty(itemt,"lockeddown");
+        else
+          SendSysMessage(event.source, "Nie mozesz tego zabezpieczyc.",3,40);
+          return;
+        endif
+      endif
+      itemt.movable := 0;
+      SetObjProperty(itemt, "boxserial", itemt.serial);
+      SetObjProperty(itemt, "houseserial", house.serial);
+      SetObjProperty(itemt, "secure", 1);
+      SetObjProperty(itemt,"oldscript", itemt.script);
+      itemt.usescript := ":housing:secureCont";
+      SetObjProperty(house, "numsecure", GetObjProperty(house, "numsecure") - 1);
+    else
+      SendSysMessage(event.source, "Ten przedmiot nie jest w Twoim domu.",3,40);
+    endif
+  else
+    SendSysMessage(event.source, "Nie mozesz zabezpieczyc juz nic wiecej w tym domu.");
+  endif
+endfunction
+
+function unsecure(house, event)
+  var itemt := Target(event.source);
+  if(!itemt)
+    SendSysMessage(event.source, "Anulowano.");
+    return;
+  endif
+  if (!GetObjProperty(itemt,"secure") ==1)
+    SendSysMessage(event.source,"Nie mozesz tego odbezpieczyc.",3,40);
+    return;
+  endif
+  EraseObjProperty(itemt,"secure");
+  if(GetObjProperty(itemt, "houseserial") == house.serial)
+    var lockdowns := GetObjProperty(house, "numlockdowns");
+    var oldscript := GetObjProperty(itemt,"oldscript");
+    if(oldscript == error)
+      oldscript := "";
+    endif
+    itemt.usescript := oldscript;
+    SetObjProperty(house, "numsecure", GetObjProperty(house, "numsecure") + 1);
+    EraseObjProperty(itemt, "houseserial");
+    EraseObjProperty(itemt, "oldscript");
+    EraseObjProperty(itemt, "boxserial");
+    if(lockdowns > 0)
+      SetObjProperty(itemt, "lockeddown", 1);
+      SetObjProperty(house, "numlockdowns", lockdowns - 1);
+      SendSysMessage(event.source, "Pojemnik ten zostal zablokowany. Odejmuje ilosc mozliwych zablokowanych przedmiotow o 1",3,63);
+    else
+      itemt.movable := 1;
+      SendSysMessage(event.source, "Pojemnik ten zostal odblokowany. Dodaje ilosc mozliwych zablokowanych przedmiotow o 1.",3,63);
+    endif
+  else
+    SendSysMessage(event.source, "To nie jest w twoim domu.",3,40);
+  endif
+endfunction
+
+function housebanning(house, event, sign)
+  var who := event.source;
+  var banlist := GetObjProperty(house, "banlist");
+  if(!banlist)
+    banlist := {};
+  endif
+  if(len(banlist) >= 20)
+    SendSysMessage(event.source, "Lista banow jest pelna. Az tylu ich nie lubisz?",3,40);
+    return;
+  endif
+  SendSysMessage(event.source,"Wybierz osobe.",3,63);
+  var idiot := Target(event.source);
+  if(!idiot)
+    SendSysMessage(who, "Anulowano.",3,40);
+    return;
+  endif
+  if(!(idiot.isA(POLCLASS_NPC) || idiot.acctname))
+    SendSysMessage(who, "To cos nie moze byc dodane do banlisty.",3,40);
+    return;
+  endif
+  if((InHouse(idiot, house)) or (idiot.multi == house))
+    var friend := statuscheck(house, idiot, 2);
+    var coown  := statuscheck(house, idiot, 1);
+    var banned := statuscheck(house, idiot, 3);
+    var staff  := idiot.cmdlevel;
+    var act    := idiot.acctname;
+    var own    := GetObjProperty(house, "owneracct");
+    if((coown == 0) && (banned == 0) && (friend == 0) && ( act != own) && (idiot.serial != who.serial) && (staff < 2))
+      SendSysMessage(idiot, "Zostales wywalony na ryj z tego domu.");
+      MoveObjectToLocation(idiot, sign.x, sign.y, sign.z, _DEFAULT_REALM, 4);
+      banlist.append(idiot.serial);
+      SetObjProperty(house, "banlist", banlist);
+      SendSysMessage(event.source, idiot.name + " zostal wyjebany z Twojego domu prosto na morde.");
+      return;
+    elseif((friend == 1) || (coown == 1) || (act == own))
+      SendSysMessage(who,"Nie mozesz banowac swoich ziomkow.",3,40);
+      return;
+    elseif(banned == 1)
+      SendSysMessage(who,"Ta osoba jest juz zbanowana.",3,40);
+      MoveObjectToLocation(idiot, sign.x, sign.y, sign.z, _DEFAULT_REALM, 4);
+      return;
+    else
+      SendSysMessage(who,"Nie mozesz tego zrobic.",3,40);
+      return;
+    endif
+  else
+    SendSysMessage(event.source, "To cos nie moze byc dodane do listy.",3,40);
+    return;
+  endif
+endfunction
+
+function InHouse(who, house)
+  var lists := GetObjProperty(house, "footage");
+  var holder := 0;
+  foreach thing in lists
+    foreach thing in ListObjectsInBox(thing[1], thing[2], thing[3], thing[4], thing[5],thing[6])
+      if(thing == who)
+        holder := 1;
+        break;
+      endif
+    endforeach
+    if(holder == 1)
+      break;
+    endif
+  endforeach
+  return holder;
+endfunction
+
+function demolish(house)
+  var lists := GetObjProperty(house, "footage");
+  var itemlist := {};
+  foreach entry in lists
+    foreach thing in ListObjectsInBox(entry[1], entry[2], entry[3], entry[4], entry[5],entry[6])
+      itemlist.append(thing);
+    endforeach
+  endforeach
+  var chk;
+  var builtdeed := GetObjProperty(house, "builtdeed");
+  if(builtdeed)
+    if(!DestroyItem(SystemFindObjectBySerial(builtdeed)))
+      DestroyItem(SystemFindObjectBySerial(builtdeed, 1));
+    endif
+  endif
+  foreach thing in itemlist
+    if(GetObjProperty(thing, "houseserial") == house.serial)
+      if ((GetObjProperty(thing, "secure") == 1) && (thing.movable == 0))
+        EraseObjProperty(thing, "secure");
+        if(GetObjProperty(thing, "houseserial" ) == house.serial)
+          var oldscript := GetObjProperty(thing, "oldscript");
+          if (oldscript == error)
+            oldscript := "";
+          endif
+          thing.usescript := oldscript;
+          thing.movable := 1;
+          EraseObjProperty(thing, "houseserial" );
+          EraseObjProperty(thing, "oldscript" );
+        endif
+      elseif ((GetObjProperty(thing, "lockeddown" ) == 1) && (thing.movable == 0))
+        thing.movable := 1;
+        EraseObjProperty(thing, "houseserial");
+        EraseObjProperty(thing, "lockeddown");
+      elseif (thing.movable == 0)
+        if(thing.objtype == 0xa390)
+           MoveObjectToLocation(thing, thing.x, thing.y, (thing.z - 7), _DEFAULT_REALM, 4);
+        else
+          DestroyItem(thing);
+        endif
+      endif
+    endif
+  endforeach
+  DestroyMulti(house );
+  return;
+endfunction
+
+function statuscheck(house, who, type)
+  var nfo := {};
+  case(type)
+    1: nfo := GetObjProperty(house, "coownlist");
+    2: nfo := GetObjProperty(house, "friendlist");
+    3: nfo := GetObjProperty(house, "banlist");
+  endcase
+  if(who.serial in nfo)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function reveal(house, event)
+  var lists := GetObjProperty(house, "footage");
+  var holder := 0;
+  foreach thing in lists
+    foreach thing in ListObjectsInBox(thing[1], thing[2], thing[3], thing[4], thing[5],thing[6])
+      if((GetStrength(thing)) and (thing.hidden))
+        thing.hidden := 0;
+        holder := holder + 1;
+      endif
+    endforeach
+  endforeach
+  if(!holder)
+    SendSysMessage(event.source, "Nikogo nie znalazles.",3,40);
+  elseif(holder == 1)
+    PrintTextAbovePrivate(event.source, "Znalazles jednego schowanego ciula!", event.source,3,63);
+  else
+    PrintTextAbovePrivate(event.source, "Znalazles az " + holder + " ukrytych palantow!", event.source,3,63);
+  endif
+endfunction

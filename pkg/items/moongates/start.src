@@ -1,0 +1,8 @@
+// qrak
+
+use basicio;
+
+include "moongates";
+
+print("Tworzenie wrot ksiezycowych.");
+CreateMoongates();

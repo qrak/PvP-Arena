@@ -1,0 +1,43 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+include ":poisonwatcher:poisons";
+
+program chrcast_cfire( parms )
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 201);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+  
+  
+  PlayObjectCenteredEffect(cast_on, 0x3709, 0x0a, 0x1e );
+  PlaySoundEffect( cast_on, SFX_SPELL_FLAME_STRIKE );
+  var potency := (pal / 50) +1;
+  
+  if (ListPoisonsByType(cast_on, "defaultPoison").size() > 0)
+  ApplyRawDamage(cast_on, RandomInt(30)+10);
+  CurePoison(cast_on, 120, "defaultPoison", potency);
+    if (ListPoisonsByType(cast_on, "defaultPoison").size() > 0)
+      SendSysMessage(caster, "Wyleczyles czesc trucizny.");  
+      SendSysMessage(cast_on , caster.name + " wyleczyl cie z czesci trucizny!");
+    else
+      SendSysMessage(caster, "Wyleczyles " + cast_on.name + ".");
+      SendSysMessage(cast_on, caster.name + " wyleczyl cie calkowicie z trucizny!");
+    endif
+  endif
+  
+
+
+
+
+endprogram

@@ -1,0 +1,63 @@
+use npc;
+use polsys;
+use basicio;
+use uo;
+use os;
+use basic;
+
+include "include/startEqp";
+include "util/bank";
+
+program oncreate(who, skillids)
+
+
+
+  if(CInt(who.truecolor) <= 32768)
+    who.truecolor := who.truecolor + 32768;
+    who.color := who.truecolor;
+  endif
+  
+  SetObjProperty(who, "OnCreate", ReadGameClock());
+  var x, i;
+  for (i := 1; i <= 24; i := i + 1)
+    if ( (i == 0x0b) || (i == 0x10) || (i == 0x15) || (i.objtype == 0xEFA) || (i.objtype == 0x2253) || (i.objtype == 0x2D50) || (i.objtype == 0x2252)  )
+            x := { };	// Do nothing.
+    else
+            x := GetEquipmentByLayer(who, i);
+            DestroyItem(x);
+    endif
+  endfor
+  if(who.race == 0)
+    var a := CreateItemInContainer(who.backpack, "robe", 1);
+    var b := CreateItemInContainer(who.backpack, "Shoes", 1);
+    EquipItem( who, a );
+    EquipItem( who, b );
+  else
+    var a := CreateItemInContainer(who.backpack, "elvenrobe", 1);
+    var b := CreateItemInContainer(who.backpack, 0x2FC4, 1);
+    EquipItem( who, a );
+    EquipItem( who, b );
+  endif
+  CreateStartingEquipment(who, skillids);
+endprogram
+
+function DeleteAccount(acctname, act);
+  
+  act.ban();
+  var chr;//, mt, ms;
+  var i := 0;
+  while(i <= 5)
+    chr := act.GetCharacter(i);
+    if(chr)
+      WipeBankBox(chr);
+      foreach thing in ListEquippedItems(chr)
+        if(thing != chr.backpack)
+          MoveItemToContainer(thing, chr.backpack);
+        endif
+      endforeach
+      destroyitem(chr.backpack);
+      act.DeleteCharacter(i);
+    endif
+    i := i + 1;
+  endwhile
+endfunction

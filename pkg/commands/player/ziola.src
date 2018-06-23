@@ -1,0 +1,117 @@
+// crash
+use math;
+use basic;
+use uo;
+
+include ":gumps:gumps";
+include "include/gumpUtil";
+
+gfref.x := 50;
+gfref.y := 50;
+
+program ziola(who)
+  var ziolo1, ziolo2, ziolo3, ziolo4, ziolo5, ziolo6, ziolo7, ziolo8, ziolo9, ziolo10, ziolo11, ziolo12, ziolo13;
+  var counts := dictionary;
+      foreach ziolko in EnumerateItemsInContainer(who.backpack)
+              counts[ziolko.objtype] := ziolko.amount + CInt(counts[ziolko.objtype]);
+      endforeach
+      ziolo1 := CInt(counts[0x0F7A]);
+      ziolo2 := CInt(counts[0x0F7B]);
+      ziolo3 := CInt(counts[0x0F84]);
+      ziolo4 := CInt(counts[0x0F85]);
+      ziolo5 := CInt(counts[0x0F86]);
+      ziolo6 := CInt(counts[0x0F88]);
+      ziolo7 := CInt(counts[0x0F8C]);
+      ziolo8 := CInt(counts[0x0F8D]);
+      // nekro
+      ziolo9 := CInt(counts[0x0F7D]);
+      ziolo10 := CInt(counts[0x0F81]);
+      ziolo11 := CInt(counts[0x0F78]);
+      ziolo12 := CInt(counts[0xF8A]);      
+      ziolo13 := CInt(counts[0x0F8E]);      
+      
+  var ziola := array("czarne perly", "krwawnik", "czosnek", "zenszen", "mandragora",
+		     "belladona", "kulki siarki", "sieci pajecze", "daemon blood", "grave dust", "batwing", "pigiron", "noxcrystal");
+  if(!ziolo1)
+	ziolo1 := "0";
+  endif
+  if(!ziolo2)
+	ziolo2 := "0";
+  endif
+  if(!ziolo3)
+	ziolo3 := "0";
+  endif
+  if(!ziolo4)
+	ziolo4 := "0";
+  endif
+  if(!ziolo5)
+	ziolo5 := "0";
+  endif
+  if(!ziolo6)
+	ziolo6 := "0";
+  endif
+  if(!ziolo7)
+	ziolo7 := "0";
+  endif
+  if(!ziolo8)
+	ziolo8 := "0";
+  endif
+  if(!ziolo9)
+	ziolo9 := "0";
+  endif
+  if(!ziolo10)
+	ziolo10 := "0";
+  endif
+
+  if(!ziolo11)
+	ziolo11 := "0";
+  endif
+
+  if(!ziolo12)
+	ziolo12 := "0";
+  endif
+
+  if(!ziolo13)
+	ziolo13 := "0";
+  endif
+
+  GFInitGump(0, 0);
+  GFPage(0);
+  GFResizePic(100, 100, BKGND_GOLDTRIM, 190, 405);
+  GFTextLine(120, 110, 42, "Ziola i skladniki magiczne");
+
+  GFTextLine(130, 140, 1153, ziolo1);
+  GFTextLine(130, 165, 1153, ziolo2);
+  GFTextLine(130, 190, 1153, ziolo3);
+  GFTextLine(130, 215, 1153, ziolo4);
+  GFTextLine(130, 240, 1153, ziolo5);
+  GFTextLine(130, 265, 1153, ziolo6);
+  GFTextLine(130, 290, 1153, ziolo7);
+  GFTextLine(130, 315, 1153, ziolo8);
+  GFTextLine(130, 340, 1153, ziolo9);  
+  GFTextLine(130, 365, 1153, ziolo10);    
+  GFTextLine(130, 390, 1153, ziolo11);    
+  GFTextLine(130, 415, 1153, ziolo12);      
+  GFTextLine(130, 440, 1153, ziolo13);      
+  
+  GFTextLine(175, 140, 80, ziola[1]);
+  GFTextLine(175, 165, 80, ziola[2]);
+  GFTextLine(175, 190, 80, ziola[3]);
+  GFTextLine(175, 215, 80, ziola[4]);
+  GFTextLine(175, 240, 80, ziola[5]);
+  GFTextLine(175, 265, 80, ziola[6]);
+  GFTextLine(175, 290, 80, ziola[7]);
+  GFTextLine(175, 315, 80, ziola[8]);
+  GFTextLine(175, 340, 80, ziola[9]);
+  GFTextLine(175, 365, 80, ziola[10]);
+  GFTextLine(175, 390, 80, ziola[11]);
+  GFTextLine(175, 415, 80, ziola[12]);
+  GFTextLine(175, 440, 80, ziola[13]);
+  
+  var anuluj := GFButtonID(111, 455, 2130, 2129, 1);
+  var okno := GFSendGump(who);
+  if(okno[anuluj.keyid])
+    return;
+  endif
+ return;
+endprogram

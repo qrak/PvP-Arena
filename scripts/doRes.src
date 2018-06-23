@@ -1,0 +1,62 @@
+use os;
+use uo;
+use cfgfile;
+
+include "include/client";
+include ":poisonwatcher:poisons";
+
+const SOUND_EFFECT_RES := 0x215;
+const ACTION_EFFECT_CAST2 := 0x11;
+
+program do_res(parms)
+  var who := parms[1];
+  var mobile := parms[2];
+
+ 
+  usunpois(who, mobile);
+ 
+  if(mobile.warmode && mobile.dead && (CheckLineOfSight(who, mobile)))
+  
+    
+        
+   PrintTextAbove(who, "Zyj ponownie!",3,63);
+    PerformAction(who, ANIM_CAST_DIR);
+    sleepms(1000);
+    PerformAction(who, ANIM_CAST_DIR);
+    sleepms(1000);
+
+    if(CheckLineOfSight(who, mobile) && Distance(who, mobile) <= 5)
+     PlaySoundEffect(who, SOUND_EFFECT_RES);
+
+var deathcount := Cint(GetObjProperty(mobile, "#deathcount"));
+ SetObjProperty(mobile, "#deathcount", deathcount + 1);
+if( Cint(GetObjProperty(mobile, "#lastresed") < ReadGameClock() ) )
+EraseObjProperty(mobile, "#deathcount");
+endif
+
+ 
+       SetObjProperty(mobile, "#lastresed", ReadGameClock() + 300);
+       
+      Resurrect(mobile);
+      mobile.warmode := 0;
+
+    else
+      PrintTextAbove(who, "Eeh, gdzie on?");
+      return;
+    endif
+  elseif(mobile.warmode == 0 && mobile.dead)
+    PrintTextAbovePrivate(who, "Pokaz sie duszo!", mobile);
+endif
+endprogram
+
+function usunpois(who, mobile)
+  var poisons := ListPoisonsByType(mobile, "defaultPoison");
+  if((poisons.size() > 0) && CheckLineOfSight(who, mobile))
+	PrintTextAbove(who, "Niechaj Twoje cialo bedzie wolne od trucizn!");
+	PerformAction(who, ANIM_CAST_AREA);
+	sleep(1);    	PlayObjectCenteredEffect(mobile, FX_BLESS_EFFECT, 10,10);
+	SendSysMessage(mobile, who.name + " wyleczl Cie!");
+	CurePoison(mobile, 120, "defaultPoison", 4);
+	CureSpecific(mobile, "defaultPoison", 120, 4);
+  endif
+endfunction

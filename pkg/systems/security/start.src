@@ -1,0 +1,8 @@
+use uo;
+use os;
+
+
+program startsecurity()
+  print("Uruchamianie security system by qrak...");
+  start_script("checkacct");
+endprogram

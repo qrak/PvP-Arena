@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////
+// CTF v1.0 faza 3 - zliczanie rund i nagrody     //
+////////////////////////////////////////////////////
+
+use uo;
+use os;
+
+include ":ctf:ctf";
+include "include/clock";
+
+program Phase3()
+
+var bluepoints := Cint(GetGlobalProperty("CtfBluePoints"));
+var redpoints := Cint(GetGlobalProperty("CtfRedPoints"));
+
+Detach();
+
+
+SetObjProperty(CtfStone(), "CtfRounds", Cint(GetObjProperty(CtfStone(), "CtfRounds")) - 1);
+var rounds := Cint(GetObjProperty(CtfStone(), "CtfRounds"));
+
+if(rounds == 0)
+    if(bluepoints > redpoints) // jezeli druzyna blue wygrala
+        DajNagrodeBlueCTF();
+        MsgToCtfPlayers("W turnieju CTF wygrala druzyna niebieskich! Gratulacje!",63);    
+    elseif(redpoints > bluepoints) // jezeli druzyna red wygrala
+        DajNagrodeRedCTF();
+        MsgToCtfPlayers("W turnieju CTF wygrala druzyna czerwonych! Gratulacje!",63);    
+    else                           // jezeli remis
+        MsgToCtfPlayers("Remis! Nikt nie wygral!",63);    
+    endif
+    
+    foreach gracz in EnumerateOnlineCharacters()
+        if(GetCtfTeam(gracz))
+           MoveObjectToCtfHall(gracz);
+        endif
+    endforeach
+    
+        StoneSay("Gratulacje dla wygranej druzyny!");
+        sleep(5);
+        StoneSay("Nagrody dla wygranej druzyny zostaly rozdane i umieszczone w plecakach.");
+        sleep(5);
+        StoneSay("Zapraszamy na kolejny turniej CTF!");
+        sleep(5);
+        StoneSay("Jestem automatycznym kamieniem CTFa i zostalem stworzony przez qraka. Wersja 1.1");
+        sleep(10);
+
+        start_script(":ctf:ctfphase/phase4");
+    return 0;
+endif
+
+MsgToCtfPlayers("Pozostalo rund: " + Cint(GetObjProperty(CtfStone(), "CtfRounds")),40);
+
+
+
+
+endprogram

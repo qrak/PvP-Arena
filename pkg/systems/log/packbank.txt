@@ -1,0 +1,531 @@
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 12 32] otworzyl plecak osobie Buczus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 12 56] otworzyl plecak osobie TruskawKa
+[BANK] osoba z konta: admin otworzyla bank osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 12 56] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 12 57] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 12 59] otworzyl plecak osobie Wojto
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 12 59] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 13 1] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 13 1] otworzyl plecak osobie TruskawKa
+[BANK] osoba z konta: admin otworzyla bank osobie TruskawKa
+[INFO] Otwarto bank osobie: TruskawKa, zrobila to osoba na koncie: admin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 25 40] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 25 41] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/20] [godz/min: 25 48] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/21] [godz/min: 3 1] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/21] [godz/min: 3 12] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/21] [godz/min: 3 14] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/21] [godz/min: 3 35] otworzyl plecak osobie dowodca wampirow
+[BANK] osoba z konta: admin otworzyla bank osobie Wymiatator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/21] [godz/min: 3 54] otworzyl plecak osobie Wymiatator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/21] [godz/min: 3 57] otworzyl plecak osobie Wymiatator
+[BANK] osoba z konta: admin otworzyla bank osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 6 35] otworzyl plecak osobie Wymiatator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 16 7] otworzyl plecak osobie KoXiaRa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 16 9] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 16 28] otworzyl plecak osobie Gerrawin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 16 52] otworzyl plecak osobie Buczus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 16 53] otworzyl plecak osobie Adolf
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 17 5] otworzyl plecak osobie Gerrawin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 17 20] otworzyl plecak osobie Qhaz
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 17 27] otworzyl plecak osobie Gerrawin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 18 54] otworzyl plecak osobie JabuSzKo
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/22] [godz/min: 24 18] otworzyl plecak osobie Wymiatator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 3 47] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 3 48] otworzyl plecak osobie PittBull
+[BANK] osoba z konta: admin otworzyla bank osobie PittBull
+[BANK] osoba z konta: admin otworzyla bank osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 4 44] otworzyl plecak osobie Exodus Rozpierdalator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 5 37] otworzyl plecak osobie Sedalin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 7 20] otworzyl plecak osobie Asten
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 7 21] otworzyl plecak osobie Asten
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 17 49] otworzyl plecak osobie SiweK
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 18 2] otworzyl plecak osobie Robin H
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 18 4] otworzyl plecak osobie Robin H
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 18 6] otworzyl plecak osobie Jonathan Davis
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 24 2] otworzyl plecak osobie xXx
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/23] [godz/min: 24 19] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 2 34] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 30] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 31] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 34] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 51] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 57] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 57] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 3 58] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 0] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 1] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 2] otworzyl plecak osobie PittBull
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 2] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 5] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 15] otworzyl plecak osobie Salmonel
+[INFO] Otwarto bank osobie: Green Grenade, zrobila to osoba na koncie: admin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 46] otworzyl plecak osobie Green Grenade
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 4 50] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 11] otworzyl plecak osobie kon osoby: Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 11] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 12] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 15] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 16] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 16] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 17] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 18] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 19] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 5 19] otworzyl plecak osobie Salmonel
+[BANK] osoba z konta: admin otworzyla bank osobie Tatiana
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 6 34] otworzyl plecak osobie Makalele
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 17 13] otworzyl plecak osobie xaw
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 17 48] otworzyl plecak osobie Jezus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 18 18] otworzyl plecak osobie xXx
+[BANK] osoba z konta: fromasz otworzyla bank osobie Fromasz
+[BANK] osoba z konta: fromasz otworzyla bank osobie Buczus
+[OPENPACK] fromasz [ip: 46.148.0.165] [data rok/miesiac/dzien: 2014/Luty/24] [godz/min: 21 34] otworzyl plecak osobie Makalele
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 10 0] otworzyl plecak osobie Salmonel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 10 3] otworzyl plecak osobie Paroben
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 10 16] otworzyl plecak osobie Paroben
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 10 39] otworzyl plecak osobie Salmonel
+[BANK] osoba z konta: admin otworzyla bank osobie Salmonel
+[OPENPACK] fromasz [ip: 46.148.0.133] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 11 58] otworzyl plecak osobie hydra
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 1] otworzyl plecak osobie hydra
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 6] otworzyl plecak osobie Straznik Smierci
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 46] otworzyl plecak osobie Jonathan Davis
+[BANK] osoba z konta: admin otworzyla bank osobie Jonathan Davis
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 47] otworzyl plecak osobie Paroben
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 47] otworzyl plecak osobie SiweK
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 47] otworzyl plecak osobie Paroben
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 49] otworzyl plecak osobie AnalnyInspektor
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 12 52] otworzyl plecak osobie AnalnyInspektor
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 13 27] otworzyl plecak osobie AnalnyInspektor
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 13 29] otworzyl plecak osobie AnalnyInspektor
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 13 56] otworzyl plecak osobie xaw
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 13 57] otworzyl plecak osobie Wymiatator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 14 9] otworzyl plecak osobie Wymiatator
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 14 19] otworzyl plecak osobie Wymiatator
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 19 19] otworzyl plecak osobie skurwol
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 19 20] otworzyl plecak osobie RIADRIC
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 19 21] otworzyl plecak osobie Olog
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 19 52] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 19 54] otworzyl plecak osobie Tatiana
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 20 4] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 20 5] otworzyl plecak osobie RIADRIC
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 21 39] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 21 40] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 21 41] otworzyl plecak osobie Amendill
+[OPENPACK] kan [ip: 79.191.196.227] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 21 41] otworzyl plecak osobie Amendill
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 22 54] otworzyl plecak osobie BYTOM
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 22 57] otworzyl plecak osobie BYTOM
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 23 16] otworzyl plecak osobie BYTOM
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 23 39] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 23 39] otworzyl plecak osobie SiweK
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 23 46] otworzyl plecak osobie PittBull
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 24 16] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 24 23] otworzyl plecak osobie Gerrawin
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 24 23] otworzyl plecak osobie Amendill
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 24 38] otworzyl plecak osobie Jonathan Davis
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/25] [godz/min: 25 40] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 8 29] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 8 40] otworzyl plecak osobie JabuSzKo
+[OPENPACK] kan [ip: 95.49.99.9] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 8 41] otworzyl plecak osobie Jezus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 9 32] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 13 9] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 13 53] otworzyl plecak osobie Jonathan Davis
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 13 55] otworzyl plecak osobie DK
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 13 57] otworzyl plecak osobie DK
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 21 46] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 21 47] otworzyl plecak osobie PittBull
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 22 32] otworzyl plecak osobie Gromin
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 23 52] otworzyl plecak osobie PittBull
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 23 53] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 24 51] otworzyl plecak osobie PittBull
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 25 52] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/26] [godz/min: 25 52] otworzyl plecak osobie SiweK
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 8 54] otworzyl plecak osobie SiweK
+[OPENPACK] kan [ip: 79.191.184.51] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 8 54] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 9 6] otworzyl plecak osobie SiweK
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 10 40] otworzyl plecak osobie xaw
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 16 19] otworzyl plecak osobie Green Grenade
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 16 19] otworzyl plecak osobie SiweK
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 4] otworzyl plecak osobie Green Grenade
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 10] otworzyl plecak osobie Rx
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 12] otworzyl plecak osobie Amendill
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 36] otworzyl plecak osobie Rofocale
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 43] otworzyl plecak osobie Rofocale
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 50] otworzyl plecak osobie Guag - ork wojownik
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 51] otworzyl plecak osobie Straznik Smierci
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 53] otworzyl plecak osobie Straznik Smierci
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 19 53] otworzyl plecak osobie Straznik Smierci
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 21 29] otworzyl plecak osobie BYTOM
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 22 5] otworzyl plecak osobie xaw
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 22 58] otworzyl plecak osobie BYTOM
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 23 25] otworzyl plecak osobie Tatiana
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 23 26] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/27] [godz/min: 23 29] otworzyl plecak osobie SiweK
+[OPENPACK] kan [ip: 83.6.58.4] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 10 1] otworzyl plecak osobie xaw
+[OPENPACK] fromasz [ip: 46.148.0.133] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 11 45] otworzyl plecak osobie JabuSzKo
+[OPENPACK] kan [ip: 83.31.149.226] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 14 35] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] kan [ip: 83.31.149.226] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 14 35] otworzyl plecak osobie Pepe
+[OPENPACK] kan [ip: 83.31.149.226] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 14 39] otworzyl plecak osobie xaw
+[OPENPACK] kan [ip: 83.31.149.226] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 19 32] otworzyl plecak osobie xXx
+[OPENPACK] kan [ip: 83.31.149.226] [data rok/miesiac/dzien: 2014/Luty/28] [godz/min: 20 52] otworzyl plecak osobie DK
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 9 2] otworzyl plecak osobie xaw
+[BANK] osoba z konta: kan otworzyla bank osobie xaw
+[BANK] osoba z konta: kan otworzyla bank osobie Qhaz
+[OPENPACK] kan [ip: 79.191.186.144] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 10 42] otworzyl plecak osobie demon chaosu
+[OPENPACK] kan [ip: 79.191.186.144] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 10 42] otworzyl plecak osobie demon chaosu
+[OPENPACK] kan [ip: 79.191.186.144] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 10 43] otworzyl plecak osobie duzy smok
+[OPENPACK] kan [ip: 79.191.186.144] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 10 45] otworzyl plecak osobie Exodus Niszczyciel
+[BANK] osoba z konta: admin otworzyla bank osobie MaLy
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 11 41] otworzyl plecak osobie MaLy
+[OPENPACK] kan [ip: 79.191.186.144] [data rok/miesiac/dzien: 2014/Marzec/1] [godz/min: 12 33] otworzyl plecak osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie Wymiatator
+[BANK] osoba z konta: kan otworzyla bank osobie Jezus
+[BANK] osoba z konta: kan otworzyla bank osobie Poniatowski
+[BANK] osoba z konta: kan otworzyla bank osobie Qra'h
+[BANK] osoba z konta: kan otworzyla bank osobie Makalele
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/2] [godz/min: 8 32] otworzyl plecak osobie Makalele
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[BANK] osoba z konta: admin otworzyla bank osobie DK
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/3] [godz/min: 3 41] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] kan [ip: 95.49.100.215] [data rok/miesiac/dzien: 2014/Marzec/3] [godz/min: 9 7] otworzyl plecak osobie qrak
+[BANK] osoba z konta: kan otworzyla bank osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie Jezus
+[BANK] osoba z konta: kan otworzyla bank osobie Gepetto
+[BANK] osoba z konta: kan otworzyla bank osobie zZz-
+[OPENPACK] kan [ip: 95.49.54.235] [data rok/miesiac/dzien: 2014/Marzec/3] [godz/min: 19 25] otworzyl plecak osobie Magnus
+[BANK] osoba z konta: kan otworzyla bank osobie Magnus
+[BANK] osoba z konta: kan otworzyla bank osobie xXx
+[OPENPACK] kan [ip: 95.49.54.235] [data rok/miesiac/dzien: 2014/Marzec/3] [godz/min: 19 38] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 95.49.123.107] [data rok/miesiac/dzien: 2014/Marzec/4] [godz/min: 12 13] otworzyl plecak osobie Wymiatator
+[BANK] osoba z konta: kan otworzyla bank osobie Saskia
+[OPENPACK] kan [ip: 95.49.123.107] [data rok/miesiac/dzien: 2014/Marzec/4] [godz/min: 16 29] otworzyl plecak osobie KoXiaRa
+[BANK] osoba z konta: kan otworzyla bank osobie MaLy
+[OPENPACK] kan [ip: 95.49.123.107] [data rok/miesiac/dzien: 2014/Marzec/4] [godz/min: 17 29] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 95.49.123.107] [data rok/miesiac/dzien: 2014/Marzec/4] [godz/min: 22 39] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/11] [godz/min: 15 21] otworzyl plecak osobie Rempero
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/11] [godz/min: 15 22] otworzyl plecak osobie Rempero
+[OPENPACK] kan [ip: 95.49.121.201] [data rok/miesiac/dzien: 2014/Marzec/11] [godz/min: 18 45] otworzyl plecak osobie MaLy
+[OPENPACK] kan [ip: 95.49.121.201] [data rok/miesiac/dzien: 2014/Marzec/11] [godz/min: 24 32] otworzyl plecak osobie MaLy
+[OPENPACK] kan [ip: 95.49.121.201] [data rok/miesiac/dzien: 2014/Marzec/11] [godz/min: 24 33] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 79.185.131.37] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 6 36] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 79.185.131.37] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 10 59] otworzyl plecak osobie Qhaz
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 11 35] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 20 58] otworzyl plecak osobie duzy smok
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 20 58] otworzyl plecak osobie duzy smok
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 20 59] otworzyl plecak osobie cwany lis
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 20 59] otworzyl plecak osobie cwany lis
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 20 59] otworzyl plecak osobie Wladca Umyslu
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 0] otworzyl plecak osobie duzy smok
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie Wladca Umyslu
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie duzy smok
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie duzy smok
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie piekielny Ogar
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie trzy glowy potwor
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie mroczny licz
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie mroczny licz
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie trzy glowy potwor
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 1] otworzyl plecak osobie Mech - Niszczyciel
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 2] otworzyl plecak osobie mroczny licz
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 2] otworzyl plecak osobie mroczny licz
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 2] otworzyl plecak osobie Nuks
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 2] otworzyl plecak osobie trzy glowy potwor
+[OPENPACK] kan [ip: 83.31.138.40] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 21 8] otworzyl plecak osobie Wladca Umyslu
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/12] [godz/min: 24 7] otworzyl plecak osobie Eris
+[BANK] osoba z konta: admin otworzyla bank osobie Green Grenade
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/13] [godz/min: 1 25] otworzyl plecak osobie Magnus
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/13] [godz/min: 11 30] otworzyl plecak osobie Green Grenade
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/15] [godz/min: 10 35] otworzyl plecak osobie Tatiana
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/15] [godz/min: 11 38] otworzyl plecak osobie Tatiana
+[BANK] osoba z konta: admin otworzyla bank osobie Green Grenade
+[OPENPACK] admin [ip: 192.168.1.136] [data rok/miesiac/dzien: 2014/Marzec/15] [godz/min: 12 5] otworzyl plecak osobie Green Grenade
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 2 4] otworzyl plecak osobie Straznik Zaglady
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 2 7] otworzyl plecak osobie starozytny wampir
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 2 8] otworzyl plecak osobie Straznik Zaglady
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 10 15] otworzyl plecak osobie Czteroreki Demon
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 10 16] otworzyl plecak osobie MaLy
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 10 35] otworzyl plecak osobie MaLy
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/16] [godz/min: 10 38] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 95.49.35.111] [data rok/miesiac/dzien: 2014/Marzec/17] [godz/min: 23 8] otworzyl plecak osobie Aqrinho
+[OPENPACK] kan [ip: 95.49.35.111] [data rok/miesiac/dzien: 2014/Marzec/17] [godz/min: 24 18] otworzyl plecak osobie Usher - Wladca Portali
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[BANK] osoba z konta: kan otworzyla bank osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 18 23] otworzyl plecak osobie KaTaKriS
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 18 46] otworzyl plecak osobie Green Grenade
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 19 13] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 19 16] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 19 42] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 19 43] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 22 12] otworzyl plecak osobie Eris
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 22 19] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 22 21] otworzyl plecak osobie Aqrinho
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 22 22] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 22 23] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 22 32] otworzyl plecak osobie Usher - Wladca Portali
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 23 12] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 23 21] otworzyl plecak osobie Eris
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/18] [godz/min: 23 21] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 16 32] otworzyl plecak osobie Makalele
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 16 32] otworzyl plecak osobie TruskawKa
+[BANK] osoba z konta: admin otworzyla bank osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 16 33] otworzyl plecak osobie TruskawKa
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 16 52] otworzyl plecak osobie Qra'h
+[BANK] osoba z konta: kan otworzyla bank osobie TruskawKa
+[BANK] osoba z konta: kan otworzyla bank osobie TruskawKa
+[BANK] osoba z konta: kan otworzyla bank osobie KoXiaRa
+[BANK] osoba z konta: kan otworzyla bank osobie KKKK
+[BANK] osoba z konta: kan otworzyla bank osobie xXx
+[BANK] osoba z konta: kan otworzyla bank osobie Robin Hood
+[BANK] osoba z konta: kan otworzyla bank osobie Robin Hood
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 17 52] otworzyl plecak osobie Robin Hood
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 17 58] otworzyl plecak osobie zywiolak krysztalu
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 17 58] otworzyl plecak osobie Robin Hood
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 3] otworzyl plecak osobie Buczus
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 4] otworzyl plecak osobie Buczus
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 4] otworzyl plecak osobie Czarnoksieznik
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 4] otworzyl plecak osobie Tristiandi Trinn
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 5] otworzyl plecak osobie Tristiandi Trinn
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 6] otworzyl plecak osobie Buczus
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 20 29] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[BANK] osoba z konta: kan otworzyla bank osobie XXXXXXXXXXXXXXXX
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 21 0] otworzyl plecak osobie Green Grenade
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 21 15] otworzyl plecak osobie Qra'h
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 21 38] otworzyl plecak osobie Eris
+[BANK] osoba z konta: kan otworzyla bank osobie KoXiaRa
+[BANK] osoba z konta: admin otworzyla bank osobie Robin Hood
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 23 13] otworzyl plecak osobie Robin Hood
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 23 22] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 23 23] otworzyl plecak osobie Eris
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 23 49] otworzyl plecak osobie Eris
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Marzec/19] [godz/min: 23 50] otworzyl plecak osobie Aqrinho
+[OPENPACK] kan [ip: 83.6.21.241] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 11 41] otworzyl plecak osobie Magnus
+[BANK] osoba z konta: kan otworzyla bank osobie XXXXXXXXXXXXXXXX
+[OPENPACK] kan [ip: 83.6.21.241] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 15 58] otworzyl plecak osobie TruskawKa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 15 59] otworzyl plecak osobie TruskawKa
+[OPENPACK] kan [ip: 83.6.21.241] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 18 4] otworzyl plecak osobie Aqrinho
+[OPENPACK] kan [ip: 83.6.21.241] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 21 23] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 83.6.21.241] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 22 34] otworzyl plecak osobie NAILTY
+[OPENPACK] kan [ip: 83.6.21.241] [data rok/miesiac/dzien: 2014/Marzec/20] [godz/min: 23 0] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 95.49.69.195] [data rok/miesiac/dzien: 2014/Marzec/21] [godz/min: 6 27] otworzyl plecak osobie Robin Hood
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/21] [godz/min: 17 1] otworzyl plecak osobie KaTaKriS
+[OPENPACK] kan [ip: 79.191.180.74] [data rok/miesiac/dzien: 2014/Marzec/21] [godz/min: 22 15] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 79.191.180.74] [data rok/miesiac/dzien: 2014/Marzec/21] [godz/min: 23 1] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 79.191.180.74] [data rok/miesiac/dzien: 2014/Marzec/21] [godz/min: 24 12] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 79.191.180.74] [data rok/miesiac/dzien: 2014/Marzec/21] [godz/min: 24 15] otworzyl plecak osobie Eris
+[BANK] osoba z konta: admin otworzyla bank osobie KoXiaRa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 11 18] otworzyl plecak osobie KoXiaRa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 11 32] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 18 58] otworzyl plecak osobie DK
+[BANK] osoba z konta: kan otworzyla bank osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 19 32] otworzyl plecak osobie WNES
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 5] otworzyl plecak osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 9] otworzyl plecak osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 14] otworzyl plecak osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 14] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 15] otworzyl plecak osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 15] otworzyl plecak osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 20 24] otworzyl plecak osobie DK
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 23 12] otworzyl plecak osobie WNES
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 23 40] otworzyl plecak osobie Magnus
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 23 42] otworzyl plecak osobie WNES
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 24 20] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 24 27] otworzyl plecak osobie Straznik Zaglady
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/22] [godz/min: 24 33] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 1 7] otworzyl plecak osobie Straznik Zla
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 1 7] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 8 32] otworzyl plecak osobie Exodus Niszczyciel
+[BANK] osoba z konta: kan otworzyla bank osobie KaTaKriS
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 9 49] otworzyl plecak osobie Magnus
+[BANK] osoba z konta: kan otworzyla bank osobie KoXiaRa
+[BANK] osoba z konta: kan otworzyla bank osobie Aqrinho
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 11 15] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 83.24.255.51] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 12 41] otworzyl plecak osobie WNES
+[OPENPACK] kan [ip: 79.191.194.170] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 19 7] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 79.191.194.170] [data rok/miesiac/dzien: 2014/Marzec/23] [godz/min: 19 11] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/24] [godz/min: 15 24] otworzyl plecak osobie Vexia
+[BANK] osoba z konta: kan otworzyla bank osobie KoXiaRa
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[BANK] osoba z konta: kan otworzyla bank osobie Eris
+[BANK] osoba z konta: admin otworzyla bank osobie KoXiaRa
+[OPENPACK] kan [ip: 79.191.174.39] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 17 23] otworzyl plecak osobie Omadiandananana
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 19 16] otworzyl plecak osobie Cea'Legan
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 19 26] otworzyl plecak osobie Cea'Legan
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 19 27] otworzyl plecak osobie Cea'Legan
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 20 5] otworzyl plecak osobie szczelacz
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 20 53] otworzyl plecak osobie Cea'Legan
+[OPENPACK] kan [ip: 79.191.174.39] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 22 20] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] kan [ip: 79.191.174.39] [data rok/miesiac/dzien: 2014/Marzec/27] [godz/min: 22 23] otworzyl plecak osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie XXXXXXXXXXXXXXXX
+[BANK] osoba z konta: admin otworzyla bank osobie Omadiandananana
+[BANK] osoba z konta: admin otworzyla bank osobie Omadiandananana
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/-2] [godz/min: 19 12] otworzyl plecak osobie Omadiandananana
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/-2] [godz/min: 19 12] otworzyl plecak osobie Vexio
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Marzec/0] [godz/min: 10 39] otworzyl plecak osobie Vexio
+[BANK] osoba z konta: kan otworzyla bank osobie XxxX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/1] [godz/min: 22 49] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/1] [godz/min: 22 57] otworzyl plecak osobie kokos
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/1] [godz/min: 23 45] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[BANK] osoba z konta: admin otworzyla bank osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/1] [godz/min: 23 54] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 9 12] otworzyl plecak osobie kokos
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 9 13] otworzyl plecak osobie kokos
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 9 14] otworzyl plecak osobie kokos
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 10 40] otworzyl plecak osobie kokos
+[BANK] osoba z konta: admin otworzyla bank osobie kokos
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 10 56] otworzyl plecak osobie kokos
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 11 1] otworzyl plecak osobie kokos
+[INFO] Otwarto bank osobie: c'mon, zrobila to osoba na koncie: admin
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/2] [godz/min: 21 26] otworzyl plecak osobie c'mon
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 9 44] otworzyl plecak osobie KoXiaRa
+[BANK] osoba z konta: admin otworzyla bank osobie KoXiaRa
+[OPENPACK] kan [ip: 95.49.96.116] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 17 53] otworzyl plecak osobie lord wampirow
+[OPENPACK] kan [ip: 95.49.96.116] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 19 55] otworzyl plecak osobie Omadiandananana
+[OPENPACK] kan [ip: 95.49.96.116] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 21 18] otworzyl plecak osobie Czteroreki Demon
+[OPENPACK] kan [ip: 95.49.96.116] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 21 20] otworzyl plecak osobie Nina
+[BANK] osoba z konta: admin otworzyla bank osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 21 54] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 22 0] otworzyl plecak osobie Nina
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 22 24] otworzyl plecak osobie Aqrinho
+[OPENPACK] kan [ip: 95.49.96.116] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 22 41] otworzyl plecak osobie Aqrinho
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 23 35] otworzyl plecak osobie NiNa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 23 37] otworzyl plecak osobie NiNa
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/3] [godz/min: 23 41] otworzyl plecak osobie NiNa
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 7 13] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 7 13] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 7 13] otworzyl plecak osobie XXXXXXXXXXXXXXXX
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 12 2] otworzyl plecak osobie Majkan Fedi
+[BANK] osoba z konta: admin otworzyla bank osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 16 4] otworzyl plecak osobie Miviel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 17 31] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 18 13] otworzyl plecak osobie Rempero
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 18 54] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 18 59] otworzyl plecak osobie PrzeKozak
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 19 1] otworzyl plecak osobie c'mon
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 19 6] otworzyl plecak osobie Majkan Fedi
+[BANK] osoba z konta: admin otworzyla bank osobie Kristin Xeriz
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/5] [godz/min: 19 53] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 7 49] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 7 49] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 7 49] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 7 49] otworzyl plecak osobie Exodus Niszczyciel
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 7 49] otworzyl plecak osobie Czteroreki Demon
+[BANK] osoba z konta: kan otworzyla bank osobie c'mon
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 11 0] otworzyl plecak osobie From
+[OPENPACK] kan [ip: 194.153.119.41] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 11 1] otworzyl plecak osobie From
+[BANK] osoba z konta: kan otworzyla bank osobie DYNIAK
+[BANK] osoba z konta: kan otworzyla bank osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/6] [godz/min: 17 33] otworzyl plecak osobie Miviel
+[BANK] osoba z konta: admin otworzyla bank osobie Miviel
+[BANK] osoba z konta: fromasz otworzyla bank osobie PrzeKozak
+[BANK] osoba z konta: kan otworzyla bank osobie Rempero
+[OPENPACK] kan [ip: 95.49.121.52] [data rok/miesiac/dzien: 2014/Kwiecien/7] [godz/min: 22 44] otworzyl plecak osobie Eris
+[BANK] osoba z konta: kan otworzyla bank osobie KaTaKriS
+[BANK] osoba z konta: kan otworzyla bank osobie DYNIAK
+[BANK] osoba z konta: kan otworzyla bank osobie PrzeKozak
+[BANK] osoba z konta: kan otworzyla bank osobie From
+[OPENPACK] kan [ip: 79.191.194.9] [data rok/miesiac/dzien: 2014/Kwiecien/8] [godz/min: 16 52] otworzyl plecak osobie From
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/8] [godz/min: 21 49] otworzyl plecak osobie Jan Niezbedny
+[BANK] osoba z konta: admin otworzyla bank osobie Jan Niezbedny
+[BANK] osoba z konta: kan otworzyla bank osobie Majkan Fedi
+[OPENPACK] kan [ip: 79.191.194.9] [data rok/miesiac/dzien: 2014/Kwiecien/8] [godz/min: 22 45] otworzyl plecak osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie KoXiaRa
+[BANK] osoba z konta: kan otworzyla bank osobie Eris
+[OPENPACK] kan [ip: 79.191.194.9] [data rok/miesiac/dzien: 2014/Kwiecien/8] [godz/min: 22 50] otworzyl plecak osobie Rempero
+[BANK] osoba z konta: kan otworzyla bank osobie DK
+[BANK] osoba z konta: kan otworzyla bank osobie Majkan Fedi
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 16 22] otworzyl plecak osobie KoXiaRa
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 16 23] otworzyl plecak osobie Majkan Fedi
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 19 12] otworzyl plecak osobie Miviel
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 19 12] otworzyl plecak osobie PrzeKozak
+[BANK] osoba z konta: kan otworzyla bank osobie DYNIAK
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 19 27] otworzyl plecak osobie Miviel
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 19 27] otworzyl plecak osobie Miviel
+[BANK] osoba z konta: kan otworzyla bank osobie Miviel
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 19 28] otworzyl plecak osobie DYNIAK
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 20 45] otworzyl plecak osobie Straznik Piekla
+[OPENPACK] kan [ip: 95.49.124.69] [data rok/miesiac/dzien: 2014/Kwiecien/9] [godz/min: 20 45] otworzyl plecak osobie Rempero
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/10] [godz/min: 10 35] otworzyl plecak osobie PrzeKozak
+[OPENPACK] kan [ip: 95.49.125.115] [data rok/miesiac/dzien: 2014/Kwiecien/11] [godz/min: 20 14] otworzyl plecak osobie Rempero
+[OPENPACK] admin [ip: 192.168.1.135] [data rok/miesiac/dzien: 2014/Kwiecien/15] [godz/min: 13 40] otworzyl plecak osobie KaTaKriS
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/16] [godz/min: 12 41] otworzyl plecak osobie Archon
+[BANK] osoba z konta: admin otworzyla bank osobie DYNIAK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/16] [godz/min: 15 34] otworzyl plecak osobie DYNIAK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/16] [godz/min: 15 40] otworzyl plecak osobie Jolly Roger
+[BANK] osoba z konta: admin otworzyla bank osobie Jolly Roger
+[BANK] osoba z konta: admin otworzyla bank osobie Jolly Roger
+[BANK] osoba z konta: admin otworzyla bank osobie Psia Krwia
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/16] [godz/min: 16 25] otworzyl plecak osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/16] [godz/min: 16 27] otworzyl plecak osobie Mafioz
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/16] [godz/min: 19 16] otworzyl plecak osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 20 22] otworzyl plecak osobie Robin Hood
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 20 29] otworzyl plecak osobie Robin Hood
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 20 31] otworzyl plecak osobie Robin Hood
+[BANK] osoba z konta: admin otworzyla bank osobie Pan Wegorzek
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 20 59] otworzyl plecak osobie Pan Wegorzek
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 21 1] otworzyl plecak osobie Frendzel
+[BANK] osoba z konta: admin otworzyla bank osobie Frendzel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 21 7] otworzyl plecak osobie Frendzel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 21 13] otworzyl plecak osobie Frendzel
+[BANK] osoba z konta: admin otworzyla bank osobie Frendzel
+[BANK] osoba z konta: admin otworzyla bank osobie Frendzel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 21 21] otworzyl plecak osobie zywiolak krysztalu
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 21 23] otworzyl plecak osobie Majkan Fedi
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 21 26] otworzyl plecak osobie Frendzel
+[BANK] osoba z konta: admin otworzyla bank osobie Frendzel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/17] [godz/min: 23 51] otworzyl plecak osobie SK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 1 42] otworzyl plecak osobie Miviel
+[BANK] osoba z konta: kan otworzyla bank osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 12 48] otworzyl plecak osobie Wacek
+[OPENPACK] kan [ip: 95.49.100.237] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 13 4] otworzyl plecak osobie PrzeKozak
+[BANK] osoba z konta: kan otworzyla bank osobie Eris
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 15 5] otworzyl plecak osobie Majkan Fedi
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 15 35] otworzyl plecak osobie DYNIAK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 15 35] otworzyl plecak osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 16 7] otworzyl plecak osobie Majkan Fedi
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 17 17] otworzyl plecak osobie Achilles
+[BANK] osoba z konta: admin otworzyla bank osobie Kristin Xeriz
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 17 27] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 17 27] otworzyl plecak osobie Kristin Xeriz
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/18] [godz/min: 17 29] otworzyl plecak osobie Rempero
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/21] [godz/min: 12 21] otworzyl plecak osobie PrzeKozak
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/21] [godz/min: 12 22] otworzyl plecak osobie PrzeKozak
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/21] [godz/min: 13 20] otworzyl plecak osobie DK
+[OPENPACK] fromasz [ip: 46.148.0.165] [data rok/miesiac/dzien: 2014/Kwiecien/21] [godz/min: 15 15] otworzyl plecak osobie Eris
+[OPENPACK] fromasz [ip: 46.148.0.165] [data rok/miesiac/dzien: 2014/Kwiecien/21] [godz/min: 15 16] otworzyl plecak osobie Eris
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 10 21] otworzyl plecak osobie Eris
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 17 5] otworzyl plecak osobie CMSu
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 17 54] otworzyl plecak osobie CMSu
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 21 33] otworzyl plecak osobie Polska Kuhwa
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 21 34] otworzyl plecak osobie Polska Kuhwa
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 21 46] otworzyl plecak osobie PrzeKozak
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 21 47] otworzyl plecak osobie Polska Kuhwa
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/22] [godz/min: 21 58] otworzyl plecak osobie PrzeKozak
+[OPENPACK] kan [ip: 79.191.179.8] [data rok/miesiac/dzien: 2014/Kwiecien/23] [godz/min: 19 4] otworzyl plecak osobie Rempero
+[OPENPACK] kan [ip: 79.191.186.69] [data rok/miesiac/dzien: 2014/Kwiecien/24] [godz/min: 16 20] otworzyl plecak osobie Czarnoksieznik
+[OPENPACK] kan [ip: 178.42.5.226] [data rok/miesiac/dzien: 2014/Kwiecien/25] [godz/min: 23 22] otworzyl plecak osobie Eris
+[BANK] osoba z konta: admin otworzyla bank osobie Miviel
+[BANK] osoba z konta: admin otworzyla bank osobie Rempero
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Kwiecien/-1] [godz/min: 22 45] otworzyl plecak osobie Rempero
+[BANK] osoba z konta: admin otworzyla bank osobie Miviel
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/2] [godz/min: 14 22] otworzyl plecak osobie DYNIAK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/4] [godz/min: 13 57] otworzyl plecak osobie CMSu
+[BANK] osoba z konta: admin otworzyla bank osobie CMSu
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/7] [godz/min: 24 13] otworzyl plecak osobie Soi-Fon
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/7] [godz/min: 24 18] otworzyl plecak osobie Emilka
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/7] [godz/min: 24 21] otworzyl plecak osobie Soi-Fon
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/7] [godz/min: 24 45] otworzyl plecak osobie Emilka
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/7] [godz/min: 24 46] otworzyl plecak osobie Soi-Fon
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/8] [godz/min: 1 0] otworzyl plecak osobie CMSu
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/8] [godz/min: 1 9] otworzyl plecak osobie Emilka
+[BANK] osoba z konta: admin otworzyla bank osobie Emilka
+[BANK] osoba z konta: admin otworzyla bank osobie Emilka
+[BANK] osoba z konta: admin otworzyla bank osobie Emilka
+[BANK] osoba z konta: admin otworzyla bank osobie Soi-Fon
+[BANK] osoba z konta: admin otworzyla bank osobie Emilka
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/10] [godz/min: 11 37] otworzyl plecak osobie DARK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/10] [godz/min: 11 46] otworzyl plecak osobie DARK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/10] [godz/min: 13 3] otworzyl plecak osobie DYNIAK
+[OPENPACK] admin [ip: 192.168.1.138] [data rok/miesiac/dzien: 2014/Maj/11] [godz/min: 12 54] otworzyl plecak osobie PrzeKozak
+[BANK] osoba z konta: admin otworzyla bank osobie DYNIAK

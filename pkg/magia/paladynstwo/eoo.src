@@ -1,0 +1,38 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_dfury( parms )
+  var circle := 3;
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 206);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  
+    if(Cint(GetObjProperty(caster, "EnemyOfOne")))
+        SendSysMessage(caster, "Jestes juz pod dzialaniem tego czaru.",3,40);
+        return 0;
+    endif
+
+  var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+
+  PlayObjectCenteredEffect( caster, FX_BLESS_EFFECT, 7,7);
+  PlaySoundEffect(caster, 0x5C1);
+  
+Setobjproperty(caster, "EnemyOfOne", 1);
+detach();
+sleep(pal*3);
+
+if(Cint(GetObjProperty(caster, "EnemyOfOne")))
+    SendSysMessage(caster, "Czar Enemy of One zakonczyl swoje dzialanie.",3,40);
+    eraseobjproperty(caster, "EnemyOfOne");
+    eraseobjproperty(caster, "#SWrog");
+endif
+
+endprogram

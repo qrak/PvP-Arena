@@ -1,0 +1,791 @@
+use os;
+use uo;
+use cfgfile;
+use npc;
+use util;
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/client";
+include "include/dist";
+include "include/anchors";
+include "include/attributes";
+include ":gumps:gumps";
+include "include/yesNo";
+include ":arty:kasakrol";
+include "include/canAccess";
+var bank;
+var me := Self();
+var npccfg := ReadConfigFile("::npcdesc");
+
+program banker();
+var bankbox, contents, amt;
+  me.frozen := 1;
+  GrantPrivilege( me, "invul" );
+   
+start_script("NPCKeeper", me);
+  var next_wander := ReadGameClock() + 30;
+  var myanchor := GetObjProperty(me, "Anchor");
+  if(myanchor)
+    MoveObjectToLocation(me, myanchor[1], myanchor[2], myanchor[3], me.realm, MOVEOBJECT_FORCELOCATION);
+  endif
+  drop_anchor();
+  myanchor := GetObjProperty(me, "Anchor");
+  EnableEvents(SYSEVENT_SPEECH,4);
+  var text;
+  while(1)
+    var ev;
+    ev := os::wait_for_event(120);
+    if(ev.type == SYSEVENT_ENGAGED)
+    if(CheckLineOfSight(me, ev.source))
+                                  PerformAction(me, 17);
+  
+
+  PlaySoundEffect(ev.source, 0x2a);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  ApplyRawDamage(ev.source, GetMaxHp(ev.source) + 50);
+  sleep(1);
+  PerformAction(me, 17);
+endif
+    elseif(ev.type == EVID_SPEECH)
+      text := lower(ev.text);
+      if(text["kup"])
+    
+      var who := ev.source;
+      TurnToward(who);
+        arty(who, me);
+        clear_event_queue();
+      endif
+
+      endif
+	if(ReadGameClock() >= next_wander)
+
+      if(coordist(me.x, me.y, myanchor[1], myanchor[2]) > 5)
+        MoveObjectToLocation(me, myanchor[1], myanchor[2], myanchor[3], me.realm, MOVEOBJECT_FORCELOCATION);
+      endif
+      next_wander := ReadGameClock() + 120;
+    endif
+  endwhile
+endprogram
+
+function arty(who, me)
+
+
+/*if(who.cmdlevel)
+   SendSysMessage(who, "GM nie moze kupowac", 3, 40);
+   return 0;
+endif*/
+// DAWAJ --------------------------------
+
+
+
+GFInitGump(0,0);
+GFNoClose();
+GFNoMove();
+GFpage (0);
+GFResizePic(50, 50, 3600, 500, 500);
+GFCheckerTrans(50,50,500,500);
+
+
+GFPage(1);
+GFTextline(100, 90, 40, "  Halabarda Smierci");
+GFButtonPage(85, 90, 1209, 1210,  2); // do strony 2
+
+GFTextline(100, 110, 40, "  Luk Smierci");
+GFButtonPage(85, 110, 1209, 1210,  11); // do strony 11
+
+GFTextline(100, 130, 40, "  Tarcza Smierci");
+GFButtonPage(85, 130, 1209, 1210,  3); // do strony 3
+
+GFTextline(100, 150, 40, "  Kryss Smierci");
+GFButtonPage(85, 150, 1209, 1210,  4); // do strony 4
+
+GFTextLine(100, 170, 40, "  Laska z ostrzem");
+GFButtonPage(85, 170, 1209, 1210,  5); // do strony 5
+
+GFTextLine(100, 190, 40, "  Zbroja Apokalipsy");
+GFButtonPage(85, 190, 1209, 1210,  6); // do strony 6
+
+GFTextLine(100, 210, 40, "  Antyczna Siekiera");
+GFButtonPage(85, 210, 1209, 1210,  7); // do strony 7
+
+GFTextLine(100, 230, 40, "  Antyczny Kilof");
+GFButtonPage(85, 230, 1209, 1210,  8); // do strony 8
+
+GFTextLine(100, 250, 40, "  Antyczny Mlotek");
+GFButtonPage(85, 250, 1209, 1210,  12); // do strony 12
+
+GFTextLine(100, 270, 40, "  Antyczne Narzedzia Do Szycia");
+GFButtonPage(85, 270, 1209, 1210,  13); // do strony 13
+
+GFTextLine(100, 290, 40, "  Antyczny Sztylet Lucznictwa");
+GFButtonPage(85, 290, 1209, 1210,  14); // do strony 14
+
+GFTextLine(100, 310, 40, "  Swietlisty kamien");
+GFButtonPage(85, 310, 1209, 1210,  9); // do strony 9
+
+GFTextLine(100, 330, 40, "  Totem Qra'ha");
+GFButtonPage(85, 330, 1209, 1210,  10); // do strony 10
+
+GFTextLine(100, 350, 40, "  Kolorowacz mountow");
+GFButtonPage(85, 350, 1209, 1210,  15); // do strony 15
+
+GFTextLine(100, 370, 40, "  Chimera");
+GFButtonPage(85, 370, 1209, 1210,  16); // do strony 16
+
+GFTextLine(100, 390, 40, "  Opancerzony Koszmar");
+GFButtonPage(85, 390, 1209, 1210,  17); // do strony 17
+
+GFTextLine(100, 410, 40, "  Hiryu");
+GFButtonPage(85, 410, 1209, 1210,  18); // do strony 18
+
+    // przycisk anulowania
+    GFTextLine(445, 500, 40, "Anuluj");
+    var idzstad := GFButtonID(490, 500, 1209, 1210, 1);
+    // autor
+    GFTextLine(60, 515, 66, "Wybor z menu otwiera podmenu z informacjami o przedmiocie.");
+
+GFPage(2); // STRONA 2
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(90, 110, 0x143e); // ikona arta
+GFTextLine(300, 90, 50, "Halabarda Smierci");
+GFTextLine(230, 120, 40, "Koszt: 520000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Level: 30");
+GFTextLine(230, 165, 40, "Obrazenia od ognia");
+
+var kup1 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(3); // STRONA 3
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(105, 120, 0x1bc3); // ikona arta
+GFTextLine(300, 90, 50, "Tarcza Smierci");
+GFTextLine(230, 120, 40, "Koszt: 400000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Level: 30");
+
+var kup2 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(4); // STRONA 4
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(105, 120, 0x1401); // ikona arta
+GFTextLine(300, 90, 50, "Kryss Smierci");
+GFTextLine(230, 120, 40, "Koszt: 380000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Level: 30");
+GFTextLine(230, 165, 40, "Obrazenia od blyskawic");
+
+var kup3 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(5); // STRONA 5
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(90, 110, 0x26BD); // ikona arta
+GFTextLine(300, 90, 50, "Laska z Ostrzem");
+GFTextLine(230, 120, 40, "Koszt: 300000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Level: 30");
+GFTextLine(230, 165, 40, "Szybsze czarowanie");
+//GFTextLine(230, 180, 40, "Szybsze czarowanie");
+//GFTextLine(230, 165, 40, "+ 25 many");
+var kup4 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(6); // STRONA 6
+GFResizePic(200,80, 2520,310,280); // pergamin
+
+GFResizePic(80, 80, 3600, 100, 100); // gump ikony [klata]
+GFTilePic(105, 120, 0x2641); // ikona klaty
+var kupklate := GFButtonID(100, 95, 1209, 1210, 1);
+GFTextLine(120, 95, 40, "Kup");
+
+GFResizePic(80, 180, 3600, 100, 100); // gump ikony [nogi]
+GFTilePic(105, 220, 0x2647); // ikona nog
+var kupnogi := GFButtonID(100, 195, 1209, 1210, 1);
+GFTextLine(120, 195, 40, "Kup");
+
+GFResizePic(80, 280, 3600, 100, 100); // gump ikony [naramienniki]
+GFTilePic(105, 320, 0x2643); // ikona rak
+var kuprece := GFButtonID(100, 295, 1209, 1210, 1);
+GFTextLine(120, 295, 40, "Kup");
+
+GFResizePic(80, 380, 3600, 100, 100); // gump ikony [naramienniki]
+GFTilePic(105, 420, 0x2657); // ikona naramiennikow
+var kupnaramy := GFButtonID(100, 395, 1209, 1210, 1);
+GFTextLine(120, 395, 40, "Kup");
+
+GFResizePic(180, 380, 3600, 100, 100); // gump ikony [helm]
+GFTilePic(205, 420, 0x2645); // ikona helmu
+var kuphelm := GFButtonID(200, 395, 1209, 1210, 1);
+GFTextLine(220, 395, 40, "Kup");
+
+GFResizePic(280, 380, 3600, 100, 100); // gump ikony [kark]
+GFTilePic(305, 420, 0x1413); // ikona karku
+var kupkark := GFButtonID(300, 395, 1209, 1210, 1);
+GFTextLine(320, 395, 40, "Kup");
+
+GFTextLine(300, 90, 50, "Zbroja Apokalipsy");
+GFTextLine(230, 120, 40, "Koszt: 250000 zlota krolewskiego/szt.");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 165, 40, "Mozliwosc zwiekszania levelu kulami obrazen");
+GFTextLine(230, 180, 40, "+ 5% resista na kazda czesc zbroi");
+
+
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(7); // STRONA 7
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(110, 120, 0x0f43); // ikona arta
+GFTextLine(300, 90, 50, "Antyczna Siekiera");
+GFTextLine(230, 120, 40, "Koszt: 260000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Szybsze scinanie");
+
+var kup5 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(8); // STRONA 8
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(110, 120, 0x0e85); // ikona arta
+GFTextLine(300, 90, 50, "Antyczny Kilof");
+GFTextLine(230, 120, 40, "Koszt: 260000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Szybsze kopanie");
+
+var kup6 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(9); // STRONA 9
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(110, 90, 10989); // ikona arta
+GFTextLine(300, 90, 50, "Swietlisty kamien");
+GFTextLine(230, 120, 40, "Koszt: 30000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Przedmiot ozdobny.");
+
+var kup7 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(10); // STRONA 10
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(100, 90, 0x3B0F); // ikona arta
+GFTextLine(300, 90, 50, "Totem Qra'ha");
+GFTextLine(230, 120, 40, "Koszt: 25000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Przedmiot ozdobny.");
+
+var kup8 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(11); // STRONA 11
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(70, 110, 0x2D1E); // ikona arta
+GFTextLine(300, 90, 50, "Luk Smierci");
+GFTextLine(230, 120, 40, "Koszt: 520000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Level: 30");
+GFTextLine(230, 165, 40, "Obrazenia od ognia");
+
+var kup10 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(12); // STRONA 12
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0x13e3); // ikona arta
+GFTextLine(300, 90, 50, "Antyczny Mlotek");
+GFTextLine(230, 120, 40, "Koszt: 250000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Wieksza szansa na wyjatek");
+GFTextLine(230, 165, 40, "Szybsze kucie");
+
+var kup11 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(13); // STRONA 13
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0x0F9D); // ikona arta
+GFTextLine(300, 90, 50, "Antyczne Narzedzia do Szycia");
+GFTextLine(230, 120, 40, "Koszt: 250000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Wieksza szansa na wyjatek");
+GFTextLine(230, 165, 40, "Szybsze szycie");
+
+var kup12 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(14); // STRONA 14
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0x0f51); // ikona arta
+GFTextLine(300, 90, 50, "Antyczny Sztylet Tworzenia Lukow");
+GFTextLine(230, 120, 40, "Koszt: 250000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Artefakt niezniszczalny");
+GFTextLine(230, 150, 40, "Wieksza szansa na wyjatek");
+GFTextLine(230, 165, 40, "Szybsze tworzenie lukow");
+
+var kup13 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(15); // STRONA 15
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0xaa10); // ikona arta
+GFTextLine(300, 90, 50, "Magiczny kolorowacz rumakow");
+GFTextLine(230, 120, 40, "Koszt: 100000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Umozliwia nadanie koloru mountowi");
+GFTextLine(230, 150, 40, "Zakres kolorow od 1 do 1300");
+GFTextLine(230, 165, 40, "Artefakt jednorazowego uzytku.");
+
+var kup15 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(16); // STRONA 16
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0x14F1); // ikona arta
+GFTextLine(300, 90, 50, "Chimera");
+GFTextLine(230, 120, 40, "Koszt: 20000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Mozna na niej jezdzic");
+
+var kup16 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(17); // STRONA 17
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0x14F1); // ikona arta
+GFTextLine(300, 90, 50, "Opancerzony Koszmar");
+GFTextLine(230, 120, 40, "Koszt: 20000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Mozna na nim jezdzic");
+
+var kup17 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+GFPage(18); // STRONA 18
+GFResizePic(80, 80, 3600, 100, 100); // gump wlasciwy
+GFResizePic(200,80, 2520,310,410); // pergamin
+GFTilePic(120, 110, 0x14F1); // ikona arta
+GFTextLine(300, 90, 50, "Hiryu");
+GFTextLine(230, 120, 40, "Koszt: 20000 zlota krolewskiego");
+GFTextLine(230, 135, 40, "Mozna na nim jezdzic");
+
+var kup18 := GFButtonID(80, 200, 1209, 1210, 1);
+GFTextLine(100, 200, 40, "Kup");
+
+GFTextLine(445, 500, 40, "Powrot");
+GFButtonPage(490, 500, 1209, 1210,  1); // do strony 0
+
+var keys := GFSendGump(who);
+    
+var ile := 0;
+var bron;
+var template, nazwa, lifestat, manastat, stamstat, skript;
+
+if(keys[0] == kup1.keyid)
+
+    if(!kasakurwa(who, 520000))
+    return 0;
+    endif
+    
+   bron := CreateItemInBackpack(who, 0x143f, 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Halabarda Smierci [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "typ", "fball");
+   SetObjProperty(bron, "level", 15);
+   SetObjProperty(bron, "indes", 1);
+
+elseif(keys[0] == kup2.keyid)
+
+   if(!kasakurwa(who, 400000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x1bc3, 1);
+   bron.color := 1098;
+   bron.ar_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Tarcza Smierci [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "indes", 1);
+
+elseif(keys[0] == kup3.keyid)
+
+   if(!kasakurwa(who, 380000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x1401, 1);
+   bron.color := 1098;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Kryss Smierci [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "lightning");
+SetObjProperty(bron, "level", 15);
+
+elseif(keys[0] == kup4.keyid)
+
+   if(!kasakurwa(who, 300000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x26BD , 1);
+   bron.color := 1098;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Laska z Ostrzem [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "FasterCast");
+SetObjProperty(bron, "level", 15);
+  // SetObjProperty(bron, "FasterCast", 1);
+ //  SetObjProperty(bron, "typ", "mana");
+
+elseif(keys[0] == kupklate.keyid)
+
+   if(!kasakurwa(who, 250000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x2641, 1);
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.ar_mod := 45;
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "resist");
+   SetObjProperty(bron, "ladunki", 10);
+
+elseif(keys[0] == kupnogi.keyid)
+
+   if(!kasakurwa(who, 250000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x2647, 1);
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.ar_mod := 45;
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "resist");
+   SetObjProperty(bron, "ladunki", 10);
+
+elseif(keys[0] == kuprece.keyid)
+
+   if(!kasakurwa(who, 250000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x2643, 1);
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.ar_mod := 45;
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "resist");
+   SetObjProperty(bron, "ladunki", 10);
+
+elseif(keys[0] == kupnaramy.keyid)
+
+   if(!kasakurwa(who, 250000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x2657, 1);
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.ar_mod := 45;
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "resist");
+   SetObjProperty(bron, "ladunki", 10);
+
+elseif(keys[0] == kuphelm.keyid)
+
+   if(!kasakurwa(who, 250000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x2645, 1);
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.ar_mod := 45;
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "resist");
+   SetObjProperty(bron, "ladunki", 10);
+
+elseif(keys[0] == kupkark.keyid)
+
+   if(!kasakurwa(who, 250000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x2646, 1);
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.ar_mod := 45;
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "typ", "resist");
+   SetObjProperty(bron, "ladunki", 10);
+
+elseif(keys[0] == kup5.keyid)
+
+   if(!kasakurwa(who, 260000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x0f43 , 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Antyczna Siekiera [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "FasterWork", 1);
+   SetObjProperty(bron, "indes", 1);
+
+elseif(keys[0] == kup6.keyid)
+
+   if(!kasakurwa(who, 260000))
+   return 0;
+   endif
+    
+   bron := CreateItemInBackpack(who, 0x0e85 , 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Antyczny Kilof [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "FasterWork", 1);
+   SetObjProperty(bron, "indes", 1);
+
+elseif(keys[0] == kup7.keyid)
+
+   if(!kasakurwa(who, 30000))
+   return 0;
+   endif
+    
+   CreateItemInBackpack(who, 10989, 1);
+
+elseif(keys[0] == kup8.keyid)
+
+   if(!kasakurwa(who, 25000))
+   return 0;
+   endif
+    
+   CreateItemInBackpack(who, 0x3B0F, 1);
+
+elseif(keys[0] == kup10.keyid)
+
+   if(!kasakurwa(who, 520000))
+   return 0;
+   endif
+   
+   bron := CreateItemInBackpack(who, 0x2D1E, 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Luk Smierci [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "typ", "fball");
+   SetObjProperty(bron, "indes", 1);
+
+elseif(keys[0] == kup11.keyid)
+
+   if(!kasakurwa(who, 250000))
+      return 0;
+   endif
+   
+   bron := CreateItemInBackpack(who, 0x13e3, 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Antyczny Mlotek [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "69exodus", 1);
+   SetObjProperty(bron, "FasterWork", 1);
+   
+elseif(keys[0] == kup12.keyid)
+
+   if(!kasakurwa(who, 250000))
+      return 0;
+   endif
+   
+   bron := CreateItemInBackpack(who, 0x0F9D, 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Antyczne Narzedzia Do Szycia [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "69exodus", 1);
+   SetObjProperty(bron, "FasterWork", 1);
+
+elseif(keys[0] == kup13.keyid)
+
+   if(!kasakurwa(who, 250000))
+      return 0;
+   endif
+   
+   bron := CreateItemInBackpack(who, 0x0f51, 1);
+   bron.color := 1100;
+   bron.dmg_mod := 45;
+   bron.quality := EXP_QUALITY;
+   bron.hp := bron.maxhp;
+   bron.name := "Antyczny Sztylet Tworzenia Lukow [artefakt] [niezniszczalny]";
+   SetObjProperty(bron, "indes", 1);
+   SetObjProperty(bron, "69exodus", 1);
+   SetObjProperty(bron, "FasterWork", 1);
+   
+elseif(keys[0] == kup15.keyid)
+
+   if(!kasakurwa(who, 100000))
+   return 0;
+   endif
+
+   CreateItemInBackpack(who, 0xaa10, 1);
+
+elseif(keys[0] == kup16.keyid)
+
+   if(!kasakurwa(who, 20000))
+      return 0;
+   endif
+   template := "chimera";
+   nazwa := "Chimera";
+   lifestat := npccfg[template].HITS;
+   manastat := npccfg[template].MANA;
+   stamstat := npccfg[template].STAM;
+   skript := npccfg[template].script;
+   ZrobBilet(who, template, nazwa, lifestat, manastat, stamstat, skript);
+	 
+elseif(keys[0] == kup17.keyid)
+
+   if(!kasakurwa(who, 20000))
+      return 0;
+   endif
+   template := "armorednightmare";
+   nazwa := "opancerzony koszmar";
+   lifestat := npccfg[template].HITS;
+   manastat := npccfg[template].MANA;
+   stamstat := npccfg[template].STAM;
+   skript := npccfg[template].script;
+   ZrobBilet(who, template, nazwa, lifestat, manastat, stamstat, skript);
+
+elseif(keys[0] == kup18.keyid)
+
+   if(!kasakurwa(who, 20000))
+      return 0;
+   endif
+   template := "hiryu";
+   nazwa := "hiryu";
+   lifestat := npccfg[template].HITS;
+   manastat := npccfg[template].MANA;
+   stamstat := npccfg[template].STAM;
+   skript := npccfg[template].script;
+   ZrobBilet(who, template, nazwa, lifestat, manastat, stamstat, skript);
+   
+endif
+
+
+SetObjProperty(bron, "kupil", who.name);
+if(who.cmdlevel)
+   SetObjProperty(bron, "BoughtByGM", 1);
+   SetName(bron, bron.name + " [kupiony przez GMa]");
+endif
+
+endfunction
+
+function ZrobBilet(who, template, nazwa, lifestat, manastat, stamstat, skript)
+	var bilet := CreateItemInContainer(who.backpack, 0x14F1);
+	bilet.color := 1167;
+	bilet.name := "bilet na zwierza " + nazwa;
+	SetObjProperty(bilet, "template", template);
+	SetObjProperty(bilet, "nazwa", nazwa);
+	SetObjProperty(bilet, "Hp", lifestat);
+	SetObjProperty(bilet, "Mana", manastat);
+	SetObjProperty(bilet, "Stamina", stamstat);
+	SetObjProperty(bilet, "color", 0);
+	SetObjProperty(bilet, "truecolor", 0);
+	SetObjProperty(bilet, "script", skript);
+	bilet.usescript := ":bilety:makebilet";
+endfunction
+

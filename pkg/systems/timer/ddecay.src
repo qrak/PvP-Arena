@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+program Wiek()
+    while(1)
+      foreach character in EnumerateOnlineCharacters()
+        if(Cint(GetObjProperty(character, "#deathcount")) > 0)
+          EraseObjProperty(character, "#deathcount");
+        endif
+      endforeach
+      sleep(300);
+    endwhile
+endprogram

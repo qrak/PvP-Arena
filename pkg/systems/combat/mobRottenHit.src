@@ -1,0 +1,39 @@
+use os;
+use util;
+use uo;
+
+include "include/attributes";
+
+program poisonhit(param)
+  var attacker := param[1];
+  var defender := param[2];
+
+  
+  if(Cint(GetObjProperty(defender, "#Syf")))
+    return 0;
+  endif
+  
+  if(!defender.dead && !defender.npctemplate)
+    Rotten(defender);
+  endif
+    
+endprogram
+
+function Rotten(who)
+  var i := 0;
+  Detach();
+  SendSysMessage(who, "Zaczynasz gnic!", 3, 40);
+  while(i < 100)
+    if(!who.dead)
+      set_critical(1);
+      SetObjProperty(who, "#Syf", 1);
+      SetStamina(who, GetStamina(who) - RandomInt(4));
+      SetMana(who, GetMana(who) - RandomInt(4));
+      PrintTextAbove(who, "*smierdzi*",3,40);
+      set_critical(0);
+    endif
+    i := i + 1;
+    sleep(5);
+  endwhile
+  EraseObjProperty(who, "#Syf");
+endfunction

@@ -1,0 +1,6 @@
+use uo;
+
+program openit(who)
+  var trg := Target(who);
+  SendOpenSpecialContainer(who, trg);
+endprogram

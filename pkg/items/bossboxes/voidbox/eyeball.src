@@ -1,0 +1,10 @@
+
+use uo;
+
+program eyeball(who)
+
+SendSysMessage(who, "Musisz to umiescic w skrzyni otchlani.");
+return 0;
+
+
+endprogram

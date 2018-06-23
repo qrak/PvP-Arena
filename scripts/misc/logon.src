@@ -1,0 +1,217 @@
+use uo; 
+use os;
+use polsys;
+use unicode;
+
+include "include/staty";
+include "include/tempMod";
+include "include/attributes";
+include "include/staty";
+include "chrdeath";
+
+program onlogon(who)
+
+    TrackIP(who);
+    
+	
+    // NADAWANIE KONTU PROPA Mondains Legacy
+    
+    var acct := who.acct;
+    acct.set_uo_expansion("ML");
+
+    // KONIEC
+
+ 
+    SetObjProperty(who,"logontime",ReadGameClock());
+    
+    // USUWANIE STARYCH NIEUZYWANYCH PROPOW
+    
+    EraseObjProperty(who, "#resist_mod");  // do magikow
+    EraseObjProperty(who, "IsMeditating"); // usuwa medytacje
+    EraseObjProperty(who, "#duelOkno"); // okno duela
+    EraseObjProperty(who, "#team");  // duelowanie
+    EraseObjProperty(who, "DivineFury"); //usuwa propa czaru divinefury (paladyn)
+    EraseObjproperty(who.weapon, "#Consecrate"); // usuwa propa czaru consecrate weapon (paladyn)
+    EraseObjProperty(who, "rodzajstrzal");
+    EraseObjProperty(who, "private");
+    EraseObjProperty(who, "hairlastgrew");
+    EraseObjProperty(who, "origbeardcol");
+    EraseObjProperty(who, "orighaircol");
+    EraseObjProperty(who, "Powtorzenia");
+    EraseObjProperty(who, "ostatniorozjebal");
+    EraseObjProperty(who, "mounttime");
+    EraseObjProperty(who, "type"); // mikstura
+    EraseObjProperty(who, "Deathmatch"); // mikstura
+    EraseObjProperty(who, "qrak_frags");
+    RevokePrivilege(who, "freemove");
+    if(!who.cmdlevel)
+        who.Disable("invul"); // wypierdala invula gracza
+        RevokePrivilege(who, "invul");
+    endif
+    // KONIEC
+
+ 
+
+    start_script(":hooks:attributeCore", who);
+  
+    if(GetGlobalProperty("restart") && who.cmdlevel == 0)
+        SendSysMessage(who, "Jeszcze nie mozna sie logowac!", 3, 40);
+        start_script(":versionhook:sleeper", who);
+        return 0;
+    endif
+
+    if(!acct.getprop("email"))
+        SendSysMessage(who, "Nie masz ustawionego e-maila! Ustaw e-maila przy pomocy komendy .email ! Granie bez prawidlowego emaila jest zabronione!",3,40);
+    endif
+    
+    if(!who.cmdlevel)
+      who.concealed := 0;
+    endif
+  
+    if(GetObjProperty(who, "player_guild"))
+        who.title_guild := GetObjProperty(who, "player_guild");
+    else
+        who.title_guild := "";
+    endif
+ 
+    if (who.cmdlevel < 1)
+        PrintTextAbove(who, "*budzi sie*");
+        print("Postac " + who.name + " zalogowala sie na konto " + who.acctname + " na ip " + who.ip);
+    endif
+    var wiek := Cint(GetObjProperty(who, "lata"));
+    if(!who.cmdlevel)
+	if(wiek < 30)
+		BroadCast("Noob " + who.name + " wszedl do swiata PvP!", 0x1, 40);
+	elseif(wiek >= 30 && wiek < 40)
+		BroadCast("Elitarny gracz " + who.name + " wszedl do swiata PvP!", 0x1, 63);
+	elseif(wiek >= 40)
+		BroadCast("LEGENDARNY gracz " + who.name + " wszedl do swiata PvP!", 0x1, 89);
+	endif
+    endif
+
+    if(GetObjProperty(who, "poly") || Cint(!GetObjProperty(who, "poly")) == 2)
+        start_script(":unpoly:unpoly", who);	
+    endif
+
+    var theLocks := GetObjProperty(who, "SkLockArray"); 
+    var i;
+
+    theLocks := {}; 
+    for (i:=0; i<=50; i:=i+1) 
+      theLocks.append(1); 
+    endfor 
+    SetObjProperty(who, "SkLockArray", theLocks); 
+    if(!who.cmdlevel)
+        var fragi := GetObjProperty(who,"Score");
+        if(!fragi)
+            SetObjProperty(who, "Score", {0, 0});
+        endif
+        who.title_suffix := " - F: " + GetObjProperty(who, "Score")[1] + " S: " + GetObjProperty(who, "Score")[2];
+        who.SetMurderer(0);
+    endif
+
+    if(Cint(GetObjProperty(who, "frozen")))
+        who.frozen := 1;
+    endif
+    if(!who.cmdlevel)
+        CheckIfBest(who);
+        CheckIfBestIgrzysker(who);
+        CheckIfBestCtfer(who);
+    endif
+    
+    WipeMods( who );
+    if(!who.cmdlevel)
+        CheckStats(who);
+        MageAnatomyFix(who); // temporary
+    endif
+   
+endprogram
+
+function CheckStats(who);
+    var sumastatow := GetBaseStrength(who) + GetBaseDexterity(who) + GetBaseIntelligence(who); // zlicza czy zgadza sie statcap
+    if(sumastatow > CheckStatcap(who))
+         start_script(":hooks:staty", who);
+         who.frozen := 1;
+    endif
+endfunction
+
+function MageAnatomyFix(who)
+    if(CInt(GetEffectiveSkill(who, SKILLID_MAGERY) >= 100) && CInt(GetEffectiveSkill(who, SKILLID_ANATOMY) <= 100))
+        SetBaseSkill(who, SKILLID_ANATOMY, 100);
+    endif
+endfunction
+
+
+function TrackIP(who)
+  var acct := who.acct;
+  var ipstring := acct.getprop("LastIP");
+  if(!ipstring)
+    ipstring := {};
+  endif
+  var holder := {};
+  var amt := len(ipstring);
+  foreach thing in ipstring
+    if((thing[1] != who.ip) and (amt < 20));
+      holder.append(thing);
+    else
+      amt := amt - 1;
+    endif
+  endforeach
+  ipstring := holder;
+  var newarray := {};
+  newarray.append(who.ip);
+  newarray.append(who.name);
+  ipstring.append(newarray);
+  acct.setprop("LastIP", ipstring);
+endfunction
+
+function CheckIfBest(who)
+    var bestkillerever := GetGlobalProperty("bestkillerever");
+    var oldestplayerever := GetGlobalProperty("oldestplayerever");;
+    var bestduelerever := GetGlobalProperty("bestduelerever");
+    if(!bestkillerever)
+        SetGlobalProperty("bestkillerever", {0, 0, "brak"});
+    endif
+    if(!oldestplayerever)
+        SetGlobalProperty("oldestplayerever", {0, "brak"});
+    endif
+    if(!bestduelerever)
+        SetGlobalProperty("bestduelerever", {0, 0, "brak"});
+    endif
+    var fragi := GetObjProperty(who,"Score");
+    var wiek := Cint(GetObjProperty(who, "lata"));
+    var duelfrags := GetObjProperty(who,"duelfrags");
+    var dueldeaths := GetObjProperty(who,"dueldeaths");
+    if(fragi[1] > bestkillerever[1])
+        SetGlobalProperty("bestkillerever", {fragi[1], fragi[2], who.name});
+    endif
+    if(wiek > oldestplayerever[1])
+        SetGlobalProperty("oldestplayerever", {wiek, who.name});
+    endif
+    if(duelfrags > bestduelerever[1])
+        SetGlobalProperty("bestduelerever", {duelfrags, dueldeaths, who.name});
+    endif
+
+endfunction
+
+function CheckIfBestIgrzysker(who)
+    var bestkillerever := GetGlobalProperty("bestkillereverIG");
+    if(!bestkillerever)
+        SetGlobalProperty("bestkillereverIG", {0, "brak"});
+    endif
+    var fragi := Cint(GetObjProperty(who,"igrzyskapunkt"));
+    if(fragi > bestkillerever[1])
+        SetGlobalProperty("bestkillereverIG", {fragi, who.name});
+    endif
+endfunction
+
+function CheckIfBestCtfer(who)
+    var bestctferever := GetGlobalProperty("bestkillereverCTF");
+    if(!bestctferever)
+        SetGlobalProperty("bestkillereverCTF", {0, "brak"});
+    endif
+    var flagsscored := Cint(GetObjProperty(who,"FlagsScored"));
+    if(flagsscored > bestctferever[1])
+        SetGlobalProperty("bestkillereverCTF", {flagsscored, who.name});
+    endif
+endfunction

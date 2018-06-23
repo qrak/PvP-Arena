@@ -1,0 +1,352 @@
+
+use util;
+use vitals;
+use math;
+use polsys;
+use uo;
+use cfgfile;
+use npc;
+use os;
+use basic;
+
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/NPCBackpacks";
+include "include/NPCCast";
+include "ai/setup/spellSetup";
+include "ai/combat/spellCombatEvent";
+include "include/randName";
+include "include/dist";
+include "include/snooping";
+
+const HAPPINESS_DECAY := 10*60;
+const MAX_HAPPINESS := 100;
+const DEF_AMOUNT := 10;
+var zabijfoll := 0;
+set_priority(5);
+
+//const  HALT_THRESHOLD := 15;
+const  SYSEVENT_ALL_GUARD_CMD := 0x13;
+
+Const me := Self();
+var npccfgfile     := ReadConfigFile("npcdesc");
+var dmgsound       := npccfgfile[me.npctemplate].attackmisssound;
+var hit            := npccfgfile[me.npctemplate].attackhitsound;
+var idlesnd1       := npccfgfile[me.npctemplate].idlesound1;
+var idlesnd2       := npccfgfile[me.npctemplate].idlesound2;
+var FLAME_STRENGTH := npccfgfile[me.npctemplate].flamestrength;
+var caster := 0;
+//var spells;
+var firebreather;
+var orneriness := npccfgfile[me.npctemplate].orneriness;
+var masterserial := GetObjProperty(me, "master");
+//var saywords := 0;
+//var master;
+var chaseloop := 0;
+var guarding :=0;
+var following := 0;
+var nextwatch := ReadGameClock();
+var waittime := 120;
+var LAST_BREATH := ReadGameClock();
+var cel := systemfindobjectbyserial(getproperty("cel"));
+
+///////////////////////////////////////////////////////////////////////////
+program TamedAI()
+
+  Detach();
+  
+    me.set_member("run_speed", 250);
+
+  //var time := ReadGameClock();
+  //SetObjProperty(me,"countercheck", time);
+  //var parms := {};
+  //parms[1] := me;
+  //parms[2] := time;
+  //start_script(":taming:happyCounter", parms);
+  if(!orneriness)
+    orneriness := 0;
+  endif
+  SetAnchor(me.x, me.y, 20, 0);
+  var npccfg := ReadConfigFile("npcdesc");
+  if(npccfg[me.npctemplate].spell)
+    caster := 1;
+//    spells := GetConfigStringArray(npccfg[me.npctemplate], "spell");
+  endif
+//  if (me.graphic == 11 || me.graphic == 58)
+ //   caster := 1;
+ //   spells := {"poison", "fstrike", "eBolt", "lightning", "harm", "mindBlast", "magicArrow", "explosion", "fireball", "paralyze"};
+ // endif
+  if(FLAME_STRENGTH)
+    firebreather := 1;
+  endif
+  SetWarMode(0);
+  SetObjProperty(me, "serial", me.serial);
+  // debug
+//  if (master.cmdlevel > 0)
+//  	printtextaboveprivate(me, "start AI / time="+readgameclock()+" / glod="+zglodnieje, master);
+//  endif
+  MainAILoop();
+endprogram
+
+///////////////////////////////////////////////////////////////////////////
+var lastface;
+
+function CloseDistance(opponent)
+  var dst := 1;
+  var d := Distance(me, opponent);
+  if (d <= dst)
+  sleep(1);
+    return 1;
+  elseif((d >= 10))
+    var x ;
+    var y;
+    if(me.x < opponent.x - 6)
+      x := opponent.x - 6;
+    elseif(me.x > opponent.x + 6)
+      x := opponent.x + 6;
+    else
+      x := me.x;
+    endif
+    if(me.y < opponent.y - 6)
+      y := opponent.y - 6;
+    elseif(me.y > opponent.y + 6)
+      y := opponent.y+ 6;
+    else
+      y := me.y;
+    endif
+    MoveObjectToLocation(me, x, y, opponent.z, me.realm);
+    RunToward(opponent);
+    return 1;
+  else
+    RunToward( opponent );
+    RunToward( opponent );
+    RunToward( opponent );
+    if(GetStrength(me) >= 70)
+	    Opendoors(me);
+    endif
+  endif
+endfunction
+
+function Opendoors(me)
+  foreach door in ListItemsNearLocation(me.x, me.y, me.z, 1)
+    if((door.isa(POLCLASS_DOOR)) and (!door.locked))
+      if(!GetObjProperty(door, "WhenOpened" ))
+        start_script(":doors:openDoor", door);
+      endif
+      EraseObjProperty(door, "#inuse");
+    endif
+  endforeach
+endfunction
+
+
+///////////////////////////////////////////////////////////////////////////
+
+function MainAILoop()
+
+
+  nextwatch := ReadGameClock();
+//  var happytimer := 0;
+//  var sleeper := 0;
+
+
+	while(GetHp(me)> 0)
+//                  sleepms(100);
+            if(!cel || cel.dead)
+              MoveObjectToLocation(me, 3808, 3639, 1, me.realm, MOVEOBJECT_FORCELOCATION);
+              ApplyRawDamage(me, Gethp(me) + 10);
+              return;
+            endif
+            if(cel.hidden)
+            cel.hidden := 0;
+            endif
+                  Fight(cel);
+
+	endwhile
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////
+
+function Fight(opponent)
+  var flees := 0;
+ SetDexterityMod(me, 0);
+ TurnToward(opponent);
+  prepare_for_fight(opponent);
+  SetOpponent(opponent);
+  var loops := 0;
+  var waittime := 0;
+  while(opponent)
+            if(!cel || cel.dead)
+              MoveObjectToLocation(me, 3808, 3639, 1, me.realm, MOVEOBJECT_FORCELOCATION);
+              ApplyRawDamage(me, Gethp(me) + 10);
+              return;
+            endif
+	if(!CloseDistance(opponent))
+      loops := loops + 1;
+      waittime := 0;
+    else
+      if(!CheckLineOfSight(me, opponent))
+        loops := loops + 1;
+      endif
+      waittime := 1;
+    endif
+    process_combat_event(opponent);
+    if(firebreather and caster)
+      if(LAST_BREATH <= ReadGameClock())
+        if((CheckLineOfSight(me, opponent)) and (dist(me, opponent) <= 15))
+          if(RandomInt(4) == 1)
+            cast_meteor(opponent);
+          else
+	        cast_offensive_spell(me,opponent);
+          endif
+          LAST_BREATH := Cint(ReadGameClock() + (RandomInt(4) + 4));
+        endif
+      endif
+    elseif(caster)
+      if(LAST_BREATH <= ReadGameClock())
+        if((CheckLineOfSight(me, opponent)) and (dist(me, opponent) <= 15))
+          cast_offensive_spell(me, opponent);
+          LAST_BREATH := Cint(ReadGameClock() + (RandomInt(4) + 4));
+        endif
+      endif
+    elseif(firebreather)
+      if(LAST_BREATH <= ReadGameClock())
+        if(RandomInt(4)== 1)
+          cast_meteor(opponent);
+        endif
+        LAST_BREATH := Cint(ReadGameClock() + (RandomInt(4) + 4));
+      endif
+    endif
+    if(loops > 30)
+      flees := flees + 1;
+      if(flees > 4)
+        flee(opponent);
+      endif
+      return;
+    endif
+  endwhile
+
+
+ 
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////
+function Follow()
+  var d := Distance(me, following);
+  
+  if(d <= 1)
+    WalkAwayFrom(following);
+  elseif(d == 2)
+    waittime := 1;
+ // elseif(d > 15)
+  //  MoveObjectToLocation( me, CInt(following.x), CInt(following.y), CInt(following.z),
+	//			MOVEOBJECT_FORCELOCATION );
+  //  waittime := 1;
+  elseif(d < 10);
+    if(GetObjProperty(me, "Pause"))
+      waittime := 2;
+    else
+      var ma := 800 - CInt(GetDexterity(me));
+      SetDexterityMod(me, CInt(GetDexterityMod(me))+ ma);
+    RunToward(following);
+    RunToward(following);
+    RunToward(following);
+      SetDexterityMod(me, CInt(GetDexterityMod(me))- ma);
+      waittime := 0;
+    endif
+  else
+  var x ;
+  var y;
+  if(me.x < following.x - 6)
+  x := following.x - 6;
+  elseif(me.x > following.x + 6)
+  x := following.x + 6;
+  else
+  x := me.x;
+  endif
+  if(me.y < following.y - 6)
+  y := following.y - 6;
+  elseif(me.y > following.y + 6)
+  y := following.y+ 6;
+  else
+  y := me.y;
+  endif
+  MoveObjectToLocation(me, x, y, following.z, me.realm);
+  RunToward(following);
+
+    endif
+
+    if(me.stamina < 10)
+    SetStamina(me, GetMaxStamina(me));
+  endif
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+function cast_meteor(opponent)
+  var base := Cint(((FLAME_STRENGTH * GetHp(me)) / GetMaxHp(me)) / 2);
+  var dmg :=  RandomInt(base) + base;
+  PerformAction(me,0x0c);
+  PlaysoundEffect(me, 0x16b);
+  sleep(3);
+  PlayMovingEffect(me, opponent, 0x36d4, 10, 1, 1);
+  ApplyRawDamage(opponent, dmg);
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+function flee(opponent)
+  var numflees := GetObjProperty(me,"#flees");
+  if(numflees)
+    if(numflees > 5)
+      MoveObjectToLocation(me,3808,3639,1, me.realm,MOVEOBJECT_FORCELOCATION);
+      SetObjProperty(me,"guardkill",1);
+      ApplyRawDamage(me, GetMaxHp(me)+ 3);
+    else
+      numflees := numflees + 1;
+    endif
+  else
+    numflees := 1;
+  endif
+  SetObjProperty(me,"#flees",numflees);
+  var runs := 0;
+  while((Distance(me, opponent)< 20)&&(runs < 50))
+    RunAwayFrom(opponent);
+    runs := runs +1;
+    wait_for_event(0);
+  endwhile
+  RestartScript(me);
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+function EnableMainEvents()
+return;
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+function disablemainevents()
+return;
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+function EnableCombatEvents()
+return;
+endfunction
+
+function DisableCombatEvents()
+return;
+endfunction
+

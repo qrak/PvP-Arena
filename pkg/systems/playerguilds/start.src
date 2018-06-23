@@ -1,0 +1,9 @@
+// A small program to clean up the inboxes of all mail over xx days
+
+use os;
+
+
+program start_cleanup()
+	Start_Script(":playerguilds:cleanup");
+	Start_Script(":playerguilds:inVoteManager");
+endprogram

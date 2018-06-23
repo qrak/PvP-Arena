@@ -1,0 +1,28 @@
+use npc;
+use os;
+use uo;
+include "include/client";
+include "include/attributes";
+
+//krzeslo - 0x2dec
+//stol - 2de7
+program biuro(who)
+
+var krzeslo := CreateItemAtLocation( 2519,557,0, 0x2dec, 1);
+krzeslo.movable := 1;
+
+ 	PlayObjectCenteredEffect(krzeslo, 0x3709, 0x0a, 0x1e );
+	PlayObjectCenteredEffect(krzeslo, FX_SPARK_EFFECT, 7, 0x10 );
+	PlaySoundEffect(krzeslo,0xf8);
+	sleepms(1500);
+
+var stol := CreateItemAtLocation( 2520,558,0, 0x2de7, 1);
+stol.mavable := 1;
+
+sleep(1);
+
+BroadCast("Uczestnicy turnieju proszeni sa o ustawienie sie gesiego pzred stolem",3,63);
+sleep(5);
+BroadCast("Przypominamy o obowiazujaccym regulaminie turniejowym!",3,89);
+
+endprogram

@@ -1,0 +1,22 @@
+use uo;
+use os;
+
+include "drinkPotion";
+include "include/canAccess";
+
+program drink_blue(who, potion)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego wypic.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!checkifcandrink(who, "green_potion"))
+    return;
+  endif
+  do_poison(who, potion);
+  Detach();
+endprogram

@@ -1,0 +1,7 @@
+use polsys;
+use basicio;
+
+program reloadConfig()
+    print( "Reloading configuration." );      
+    ReloadConfiguration();
+endprogram

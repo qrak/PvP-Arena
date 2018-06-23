@@ -1,0 +1,75 @@
+use uo;
+use util;
+
+include "include/attributes";
+include "include/canAccess";
+
+const ILOSC_SZTAB := 20; // ilosc sztab gorxa potrzebna do otwarcia drzwi
+const OD_ILU_DEX := 120; // od ilu dexa mozna otwierac drzwi
+
+program pick( who, lockpick )
+	if( Cint(GetObjProperty(who, "lata")) < 20 )
+		SendSysMessage(who, "Jestes za mlody aby otwierac drzwi.", 3,40);
+		return 0;
+	endif
+	if(GetBaseDexterity(who) < OD_ILU_DEX)
+		SendSysMessage(who, "Jestes za malo zreczny. Minimum " + OD_ILU_DEX + " a ty masz " + GetBaseDexterity(who) , 3,40);
+		return 0;
+	endif
+	if(lockpick.container != who.backpack)
+		SendSysMessage(who, "Musisz miec wytrych w plecaku.", 3, 40);
+		return 0;
+	endif
+	if(!can_access(who, lockpick))
+		return 0;
+	endif 
+	SendSysMessage(who, "Wybierz sztaby gorxa.",3,63);
+	var gorxy := Target(who);
+	if(!gorxy)
+		return 0;
+	endif
+	if(gorxy.objtype != 0xA405)
+		SendSysMessage(who, "To nie sa sztaby gorxa." ,3,40);
+		return 0;
+	endif
+
+	if(gorxy.amount < ILOSC_SZTAB)
+		SendSysMessage(who, "Masz za malo sztab gorxa. Minimum " + ILOSC_SZTAB + " sztuk, a ty masz " + gorxy.amount + "." ,3,40);
+		return 0;
+	endif
+
+	if(!can_access(who, gorxy))
+		return 0;
+	endif 
+	SendSysMessage(who, "Wybierz drzwi.",3,63);
+	var cel := Target(who);
+	if(!cel)
+		return 0;
+	endif
+	if(!cel.isa(POLCLASS_DOOR))
+		SendSysMessage(who, "To nie sa drzwi.", 3,40);
+		return 0;
+	endif
+	if(Cint(!GetObjProperty(cel, "houseserial")))
+		SendSysMessage(who, "Tych drzwi nie mozesz otworzyc.", 3,40);
+		return 0;
+	endif
+	if(Distance(who, cel) > 1)
+		SendSysMessage(who, "Za daleko.", 3,40);
+		return 0;
+	endif
+	if(!cel.locked)
+		SendSysMessage(who, "Te drzwi nie sa zamkniete.", 3,40);
+		return 0;
+	endif
+	if(RandomInt(100) < 10)
+		SendSysMessage(who, "Nie udalo ci sie i zniszczyles wytrych oraz polowe sztab.", 3,40);
+		SubtractAmount(gorxy, Cint(ILOSC_SZTAB / 2)); 
+		DestroyItem(lockpick);
+		return 0;
+	endif
+	PrintTextAbove(cel, "*klik!*",3,40);
+	PlaySoundEffect( cel, SFX_ED);
+	cel.locked := 0;
+	SubtractAmount(gorxy, ILOSC_SZTAB); 
+endprogram

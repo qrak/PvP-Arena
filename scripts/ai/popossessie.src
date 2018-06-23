@@ -1,0 +1,92 @@
+// crash
+
+use basic;
+use math;
+use polsys;
+use uo;
+use os;
+use npc;
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/randName";
+include "include/vetement";
+include "include/speech";
+include "include/anchors";
+include "include/dist";
+include "ai/main/loot";
+include "include/begging";
+
+const HALT_THRESHOLD := 2; // how close before he barks?
+
+var me := Self();
+  start_script("NPCKeeper", me);
+
+program CastleGuard()
+var opponent;
+EnableEvents (SYSEVENT_SPEECH + SYSEVENT_DISENGAGED + SYSEVENT_ENGAGED + SYSEVENT_DAMAGED);;
+
+  drop_anchor();
+
+  SetWarMode( 0 );
+  set_priority(10);
+  var ev;
+  var looter := GetObjProperty( me, "looter" );
+  var next_wander := ReadGameClock() + 10;
+
+  var waittime;
+  outer:
+  while (opponent && !opponent.dead)
+    waittime := OpenDistance( opponent ) * 15;
+    var ev := wait_for_event( waittime );
+if(ev)
+    case (ev.type)
+      SYSEVENT_SPEECH:
+      SYSEVENT_DISENGAGED:     if (ev.source.serial == opponent.serial)
+                                 say( "Uh!" );
+                                 break outer;
+                               endif
+      SYSEVENT_ENGAGED:
+      SYSEVENT_DAMAGED:        if (ev.source)
+                                 if (ev.source.serial != opponent.serial)
+                                   say( "Zostaw mnie!" );
+                                 else
+                                   if (ev.type == "damage")
+                                     say("Pomocy!");
+                                   endif
+                                 endif
+                               endif
+      SYSEVENT_OPPONENT_MOVED:
+      SYSEVENT_ENTEREDAREA:
+      SYSEVENT_LEFTAREA:
+    endcase
+endif
+
+  
+
+
+    if (ReadGameClock() >= next_wander)
+      begpurse(me);
+      wander();
+      if(looter)
+        grabloot();
+      endif
+      next_wander := ReadGameClock() + 10;
+    endif
+ 
+endwhile
+ SetWarMode( 0 );
+endprogram
+
+
+function OpenDistance( opponent )
+  case (Distance( me, opponent ))
+    10:      return 1;
+    default: RunAwayFrom( opponent );
+             return 0;
+  endcase
+endfunction
+
+function look_around()
+  return 0;
+endfunction

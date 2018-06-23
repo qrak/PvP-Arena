@@ -1,0 +1,10 @@
+use uo;
+use os;
+
+
+program startigrzyska()
+
+print("Uruchamianie turnieju CTF...");
+start_script("stonecontrol");
+
+endprogram

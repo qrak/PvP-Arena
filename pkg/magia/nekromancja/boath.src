@@ -1,0 +1,44 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_boath( parms )
+  var circle := 5;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 102);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var nek := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
+var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+var int := GetIntelligence(caster);
+
+var bonus := 0;
+
+if(caster.ip)
+bonus := int/5;
+endif
+
+
+
+
+PlaySoundEffect(caster, 1155);
+PlaySoundEffect(cast_on, 1155);
+PlayObjectCenteredEffect( caster, 0x374a, 20,15 );
+PlayObjectCenteredEffect( cast_on, 0x374A, 20,15 );
+var duration := (nek + sspeak + bonus) / 4;
+
+SetObjProperty(cast_on, "bloodoath", caster.serial);
+Detach();
+sleep(duration);
+Eraseobjproperty(cast_on, "bloodoath");
+
+
+endprogram

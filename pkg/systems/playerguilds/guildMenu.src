@@ -1,0 +1,698 @@
+/* $Id: guildMenu.src 1025 2007-03-19 21:44:43Z MontuZ $
+ *        Author:  MontuZ
+ *        Created: Sunday, May 21 2006
+ *        Version: 0.26
+ */
+
+use uo;
+use guilds;
+
+include ":playerguilds:settings";
+include ":playerguilds:validate";
+include ":playerguilds:ranks";
+include ":playerguilds:playerguilds";
+//include ":playerguilds:factions";
+
+include ":newgumps:yesno";
+include ":newgumps:gumps";
+include ":newgumps:gumps_ex";
+
+
+CONST GCGUMP_X		:= 75;
+CONST GCGUMP_Y		:= 150;
+CONST TXT_CLR_FG	:= 0;
+CONST TXT_CLR_BG	:= 2100;
+CONST APPLY_BTN		:= 0x0EF;
+CONST CANCEL_BTN	:= 0x817;
+CONST OK_BTN		:= 0x0F7;
+CONST BLUE_BTN		:= 0x845;
+CONST PREVIOUS_BTN	:= 2322;
+
+var background := GFGetCfgConst("Defaults", "BackGround");
+var foreground := GFGetCfgConst("BackGrounds", "WHITE_PAPER");
+
+var permissions := Guild_GetSettingsCfgElem("Permissions");
+var settings := Guild_GetSettingsCfgElem("Settings");
+var votehours := CInt(settings.InVoteTime);
+var maxtitle := CInt(settings.MaxTitle);
+
+var gumpclose;
+var title_options;		// required by guilds.inc
+
+program Guild_Menu(character)
+	if ( GetObjProperty(character, "#GuildMenu") > PolCore().systime )
+		SendSysMessage(character, "Menu gildii juz jest otwarte.");
+		return 0;
+	else
+		SetObjProperty(character, "#GuildMenu", PolCore().systime + 10);
+	endif
+
+	repeat
+		if ( !character.ip )
+			EraseObjProperty(character, "#GuildMenu");
+			return 0;
+		endif
+
+		var character_rank := GetGuildRank(character);
+		var guild := character.guild;
+		var guild_id := GetObjProperty(character, "Guild_ID");
+		var guild_name := guild.GetProp("Name");
+		var guild_abbr := guild.GetProp("Abbr");
+
+		var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+
+		GFResizePic(gump, 0, 0, background, 500, 300);
+		GFResizePic(gump, 25, 20, foreground, 450, 25);
+
+		GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, guild_name + " [" + guild_abbr + "]" );
+
+		// Guild Manager
+		GFTextLine(gump, 25, 50, TXT_CLR_BG, "Menu gildi");
+		GFTextLine(gump, 45, 90, TXT_CLR_BG, "Czlonkowie");
+		var members := GFAddButton(gump, 25, 93, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 45, 115, TXT_CLR_BG, "Frakcja");
+		var faction := GFAddButton(gump, 25, 117, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 45, 140, TXT_CLR_BG, "Karta");
+		var charter := GFAddButton(gump, 25, 143, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 45, 165, TXT_CLR_BG, "Strona WWW");
+		var website := GFAddButton(gump, 25, 167, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 45, 190, TXT_CLR_BG, "Nazwa");
+		var editname := GFAddButton(gump, 25, 193, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 45, 215, TXT_CLR_BG, "Rekrutuj");
+		var recruit := GFAddButton(gump, 25, 218, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+
+		// Diplomacy
+		GFTextLine(gump, 175, 50, TXT_CLR_BG, "Dyplomacja");
+		GFTextLine(gump, 195, 90, TXT_CLR_BG, "Sprzymierzency");
+		var allies := GFAddButton(gump, 175, 93, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 195, 115, TXT_CLR_BG, "Wrogowie");
+		var rivals := GFAddButton(gump, 175, 117, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFTextLine(gump, 195, 140, TXT_CLR_BG, "Gildie");
+		var displayguilds := GFAddButton(gump, 175, 143, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+
+		// Personal
+		GFTextLine(gump, 325, 50, TXT_CLR_BG, "Osobiste");
+		GFTextLine(gump, 345, 90, TXT_CLR_BG, "Opusc gildie");
+		var resign := GFAddButton(gump, 325, 93, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+
+		var disband;
+		if ( character_rank == CInt(permissions.LeaderRank) )
+			GFTextLine(gump, 345, 140, TXT_CLR_BG, "Usun gildie");
+			disband := GFAddButton(gump, 325, 143, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		endif
+
+		var vote;
+		if ( guild.GetProp("Master") == "In Vote" )
+			if ( character_rank >= CInt(permissions.Vote) )
+				GFTextLine(gump, 345, 165, TXT_CLR_BG, "Glosuj na nowego mistrza gildi");
+				vote := GFAddButton(gump, 325, 168, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+			endif
+		endif
+
+		var okay := GFAddButton(gump, 25, 255, OK_BTN, OK_BTN + 1, GF_CLOSE_BTN);
+
+		var result := GFSendGump(character, gump);
+		if ( !character.ip )
+			EraseObjProperty(character, "#GuildMenu");
+			return 0;
+		endif
+
+		if ( result[okay] or result[0] == 0 or !result[0] )
+			gumpclose := 1;
+		elseif ( result[members] )
+			ShowMembers(character, guild_id);
+		elseif ( result[faction] )
+			ViewFaction(character);
+		elseif ( result[charter] )
+			ShowCharter(character, guild, 1);
+		elseif ( result[website] )
+			ShowWebsite(character, guild, 1);
+		elseif ( result[editname] )
+			EditGuildName(character, guild);
+		elseif ( result[recruit] )
+			if ( (character_rank == permissions.LeaderRank) or (character_rank == permissions.Invite) )
+				InviteMember(character);
+			else
+				SendSysMessage(character, "Anulowano. Nie jestes uprawniony do glosowania.", 3, 40);
+			endif
+		elseif ( result[allies] )
+			ShowAllies(character);
+		elseif ( result[rivals] )
+			ShowEnemies(character);
+		elseif ( result[displayguilds] )
+			ShowGuilds(character);
+		elseif ( result[resign] )
+			LeaveGuild(character);
+		elseif ( result[disband] )
+			RemoveGuild(character, character.guild);
+		elseif ( result[vote] )
+			VoteMaster(character, character.guild);
+		endif
+	until ( gumpclose == 1 );
+
+	EraseObjProperty(character, "#GuildMenu");
+endprogram
+
+
+function EditGuildName(character, guild)
+	var guild_name := guild.GetProp("Name");
+	var guild_abbr := guild.GetProp("Abbr");
+
+	var character_rank := GetGuildRank(character);
+	var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+
+	GFResizePic(gump, 0, 0, background, 500, 300);
+	GFResizePic(gump, 25, 20, foreground, 450, 25);
+	GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Nazwa gildi i skrot" );
+	if ( character_rank >= permissions.ChangeName )
+		GFTextLine(gump, 45, 60, TXT_CLR_BG + 1, "Wpisz w miejsce istniejacej nazwy i skrotu.");
+	else
+		GFTextLine(gump, 45, 60, TXT_CLR_BG + 1, "Istniejaca nazwa i skrot");
+	endif
+
+	GFTextLine(gump, 25, 125, TXT_CLR_BG, "Nazwa gildi:");
+	GFResizePic(gump, 150, 125, foreground, 200, 25);
+	var guildname := GFTextEntry(gump, 160, 125, 200, 20, TXT_CLR_FG, guild_name);
+
+	GFTextLine(gump, 25, 150, TXT_CLR_BG, "Skrot gildi:");
+	GFResizePic(gump, 150, 150, foreground, 200, 25);
+	var abbr := GFTextEntry(gump, 160, 150, 200, 20, TXT_CLR_FG, guild_abbr);
+
+	// cancel
+	var cancel := GFAddButton(gump, 125, 255, CANCEL_BTN, CANCEL_BTN + 1, GF_CLOSE_BTN);
+
+	// only for gm
+	var apply;
+	if ( character_rank >= permissions.ChangeName )
+		apply := GFAddButton(gump, 25, 255, APPLY_BTN, APPLY_BTN + 1, GF_CLOSE_BTN);
+	endif
+
+	var result := GFSendGump(character, gump);
+
+	if ( result[0] == 0 or !result[0] or result[cancel] )
+		return 0;
+	endif
+
+	if ( result[apply] )
+		var new_guild_name := GFExtractData(result, guildname);
+		var new_guild_abbr := GFExtractData(result, abbr);
+
+		if ( !new_guild_name )
+			SendSysMessage(character, "Musisz wpisac nazwe gildi.", 3, 40);
+			return 0;
+		elseif ( !new_guild_abbr )
+			SendSysMessage(character, "Musisz wpisac skrot gildi.", 3, 40);
+			return 0;
+		endif
+
+		if ( guild_name != new_guild_name )
+			if ( Len(new_guild_name) > CInt(settings.MaxNameLen) )
+				SendSysMessage(character, "Anulowano. Nazwa gildi jest za dluga.", 3, 40);
+				return 0;
+			elseif ( !ValidStr(new_guild_name) )
+				SendSysMessage(character, "Anulowano. Nazwa gildi zawiera niedozwolone znaki.", 3, 40);
+				return 0;
+			elseif ( !ValidName(new_guild_name) )
+				SendSysMessage(character, "Anulowano. Taka nazwa gildi juz istnieje.", 3, 40);
+				return 0;
+			endif
+			guild.SetProp("Name", new_guild_name);
+			SendSysMessage(character, "Twoja nazwa gildi zostala zaktualizowana.", 3, 63);
+		endif
+
+		if ( guild_abbr != new_guild_abbr )
+			if ( Len(new_guild_abbr) > CInt(settings.MaxAbbrLen) )
+				SendSysMessage(character, "Anulowano. Skrot jest za dlugi.", 3, 40);
+				return 0;
+			elseif ( !ValidStr(new_guild_abbr) )
+				SendSysMessage(character, "Anulowano. Skrot zawiera niedozwolone znaki.", 3, 40);
+				return 0;
+			elseif ( !ValidName(new_guild_abbr) )
+				SendSysMessage(character, "Anulowano. Taki skrot gildi juz istnieje.", 3, 40);
+				return 0;
+			endif
+			guild.SetProp("Abbr",  new_guild_abbr);
+			SendSysMessage(character, "Skrot twojej gildi zostal zaktualizowany.", 3, 63);
+		endif
+
+		foreach xmember in (guild.members)
+			GuildTitle(xmember);
+		endforeach
+
+		return 1;
+	endif		
+endfunction
+
+
+function ViewFaction(character)
+	var guild := FindGuild(character.guildid);
+	var character_rank := GetGuildRank(character);
+	var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+
+	GFResizePic(gump, 0, 0, background, 500, 300);
+	GFResizePic(gump, 25, 20, foreground, 450, 25);
+	GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Factions");
+
+	var guild_faction := guild.GetProp("Faction");
+	GFTextLine(gump, 45, 50, TXT_CLR_BG, "Moja gildia jest aktualnie: " + guild_faction);
+
+	var change;
+	if ( character_rank == permissions.SetFaction )
+		GFTextLine(gump, 45, 160, TXT_CLR_BG, "Zmien frakcje");
+		change := GFAddButton(gump, 25, 163, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+	endif
+
+	// Previous
+	var previous := GFAddButton(gump, 25, 255, PREVIOUS_BTN, PREVIOUS_BTN + 1, GF_CLOSE_BTN);
+
+	var result := GFSendGump(character, gump);
+
+	if ( result[0] == 0 or !result[0] )
+		return 0;
+	elseif ( result[change] )
+		ChangeFaction(character);
+		return 1;
+	elseif ( result[previous] )
+		return 1;
+	endif		
+endfunction
+
+
+function ChangeFaction(character)
+	var guild := FindGuild(character.guildid);
+	var guild_faction := guild.GetProp("Faction");
+
+	var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+
+	GFResizePic(gump, 0, 0, background, 500, 300);
+	GFResizePic(gump, 25, 20, foreground, 450, 25);
+	GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Zmien frakcje" );
+	GFTextLine(gump, 45, 50, TXT_CLR_BG, "Uwaga! Zmiana usunie wszystkie wojny i przymierza!");
+
+	GFPage(gump, 1);
+	GFSetRadioGroup(gump, 1);
+
+	var ifchaos, ifneutral, iforder;
+	case ( guild_faction )
+		"Chaos":	ifchaos := 1;
+		"Neutral":	ifneutral := 1;
+		"Order":	iforder := 1;	
+	endcase
+
+	GFTextLine(gump, 35, 75, TXT_CLR_BG, "Wybierz nowa frakcje" );
+
+	var chaos := GFRadioButton(gump, 35, 100, 0x868, 0x869, ifchaos);
+	var neutral := GFRadioButton(gump, 35, 125, 0x868, 0x869, ifneutral);
+	var order := GFRadioButton(gump, 35, 150, 0x868, 0x869, iforder);
+	GFTextLine(gump, 70, 100, TXT_CLR_BG, "Chaos" );
+	GFTextLine(gump, 70, 125, TXT_CLR_BG, "Neutral" );
+	GFTextLine(gump, 70, 150, TXT_CLR_BG, "Order" );
+
+	// apply and cancel buttons
+	var apply := GFAddButton(gump, 25, 255, APPLY_BTN, APPLY_BTN + 1, GF_CLOSE_BTN);
+	var cancel := GFAddButton(gump, 150, 255, CANCEL_BTN, CANCEL_BTN + 1, GF_CLOSE_BTN);
+
+	var result := GFSendGump(character, gump);
+
+	if ( result[cancel] or !result )
+		return 0;
+	endif
+
+	if ( result[apply] )
+		if ( result[chaos] )
+			guild.SetProp("Faction", "Chaos");
+		elseif ( result[neutral] )
+			guild.SetProp("Faction", "Neutral");
+		elseif ( result[order] )
+			guild.SetProp("Faction", "Order");
+		endif
+
+		// ally is a guildref. Remove each one
+		foreach ally in (guild.allyguilds)
+			if ( guild.GetProp("Master") != "In Vote" )
+				var guild_master := SystemFindObjectBySerial(ally.GetProp("Master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+			endif
+			guild.RemoveAllyGuild(ally);
+			SleepMS(2);
+		endforeach
+
+		foreach enemy in (guild.enemyguilds)
+			if ( guild.GetProp("Master") != "In Vote" )
+				var guild_master := SystemFindObjectBySerial(enemy.GetProp("Master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+			endif
+			guild.RemoveEnemyGuild(enemy);
+			SleepMS(2);
+		endforeach
+		SendSysMessage(character, "Frakcja zostala zmieniona", 3, 63);
+
+		return 1;
+	endif
+	return 0;
+endfunction
+
+
+function ShowAllies(character)
+	var guild_allies := (FindGuild(character.guildid)).allyguilds;
+
+	var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+	var place := 1;
+	var page := 1;
+	var count := 0;
+	var X := 25;
+	var Y := 70;
+
+	GFResizePic(gump, 0, 0, background, 500, 300);
+	GFResizePic(gump, 25, 20, foreground, 450, 25);
+	GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Przymierza" );
+
+	GFTextLine(gump, 25, 50, TXT_CLR_BG, "V" );
+	GFTextLine(gump, 45, 50, TXT_CLR_BG, "Nazwa" );
+	GFTextLine(gump, 200, 50, TXT_CLR_BG, "Mistrz" );
+	GFTextLine(gump, 300, 50, TXT_CLR_BG, "Frakcja" );
+
+	// Previous
+	var previous := GFAddButton(gump, 25, 255, PREVIOUS_BTN, PREVIOUS_BTN + 1, GF_CLOSE_BTN);
+
+	GFPage(gump, page);
+
+	foreach ally in (guild_allies)
+		GFTextLine(gump, (X + 20), Y, TXT_CLR_BG + 1, ally.GetProp("Name"));
+		GFAddButton(gump, X, (Y + 3), BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN, CInt(ally.guildid + 1000));
+		var guild_master := SystemFindObjectBySerial(ally.GetProp("Master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+		var gmname := "None";
+		if ( guild_master )
+			gmname := guild_master.name;
+		endif
+		GFTextLine(gump, (X + 175), Y, TXT_CLR_BG + 1, gmname);
+
+		var guild_faction := ally.GetProp("Faction");
+		if ( guild_faction )
+			GFTextLine(gump, (X + 275), Y, TXT_CLR_BG + 1, guild_faction);
+		else
+			GFTextLine(gump, (X + 275), Y, TXT_CLR_BG + 1, "Neutral");
+		endif
+
+		place += 1;
+		count += 1;
+		Y += 20;
+
+		if ( count > 8 )
+			GFAddButton(gump, 460, 228, 2706, 2707, GF_PAGE_BTN, page + 1);
+			page += 1;
+			GFPage(gump, page);
+			GFAddButton(gump, 460, 53, 2704, 2705, GF_PAGE_BTN, page - 1);
+			count := 0;
+			Y := 70;
+		endif
+		SleepMS(2);
+	endforeach
+
+	var result := GFSendGump(character, gump);
+
+	if ( result[0] == 0 or !result[0] )
+		return 0;
+	elseif ( result[previous] )
+		return 1;
+	elseif ( FindGuild(CInt(result[0] - 1000)) )
+		ViewGuild(character, CInt(result[0] - 1000));
+		return 1;
+	endif
+endfunction
+
+
+function ShowEnemies(character)
+	var guild_enemies := (FindGuild(character.guildid)).enemyguilds;
+
+	var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+	var place := 1;
+	var page := 1;
+	var count := 0;
+	var X := 25;
+	var Y := 70;
+
+	GFResizePic(gump, 0, 0, background, 500, 300);
+	GFResizePic(gump, 25, 20, foreground, 450, 25);
+	GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Wrogowie" );
+
+	GFTextLine(gump, 25, 50, TXT_CLR_BG, "V" );
+	GFTextLine(gump, 45, 50, TXT_CLR_BG, "Nazwa" );
+	GFTextLine(gump, 200, 50, TXT_CLR_BG, "Mistrz" );
+	GFTextLine(gump, 300, 50, TXT_CLR_BG, "Frakcja" );
+
+	// Previous
+	var previous := GFAddButton(gump, 25, 255, PREVIOUS_BTN, PREVIOUS_BTN + 1, GF_CLOSE_BTN);
+
+	GFPage(gump, page);
+
+	foreach enemy in (guild_enemies)
+		GFTextLine(gump, (X + 20), Y, TXT_CLR_BG + 1, enemy.GetProp("Name"));
+		GFAddButton(gump, X, (Y + 3), BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN, CInt(enemy.guildid + 1000));
+		var guild_master := SystemFindObjectBySerial(enemy.GetProp("Master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+		var gmname := "None";
+		if ( guild_master )
+			gmname := guild_master.name;
+		endif
+		GFTextLine(gump, (X + 175), Y, TXT_CLR_BG + 1, gmname);
+
+		var guild_faction := enemy.GetProp("Faction");
+		if ( guild_faction )
+			GFTextLine(gump, (X + 275), Y, TXT_CLR_BG + 1, guild_faction);
+		else
+			GFTextLine(gump, (X + 275), Y, TXT_CLR_BG + 1, "Neutral");
+		endif
+
+		place += 1;
+		count += 1;
+		Y += 20;
+
+		if ( count > 8 )
+			GFAddButton(gump, 460, 228, 2706, 2707, GF_PAGE_BTN, page + 1);
+			page += 1;
+			GFPage(gump, page);
+			GFAddButton(gump, 460, 53, 2704, 2705, GF_PAGE_BTN, page - 1);
+			count := 0;
+			Y := 70;
+		endif
+		SleepMS(2);
+	endforeach
+
+	var result := GFSendGump(character, gump);
+
+	if ( result[0] == 0 or !result[0] )
+		return 0;
+	elseif ( result[previous] )
+		return 1;
+	elseif ( FindGuild(CInt(result[0] - 1000)) )
+		ViewGuild(character, CInt(result[0] - 1000));
+		return 1;
+	endif
+endfunction
+
+
+function InviteMember(recruiter)
+	var guild := recruiter.guild;
+	var guild_name := guild.GetProp("Name");
+
+	SendSysMessage(recruiter, "Kogo chcesz zaprosic do gildi?", 3, 63);
+
+	var new_member := Target( recruiter, TGTOPT_NOCHECK_LOS+TGTOPT_NEUTRAL );
+
+	if ( !new_member )
+		SendSysMessage(recruiter, "Anulowano.", 3, 40);
+		return 0;
+	elseif ( new_member.IsA(POLCLASS_NPC) )
+		SendSysMessage(recruiter, "Anulowano. Musisz wybrac gracza.", 3, 40);
+		return 0;
+	elseif ( !new_member.IsA(POLCLASS_MOBILE) )
+		SendSysMessage(recruiter, "Anulowano. Musisz wybrac gracza.", 3, 40);
+		return 0;
+	elseif ( GetObjProperty(new_member, "Guild_ID" ) )
+		SendSysMessage(recruiter, "Anulowano. Ten gracz juz nalezy do jakiejs gildi.", 3, 40);
+		return 0;
+	elseif ( GetObjProperty(new_member, "Guild_Invites" ) == "OFF" )
+		SendSysMessage(recruiter, "Anulowano. Ten gracz wybral ignorowanie zaproszen.", 3, 40);
+		return 0;
+	elseif ( GetObjProperty(new_member, "Guild_Invites" ) == "ON" or !GetObjProperty(new_member, "Guild_Invites" ) )
+		SendSysMessage(recruiter, "Wyslales zaproszenie do tego gracza.", 3, 63);
+		if ( !YesNo(new_member, recruiter.name + " chcesz dolaczyc do gildi " + guild_name + "?", "Tak", "Nie") )
+			SendSysMessage(new_member, "Anulowano.", 3, 40);
+			SendSysMessage(recruiter, "Gracz anulowal Twoje zaproszenie.", 3, 40);
+			return 0;
+		else
+			guild.AddMember(new_member);
+			SetObjProperty(new_member, "Guild_ID", guild.guildid);
+			SetGuildRank(new_member, 1);
+			GuildTitle(new_member);
+			SetObjProperty(new_member, "Fealty", new_member.serial);
+			SendSysMessage(new_member, "Od teraz jestes czlonkiem gildi" + guild_name + ".", 3, 63);
+			SendSysMessage(recruiter, new_member.name + " dolaczyl do " + guild_name + ".", 3, 63);
+			return 1;
+		endif
+	endif
+endfunction
+
+
+function VoteMaster(character, guild)
+	var guild_members := guild.members;
+	var thevotes := dictionary{};
+	if ( guild.GetProp("Votes") )
+		thevotes := guild.GetProp("Votes");
+	endif
+
+	// if voted, exit
+	var voted := array{};
+	if ( guild.GetProp("Voted") )
+		voted := guild.GetProp("Voted");
+		foreach person in ( voted )
+			if ( person == character.serial )
+				SendSysMessage(character, "Anulowano. Juz glosowales.", 3, 40);
+				return 0;
+			endif
+		endforeach
+	endif
+
+	var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+	GFPage(gump, 0);
+	GFResizePic(gump, 0, 0, background, 500, 300);
+	GFResizePic(gump, 25, 20, foreground, 450, 25);
+	GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Glosowanie na nowego Mistrza");
+
+	GFTextLine(gump, 25, 50, TXT_CLR_BG, "Glosuj" );
+	GFTextLine(gump, 85, 50, TXT_CLR_BG, "Nazwa" );
+	GFTextLine(gump, 230, 50, TXT_CLR_BG, "Ranga" );
+
+	// exit
+	var cancel := GFAddButton(gump, 25, 255, CANCEL_BTN, CANCEL_BTN + 1, GF_CLOSE_BTN);
+
+	var place := 1;
+	var page := 1;
+	var X := 25;
+	var Y := 70;
+	var count := 0;
+	GFPage(gump, page);
+
+	foreach member in (guild_members)
+		GFTextLine(gump, (X + 60), Y, TXT_CLR_BG + 1, member.name);
+		GFAddButton(gump, X + 5, Y + 3, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN, CInt(member.serial + 1000));
+		var member_rank := GetGuildRank(member);
+		GFTextLine(gump, (X + 205), Y, TXT_CLR_BG + 1, GetRankNameByID(member_rank));
+
+		place += 1;
+		count += 1;
+		Y += 20;
+
+		if ( count > 8 )
+			GFAddButton(gump, 460, 228, 2706, 2707, GF_PAGE_BTN, page + 1);
+			page += 1;
+			GFPage(gump, page);
+			GFAddButton(gump, 460, 53, 2704, 2705, GF_PAGE_BTN, page - 1);
+			count := 0;
+			Y := 70;
+		endif
+
+		SleepMS( 2 );
+	endforeach
+
+
+	var result := GFSendGump(character, gump);
+
+	if ( result[0] == 0 or !result[0] )
+		return 0;
+	elseif ( result[cancel] )
+		return 0;
+	endif
+
+	// add to vote.
+	Set_Critical(1);
+		var votedserial := result[0] - 1000;
+		var thisvote := dictionary{};
+		thisvote[votedserial] := 1;
+
+		if ( thevotes.Size() )
+			if ( thevotes.exists(votedserial) )
+				thevotes[votedserial] += 1;
+			else
+				thevotes.insert(votedserial, 1);
+			endif
+		else
+			thevotes := thisvote;
+		endif
+
+		guild.SetProp("Votes", thevotes);
+		voted.append(character.serial);
+		guild.SetProp("Voted", voted);
+		SendSysMessage(character, "Twoj glos zostal zapisany.", 3, 63);
+	Set_Critical(0);	
+endfunction
+
+
+function LeaveGuild(character)
+	var guild := character.guild;
+	var guild_name := guild.GetProp("Name");
+
+	if ( !YesNo(character, "Opuscic " + guild_name + "?", "Tak.", "Nie.") )
+		return 1;
+	else
+		guild.RemoveMember(character);
+		EraseObjProperty(character, "Guild_ID");
+		EraseObjProperty(character, "Guild_Rank");
+		EraseObjProperty(character, "Fealty");
+		EraseObjProperty(character, "Guild_Title");
+		EraseObjProperty(character, "player_guild");
+		GuildTitle(character);
+		SendSysMessage(character, "Nie jestes juz czlonkiem " + guild_name + ".", 3, 40);
+		if ( CInt(guild.GetProp("Master")) == CInt(character.serial) )
+			guild.SetProp("Master", "In Vote");
+			guild.SetProp("VotingBegan", ReadGameClock());
+			guild.EraseProp("Votes");
+			guild.EraseProp("Voted");
+			foreach xmember in (guild.members)
+				SendSysMessage(xmember, "Twoj mistrz opuscil gildie.", 3, 40);
+				if ( xmember.ip )
+					SendSysMessage(xmember, "Twoj mistrz opuscil gildie " + guild.GetProp("Name") + ".", 3, 40);
+				endif
+			endforeach
+		endif
+		gumpclose := 1;
+		return 1;
+	endif
+endfunction
+
+
+function RemoveGuild(character, guild)
+	var guild_name := guild.GetProp("Name");
+	if ( !YesNo(character, "Wykonanie tej czynnosci usunie calkowicie gildie. Czy napewno chcesz usunac gildie " + guild_name + "?", "Tak.", "Nie.") )
+		return 1;
+	endif
+
+	foreach member in (guild.members)
+		guild.RemoveMember(member);
+		EraseObjProperty(member, "Guild_ID");
+		EraseObjProperty(member, "Guild_Rank");
+		EraseObjProperty(member, "Fealty");
+		EraseObjProperty(member, "Guild_Title");
+		EraseObjProperty(member, "player_guild");
+		GuildTitle(member);
+		if ( member.ip )
+			SendSysMessage(member, "Twoja gildia zostala usunieta.", 3, 40);
+			SendSysMessage(member, "Nie jestes juz czlonkiem " + guild_name + ".", 3, 40);
+		endif
+		SleepMS(2);
+	endforeach
+
+	foreach ally in (guild.allyguilds)
+		guild.RemoveAllyGuild(ally);
+		SleepMS(2);
+	endforeach
+
+	foreach enemy in (guild.enemyguilds)
+		guild.RemoveEnemyGuild(enemy);
+		SleepMS(2);
+	endforeach
+	
+	if ( DestroyGuild(guild) )
+		SendSysMessage(character, "Usuniecie gildi zakonczone sukcesem.", 3, 63);
+		gumpclose := 1;
+		return 0;
+	endif
+endfunction

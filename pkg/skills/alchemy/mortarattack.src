@@ -1,0 +1,48 @@
+use uo;
+use os;
+use vitals;
+
+include "include/random";
+
+program mortarpotion(who, potion)
+  if (!Accessible (who, potion))
+		SendSysmessage (who, "Nie mozesz tego dosiegnac.", 3, 40);
+		return;
+	endif
+	if (!ReserveItem (potion) )
+		SendSysMessage (who, "Nie mozesz tego uzyc w tym momencie.", 3, 40);
+		return;
+	endif
+	SendSysMessage (who, "Podaj koordynaty.", 3, 63);
+	var coords := TargetCoordinates( who );
+	var rect_x1 := coords.x - 14;
+	var rect_x2 := coords.x + 14;
+	var rect_y1 := coords.y - 14;
+	var rect_y2 := coords.y + 14;
+	var i := 200;
+	DestroyItem(potion);
+	foreach critter in ListMobilesNearLocationEx (coords.x, coords.y, GetWorldHeight(coords.x, coords.y), 20, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+		SendSysMessage(critter, "Slyszysz jak cos zaczyna spadac z nieba!", 3, 40);
+	endforeach
+	sleep(10);
+	repeat
+		BombArea(rect_x1, rect_x2, rect_y1, rect_y2);
+		i := i - 1;
+		sleepms(50);
+		BombArea(rect_x1, rect_x2, rect_y1, rect_y2);
+	until(i <= 0);
+endprogram
+
+function BombArea(rect_x1, rect_x2, rect_y1, rect_y2)
+	var x_coord := RandomIntRange(rect_x1, rect_x2);
+	var y_coord := RandomIntRange(rect_y1, rect_y2);
+	PlayStationaryEffect(  x_coord, y_coord, GetWorldHeight(x_coord, y_coord), 0x3709, 1,15 );
+	PlayStationaryEffect(  x_coord, y_coord, GetWorldHeight(x_coord, y_coord), 0x36b0, 7,0x10 );
+	foreach critter in ListMobilesNearLocationEx (x_coord, y_coord, GetWorldHeight(x_coord, y_coord), 40, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+		PlaySoundEffect( critter, 0x208 );
+	endforeach
+	foreach critter in ListMobilesNearLocationEx (x_coord, y_coord, GetWorldHeight(x_coord, y_coord), 1, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+		ApplyRawDamage(critter, 1000);
+	endforeach
+	sleepms(50);
+endfunction

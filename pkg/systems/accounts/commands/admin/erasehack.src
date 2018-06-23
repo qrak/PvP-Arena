@@ -1,0 +1,19 @@
+use uo;
+
+program erasehack(username, param)
+  var options := SplitWords(param);
+  var konto := options[1];
+  var taknie := options[2];
+  if(!konto)
+    SendSysMessage(username, "Uzycie: .erasehack konto on/off");
+    return 0;
+  endif
+  var account := FindAccount(konto);
+  account.EraseProp("#FailedLogin");
+  case(taknie)
+	"on": account.EraseProp("#FailedLogin");
+		account.disable();
+		SendSysMessage(username, "Wyczyszczono: " + konto + ".");	
+	"off":
+    endcase
+endprogram

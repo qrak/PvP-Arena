@@ -1,0 +1,38 @@
+// crash
+
+use os;
+use basicio;
+use uo;
+use basic;
+use polsys;
+
+include "include/clock";
+
+program cmd_shutdown( cmd )
+  cmd := CInt(cmd);
+  var basetime;
+  var nexttime;
+  var i;
+  case (cmd)
+    0:  basetime := 60;
+    1:  basetime := 6;
+    2:  basetime := 12;
+    3:  basetime := 18;
+    4:  basetime := 24;
+    5:  basetime := 30;
+    6:  basetime := 36;
+    7:  basetime := 42;
+    8:  basetime := 48;
+    9:  basetime := 54;
+  endcase
+  for(i := 1; i <= 3; i := i + 1)
+  foreach onlinechr in EnumerateOnlineCharacters()
+    nexttime := basetime - ((basetime/3) * (i-1));
+    print("System Message: " + nexttime +" minutes to shutdown!");
+    SendSysMessage(onlinechr, "Uwaga! " + nexttime +" minut do zamkniecia.",3,38);
+     endforeach
+    sleep( 60 * basetime / 3 );
+   endfor
+  SaveWorldState();
+  Shutdown();
+endprogram

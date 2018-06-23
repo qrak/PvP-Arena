@@ -1,0 +1,11 @@
+use uo;
+
+program wejsciektm(who, sciana)
+  if( Cint(GetObjProperty(sciana,"wejscie" )) == 1 )
+    SendSysMessage(who, "Wejscie na Arene jest jeszcze zablokowane",3,40);
+    return 0;
+  elseif( Cint(!GetObjProperty(sciana, "wejscie")) )
+    DestroyItem(sciana);
+    SendSysMessage(who, "Odblokowales wejscie na arene",3,63);
+  endif
+endprogram

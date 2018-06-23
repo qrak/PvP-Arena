@@ -1,0 +1,26 @@
+use os;
+use attributes;
+use basic;
+use uo;
+use polsys;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+include "../../foundations/gumps/gumps";
+
+program spiritspeak(who)
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+	SetBusyTime(who, GetSkillDelay(SKILLID_SPIRITSPEAK));
+	SendSysMessage(who, "Nawiazles kontakt z zaswiatami.", 3, 63);
+	GrantPrivilege(who, "hearghosts");
+	who.enable("hearghosts");
+	PlaySoundEffect(who, SFX_SKILL_SPIRITSPEAK);
+	Detach();
+	sleep(30);
+	RevokePrivilege(who, "hearghosts");
+endprogram
+
+

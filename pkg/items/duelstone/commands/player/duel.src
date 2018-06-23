@@ -1,0 +1,6 @@
+use uo;
+use os;
+
+program duel(who)
+  start_script(":duelstone:stonemenu", who);
+endprogram

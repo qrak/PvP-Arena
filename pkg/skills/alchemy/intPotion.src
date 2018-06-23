@@ -1,0 +1,43 @@
+use util;
+use basic;
+use uo;
+use os;
+
+include "drinkPotion";
+include "include/tempMod";
+include "include/canAccess";
+
+program drink_blue (who, potion)
+
+var bonus;
+
+if  (Cint(GetObjProperty(potion, "exp")))
+bonus := 10;
+else
+bonus := 0;
+endif
+
+  EraseObjProperty(who, "IsMeditating");
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego wypic.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!CanMod(who, "int"))
+	SendSysMessage(who,"Jestes juz pod wplywem innej mikstury!", FONT_NORMAL, 40);
+	return;
+  endif
+  if(!checkifcandrink(who, "#white"))
+    return;
+  endif
+  var obj := potion.objtype;
+  empty_bottle(who, potion);
+  PlaySoundEffect(who, 0x1ef);
+  PlayObjectCenteredEffect(who, 0x373a, 7,7);
+
+   DoTempMod(who, "int", 10+Randomint(6)+bonus,  260);
+    
+  
+endprogram

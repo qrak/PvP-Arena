@@ -1,0 +1,268 @@
+use math;
+use basicio;
+use os;
+use basic;
+use npc;
+use uo;
+include "include/eventID";
+include "include/sysEvent";
+include ":gumps:gumps";
+
+const UOBJ_REG_START := 0xf78;
+const UOBJ_REG_END := 0xf91;
+
+
+program straznik()
+ Set_Script_Option( SCRIPTOPT_NO_RUNAWAY, 1 );
+ Set_Event_Queue_Size(1);
+  EnableEvents(SYSEVENT_SPEECH, 2);
+  EnableEvents(SYSEVENT_DAMAGED,1);
+  EnableEvents(SYSEVENT_ENGAGED,1);
+  SetWarMode(0);
+
+  var ev;
+  var txt;
+var me := Self();
+  me.name := "Mistrz Igrzysk";
+  var ph := SplitWords(me.name);
+  var myname := lower(ph[1]);
+ while (1)
+    ev := os::wait_for_event(30);
+    if (ev)
+      case(ev.type)
+        SYSEVENT_SPEECH:     
+
+			     
+			     txt := lower(ev.text);
+                             if(!GetObjProperty(ev.source, "naigrzyskach"))
+                               PrintTextAbove(me, "Nie masz druzyny " + ev.source.name + "!",3,63);
+                                
+                             elseif( Cint(GetObjProperty(ev.source, "dostal")))
+                               PrintTextAbove(me, "Juz dostales rzeczy " + ev.source.name + "!",3,63);
+
+
+                             elseif((txt["Witaj"] || txt[myname]))                      
+                               PrintTextAbove(me, "Witaj, jakiej jestes profesji (mag/woj/lucznik)?",3,63);
+
+
+                            elseif((txt["mag"]))
+			     
+                               var worek := CreateItemInBackpack(ev.source, 3702, 1);
+                               SetName(worek, "Worek maga");
+                               SetObjProperty(worek, "tr", 1);
+                               var lolek := ev.source;
+                               StuffMaga(worek);
+                               IgrzyskujStuff(lolek, worek);
+                               PrintTextAbove(me, "Prosze...");
+			       SetObjProperty(ev.source, "dostal", 1);
+                                clear_event_queue();
+                                
+                            elseif((txt["woj"]))
+
+                                var worek := CreateItemInBackpack(ev.source, 3702, 1);
+                                SetName(worek, "Worek woja");
+                                SetObjProperty(worek, "tr", 1);
+                                var lolek := ev.source;
+                                StuffWoja(worek);
+                                IgrzyskujStuff(lolek, worek);                                
+                                PrintTextAbove(me, "Prosze...");
+                                SetObjProperty(ev.source, "dostal", 1);
+                                clear_event_queue();
+                                
+                            elseif((txt["lucz"]))
+
+                                var worek := CreateItemInBackpack(ev.source, 3702, 1);
+                                SetName(worek, "Worek lucznika");
+                                SetObjProperty(worek, "tr", 1);
+                                var lolek := ev.source;
+                                StuffLucznika(worek);
+                                IgrzyskujStuff(lolek, worek);                                
+                                PrintTextAbove(me, "Prosze...");
+                                SetObjProperty(ev.source, "dostal", 1);
+                                clear_event_queue();
+                                
+                            endif
+                            
+        SYSEVENT_ENGAGED:    if((ev.source) && (!ev.source.dead))
+                               PrintTextAbove(me, "Pozalujesz tego, swinio!",3,92);
+
+                             endif
+        SYSEVENT_DAMAGED:    if((ev.source) && (!ev.source.dead))
+                               PrintTextAbove(me, "Pozalujesz tego, swinio!",3,92);
+                               
+                             endif
+        
+      endcase
+       endif
+       endwhile
+endprogram
+
+function StuffMaga(worek)
+
+// ZBROJA
+CreateItemInContainer(worek, 0x13C7, 1); // leather gorget
+CreateItemInContainer(worek, 0x13CD, 1); // leather sleeves
+CreateItemInContainer(worek, 0x13C6, 1); // leather gloves
+CreateItemInContainer(worek, 0x1DB9, 1); // leather cap
+CreateItemInContainer(worek, 0x13CB, 1); // leather nogawice
+CreateItemInContainer(worek, 0x13CC, 1); // leather tunic
+// BRON
+CreateItemInContainer(worek,0x0F51, 1); // dagger
+CreateItemInContainer(worek,0x0DF0, 1); // laska
+CreateItemInContainer(worek, 0x26BD,1 );// ostrze
+// REGI
+var woreknaregi := CreateItemInContainer(worek, 0xE7A, 1);
+var i;
+for ( i := UOBJ_REG_START; i <= UOBJ_REG_END; i := i + 1)
+    CreateItemInContainer( woreknaregi, i, 100);
+endfor
+    
+// ROZNE
+CreateItemInContainer(worek,0xEED, 500); // zloto
+
+endfunction
+
+function IgrzyskujStuff(gracz, worek)
+var kolor := 0;
+var team := GetObjProperty(gracz, "naigrzyskach");
+
+    if(team == "blue")
+    kolor := 92;
+    else
+    kolor := 38;
+    endif
+
+
+foreach rzecz in EnumerateItemsInContainer(worek)
+
+if(rzecz.isa(POLCLASS_WEAPON) || rzecz.isa(POLCLASS_ARMOR))
+rzecz.color := kolor;
+endif
+
+    if(rzecz.isa(POLCLASS_WEAPON))
+    rzecz.dmg_mod := 20;
+    elseif(rzecz.isa(POLCLASS_ARMOR))
+    rzecz.ar_mod := 20;
+    endif
+
+SetObjProperty(rzecz, "tr", 1); // nadaje propa turniejowego rzecza w worku
+endforeach
+
+endfunction
+
+function StuffWoja(worek)
+
+// ZBROJA
+CreateItemInContainer(worek, 0x1415, 1);// plyta
+CreateItemInContainer(worek, 0x1412, 1);// plyta
+CreateItemInContainer(worek, 0x1415, 1);// plyta
+CreateItemInContainer(worek, 0x1410, 1);// plyta
+CreateItemInContainer(worek, 0x1411, 1);// plyta
+CreateItemInContainer(worek, 0x1414, 1);// plyta
+CreateItemInContainer(worek, 0x1413, 1);// plyta      
+
+// BRONIE
+
+var worekswordow := CreateItemInContainer(worek, 0xE76, 1);
+var worektoporow := CreateItemInContainer(worek, 0xE76, 1);
+var worekbulaw := CreateItemInContainer(worek, 0xE76, 1);
+var worekszpad := CreateItemInContainer(worek, 0xE76, 1);
+
+// miecze
+CreateItemInContainer(worekswordow, 0x143E, 1);
+CreateItemInContainer(worekswordow, 0xF5E, 1);
+CreateItemInContainer(worekswordow, 0x1440, 1);
+CreateItemInContainer(worekswordow, 0x13fe, 1);
+CreateItemInContainer(worekswordow, 0x13b5, 1);
+CreateItemInContainer(worekswordow, 0x13b9, 1);
+CreateItemInContainer(worekswordow, 0x26BA, 1);
+CreateItemInContainer(worekswordow, 0x26BB, 1);
+CreateItemInContainer(worekswordow, 0x26BF, 1);
+CreateItemInContainer(worekswordow, 0x26C1, 1);
+CreateItemInContainer(worekswordow, 0x26CE, 1);
+CreateItemInContainer(worekswordow, 0x0f4e, 1);                               
+// toporki 
+CreateItemInContainer(worektoporow, "WarAxe", 1);  
+CreateItemInContainer(worektoporow, "Axe", 1);
+CreateItemInContainer(worektoporow, "BattleAxe", 1);
+CreateItemInContainer(worektoporow, "DoubleAxe", 1);  
+CreateItemInContainer(worektoporow, "ExecutionersAxe", 1);
+CreateItemInContainer(worektoporow, "LargeBattleAxe", 1);
+CreateItemInContainer(worektoporow, "WarAxe", 1);  
+CreateItemInContainer(worektoporow, "TwoHandedAxe", 1);
+CreateItemInContainer(worektoporow, "Axe", 1);
+//bulawy
+CreateItemInContainer(worekbulaw, 0x1406, 1);
+CreateItemInContainer(worekbulaw, 0x1438, 1);
+CreateItemInContainer(worekbulaw, 0x143c, 1);
+CreateItemInContainer(worekbulaw, 0x0f5c, 1);
+CreateItemInContainer(worekbulaw, 0x143a, 1);
+CreateItemInContainer(worekbulaw, 0x13b3, 1);
+CreateItemInContainer(worekbulaw, 0x26BC, 1);
+//szpady
+CreateItemInContainer(worekszpad, 0x1402, 1);
+CreateItemInContainer(worekszpad, 0x0f63, 1);
+CreateItemInContainer(worekszpad, 0x1401, 1);                               
+CreateItemInContainer(worekszpad, 0x1404, 1);      
+CreateItemInContainer(worekszpad, 0x0e87, 1);                                                              
+CreateItemInContainer(worekszpad, 0x26be, 1);                               
+CreateItemInContainer(worekszpad, 0x26C0, 1);          
+
+// ROZNE
+
+var poty := CreateItemInContainer(worek, 0xE76, 1);
+
+var i := 0;
+repeat
+CreateItemInContainer(poty, 0xdc07, 1);
+CreateItemInContainer(poty, 0xdc15, 1);
+CreateItemInContainer(poty, 0xdc0d, 1);
+CreateItemInContainer(poty, 0xdc12, 1);
+CreateItemInContainer(poty, 0xdc0f, 1);
+CreateItemInContainer(poty, 0xDC02, 1);
+i := i + 1;
+until(i >= 5);
+
+CreateItemInContainer(poty, 0xE21, 100); // bandaze
+CreateItemInContainer(worek,0xEED, 500); // zloto
+
+endfunction
+
+function StuffLucznika(worek)
+
+// ZBROJA
+CreateItemInContainer(worek, 0x13C7, 1); // leather gorget
+CreateItemInContainer(worek, 0x13CD, 1); // leather sleeves
+CreateItemInContainer(worek, 0x13C6, 1); // leather gloves
+CreateItemInContainer(worek, 0x1DB9, 1); // leather cap
+CreateItemInContainer(worek, 0x13CB, 1); // leather nogawice
+CreateItemInContainer(worek, 0x13CC, 1); // leather tunic
+
+// BRONIE 
+
+CreateItemInContainer(worek, 0x13B2, 1);
+CreateItemInContainer(worek, 0xF4F, 1);
+CreateItemInContainer(worek, 0x13FD, 1);
+CreateItemInContainer(worek, 0x26c3, 1);
+CreateItemInContainer(worek, 0x26c2, 1);
+
+// ROZNE
+var poty := CreateItemInContainer(worek, 0xE76, 1);
+
+var i := 0;
+repeat
+CreateItemInContainer(poty, 0xdc07, 1);
+CreateItemInContainer(poty, 0xdc15, 1);
+CreateItemInContainer(poty, 0xdc0d, 1);
+CreateItemInContainer(poty, 0xdc12, 1);
+CreateItemInContainer(poty, 0xdc0f, 1);
+CreateItemInContainer(poty, 0xDC02, 1);
+i := i + 1;
+until(i >= 5);
+
+CreateItemInContainer(poty, 0xE21, 100); // bandaze
+CreateItemInContainer(worek,0xEED, 500); // zloto
+CreateItemInContainer(worek, 0xF3F, 200); // strzaly & belty
+CreateItemInContainer(worek, 0x1BFB, 200); // strzaly & belty
+
+endfunction

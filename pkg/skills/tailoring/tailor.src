@@ -1,0 +1,50 @@
+use basic;
+use uo;
+
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+
+program use_yarn(who, yarn)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, yarn))
+    return;
+  endif
+  if(yarn.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!ReserveItem(yarn))
+    return;
+  endif
+  SendSysMessage(who, "Wybierz przedzalnie, na ktorej chcesz tego uzyc.", FONT_NORMAL, COLOR_GREEN);
+  var use_on := Target( who, "" );
+  if (!use_on)
+    return;
+  endif
+  var obj_type := GetObjType(use_on);
+  if((obj_type < UOBJ_LOOM_START) || (obj_type > UOBJ_LOOM_END))
+    SendSysMessage(who, "Mozesz uzywac tego tylko na przedzalni.", FONT_NORMAL, 40);
+  else
+    MakeCloth(who, yarn);
+  endif
+endprogram
+
+function MakeCloth(who, yarn)
+  if(!Accessible(who, yarn))
+    SendSysMessage(who, "Nie masz zadnej przedzy!", FONT_NORMAL, 40);
+    return;
+  endif
+  if(yarn.amount >= 5)
+    if( yarn.amount >= 5)
+      if(SubtractAmount(yarn, 5))
+        var cloth := CreateItemInBackpack(who, UOBJ_CLOTH, 100);
+      endif
+    else
+       SendSysMessage(who, "Nie wystarczy Ci przedzy nawet na jedna bale materialu.", FONT_NORMAL, 40);
+    endif
+  else
+    SendSysMessage(who, "Nie wystarczy Ci przedzy nawet na jedna bale materialu.", FONT_NORMAL, 40);
+  endif
+endfunction

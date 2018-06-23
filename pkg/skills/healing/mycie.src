@@ -1,0 +1,57 @@
+// crash
+
+use basic;
+use os;
+use math;
+use uo;
+
+include "include/canAccess";
+include "include/attributes";
+
+var cz_bandaze := 0x0e21;
+var kr_bandaze := 0x0e20;
+var beczka     := 0x154D;
+
+program myjbandaze(who, kr_bandaze)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, kr_bandaze))
+    return;
+  endif
+  if(kr_bandaze.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!ReserveItem(kr_bandaze))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  SendSysMessage(who, "Gdzie chcesz umyc bandaze.", FONT_NORMAL, COLOR_GREEN);
+  var use_on := Target(who);
+  if (!use_on)
+    return;
+  endif
+  if(Distance(who, use_on) > 2)
+    SendSysMessage(who, "Za daleko.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!ReserveItem(use_on))
+    return;
+  endif
+  if(!Accessible(who, use_on))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(use_on.objtype == beczka)
+	SendSysMessage(who, "Rozpoczeto mycie bandazy.", FONT_NORMAL, COLOR_GREEN);
+        var ilebylo := kr_bandaze.amount;
+	DestroyItem(kr_bandaze);
+	PlaySoundEffect(use_on, 0x23f);
+	sleep(2);
+	CreateItemInContainer(who.backpack, cz_bandaze, ilebylo);
+	SendSysMessage(who, "Umyles bandaze.", FONT_NORMAL, COLOR_GREEN);
+        return 0;
+  else
+    SendSysMessage(who, "Nie mozesz umyc w tym bandazy.", FONT_NORMAL, 40);
+  endif
+endprogram

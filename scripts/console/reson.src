@@ -1,0 +1,15 @@
+use basicio;
+use uo;
+
+program restarcik(who)
+var chuj := GetGlobalProperty("restart");
+
+    if(!chuj)
+	SetGlobalProperty("restart", 1);
+	print("WLACZONO zakaz logowania na restarcie.");
+	return;
+    else
+	print("Zakaz logowania na restarcie nie jest wlaczony.");
+	return;
+    endif
+endprogram

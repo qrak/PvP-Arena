@@ -1,0 +1,11 @@
+use uo;
+
+program textcmd_bcast( who, text )
+    if(who.cmdlevel == 5)
+    Broadcast( "Administrator Techniczny: " + text, 3, 40 );
+    elseif(who.cmdlevel == 4)
+    Broadcast( "Mistrz Gry: " + text, 3, 40 );
+    else
+    Broadcast( "Przydupas Mistrzow Gry: " + text, 3, 40 );
+    endif
+endprogram

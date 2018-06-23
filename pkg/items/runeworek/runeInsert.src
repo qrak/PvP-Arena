@@ -1,0 +1,18 @@
+use uo;
+use os;
+use npc;
+use basic;
+
+program CanInsert(who, backpack, movetype, inserttype, item, existing_stack, amt_to_add);
+set_critical(1);
+  if(inserttype != INSERT_ADD_ITEM)
+          return 1;
+  endif
+if(item.objtype == 0x1F14)
+return 1;
+else
+    SendSysMessage(who, "W tym pojemniku mozesz trzymac tylko runy.",3,33);
+    return 0;
+endif
+set_critical(0);
+endprogram

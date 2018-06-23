@@ -1,0 +1,20 @@
+use os;
+use uo;
+use file;
+include "util/bank";
+include "include/utility";
+include "include/teleporters";
+
+//SetGlobalProperty("restart", 0);
+print("Otwieranie Swiatowego Banku");
+OpenWorldBank();
+print("Uruchamianie Magazynow Kupieckich");
+find_or_create_storage("Merchant Storage");
+print("Czyszczenie Magazynow Kupieckich");
+start_script("storageWipe");
+print("Uruchamianie Teleportow Systemowych");
+CreateTeleporters();
+if(!GetGlobalProperty("slabiak"))
+start_script("slabiak");
+endif
+

@@ -1,0 +1,32 @@
+use uo;
+
+include "include/yesNo";
+include "include/canAccess";
+
+program zmiana_klasy(who, item)
+
+    if(!can_access(who, item))
+        return 0;
+    endif 
+  
+    if(item.container != who.backpack)
+        SendSysMessage(who, "Musisz miec kule w plecaku.", 3, 40);
+        return 0;
+    endif
+    
+    var newname := SendTextEntryGump(who, "Jakie chcesz miec imie?",TE_CANCEL_ENABLE,TE_STYLE_NORMAL, 14);
+    if(!newname)
+        SendSysMessage(who, "Nie zmieniles imienia.",3,40);        
+        return 0;
+    endif
+
+
+    if(!YesNo(who, "Czy chcesz zmienic swoje imie na " + newname + "?"))
+        return 0;
+    endif
+
+    SetName(who, newname);
+    SendSysMessage(who, "Zmieniles swoje imie",3,63);
+    DestroyItem(item);
+    
+endprogram

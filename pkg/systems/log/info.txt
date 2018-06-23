@@ -1,0 +1,248 @@
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 67 na wartosc 66. serial: 2532622 x/y/z: 2974 834 0
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 65 na wartosc 66. serial: 2532622 x/y/z: 2974 834 0
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 66 na wartosc 51. serial: 2532622 x/y/z: 2974 834 0
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 51 na wartosc 67. serial: 2532622 x/y/z: 2974 834 0
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 67 na wartosc 67. serial: 2532622 x/y/z: 2974 834 0
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 67 na wartosc 67. serial: 2532622 x/y/z: 1427 1731 20
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 67 na wartosc 1. serial: 2532622 x/y/z: 1427 1731 20
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 1 na wartosc 67. serial: 2532622 x/y/z: 1427 1731 20
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 67 na wartosc 1. serial: 2532622 x/y/z: 1427 1731 20
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 1 na wartosc 67. serial: 2532622 x/y/z: 1427 1731 20
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 67 na wartosc 1. serial: 2532622 x/y/z: 1427 1731 20
+[STATS] Konto ekipy: [bosor] zmienil postaci Gentrithior na koncie hudy inteligencje z 2 na wartosc 67. serial: 2532622 x/y/z: 1427 1731 20
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kilof [wyjatek]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz [lvl: 1] [lvl: 2] [lvl: 3] [lvl: 4] [lvl: 5] [lvl: 6]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci plytowy napiersnik z namithu [wykul Qra'h]!
+[STATS] Konto ekipy: [bosor] zmienil postaci TruskawKa na koncie: dyniak sile z 55 na wartosc 100. serial: 2532441 x/y/z: 2503 558 0
+[STATS] Konto ekipy: [bosor] zmienil postaci TruskawKa na koncie dyniak zrecznosc z 10 na wartosc 5. serial: 2532441 x/y/z: 2504 556 0
+[STATS] Konto ekipy: [bosor] zmienil postaci Vexio na koncie buczus21 zrecznosc z 25 na wartosc 24. serial: 2538337 x/y/z: 2566 488 0
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci cypress ciezka kusza [wykonal Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci cypress ciezka kusza [wykonal Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci cypress ciezka kusza [wykonal Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci plytowy napiersnik z namithu [wykul Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci plytowy napiersnik z namithu [wykul Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na koszmar osoby: Makalele!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na koszmar osoby: Makalele!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na koszmar osoby: Makalele!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na koszmar osoby: Makalele!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Makalele!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na  [kupiony przez GMa]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Halabarda Smierci [artefakt] [niezniszczalny] [kupiony przez GMa]!
+[INFO] Nowe imie: Maly Zjeb na koncie: bosor
+[INFO] Nowe imie: Je ZuS na koncie: bosor
+[INFO] Nowe imie: Castorama na koncie: bosor
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na No-Dachi idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na No-Dachi idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na siekiera twojego starego!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na siekiera twojego starego!
+[SETPROP] Postac: [Chujew] Konto: [admin]. Uzyl komendy setprop na Chujew!
+[SETPROP] Postac: [Chujew] Konto: [admin]. Uzyl komendy setprop na Chujew!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[STATS] Konto ekipy: [kan] zmienil postaci XXXXXXXXXXXXXXXX na koncie: majk sile z 140 na wartosc 80. serial: 2551448 x/y/z: 5165 246 15
+[STATS] Konto ekipy: [kan] zmienil postaci XXXXXXXXXXXXXXXX na koncie majk zrecznosc z 100 na wartosc 140. serial: 2551448 x/y/z: 5165 246 15
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na No-Dachi szansy na uderzenie!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na okragla tarcza idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na skorzane utwardzane rekawice zuzywania skladnikow!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na !
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci duzy stol [wykonal Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci duzy stol [wykonal Qra'h]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Azzar!
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie: 12bartek21 sile z 100 na wartosc 90. serial: 2551487 x/y/z: 2507 550 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 zrecznosc z 111 na wartosc 130. serial: 2551487 x/y/z: 2507 550 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 zrecznosc z 172 na wartosc 140. serial: 2551487 x/y/z: 5453 1807 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 zrecznosc z 182 na wartosc 130. serial: 2551487 x/y/z: 5452 1805 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie: 12bartek21 sile z 90 na wartosc 80. serial: 2551487 x/y/z: 3642 2539 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 zrecznosc z 172 na wartosc 140. serial: 2551487 x/y/z: 3642 2539 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 zrecznosc z 182 na wartosc 130. serial: 2551487 x/y/z: 3652 2547 0
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie: 12bartek21 sile z 80 na wartosc 90. serial: 2551487 x/y/z: 3651 2546 0
+[STATS] Konto ekipy: [kan] zmienil postaci KoXiaRa na koncie: czadeq sile z 80 na wartosc 100. serial: 2536504 x/y/z: 5500 3256 3
+[STATS] Konto ekipy: [admin] zmienil postaci Tatiana na koncie sesowiec zrecznosc z 150 na wartosc 130. serial: 2542668 x/y/z: 1608 1680 20
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz nakurwiatora!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[STATS] Konto ekipy: [bosor] zmienil NPCowi ognista szkapa sile z 150 na wartosc 500. serial: 2561117 x/y/z: 5467 1818 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi ognista szkapa zrecznosc z 500 na wartosc 500. serial: 2561117 x/y/z: 5467 1818 0
+[STATS] Konto ekipy: [kan] zmienil postaci Green Grenade na koncie: 12bartek21 sile z 150 na wartosc 210. serial: 2542321 x/y/z: 4809 3640 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi szkapa sile z 150 na wartosc 2000. serial: 2562188 x/y/z: 5468 1817 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi szkapa zrecznosc z 2000 na wartosc 2000. serial: 2562188 x/y/z: 5468 1817 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi szkapa sile z 150 na wartosc 555. serial: 2562190 x/y/z: 5547 1809 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi szkapa zrecznosc z 555 na wartosc 555. serial: 2562190 x/y/z: 5547 1809 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Straznik Piekla sile z 200 na wartosc 1. serial: 2557355 x/y/z: 5686 525 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Straznik Piekla zrecznosc z 1 na wartosc 1. serial: 2557355 x/y/z: 5687 528 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Aresto-loferin Krolewski sile z 1305 na wartosc 1. serial: 2556147 x/y/z: 5181 1009 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Straznik Zaglady sile z 200 na wartosc 1. serial: 2561606 x/y/z: 3653 1311 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Straznik Zaglady sile z 200 na wartosc 1. serial: 2561683 x/y/z: 5265 23 15
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Straznik Smierci sile z 200 na wartosc 1. serial: 2554121 x/y/z: 5576 194 0
+[INFO] Tedox na koncie bosor zmienil(a) prefix osobie Amstaf na koncie error{ errortext = "Not attached to an account" } na 1
+[INFO] Tedox na koncie bosor zmienil(a) suffix osobie Amstaf na koncie error{ errortext = "Not attached to an account" } na 2
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Straznik Smierci sile z 200 na wartosc 1. serial: 2549406 x/y/z: 5212 1745 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi Usher - Wladca Portali sile z 1200 na wartosc 1. serial: 2562252 x/y/z: 5703 639 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi 69 Exodus - Champion sile z 1000 na wartosc 1. serial: 2562261 x/y/z: 5703 639 0
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz nakurwiatora!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na pizza%s%!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na mikstura leczenia%%!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na halabarda!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na halabarda!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na halabarda!
+[STATS] Konto ekipy: [bosor] zmienil NPCowi duzy smok sile z 925 na wartosc 1. serial: 2563315 x/y/z: 5580 1927 0
+[STATS] Konto ekipy: [bosor] zmienil NPCowi duzy smok sile z 925 na wartosc 1. serial: 2563314 x/y/z: 5581 1906 0
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci halabarda z 69 exodusa [wykul Green Grenade]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na halabarda z 69 exodusa!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na halabarda z 69 exodusa!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na halabarda z 69 exodusa!
+[STATS] Konto ekipy: [admin] zmienil postaci XXXXXXXXXXXXXXXX na koncie: majk sile z 82 na wartosc 100. serial: 2551448 x/y/z: 5131 2449 16
+[STATS] Konto ekipy: [admin] zmienil postaci XXXXXXXXXXXXXXXX na koncie: majk sile z 100 na wartosc 82. serial: 2551448 x/y/z: 5131 2449 16
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na elven composite longbow wysysania energii!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na wyjatkowej jakosci halabarda z 69 exodusa [wykul Green Grenade]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na palasz szansy na obrone!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Jama Psów!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Jama Psów!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Jama Psów!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Jama Psów!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kalesony ninja [czesc setu]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kalesony ninja [czesc setu]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na nogawice honoru [czesc setu]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na SSij!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na SSij!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na SSij!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na SSij!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kurtka ninja [czesc setu]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na bulletin board!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na luk wysysania energii!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na widmowy wielki zuk osoby: Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na widmowy wielki zuk osoby: Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na widmowy wielki zuk osoby: Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na widmowy wielki zuk osoby: Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na opancerzony koszmar!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kolczan wulkaniczna!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na toga!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na czysty zwoj!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na czysty zwoj!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na widmowy wielki zuk osoby: Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na dlugi miecz!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kosa!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kosa!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na kosa!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na buty ninja [czesc setu]!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na puklerz idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na puklerz idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na puklerz idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na puklerz idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na sztylet idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na sztylet idealu!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na okragla tarcza szansy na obrone!
+[STATS] Konto ekipy: [kan] zmienil postaci XXXXXXXXXXXXXXXX na koncie majk inteligencje z 5 na wartosc 1. serial: 2551448 x/y/z: 6091 2865 42
+[STATS] Konto ekipy: [kan] zmienil postaci XXXXXXXXXXXXXXXX na koncie majk zrecznosc z 142 na wartosc 146. serial: 2551448 x/y/z: 6091 2865 42
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 inteligencje z 5 na wartosc 1. serial: 2551487 x/y/z: 6086 2865 42
+[STATS] Konto ekipy: [kan] zmienil postaci Rempero na koncie 12bartek21 zrecznosc z 138 na wartosc 140. serial: 2551487 x/y/z: 6086 2865 42
+[STATS] Konto ekipy: [admin] zmienil postaci Jolly Roger na koncie: thiass sile z 125 na wartosc 124. serial: 2590938 x/y/z: 2499 556 0
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Qra'h!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na widmowy ostard!
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na Zwloki Exodus Niszczyciel! Zmiana ssij ilosc: 32
+[SETPROP] Postac: [Qra'h] Konto: [admin]. Uzyl komendy setprop na clay wall! Zmiana movable ilosc: 1
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 2 na wartosc 0. serial: 2576999 x/y/z: 6109 3051 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 17 na wartosc 0. serial: 2576999 x/y/z: 6109 3051 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 8 na wartosc 0. serial: 2576999 x/y/z: 6109 3051 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 34 na wartosc 0. serial: 2576999 x/y/z: 6109 3051 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 27 na wartosc 0. serial: 2576999 x/y/z: 6109 3051 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 17 na wartosc 1000. serial: 2576999 x/y/z: 6109 3050 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 2 na wartosc 1000. serial: 2576999 x/y/z: 6109 3050 62
+[SKILL] Konto ekipy: [admin] zmienil postaci PrzeKozak na koncie kwas ceche 27 na wartosc 1000. serial: 2576999 x/y/z: 6109 3050 62
+[SKILL] Konto ekipy: [admin] zmienil postaci DYNIAK na koncie dyniak ceche 16 na wartosc 1000. serial: 2582183 x/y/z: 6109 3050 62
+[SKILL] Konto ekipy: [admin] zmienil postaci DYNIAK na koncie dyniak ceche 25 na wartosc 1000. serial: 2582183 x/y/z: 6109 3050 62

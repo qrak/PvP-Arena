@@ -1,0 +1,8 @@
+use uo;
+
+program EnterRegionZone(who)
+SetObjProperty(who, "#nocast", 1);
+
+                     return 1;
+
+endprogram

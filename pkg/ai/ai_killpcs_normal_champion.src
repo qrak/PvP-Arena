@@ -1,0 +1,119 @@
+use os;
+use uo;
+use npc;
+use util;
+use cfgfile;
+use vitals;
+
+include "include/attributes";
+include "include/npc_util";
+include "include/npcinfo";
+include "include/eventID";
+include "setup/setup";
+include "include/events";
+include "main/mainloop_killpcs_normal";
+include "main/sleepmode_normal";
+include "combat/fightmode_normal";
+include "combat/closedistance_default";
+include "combat/changeopponent_default";
+include "combat/gethelp_default";
+include "combat/pathfinding";
+
+const HALT_THRESHOLD := 16; // how close before he attacks?
+drop_anchor();
+
+
+program KillPlayers ()
+	start_script("::NPCKeeper", me);
+
+	if (GetObjProperty (me, "frozen"))
+		me.frozen := 1;
+	endif
+
+	post_combat ();
+	main_AI_loop ();
+endprogram
+
+function process_combat_event (byref ev)
+	SpellAttack (ev.source);
+
+	case (ev.type)
+		EVID_DAMAGED:
+			if (GetVital (me, "Life") < CINT (GetVitalMaximumValue (me, "Life")/2))
+				sleep (1);
+				CastSpell (me, me,29);
+				if( me.poisoned )
+					CastSpell (me, me, 11);
+					CastSpell (me, ev.source, 20);
+				endif
+			endif
+			if (GetVital (me, "Life") < CINT (GetVitalMaximumValue (me, "Life")/10))
+				EraseObjProperty (me, "#flees");
+				Flee (ev.source);
+			endif
+	endcase
+endfunction
+
+function SpellAttack (byref opponent)
+	
+	if (!GetObjProperty (me, "#lastspell"))
+		SetObjProperty (me, "#lastspell", ReadGameClock() + 1);
+	endif
+
+	if (GetObjProperty (me, "#lastspell") > ReadGameClock() )
+		return;
+	endif
+
+	if (GetVital (me, "Mana") < 1000)
+		SetObjProperty (me, "#lastspell", ReadGameClock() + 10);
+	endif
+
+	if(opponent == me)
+		RestartScript(me);
+	endif
+
+  	//if we're running low on mana and our opponent has plenty, try to drain some of it.
+	if (GetVital (me, "Mana") < 6000 and GetVital (me, "Mana") >= 4000 and GetVital (opponent, "Mana") > 4000 and RandomInt (2))
+		if (GetAttribute (me, "Intelligence") + 20 > GetAttribute (opponent, "Intelligence") and RandomInt (2))
+			TurnToward (opponent);
+			CastSpell (me, opponent, 53);
+			SetObjProperty (me, "#lastspell", ReadGameClock() + 2);
+			return;
+		endif
+	endif
+  
+
+	SetObjProperty (me, "#lastspell", (RandomInt(10) + 5));
+	Czaruj (me, opponent);
+	return;
+endfunction
+
+
+function in_combat_event_loop (byref opponent)
+	spellattack (opponent);
+endfunction
+
+function prepare_for_fight (byref opponent)
+	DisableMainEvents ();
+	EnableCombatEvents ();
+	if (!GetObjProperty (me, "mr"))
+		CastSpell (me, me, 36);
+	endif
+endfunction
+
+function post_combat ()
+	if (GetVital (me, "Life") < CINT (GetVitalMaximumValue (me, "Life")/2))
+		CastSpell (me, me, 29);
+	endif
+
+	if( me.poisoned )
+		CastSpell (me, me, 11);
+	endif
+				
+	DisableCombatEvents();
+	EnableMainEvents();
+
+	SetWarMode( 0 );
+	sleep(1);
+	look_around();
+endfunction

@@ -1,0 +1,24 @@
+use basic;
+use uo;
+
+program fullksiegi(who)
+    var nekro := CreateItemInBackpack(who,0x2253, 1);
+    var druid := CreateItemInBackpack(who,0x2D50, 1);    
+    var pala := CreateItemInBackpack(who,0x2252, 1);
+    
+    var i;
+    for (i := 0x2260; i <= 0x226F; i := i + 1)
+        CreateItemInContainer(nekro, i, 1);
+    endfor
+    
+    for (i := 0x2D51; i <= 0x2D60; i := i + 1)
+        CreateItemInContainer(druid, i, 1);
+    endfor
+    
+    for (i := 0x2270; i <= 0x2279; i := i + 1)
+        CreateItemInContainer(pala, i, 1);
+    endfor
+    
+SendSysMessage(who, "Otrzymales pelne ksiegi.",3,67);
+
+endprogram

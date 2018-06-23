@@ -1,0 +1,22 @@
+use os;
+use uo;
+
+include "include/yesNo";
+
+program turniejportal(who)
+
+    if(!yesNo(who, "Czy chcesz wejsc na Turniej?"))
+        return 0;
+    endif
+
+    if(GetEquipmentByLayer(who, 25));
+        SendSysMessage (who, "Z tym koniem to do stajni!.", 3, 40);
+        return 0;
+    endif
+
+    MoveObjectToLocation(who, 5408, 1205, 0 );
+    SendSysMessage(who, "Znalazles sie na Turnieju. Jezeli nie znasz regulaminu, zapoznaj sie znim, albo WYDUPIAJ!",3,68);
+   
+
+
+endprogram

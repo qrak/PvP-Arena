@@ -1,0 +1,72 @@
+// by HardeN
+use uo;
+
+include ":gumps:gumps";
+
+program test (who)
+var buf := {};
+var all := {};
+var kwity := {};
+var licz := 0;
+foreach gracz in EnumerateOnlineCharacters()
+  all.append({gracz.ip,gracz.name});
+  licz := licz + 1;
+endforeach
+var i,j;
+  for( i := 1; i <= licz; i := i + 1)
+    buf := {all[i][1],all[i][2]};
+    for( j := 1; j <= licz; j := j + 1)
+      if(all[j][2] != buf[2] and all[j][1] == buf[1])
+        kwity.append({buf[1],buf[2]});
+      endif
+    endfor
+endfor
+
+
+
+GFInitGump(80, 80);
+GFNoDispose();
+GFNoClose();
+GFPage(0);
+ GFResizePic(0,20, 2520,450,370);
+ GFResizePic(28,54, 3600,394,300);
+
+
+GFButtonID(50, 70, 1209, 1210, 1);
+GFTextLine(70,70,550,"Opusc menu.");
+  
+var i1 := 0, z := 0, l := 1;
+
+
+GFPage(1);
+
+
+
+  i1 := i1 + 1;
+
+  if(kwity)
+   if(z > 8)
+     l:=l+1; 
+     GFButtonPage(380, 70, 5540, 5542, l);
+
+     z := 0;
+     GFPage(l);
+    GFButtonPage(350, 70, 5537, 5539, l-1);
+
+   endif
+ 
+
+
+   
+
+   GFTextLine(370,355,550,"strona: " + l);
+   GFTextLine(50, 100+(z*20), 300, kwity);
+
+
+
+   z := z + 1;
+   endif
+   //endforeach
+   GFSendGump(who); 
+
+endprogram

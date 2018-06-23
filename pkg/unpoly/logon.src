@@ -1,0 +1,35 @@
+use os;
+use uo;
+
+program onlogon(who)
+  if(GetObjProperty(who, "incognito"))
+      var oldname := GetObjProperty(who, "realname");
+      var oldgild := GetObjProperty(who, "oldguild");
+      var oldprzd := GetObjProperty(who, "przydomek");
+
+if(oldname)
+		SetName(who, oldname);
+		EraseObjProperty(who, "realname");
+endif
+      	if(oldgild)
+		who.title_guild := oldgild;
+		EraseObjProperty(who, "oldguild");
+	endif
+	if(oldprzd)
+		who.title_suffix := oldprzd;
+	endif
+	EraseObjProperty(who, "incognito");
+  endif 
+  
+  if(Cint(GetObjProperty(who, "oldgraphic")))
+  who.graphic := Cint(GetObjProperty(who, "oldgraphic"));
+  endif
+  if(GetObjProperty (who, "oldname"))
+  var oldimie := GetObjProperty (who, "oldname");
+  SetName(who, oldimie);
+  endif
+
+  start_script(":unpoly:unpoly", who);
+
+endprogram
+

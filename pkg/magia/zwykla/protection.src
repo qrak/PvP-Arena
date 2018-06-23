@@ -1,0 +1,43 @@
+// crash
+
+use cfgfile;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_protection(parms)
+  var circle := 2;
+  var delivery := "notarget";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 15);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+
+  PlaySoundEffect(caster, SFX_SPELL_PROTECTION);
+  PlayObjectCenteredEffect(caster, FX_BLESS_EFFECT, 7,7);
+  if (!CanMod(caster, "ar"))
+	SendSysMessage(caster,"Jestes juz pod dzialaniem tego czaru.",3,40);
+	return;
+  endif
+  
+  if(Cint(GetObjProperty(caster, "wraith")))
+  	SendSysMessage(caster,"Nie mozesz rzucac tego czaru w tej postaci.",3,40);
+	return 0;
+  endif
+  
+  var int := GetIntelligence(caster);
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var eval := GetEffectiveSkill(caster, SKILLID_EVALINT);
+
+  var mod_amount := Cint(magery/10);
+  var duration := CInt(int + magery + eval);
+//  var itmcfg := ReadConfigFile(":*:itemdesc");
+    if(CanMod(caster, "ar"))
+        DoTempMod(caster, "ar", mod_amount, duration);
+    endif
+
+endprogram

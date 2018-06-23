@@ -1,0 +1,40 @@
+/* $Id: guildButton.src 903 2006-11-04 06:42:35Z MontuZ $
+ *        Author: MontuZ
+ *        Created: Sunday, May 21 2006
+ *        Version: 0.01
+ */
+
+use uo;
+use os;
+use polsys;
+use guilds;
+
+include ":playerguilds:settings";
+
+
+program Install()
+	Print("INSTALLING Guild/Quest Button Packethook");
+	return 1;
+endprogram
+
+
+exported function GuildButtonHook(character, byref packet)
+	packet := packet;
+
+	var guild_id := character.guildid;
+	var guild := FindGuild(guild_id);
+	if ( !guild )
+		Start_Script(":playerguilds:guildCreate", character);
+		return 1;
+	elseif ( guild )
+		Start_Script(":playerguilds:guildMenu", character);
+		return 1;
+	endif
+endfunction
+
+
+exported function QuestButtonHook(character, byref packet)
+	packet := packet;
+	start_script(":GuildQuestCombat:questmenu", character);
+	return 0;
+endfunction

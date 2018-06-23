@@ -1,0 +1,4 @@
+use uo;
+program usuwajaranie(who)
+EraseObjProperty(who, "jara");
+endprogram

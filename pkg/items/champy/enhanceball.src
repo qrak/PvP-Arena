@@ -1,0 +1,199 @@
+use cfgfile;
+use uo;
+use basic;
+use polsys;
+
+include "include/attributes";
+include "include/yesNo";
+include "include/canAccess";
+include "include/itemutil";
+include ":gumps:gumps";
+
+var tailorcfg  := ReadConfigFile(":tailoring:itemdesc");
+
+//1  -  1086 do 1100  to 14 kolorow i 15 daj obecny kolor plyty na poziomie 40
+
+
+
+
+program magic_item(who, kula)
+    if(!can_access(who, kula))
+        return 0;
+    endif
+    
+    if(!IsInContainer(who.backpack, kula))
+        SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40);
+        return 0;
+    endif
+
+    if(kula.objtype == 0xFF13) //dmgkula
+        if(!Boost(who, kula));
+            return 0;
+        endif
+    endif
+endprogram
+
+function Boost(who, kula)
+    if(!IsInContainer(who.backpack, kula))
+        SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40);
+        return 0;
+    endif
+
+    //BuildEquippedStuffGump(who);
+    
+    var ubranie;
+    var rare;
+    var wlosy := GetEquipmentByLayer( who, 0x0b );
+    var broda := GetEquipmentByLayer( who, 0x10 );
+    var mount := GetEquipmentByLayer( who, 0x19 );
+    var oldhaircolor := wlosy.color;
+    var oldbeardcolor := broda.color;
+    var oldmountcolor := mount.color;
+
+    foreach zalozone in ListEquippedItems( who );
+        Eraseobjproperty(zalozone, "przekleta");
+        ubranie := CInt(tailorcfg[zalozone.objtype].dyeable);
+	rare := Cint(GetObjProperty(zalozone, "IsRare"));	
+
+ 
+    
+
+        if(rare)
+            //SendSysMessage(who, "Pomijam: " + zalozone.desc + " (unikat)", 3, 40);
+            continue;
+        endif
+	
+       
+        if(zalozone.isa(POLCLASS_CONTAINER))
+            //SendSysMessage(who, "Pomijam: " + zalozone.desc + " (pojemnik)", 3, 40);
+            continue;
+        endif
+
+     	if(zalozone.dmg_mod >= 45 || zalozone.ar_mod >= 45)
+            //SendSysMessage(who, "Pomijam: " + zalozone.desc + " (unikat)", 3, 40);
+            continue;
+        endif
+
+        if(zalozone.objtype == 0xE75)
+            continue;
+        endif
+        if(zalozone.objtype == 0x966C) // plecak
+            continue;
+        endif
+
+        wlosy.color := oldhaircolor;
+        broda.color := oldbeardcolor;
+ 
+	var blokuj := GetObjProperty(zalozone, "ZostawKolor");
+
+        if(ubranie)
+            //SendSysMessage(who, "Pomijam: " + zalozone.desc + " (ubior)", 3, 40);
+		if(!blokuj)
+			if(zalozone.color < 1086)
+				zalozone.color := 1086;
+				continue;
+			endif	
+			SetItemColor(zalozone, ubranie);
+		endif
+	    	continue;
+        endif
+
+	if( Cint(GetObjProperty(zalozone, "exceptional")) || Cint(GetObjProperty(zalozone, "level")))
+        		zalozone.ar_mod := zalozone.ar_mod +1;
+        		zalozone.dmg_mod := zalozone.dmg_mod +1;
+		if((zalozone.ar_mod > 40 || zalozone.dmg_mod > 40))
+        	    zalozone.ar_mod := 40;
+	            zalozone.dmg_mod := 40;
+		    SendSysMessage(who, "Przedmiot " + zalozone.desc + " ma juz maksymalny poziom. Pominieto.", 3, 40);
+		endif
+        else
+        zalozone.ar_mod := zalozone.ar_mod +1;
+        zalozone.dmg_mod := zalozone.dmg_mod +1;
+
+	        if((zalozone.ar_mod > 30 || zalozone.dmg_mod > 30))
+        	    zalozone.ar_mod := 30;
+	            zalozone.dmg_mod := 30;
+		    SendSysMessage(who, "Przedmiot " + zalozone.desc + " ma juz maksymalny poziom. Pominieto.", 3, 40);
+        	endif
+        endif
+
+	if(!blokuj)
+		SetItemColor(zalozone, ubranie);
+        endif
+	IncRevision(zalozone);
+
+    endforeach
+    SubtractAmount(kula, 1);
+    PlayObjectCenteredEffect(who, 0x3709, 0x0a, 0x1e );
+    PlayObjectCenteredEffect(who, FX_SPARK_EFFECT, 7, 0x10 );
+    PlaySoundEffect(who, 0x5d0);
+    SendSysMessage(who, "Ulepszyles przedmioty.", 3, 63);
+    return 1;
+endfunction
+
+/*function AddPrefix(item)
+    var name := SplitWords(item.name);
+    var i := 0;
+    foreach word in name
+        if(word == "[wzmocniony]")
+            i := i + 1;
+        endif
+    endforeach
+    if(i <= 0)
+        item.name := item.desc + " [wzmocniony]";
+        return 1;
+    endif
+    return 0;    
+endfunction*/
+
+function SetItemColor(item, ubranie)
+
+	if(!ubranie)
+		if(item.isa(POLCLASS_WEAPON))
+		        item.color := 1137 + item.dmg_mod;
+        
+		elseif(item.isa(POLCLASS_ARMOR))
+		        item.color := 1137 + item.ar_mod;
+		endif
+
+	else
+		if(item.color >= 1086 && item.color <= 1099);
+			item.color := item.color + 1;
+		elseif(item.color > 1099)
+			item.color := 1099;
+	        endif
+	endif
+
+endfunction
+
+function BuildEquippedStuffGump(who)
+    GFInitGump(100, 20);
+    GFPage(0);
+    GFResizePic(100,100, 2520,450,350);
+    GFResizePic(128,134, 3600,394,280);
+    GFButtonID(150, 150, 1209, 1210, 1);
+    GFTextLine(170,150,40,"Kontynuuj do ulepszania.");
+    GFTextLine(170,110,40,"POZIOMY PRZEDMIOTOW KTORE MASZ NA SOBIE");
+    var odstepy_y := 0;
+    var l := 1;
+    var lp := 0;
+    GFPage(1);
+    foreach rzecz in ListEquippedItems(who) 
+        lp := lp +1;
+        if( odstepy_y > 20)
+            l:=l+1; 
+            GFButtonPage(220, 150, 5540, 5542, l);
+            odstepy_y := 0;
+            GFPage(l);
+            GFButtonPage(240, 150, 5537, 5539, l-1);
+        endif
+        if(rzecz.isa(POLCLASS_ARMOR))
+            GFTextLine(160, 170+(odstepy_y*20), 37, lp + ". " + rzecz.desc + " [lvl: " + rzecz.ar_mod + "]" );
+        elseif(rzecz.isa(POLCLASS_WEAPON))
+            GFTextLine(160, 170+(odstepy_y*20), 37, lp + ". " + rzecz.desc + " [lvl: " + rzecz.dmg_mod + "]" );
+        endif
+        odstepy_y := odstepy_y + 1;
+    endforeach
+    GFSendGump(who);
+endfunction
+

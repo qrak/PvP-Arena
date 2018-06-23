@@ -1,0 +1,34 @@
+use uo;
+
+include "include/canAccess";
+
+program dyecheck( who, dyetub )
+  EraseObjProperty(who, "IsMeditating");
+  if(!can_access(who, dyetub))
+    return;
+  endif
+  ReserveItem(dyetub);
+  SendSysMessage(who, "Co chcesz przemalowac?");
+  var item := Target(who, TGTOPT_NOCHECK_LOS );
+  if(!ReserveItem(item))
+    return;
+  endif
+  if(!item)
+    SendSysMessage(who, "Anulowano.");
+    return;
+  endif
+  if(!can_access(who, item))
+    return;
+  endif
+  if(item.movable > 0)
+     SendSysMessage(who, "Ten przedmiot jest zablokowany.");
+     return;
+  endif
+  var allowdye := GetObjProperty(item, "furniture");
+  if(allowdye == 1)
+    item.color := dyetub.color;
+    return;
+  else
+    SendSysMessage(who, "Nie mozesz tego przemalowac.");
+  endif
+endprogram

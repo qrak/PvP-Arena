@@ -1,0 +1,30 @@
+use uo;
+use os;
+use cfgfile;
+use file;
+
+program securitycheck()
+  var cfg := ReadConfigFile(":security:gmaccts");
+  var accounts   := GetConfigStringArray(cfg["Login"],"Konto");
+  while(1)
+    foreach player in EnumerateOnlineCharacters()
+      if(player.cmdlevel)
+        if(player.acctname in accounts)
+          continue;
+        else
+          BanAccount(player);
+        endif
+      endif
+    endforeach
+    sleep(1);
+  endwhile
+endprogram
+
+
+function BanAccount(player);
+  var konto := FindAccount(player.acctname);
+  konto.ban();
+  DisconnectClient(player);
+  LogToFile("breach.txt", "Niepowolane konto ekipy: " +player.acctname+"! Zbanowano.");
+  syslog("Niepowolane konto ekipy: " +player.acctname+"! Zbanowano.");
+endfunction

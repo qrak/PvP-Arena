@@ -1,0 +1,22 @@
+
+use file;
+use uo;
+use basic;
+
+include "util/bank";
+
+program open_bank( who , mi)
+	if(mi)
+             var bankbox;
+             bankbox := FindBankBox( who );
+             SendOpenSpecialContainer( who, bankbox );
+	else
+	     var kto := Target(who);
+	     if(!kto)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	     endif
+	     SendOpenSpecialContainer( who, FindBankBox( kto ));
+             LogToFile("packbank.txt", "[BANK] osoba z konta: " +who.acctname+" otworzyla bank osobie "+kto.name);             
+	endif
+endprogram

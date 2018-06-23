@@ -1,0 +1,125 @@
+/////////////////////////////////////////////////////////
+//						       //
+// Fortune telling script which picks a random fortune //
+//      used in conjunction with a crystal ball.       //
+//						       //
+// 		GM Basara - April 22 2001	       //
+//						       //
+/////////////////////////////////////////////////////////
+
+use util;
+use os;
+use basicio;
+use math;
+use uo;
+
+program tarot(who, item)
+	if (GetObjProperty(item, "inuse") == 1)
+		SendSysMessage(who, " Duchy nie moga przypowiedziec wielu przyszlosci naraz");
+		return;
+	endif
+SendSysMessage (who, "Czyja przyszlosc chcesz poznac ?");
+var tgt := Target(who);
+
+	if(!tgt)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	elseif (tgt == who)
+	SendSysMessage(who, " Nie mozesz przypowiedziec swojej wlasnej przyszlosci");
+		return;
+	elseif (distance(tgt, item) > 2)
+		SendSysMessage(who, tgt.name + " jest za daleko aby spelnic rytual");
+		return;
+	elseif (distance(who, item) > 2)
+		SendSysMessage(who, " Jestes za daleko aby spelnic rytual");
+		return;
+	elseif (tgt.graphic == 400 || tgt.graphic == 401)
+	else
+	SendSysMessage(who, "Nie mozesz przypowiedziec przyszlosci tego");
+	return;
+	detach();
+endif
+
+	SetObjProperty(item, "inuse", 1);
+	PrintTextAbove(who, "*" + who.name + " tasuje karty*");
+	if (item.graphic == 0x12ac);
+	var i;
+	for (i:=1; i<=4; i:=i+1)
+	(item.graphic := 0x12aa);
+	Sleep(1);
+	(item.graphic := 0x12ac);
+	Sleep(1);
+	endfor
+
+elseif (item.graphic == 0x12ab);
+	var i;
+	for (i:=1; i<=4; i:=i+1)
+	(item.graphic := 0x12a9);
+	Sleep(1);
+	(item.graphic := 0x12ab);
+	Sleep(1);
+	endfor
+endif
+    Sleep(2);
+    PrintTextAbove(who, "*" + who.name + " rozklada kary i rozpoczyna odczytywanie przyszlosci" + tgt.name );
+    	if( item.graphic == 0x12ac )
+		item.graphic := 0x12a6;
+    	endif
+    	if( item.graphic == 0x12ab )
+		item.graphic := 0x12a5;
+   	endif
+	Sleep(6);
+	if( item.graphic == 0x12a6 )
+		item.graphic := 0x12a7;
+    	endif
+    	if( item.graphic == 0x12a5 )
+		item.graphic := 0x12a8;
+    	endif
+   	Sleep(6);
+	readcards( who );
+	Sleep(16);
+	PrintTextAbove(item, "*" + who.name + " zbiera karty");
+	if( item.graphic == 0x12a7 )
+		item.graphic := 0x12a6;
+	endif
+	if( item.graphic == 0x12a8 )
+		item.graphic := 0x12a5;
+	endif
+	Sleep(3);
+	if( item.graphic == 0x12a6 )
+		item.graphic := 0x12aa;
+	endif
+	if( item.graphic == 0x12a5 )
+		item.graphic := 0x12a9;
+	endif
+	Sleep(3);
+	if( item.graphic == 0x12aa )
+		item.graphic := 0x12ac;
+	endif
+	if( item.graphic == 0x12a9 )
+		item.graphic := 0x12ab;
+	endif
+	    
+    EraseObjProperty(item, "inuse");
+
+endprogram
+
+function readcards( who )
+     var randy    := RandomInt(12);
+     
+     case( randy )
+          0: PrintTextAbove( who, "Przyszlosc jest niejasna, sprobuj pozniej...", 3, 38);
+          1: PrintTextAbove( who, "Przyszlosc Ci nie sprzyja. Tyle jestem w stanie powiedziec.", 3, 38);
+          2: PrintTextAbove( who, "Uwazaj na najblizszych! Zdradza Cie !", 3, 38);
+          3: PrintTextAbove( who, "Radze abys byl blisko swych przyjaciol ale jeszcze blizej wrogow", 3, 38);
+          4: PrintTextAbove( who, "Przyszlosc zapowiada sie dobrze.", 3, 38);
+          5: PrintTextAbove( who, "Odpowiesz za swe czyny !", 3, 38);
+          6: PrintTextAbove( who, "Odnajdziesz szczescie w milosci", 3, 38);
+          7: PrintTextAbove( who, "Nie odrzucaj zbyt szybko propozycji pomocy.", 3, 38);
+          8: PrintTextAbove( who, "Pomysl dwa razy zanim sie odezwiesz, nie wiesz kot moze to uslyszec", 3, 38);  
+          9: PrintTextAbove( who, "Daj spokoj Bogom! Bo jak nie to ...", 3, 38);
+          10: PrintTextAbove( who, "Zdrada czycha..", 3, 38);
+          11: PrintTextAbove( who, "Potezne smoki polegna pod gniewem twego miecza", 3, 38);
+endcase
+endfunction
+

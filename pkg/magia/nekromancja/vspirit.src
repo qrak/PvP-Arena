@@ -1,0 +1,47 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_vspirit( parms )
+  var circle := 8;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 114);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var nek := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
+var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+var int := GetIntelligence(caster);
+
+var bonus := 0;
+
+if(caster.ip)
+bonus := int/5;
+endif
+
+
+
+detach();
+
+var duch := CreateNpcFromTemplate("vengefulspirit", caster.x, caster.y, caster.z);
+Setobjproperty(duch, "cel", cast_on.serial);
+SetObjProperty(duch, "summoned", 1);
+
+Playsoundeffect(duch, 535);
+
+duch.script := "vengspirit";
+RestartScript(duch);
+
+sleep((nek+sspeak+bonus) / 10);
+MoveObjectToLocation(duch,0,0,0, duch.realm,MOVEOBJECT_FORCELOCATION);
+ApplyRawDamage(duch, GetHp(duch) + 3);
+
+
+endprogram

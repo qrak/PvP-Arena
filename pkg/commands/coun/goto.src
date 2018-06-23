@@ -1,0 +1,161 @@
+// qrak
+
+//
+// For: EnumerateOnlineCharactersABC()
+//
+CONST SORT_ASCENDING	:= 0x0; // Default
+CONST SORT_DESCENDING	:= 0x1;
+
+// For: GetIsAType()
+CONST ISA_GET_MAIN	:= 0x0; // Default
+CONST ISA_GET_ALL	:= 0x1;
+
+var playercount := 0;
+var pagecount := 1;
+
+var layout := array(
+
+"page 0",
+"nodispose",
+"resizepic 10 60 9270 330 480",
+"resizepic 30 80 3500 290 440",
+"gumppic 85 40 10452",
+
+"text 45 79 40 0",
+"text 270 79 40 1",
+"text 25 510 70 2"
+
+);
+
+var data := array(
+       "Imie",
+       "Idz do",
+       "ver 1.6 [by qrak & crash]"
+);
+use basic;
+use npc;
+use uo;
+use os;
+
+program textcmd_goto( character, whom )
+
+
+  if(!whom)
+    FillInArrays();
+    var result := SendDialogGump( character, layout, data );
+    var name := data[result[0]+3];
+    foreach onlinechr in EnumerateOnlineCharactersABC()
+        if (onlinechr.name == name)
+            MoveObjectToLocation(character, onlinechr.x, onlinechr.y, onlinechr.z, character.realm, MOVEOBJECT_FORCELOCATION);
+            break;
+        endif
+    endforeach
+  else
+    whom := upper(whom);
+    foreach onlinechr in EnumerateOnlineCharactersABC()
+        if (upper(onlinechr.name) == whom)
+            MoveObjectToLocation(character, onlinechr.x, onlinechr.y, onlinechr.z, character.realm, MOVEOBJECT_FORCELOCATION);
+            break;
+        endif
+    endforeach
+  endif
+
+endprogram
+
+
+function FillInArrays()
+var players := EnumerateOnlineCharactersABC();
+    var datalen;
+    var layoutlen;
+    var prev_y := CInt(80);
+    var datindx;
+    var buttonret := 1;
+    layout[GetLayoutLength()+1] := "page " + pagecount;
+    if( len(EnumerateOnlineCharactersABC()) > 19)
+        layout[GetLayoutLength()+1] := "button 280 490 9906 9907 0 " + (pagecount + 1);
+    endif
+    foreach player in players
+        playercount := playercount + 1;
+        datalen := GetDataLength();
+        layoutlen := GetLayoutLength();
+        datindx := datalen+1;
+        data[datindx] := player.name;
+        if( playercount == 20 || playercount == 39 || playercount == 58 || playercount == 77 || playercount == 96)
+            pagecount := pagecount + 1;
+            layout[GetLayoutLength()+1] := "page " + pagecount;
+            prev_y := 80;
+            layout[GetLayoutLength()+1] := "button 260 490 9900 9901 0 " + (pagecount - 1);
+            if( len(EnumerateOnlineCharactersABC()) > playercount + 19)
+                layout[GetLayoutLength()+1] := "button 280 490 9906 9907 0 " + (pagecount + 1);
+            endif
+        endif
+	if(player.cmdlevel > 0)
+        layout[GetLayoutLength()+1] := ("text 70 " + CStr(prev_y + 27) + " 50 " + datalen);
+	else
+        layout[GetLayoutLength()+1] := ("text 70 " + CStr(prev_y + 27) + " 100 " + datalen);
+	endif
+        layout[GetLayoutLength()+1] := ("button 45 " + CStr(prev_y + 30) + " 10304 10305 1 0 " + buttonret);
+        prev_y := prev_y + 20;
+        buttonret := buttonret + 1;
+    endforeach
+endfunction
+
+function GetLayoutLength();
+    return (len(layout));
+endfunction
+
+function GetDataLength();
+    return (len(data));
+endfunction
+
+
+
+/*
+ * EnumerateOnlineCharactersABC(dir)
+ *
+ * Purpose
+ * Builds a list of online characters in ABC order.
+ *
+ * Parameters
+ * dir:		Determines if the list should be made ascending or descending.
+ * cmdlevel:	Command level filter. If the command level of a player is above
+ *		the one passed, it will not be placed in the list.
+ *		Use -1 to list everyone.
+ *
+ * Return Value:
+ * Returns an array of mobile references.
+ *
+ */
+function EnumerateOnlineCharactersABC(dir:=SORT_ASCENDING, cmdlevel:=-1)
+	var dict := dictionary;
+	foreach player in ( EnumerateOnlineCharacters() )
+		if ( cmdlevel != -1 )
+			if ( player.cmdlevel > cmdlevel )
+				continue;
+			endif
+		endif
+
+		var key := Upper(player.name);
+		if ( !dict.Exists(key) )
+			dict[key] := array{};
+		endif
+		dict[key].Append(player);
+		SleepMS(2);
+	endforeach
+
+	var z_list := array{};
+	foreach list in ( dict )
+		foreach player in ( list )
+			if ( dir == SORT_ASCENDING )
+				z_list.Append(player);
+			else
+				z_list.Insert(1, player);
+			endif
+			SleepMS(2);
+		endforeach
+		SleepMS(2);
+	endforeach
+
+	return z_list;
+endfunction
+

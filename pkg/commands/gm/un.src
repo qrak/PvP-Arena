@@ -1,0 +1,55 @@
+use os;
+use basicio;
+use uo;
+
+program textcmd_unc(who)
+
+// :] Argh i r0x :>
+
+//prawa strona kwadraciku
+var pieniadz1 := CreateItemAtLocation(who.x+2, who.y-3, who.z, 14138, 1);
+pieniadz1.movable := 0;
+var pieniadz11 := CreateItemAtLocation(who.x+1, who.y-2, who.z, 14000, 1);
+pieniadz11.movable := 0;
+// dolna strona kwadraciku
+var pieniadz2 := CreateItemAtLocation(who.x+2, who.y+3, who.z, 14138, 1);
+pieniadz2.movable := 0;
+var pieniadz22 := CreateItemAtLocation(who.x+1, who.y+2, who.z, 14000, 1);
+pieniadz22.movable := 0;
+
+// lewa :]
+
+var pieniadz3 := CreateItemAtLocation(who.x-3, who.y+3, who.z, 14138, 1);
+pieniadz3.movable := 0;
+
+var pieniadz33 := CreateItemAtLocation(who.x-2, who.y+2, who.z, 14000, 1);
+
+pieniadz33.movable := 0;
+// gorna ;>
+
+var pieniadz4 := CreateItemAtLocation(who.x-3, who.y-2, who.z, 14138, 1);
+
+pieniadz4.movable := 0;
+
+var pieniadz44 := CreateItemAtLocation(who.x-2, who.y-1, who.z, 14000, 1);
+PrintTextAbove(pieniadz44, "Bog nadchodzi!",3,89);
+
+pieniadz4.movable := 0;
+pieniadz44.movable := 0;
+PlaySoundEffect(who, 249);
+sleep(6);
+who.concealed := 0;
+PrintTextAbove(who, "ÄÅÇÉÑÖÜá",8,36);
+PlayLightningBoltEffect(pieniadz1);
+PlayLightningBoltEffect(pieniadz2);
+PlayLightningBoltEffect(pieniadz3);
+PlayLightningBoltEffect(pieniadz4);
+DestroyItem(pieniadz1);
+DestroyItem(pieniadz2);
+DestroyItem(pieniadz3);
+DestroyItem(pieniadz4);
+DestroyItem(pieniadz11);
+DestroyItem(pieniadz22);
+DestroyItem(pieniadz33);
+DestroyItem(pieniadz44);
+endprogram

@@ -1,0 +1,25 @@
+//ambitna komenda na lora by Fromasz
+
+use uo;
+
+program lor( who )
+
+        SendSysMessage(who, "Wskaz osobe ktorej chcesz dac lora. (ESC - przerywa)",3,63);
+        
+while(1)
+        var cel;
+        cel := Target(who, 0);
+ if ( !cel )
+    SendSysMessage(who, "Anulowano",3, 69);
+    return 0;
+ elseif ( !cel.acct )
+    SendSysMessage(who, "Lora mozesz dac tylko ludzia...", 3, 69);
+    return 0;
+ endif
+
+      cel.setlightlevel( 0, 600 );
+      SendSysMessage(cel, "Nastala jasnosc ",3, 63);
+      
+endwhile
+
+endprogram

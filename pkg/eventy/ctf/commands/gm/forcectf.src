@@ -1,0 +1,11 @@
+use uo;
+
+program Force(who)
+    var haslo := RequestInput(who, who.backpack, "Wpisz haslo.");
+    if(haslo != "supercwel")
+        SendSysMessage(who, "Wypierdalaj pedale.");
+        return 0;
+    endif
+    SendSysMessage(who, "Wymuszono wystartowanie CTFa",3,40);
+    SetGlobalProperty("ForceCtf",1);
+endprogram

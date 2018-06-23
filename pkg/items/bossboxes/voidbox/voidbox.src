@@ -1,0 +1,26 @@
+use uo;
+use os;
+
+include ":bossboxes:functions";
+
+program champbox(who, box)
+    var ilosc := Cint(GetObjProperty(box, "Amount"));
+
+    SendSysMessage(who, "Ilosc oczow otchlani: " + ilosc + "/" + EYE_AMOUNT,3,40);
+    
+    if(ilosc >= EYE_AMOUNT)
+            var kulka := CreateItemInContainer(box, 0xA408, 1);
+            if(kulka)
+                PrintTextAbovePrivate(box, "Stworzyles kulke ushera!", who);
+                PrintTextAbovePrivate(box, "Uzyj ja na wspolrzednych: X = 5703 Y = 639 Z = 0", who);
+                SetObjProperty(box, "Amount", 0);
+                PlayEffect(who);
+                return 0;
+            endif
+    endif
+    
+    SendViewContainer(who, box);
+    
+    return 1;
+
+endprogram

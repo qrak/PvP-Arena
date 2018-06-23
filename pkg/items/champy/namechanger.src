@@ -1,0 +1,42 @@
+use uo;
+use cfgfile;
+
+include "include/itemutil";
+include "include/canAccess";
+
+program namechange(who, item)
+	if(!can_access(who, item))
+		return 0;
+	endif 
+	if(item.container != who.backpack)
+		SendSysMessage(who, "Chcialbys frajerze. Musisz miec zwoj w plecaku.", 3, 40);
+		return 0;
+	endif
+	SendSysMessage(who, "Wybierz przedmiot, ktorego chcesz zmienic nazwe.", 3, 63 );
+	var what :=  Target(who);
+	if(!what)
+		SendSysMessage(who, "Anulowano.", 3, 40 );
+		return 0;
+	endif
+	if(!IsInContainer(who.backpack, what))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40);
+		return 0;
+	endif
+	if(!what.isa(POLCLASS_ITEM)) 
+		SendSysmessage(who, "To nie przedmiot.", 3, 40);
+		return 0;
+	endif
+	if(what.amount > 1)
+		SendSysmessage(who, "Nie mozesz zmieniac nazwy przedmiotow w stosie.", 3, 40);
+		return 0;	
+	endif
+	var name := SendTextEntryGump( who, "Jak nazwac przedmiot?", 1, 1, 32 );
+	if(name)
+		SendSysMessage(who, "Zmieniles nazwe przedmiotu.", 3, 63 );
+		SetName(what, name);
+	else
+		SendSysMessage(who, "Anulowano.", 3, 40 );
+		return 0;
+	endif
+	DestroyItem(item);
+endprogram

@@ -1,0 +1,22 @@
+///////////////////////////////////////////
+// TextCommands
+// ============
+//
+// GM textcommands:
+//   cmdlevel                   - [gump] view/alter a chars command level (see notes in the src)
+//   createitem                 - [gump] create an item (POL items sorted by package)
+//   editprivs                  - [gump] edit privs in a gump
+//   enchantitem                - [gump] enchant an item with a distro std enchantement
+//   guildinfo                  - [gump] view selected guild's information (still in testing....)
+//   makenpc                    - [gump] create an npc from template
+//   mapgo                      - [gump] Travel via a map (not to dungeons\T2A though)
+//   reportables                - [gump] view a mobile's reportables
+//   selectitem                 - [gump] create an item (UO items from provided config files)
+//
+// Admin textcommands:
+//   findgreedyscripts          - [gump] view the 10 "greediest" script profiles
+//   scriptprofiles             - [gump] view up to 200 current scriptprofiles (NB. it can take a while
+//                                       to generate this one!)
+//
+//////////////////////////////////////////////
+

@@ -1,0 +1,11 @@
+use uo;
+
+include ":ctf:ctf";
+
+program destroystones(stone)
+    if(GetCtfTeam(stone) == "red")
+        EraseObjProperty(CtfStone(), "RedFlag");
+    elseif(GetCtfTeam(stone) == "blue")
+        EraseObjProperty(CtfStone(), "BlueFlag");
+    endif
+endprogram

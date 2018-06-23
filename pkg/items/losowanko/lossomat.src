@@ -1,0 +1,79 @@
+use os;
+use util;
+use basicio;
+use basic;
+use uo;
+include "include/canAccess";
+include "include/client";
+include "util/bank";
+include "include/kasa";
+
+
+var ile := 1000;
+
+program kamienlosowania(who, kamien)
+
+
+    if(!can_access(who, kamien))
+        return 0;
+    endif 
+
+    var zloto := Cint(GetObjProperty(kamien , "zloto"));
+    if(!zloto)
+        zloto := 10000;
+    endif
+    
+    SetName(kamien, "kamien fortuny [" + zloto + " zlotych monet wygranej]");
+
+    if(!SubtractCash(who, ile))
+        PrintTextAbove(kamien, "Nie masz " + ILE + " gp na losowanie.",3,39);
+        return 0;
+    else
+        SetObjProperty(kamien, "zloto", zloto+1000);
+        var los := RandomIntRange(1, 10000);
+        var jakilos := RandomIntRange(1, 10000);
+        PrintTextAbove(kamien, "*losuje*",3,43);
+        PlaySoundEffect(kamien, 556);
+        sleep(2);
+        PlaySoundEffect(kamien, 558);
+        sleep(2);
+
+
+            if(los == jakilos)
+                PrintTextAbove(kamien, "Gratulacje, wygrales! Wygrana zostaje przeniesiona do Twojej skrzyni bankowej.",3,89);
+                BroadCast(who.name + " wygral na loterii " + zloto + " sztuk zlota!");
+                var cloak := CreateItemInBackpack(who, 0x1515);
+                cloak.color := 1645;
+                cloak.name := "plaszcz zwyciezcy loterii";
+                cloak.newbie := 1;
+                PlayStationaryEffect( who.x, who.y, who.z, FX_EXPLODE_2, 0x0a, 0x1e );
+                PlaySoundEffect(who, 0x161);
+                sleepms(400);
+                var bankbox := FindBankBox(who);
+                var czek := CreateItemInContainer(bankbox, 0x6261, 1);
+                SetobjProperty(czek, "Value", Cint(GetObjProperty(kamien , "zloto")));
+                SetChequeName(czek);
+                EraseObjProperty(kamien, "zloto");
+            elseif(los < 100)
+                SendSysMessage(who, "Wygrales drinka!",3,66);
+                CreateItemInBackpack(who, "glassofcider");
+            else
+                PrintTextAbove(kamien, " wylosowany numer to: "+ los + " musisz miec nr: " + jakilos,3,89);
+                PlaySoundEffect(who, 911);
+            endif
+    endif
+endprogram
+
+function RandomIntRange(mini:=0, maxi:=1)
+	if ( mini < 0 || maxi < 0 )
+		return error{"errortext":="Values must be >= 0"};
+	elseif ( maxi <= mini )
+		return error{"errortext":="Min is not < max."};
+	endif
+
+	var difference := CInt(maxi) - CInt(mini);
+	var random := RandomInt(difference);
+
+	return ( random + mini );
+endfunction
+

@@ -1,0 +1,44 @@
+/////////////////////////////////////////////////
+//                 KTM by Fromasz              //
+//                                             //
+// faza1 - tworzenie portalu KTM, stawianie    //
+// potwora, otwieranie drzwi                   //
+/////////////////////////////////////////////////
+
+use basic;
+use os;
+use uo;
+
+program portalktm(who)
+		SendSysMessage(who, "Skrypt wystartowal proces otwierania portalu.",3,1174);
+		var sciana := CreateItemAtLocation(5728, 1140,0, 0x26f4, 1);
+		var sciana2 := CreateItemAtLocation(5727, 1140,0, 0x26f4, 1);
+		SetObjProperty(sciana, "wejscie", 1); // Nadanie propa bramie na ktm
+		SetObjProperty(sciana2, "wejscie", 1); // Nadanie propa bramie na ktm
+		var i := 5;
+		Detach();
+		repeat
+			BroadCast("Portal na Turniej KTM otworzy sie za " + i + " minut w Cove i Minoc.",3,89);
+			i := i - 1;
+			sleep(60);
+			until(i <= 0);
+				var portal := CreateItemAtLocation( 2519, 558, 0, 0xAA8F, 1);
+				var portal2 := CreateItemAtLocation( 2245, 1214, 0, 0xAA8F, 1);
+				var ktmnpc := CreateNpcFromTemplate("ktmmonster", 5701, 1112,0); // tworzenie potora ktm
+				SetobjProperty(ktmnpc, "ktm", 1); //nadawanie propa potowrowi ktm
+				if(portal && portal2)
+					SetGlobalProperty("#zakazwalk", 1);
+					BroadCast("Portal na Turniej KTM otwarty! Zamknie sie samoczynnie za trzy minuty i nie bedzie mozliwosci uczestnictwa.",3,89);
+					BroadCast("Zakaz walk pvp jest wlaczony podczas turnieju KTM.",3,89);
+					sleep(180);
+					BroadCast("Portal na Turniej KTM zamkniety!",3,89);
+					DestroyItem(portal);
+					DestroyItem(portal2);
+					sleep(5);
+				endif
+				BroadCast("Za minute odblokuja sie drzwi na pole walki z potworem KTM",3,89);
+				sleep(60);
+				EraseObjProperty(sciana,"wejscie"); // zdejmowanie propa bramie ktm
+				EraseObjProperty(sciana2,"wejscie"); // zdejmowanie propa bramie ktm
+				BroadCast("Drzwi odblokowane. DO BOJU!!!",3,89);
+endprogram

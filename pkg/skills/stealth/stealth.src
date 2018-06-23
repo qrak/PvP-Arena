@@ -1,0 +1,32 @@
+use util;
+use attributes;
+use basicio;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+
+program skill_stealth( who )
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+	SetBusyTime(who, GetSkillDelay(SKILLID_STEALTH));
+  if(!who.hidden)
+    PrintTextAbovePrivate( who, "Musisz byc ukryty by sie skradac!", who );
+    return;
+  endif
+   if(GetBaseDexterity(who) < 70)
+   	SendSysMessage(who, "Straszny z Ciebie cienias, nie masz nawet 70 dexa zeby sie skradac! Hahaha!",FONT_NORMAL, 40);
+        return;
+   endif
+  var skill := GetDexterity(who);
+  if(CheckSkill(who, SKILLID_STEALTH, -1, skill))
+    skill := (skill / 10);
+    who.stealthsteps := Cint(skill);
+    PrintTextAbovePrivate( who, "Zaczales sie skradac!", who );
+  else
+    who.hidden := 0;
+    PrintTextAbovePrivate( who, "Odryles sie!", who );
+  endif
+endprogram

@@ -1,0 +1,42 @@
+use uo;
+use os;
+
+program tracemobile(who, text)
+	if(text == "off")
+		EraseObjProperty(who, "#Tracing");
+		SendSysMessage(who, "Zakonczono sledzenie.", 3, 63);
+		return 0;
+	endif
+	var targetmobile;
+	if(!text)
+		targetmobile := Target(who);
+	else
+		foreach char in EnumerateOnlineCharacters()
+			if( lower(char.name) == lower(text) )
+				targetmobile := char;
+			endif
+		endforeach
+	endif
+	if(!targetmobile)
+		SendSysMessage(who, "Anulowano.", 3, 40);
+		return 0;
+	endif
+	if(targetmobile == who)
+		SendSysMessage(who, "Wez no wypierdalaj.", 3, 40);
+		return 0;
+	endif
+	SetObjProperty(who, "#Tracing", 1);
+	while(1)
+		if(Distance(who, targetmobile) >= 7)
+			MoveObjectToLocation (who, targetmobile.x, targetmobile.y, targetmobile.z, targetmobile.realm, 0);
+		endif
+		if(!GetObjProperty(who, "#Tracing"))
+			break;
+		endif
+		if(!who.connected || !targetmobile.connected)
+			EraseObjProperty(who, "#Tracing");
+			break;
+		endif
+		sleepms(500);
+	endwhile
+endprogram

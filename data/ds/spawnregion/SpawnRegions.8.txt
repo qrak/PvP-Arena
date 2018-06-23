@@ -1,0 +1,302 @@
+Element bagna-bri-minoc
+{
+	group1 sbagienne 30 60
+	rect s2010 921 2057 1104
+}
+
+Element brit-E
+{
+	group1 shumanoidy2 60 60
+	group2 sdrzewa 5 60
+	rect s1759 1214 2014 1469
+}
+
+Element Brit_mrowki
+{
+	group1 smrowki 42 30
+	rect s1210 1316 1316 1550
+}
+
+Element Brit_trolle
+{
+	group1 stroll 70 30
+	rect s1188 1913 1477 2150
+}
+
+Element Buc_las
+{
+	group1 sogry 20 30
+	rect s2729 2266 2810 2343
+}
+
+Element Buc_las2
+{
+	group1 slizardmen 50 30
+	rect s2605 2279 2720 2338
+}
+
+Element Cove_las
+{
+	group1 sorki 80 30
+	rect s2360 996 2653 1253
+}
+
+Element Destart_rattman
+{
+	group1 sratman 15 30
+	rect s1154 2642 1251 2760
+}
+
+Element elfy-brit-minoc
+{
+	group1 selfy 70 10
+	rect s2055 679 2339 1015
+}
+
+Element fire
+{
+	group1 shumanoidy 4 30 
+	rect s5861 1439 5878 1457
+}
+
+Element gargoyle-polnoc-minoc
+{
+	group1 sgargojle 50
+	rect s2457 80 2624 184
+}
+
+Element hytloth_las
+{
+	group1 smrowki 10 30 
+	rect s4501 3638 4538 3762
+}
+
+Element Labirent_E
+{
+	group1 sogrelord 20 30
+	group2 sogry 60 30
+	rect s910 2335 1371 2533
+}
+
+Element labirent_W
+{
+	group1 sogry 20 31
+	group2 sogrelord 45 31
+	group3 stroll 35 30
+	rect s825 1718 1074 2152
+}
+
+Element labirynt
+{
+	group1 smeer 30 30 
+	rect s1047 2172 1241 2293
+}
+
+Element Las_ok.pustyni
+{
+	group1 sogry 20 30
+	group2 settin 15 30
+	group4 stroll 15 30
+	group5 smeer 10 30
+	group6 smrowki 10 30
+	rect s1804 537 2149 778
+}
+
+Element lizardmanfort-obokdestard
+{
+	group1 sbagienne 40 60
+	group2 sjaszczuroludzie 10 60
+	rect s1119 2736 1247 2970
+}
+
+Element lost_land_kolo_pustyni
+{
+	group1 sorki 20 30 
+	group2 shumanoidy 5 40 
+	rect s5203 3602 5240 3681
+}
+
+Element lost_landy
+{
+	group1 shumanoidy 10 30 
+	rect s5897 3583 5966 3653
+}
+
+Element lost_landy_pustynia
+{
+	group1 shumanoidy 20 40 
+	rect s5295 3586 5369 3722
+}
+
+Element mega-spawn
+{
+	group1 shumanoidy 100 80
+	group2 selfy 100 80
+	rect s1428 2169 1884 2516
+}
+
+Element Minoc_las2
+{
+	group1 settin 18 10
+	group2 sogry 10 10
+	group3 sogrelord 3 10
+	rect s2563 694 2643 859
+}
+
+Element Minoc_las3
+{
+	group1 settin 8 10
+	group2 sogry 8 10
+	group3 sogrelord 3 10
+	group4 stroll 5 10
+	rect s2730 752 2790 837
+}
+
+Element Minoc_lizardman
+{
+	group1 slizardmen 90 30
+	rect s2668 400 3377 816
+}
+
+Element minoc_nadgorami
+{
+	group1 sratman 30 30
+	rect s2277 636 2540 828
+}
+
+Element Minoc_ogry
+{
+	group1 sogry 40 30
+	group2 sogrelord 8 30
+	rect s2622 603 2814 770
+}
+
+Element Minoc_piraci
+{
+	group1 spirate 15 30
+	rect s2498 634 2551 710
+}
+
+Element Minoc_piraci2
+{
+	group1 spirate 30 30
+	rect s2503 229 2584 365
+}
+
+Element Minoc_trolle
+{
+	group1 stroll 50 30
+	rect s2861 379 2926 487
+}
+
+Element Moonglow_meer
+{
+	group1 smeer 28 30
+	rect s4392 1251 4588 1341
+}
+
+Element nad_occlo
+{
+	group1 swampiry 30 40
+	rect s3412 2551 3534 2632
+}
+
+Element nad_occlo2
+{
+	group1 swampiry 15 40
+	rect s3498 2487 3532 2517
+}
+
+Element nad_pustynia_cov2
+{
+	group1 selfy 40 40 
+	rect s1536 661 1621 806
+}
+
+Element nad_pustynia_cov_las
+{
+	group1 selfy 40 40 
+	rect s1640 487 1723 766
+}
+
+Element nad_trinsit
+{
+	group1 sogry 20 30 
+	group2 sogrelord 5 30 
+	rect s1603 2646 1693 2828
+}
+
+Element ocllo2
+{
+	group1 swampiry 20 40 
+	rect s3431 2473 3474 2538
+}
+
+Element ocllo3
+{
+	group1 swampiry 20 30 
+	rect s3432 2670 3458 2766
+}
+
+Element ocllo4_pod
+{
+	group1 swampiry 20 40 
+	rect s3594 2766 3618 2874
+}
+
+Element ogry_za_verps
+{
+	group1 sogry 60 30
+	rect s3108 654 3217 753
+}
+
+Element pustynia1
+{
+	group1 spustynne 30 60
+	rect s1843 817 1922 961
+}
+
+Element trinsic-tropiki
+{
+	group1 sstraszne 200 80
+	rect s1353 2853 2150 3621
+}
+
+Element Trinsic_ophy
+{
+	group1 sophidany 30 30
+	rect s1797 2907 1824 3107
+}
+
+Element valleyofchaos
+{
+	group1 shumanoidy 30 60
+	rect s1483 877 1591 1095
+}
+
+Element verps_ogry
+{
+	group1 sogry 30 30
+	group2 sogrelord 5 30
+	group3 settin 5 30
+	rect s2636 903 2782 1018
+}
+
+Element Vesper_wampy
+{
+	group1 swampiry 35 30
+	rect s2857 651 2995 908
+}
+
+Element wyspa
+{
+	group1 shumanoidy 20 10
+	rect s1050 3104 1110 3215
+}
+
+Element Yew_las
+{
+	group1 sdrzewa 100 30
+	rect s682 632 960 1130
+}
+

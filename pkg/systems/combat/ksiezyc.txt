@@ -1,0 +1,26 @@
+Weapon 0x26C1 
+{
+    Name	   ostrzeksiezycowe
+    Desc	   ostrze ksiezycowe
+    Speed          32
+    Damage         2d12+17
+    Attribute      Swords
+    MaxHP          38
+    Script         ::bladed
+    VendorSellsFor 92
+    VendorBuysFor  20
+    TwoHanded      0
+    strrequired    54
+    BlocksCastingIfInHand 0
+	Anim		0xE
+	HitSound	0x23D
+	MissSound	0x23B
+
+    repairable     1
+    MinDam         19
+    MaxDam         41
+    equipscript    equip
+    unequipscript  unequip
+    controlscript  itemControl
+    destroyscript  destroy
+}

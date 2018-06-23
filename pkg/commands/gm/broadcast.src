@@ -1,0 +1,17 @@
+use basic;
+use uo;
+
+include "include/client";
+
+program textcmd_bcast(who)
+	var text := RequestInput(who, who.backpack, "Podaj tekst wiadomosci, jaka chesz wyslac do graczy:");
+	if(!text)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	endif
+	foreach gracz in EnumerateOnlineCharacters()
+		SendStringAsTipWindow(gracz, text);
+	endforeach
+	SendSysMessage(who, "Wyslano wiadomosc.");
+	return;
+endprogram

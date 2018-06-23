@@ -1,0 +1,70 @@
+////////////////////////////////////////////////////
+// IGRZYSKA v2.0 faza 3 - zliczanie rund i nagrody //
+////////////////////////////////////////////////////
+
+use uo;
+use os;
+
+include ":igrzyska:igrzyska";
+include "include/clock";
+
+program Phase3()
+
+    var bluepoints := Cint(GetGlobalProperty("IgBluePoints"));
+    var redpoints := Cint(GetGlobalProperty("IgRedPoints"));
+
+    Detach();
+
+    var rounds := Cint(GetObjProperty(IgStone(), "IgRounds"));
+    MsgToIgPlayers("Pozostalo rund: " + Cint(GetObjProperty(IgStone(), "IgRounds")),40);
+
+    if(rounds == 0)
+        if(bluepoints > redpoints) // jezeli druzyna blue wygrala
+            DajNagrodeBlueIg();
+            MsgToIgPlayers("Na igrzyskach wygrala druzyna niebieskich! Gratulacje!",63);    
+        elseif(redpoints > bluepoints) // jezeli druzyna red wygrala
+            DajNagrodeRedIg();
+            MsgToIgPlayers("Na igrzyskach wygrala druzyna czerwonych! Gratulacje!",63);    
+        else                           // jezeli remis
+            MsgToIgPlayers("Remis! Nikt nie wygral!",63);    
+        endif
+    
+        StoneSay("Gratulacje dla wygranej druzyny!");
+        sleep(5);
+        StoneSay("Nagrody dla wygranej druzyny zostaly rozdane i umieszczone w plecakach.");
+        sleep(5);
+        StoneSay("Zapraszamy na kolejne igrzyska!");
+        sleep(5);
+        StoneSay("Jestem automatycznym kamieniem igrzysk i zostalem stworzony przez qraka. Wersja 2.0");
+        sleep(10);
+
+        start_script(":igrzyska:igphase/phase4");
+        return 0;
+    endif
+
+    StoneSay("RUNDA WYSTARTUJE ZA 100 SEKUND.");
+    sleep(50);
+    StoneSay("RUNDA WYSTARTUJE ZA 50 SEKUND.");
+    sleep(35);
+    StoneSay("RUNDA WYSTARTUJE ZA 15 SEKUND.");
+    sleep(15);
+
+    SetObjProperty(IgStone(), "IgRounds", rounds - 1);
+    SetGlobalProperty("#IgRound",1); // runda igrzysk
+
+    foreach gracz in EnumerateOnlineCharacters()
+        if(GetIgTeam(gracz))
+           MoveObjectToIgArena(gracz);
+        endif
+    endforeach
+
+    foreach gracz in ListObjectsInBox( 5246,1750,0, 5273,1777,0, IgStone().realm );
+        if(GetIgTeam(gracz))
+            StoneSay(gracz.name + " wypierdalaj stad! przenosze cie skurwysynu.");
+            sleep(4);
+            MoveObjectToIgArena(gracz);
+        endif
+    endforeach
+
+
+endprogram

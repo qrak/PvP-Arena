@@ -1,0 +1,47 @@
+use uo;
+use os;
+
+include "include/canAccess";
+include "include/yesNo";
+
+program deed(who, deed)
+
+  var obiekt := Cint(GetObjProperty(deed, "Obiekt"));
+  
+  if(!can_access(who, deed))
+    return 0;
+  endif
+  
+  if(deed.container != who.backpack)
+    SendSysMessage(who, "Musisz miec deeda w plecaku.", 3, 40);
+    return 0;
+  endif
+
+  if(!obiekt)
+    SendSysMessage(who, "Ten deed jest pusty.",3,40);
+    return 0;
+  endif
+
+  if(!who.multi)
+    SendSysMessage(who, "Musisz byc w domu.",3,40);
+    return 0;
+  endif
+
+  if(!smallYesNo(who, "Postawic tu gdzie stoisz?"))
+    return 0;
+  endif
+  
+  var przedmiot := CreateItemAtLocation( who.x, who.y, who.z, obiekt, 1, who.realm );
+  
+  if(!przedmiot)
+    SendSysMessage(who, "Nie mozesz tu tego postawic.",3,40);
+  endif
+  
+  przedmiot.movable := 0;
+  przedmiot.nodecay := 1;
+  SetObjProperty(przedmiot, "Wlasciciel", who.serial);
+  przedmiot.name := przedmiot.desc + " [Wlasciciel: " + who.name + "]";
+  DestroyItem(deed);
+  SendSysMessage(who, "Postawiles " + przedmiot.desc + ". Uzyj komendy .deed aby schowac ten przedmiot do deeda.",3,63); 
+
+endprogram

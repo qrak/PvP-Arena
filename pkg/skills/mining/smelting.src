@@ -1,0 +1,127 @@
+use util;
+use basic;
+use os;
+use attributes;
+use math;
+use uo;
+
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+
+program smelt_that_ore (who, ore)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, ore))
+    return;
+  endif
+  
+
+
+  if(ore.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego przetopic.", FONT_NORMAL, COLOR_RED);
+    return;
+  endif
+case(ore.objtype)
+    0x6300:  SmeltOre(who, ore, 0x6309, 10);
+    0x6300:  SmeltOre(who, ore, 0x6309, 15);
+    0x6301:  SmeltOre(who, ore, 0x630a, 20);
+    0x6302:  SmeltOre(who, ore, 0x630b, 25);
+    0x6303:  SmeltOre(who, ore, 0x630c, 35);
+    0x6304:  SmeltOre(who, ore, 0x630d, 45);
+    0x63c9:  SmeltOre(who, ore, 0x6314, 50);
+    0x6305:  SmeltOre(who, ore, 0x630e, 50);
+    0x6306:  SmeltOre(who, ore, 0x630f, 50);
+    0x6307:  SmeltOre(who, ore, 0x6310, 50);
+    0x6308:  SmeltOre(who, ore, 0x6311, 50);
+    0x63a9:  SmeltOre(who, ore, 0x6312, 50);
+    0x63b9:  SmeltOre(who, ore, 0x6313, 50);
+    0x63d9:  SmeltOre(who, ore, 0x6315, 50);
+    0x63e9:  SmeltOre(who, ore, 0x6316, 50);
+    0x63f9:  SmeltOre(who, ore, 0x6317, 50);
+// Inne
+    0x63a2:  SmeltOre(who, ore, 0x63c3, 0);
+    0x63a3:  SmeltOre(who, ore, 0x63c5, 0);
+    0x63c1:  SmeltOre(who, ore, 0x63c4, 0);
+    0xee18:  SmeltOre(who, ore, 0xee20, 50);
+    default: SendSysMessage(who,"Nie mozesz tego stopic.", 3, 40);
+  endcase
+
+endprogram
+
+function SmeltOre(who, ore, ingot, difficulty)
+  if(!ReserveItem(ore))
+    return;
+  endif
+  if(!Accessible(who, ore))
+    SendSysMessage(who,"Nie mozesz tego dosiegnac.", FONT_NORMAL, COLOR_RED);
+    return;
+  endif
+/*  var forge := Target(who);
+  if((forge.objtype == 0xfb1) || ((forge.objtype >= 0x197a) && (forge.objtype <= 0x19a9)))
+    if(!CheckLineOfSight(who, forge))
+      SendSysMessage(who,"Nie widzisz tego.", FONT_NORMAL, COLOR_RED);
+      return;
+    endif*/
+    
+var forge_near := 0;
+
+    foreach item in ListStaticsNearLocation(who.x, who.y, who.z, 1)
+  if((item.objtype == 0xfb1) || ((item.objtype >= 0x197a) && (item.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+
+  
+    foreach item in ListItemsNearLocation(who.x, who.y, who.z, 1)
+    if((item.objtype == 0xfb1) || ((item.objtype >= 0x197a) && (item.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+  
+  if(forge_near == 0)
+    SendSysMessage(who, "Musisz byc w poblizu pieca.",3,40);
+    return;
+  endif
+  
+    
+    if(Distance(who, ore) > 2)
+      SendSysMessage(who,"Za daleko.", FONT_NORMAL, COLOR_RED);
+      return;
+    endif
+    var iks := who.x;
+    var ygrek := who.y;
+    if(CheckSkill(who, SKILLID_MINING, difficulty, ((difficulty / 2) + 10)))
+var petla;
+for(petla := 1; petla < 3; petla := petla + 1);
+    if (iks != who.x || ygrek != who.y)
+    SendSysMessage(who, "Przerwales przetapianie rudy...", FONT_NORMAL, COLOR_RED);
+    return 0;
+    endif
+SendSysMessage(who, "Przetapiasz rude...", FONT_NORMAL, COLOR_GREEN);
+PlaySoundEffect(who, 0x22);
+sleep(2);
+endfor
+
+      var ingots := CreateItemInBackpack(who, ingot, GetAmount(ore));
+      ReserveItem(ingots);
+
+      if(ingots)
+        if(SubtractAmount(ore, ore.amount))
+          PlaySoundEffect(who, 0x22);
+          SendSysMessage(who,"Przetopiles rude i wlozyles do plecaka.", FONT_NORMAL, COLOR_GREEN);
+	      return;
+        else
+          DestroyItem(ingots);
+        endif
+      endif
+    else
+      SubtractAmount(ore, RandomInt(4));
+	  SendSysMessage(who, "Zniszczyles troche rudy.", FONT_NORMAL, COLOR_RED);
+      return;
+    endif
+  
+
+endfunction

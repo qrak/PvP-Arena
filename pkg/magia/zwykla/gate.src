@@ -1,0 +1,176 @@
+// crash
+
+use os;
+use math;
+use npc;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/isValidLoc";
+
+program spell_gate(parms)
+  var circle := 7;
+  var success;
+  var delivery := "notarget";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 52);
+  if(result == 0)
+    return;
+  endif
+  var gate1, gate2;
+  var caster := result[1];
+  var cast_on := Target(caster);
+  if((cast_on.objtype != UOBJ_RUNE) && (cast_on.objtype != 0x6100))
+    SendSysMessage(caster, "Mozesz uzywac tego tylko na runach przywolania!");
+    return;
+  endif
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  if(!tox)
+    SendSysMessage(caster, "Runa musi byc zaznaczona.");
+    return;
+  endif
+  if(!ReserveItem(cast_on))
+    return;
+  endif
+  if(GetObjProperty(cast_on, "Vendored"))
+    SendSysMessage(caster, "Nie mozesz uzywac run znajdujacych sie u vendora.");
+    return;
+  endif
+  if(!isValidLoc(tox,toy))
+    SendSysMessage(caster, "Nie mozesz utworzyc bramy do Zielonych Ziemi.");
+    ReleaseItem(cast_on);
+    DestroyItem(cast_on);
+    return;
+  endif
+  
+  if(GetObjProperty(caster, "#team") || GetObjProperty(caster, "IgTeam") || GetObjProperty(caster, "CtfTeam"))
+      SendSysMessage(caster, "Gdzie kurwa?",3,40);        
+      return 0;
+  endif
+  
+    if(!isValidLoc(caster.x, caster.y) or (caster.multi))
+    SendSysMessage(caster, "Nie mozesz rzucic portalu z tego miejsca.");
+        ReleaseItem(cast_on);
+    DestroyItem(cast_on);
+    
+    return;
+    endif
+  
+  PlaySoundEffect( caster, SFX_SPELL_GATE_TRAVEL );
+  var chk := 0;
+  if((caster.x >= 5772) && (caster.x <= 5824) && (caster.y >= 1091) && (caster.y <= 1143))
+    SendSysMessage(caster, "Potezna magia blokuje dzialanie tego czaru!");
+    chk := 1;
+  endif
+  if((caster.x >= 5120) && (caster.x <= 5375) && (caster.y >= 0) && (caster.y <= 255))
+    SendSysMessage(caster, "Czar sie nie udal i zniszczyl runa!");
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1);
+  multicheck.hidden := 1;
+  if(!MoveObjectToLocation(multicheck, tox, toy, toz, multicheck.realm, MOVEOBJECT_NORMAL))
+    SendSysMessage(caster, "Cos blokuje miejsce docelowe!");
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  if(multicheck.multi)
+    SendSysMessage(caster,"Cos blokuje miejsce docelowe!");
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    chk := 1;
+  endif
+  DestroyItem(multicheck);
+  if(chk == 1)
+    return;
+  endif
+  if((tox >= 5120) && (tox <= 5375) && (toy >= 0) && (toy <= 255))
+    SendSysMessage(caster, "Czar sie nie udal i zniszczyl runa!");
+    DestroyItem(cast_on);
+    return;
+  endif
+if((caster.x >= 244) && (caster.x <= 326) && (caster.y >= 746) && (caster.y <= 813) && (caster.z >= 0) && (caster.z >= 10))
+    SendSysMessage(caster, "Bugow szukasz? Sijj.. by esten");
+    DestroyItem(cast_on);
+    return;
+  endif
+  if((caster.x >= 1385) && (caster.x <= 1412) && (caster.y >= 3729) && (caster.y <= 3758) && (caster.z >= -20) && (caster.z >= -21)) //arena
+    SendSysMessage(caster, "Bugow szukasz? Sijj.. by esten");
+    DestroyItem(cast_on);
+    return;
+  endif
+  var wx := caster.x;
+  var wy := caster.y;
+  var wz := caster.z;
+  PlayStationaryEffect( wx, wy, wz, 6899, 1, 30, explode := 0 );
+  PlayStationaryEffect( tox, toy, toz, 6899, 1, 30, explode := 0 );
+  sleepms(1400);
+  set_critical( 1 );
+  if(!caster.murderer)
+  gate1 := CreateItemAtLocation( wx, wy, wz, UOBJ_BLUE_MOONGATE, 1 );
+  gate1.movable := 0;
+  gate2 := CreateItemAtLocation( tox, toy, toz, UOBJ_BLUE_MOONGATE, 1 );
+  gate2.movable := 0;
+  else
+  gate1 := CreateItemAtLocation( wx, wy, wz, 0x0DDA, 1 );
+  gate1.movable := 0;
+  gate2 := CreateItemAtLocation( tox, toy, toz, 0x0DDA, 1 );
+  gate2.movable := 0;
+  endif
+  if(!gate1)
+    DestroyItem(gate2);
+    SendSysMessage(caster, "Czar sie nie udal.");
+    return;
+  endif
+  if (!gate2)
+    DestroyItem(gate1);
+    SendSysMessage(caster, "Czar sie nie udal.");
+    return;
+  endif
+  set_critical(0);
+  SetObjProperty( gate1, "GateDestX", gate2.x );
+  SetObjProperty( gate1, "GateDestY", gate2.y );
+  SetObjProperty( gate1, "GateDestZ", gate2.z );
+  SetObjProperty( gate2, "GateDestX", gate1.x );
+  SetObjProperty( gate2, "GateDestY", gate1.y );
+  SetObjProperty( gate2, "GateDestZ", gate1.z );
+  Detach();
+  sleep(30);
+  set_critical(1);
+  DestroyItem( gate1 );
+  DestroyItem( gate2 );
+
+  set_critical(0);
+endprogram
+
+function removeentry(cast_on)
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  var defs := GetObjProperty(cast_on, "runedefs");
+  var holder := {};
+  foreach thing in defs
+    if((Cint(thing[2]) != tox) or (Cint(thing[3]) != toy) or (Cint(thing[4]) != toz))
+      holder.append(thing);
+    endif
+  endforeach
+  SetObjProperty(cast_on, "runedefs", holder);
+  EraseObjProperty(cast_on, "x");
+  EraseObjProperty(cast_on, "y");
+  EraseObjProperty(cast_on, "z");
+  return;
+endfunction

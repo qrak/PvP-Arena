@@ -1,0 +1,37 @@
+include "include/spellRestrictions";
+include "include/resurrect";
+
+program chrcast_sacrif( parms )
+  var circle := 3;
+  var delivery := "notarget";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 208);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+
+
+  foreach istota in ListMobilesNearLocationEx( caster.x, caster.y, caster.z, 6, LISTEX_FLAG_GHOST, caster.realm );
+
+    SetVital( caster, "Life" , 100);
+    SetVital( caster, "Stamina" , 100);
+    SetVital( caster, "Mana" , 100);
+  
+    if(!ResurrectWithPenalty(istota))
+      SendSysMessage(caster, "Dusza " + istota.name + " jest za slaba.",3,40);
+      return 0;
+    endif
+
+  endforeach
+
+
+
+
+
+endprogram
+
+

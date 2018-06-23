@@ -1,0 +1,214 @@
+
+use uo;
+use npc;
+use os;
+use util;
+use vitals;
+use cfgfile;
+
+const  SYSEVENT_ALL_GUARD_CMD := 0x13;
+
+include "include/sysEvent";
+include "include/eventID";
+include "ai/setup/spellSetup";
+include "ai/combat/spellCombatEvent";
+include "include/NPCCast";
+
+
+var caster := 0;
+
+var LAST_BREATH := ReadGameClock();
+var nextwatch := ReadGameClock();
+var guarding :=0;
+var following := 0;
+
+
+program fey()
+
+    var event;
+    EnableEvents(SYSEVENT_SPEECH,5);
+    EnableEvents(SYSEVENT_ENGAGED);
+    var master := SystemFindObjectBySerial(GetObjProperty(me, "master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+    me.setmaster(master);
+    var npccfg := ReadConfigFile("npcdesc");
+    
+    if(npccfg[me.npctemplate].spell)
+    caster := 1;
+    endif
+    
+    while(me)
+   
+        event := wait_for_event(0);
+        if(event)
+            case(event.type)
+            
+                SYSEVENT_SPEECH: 
+                var evtext := lower(event.text);
+                if(evtext["podazaj"] && Cint(GetObjProperty(me, "master")) == event.source.serial)
+                Follow(master);
+                endif
+                
+                SYSEVENT_ENGAGED:
+                Fight(event.source);
+                SYSEVENT_ALL_GUARD_CMD: 
+                guarding := event.target;
+            endcase
+            
+        endif
+        if(!following)
+        following := master;
+        guarding := master;
+        Follow(master);
+        endif
+            
+    endwhile
+endprogram
+
+function Follow (master)
+	var d := distance (master, me);
+	var ev;
+         while (master && !master.dead && !master.concealed && !master.hidden)
+		if (d > 10)
+			PlayStationaryEffect (me.x, me.y, me.z, 0x3728, speed:=0xA, loop:=0xA);
+			MoveObjectToLocation (me, master.x, master.y, master.z, me.realm);
+			PlayStationaryEffect (me.x, me.y, me.z, 0x3728, speed:=0xA, loop:=0xA);
+			PlaySoundEffect (master, 0x01ff);
+		elseif (d > 1)
+			RunToward (master);
+                        Guard();
+		else
+			sleep (1);
+                        Guard();
+		endif
+               
+		ev := wait_for_event(0);
+            case(ev.type)
+            
+                SYSEVENT_ENGAGED:
+                if(Cint(GetObjProperty(me, "master")) != ev.source.serial)
+                Fight(ev.source);
+                endif
+               
+                SYSEVENT_ALL_GUARD_CMD: 
+                guarding := ev.target;
+                Guard();
+                
+            endcase
+
+	endwhile
+
+endfunction
+
+function Guard()
+  if(nextwatch <= ReadGameClock())
+    nextwatch := ReadGameClock()+ 2;
+    if(RandomInt(8)==1)
+      PrintTextAbove(me,"*ochrania*");
+    endif
+    foreach mob in ListHostiles(guarding, 8, 0);
+      Fight(mob);
+      return 0;
+    endforeach
+  endif
+  if((guarding.dead)||(Distance(me,guarding)> 15))
+    guarding := 0;
+  endif
+endfunction
+
+function Fight(mob)
+/*guarding := 0;
+following := 0;
+
+SetWarMode(1);
+SetOpponent(mob);
+TurnToward(mob);
+var dystans;
+
+if(caster == 1)
+dystans := 3;
+else
+dystans := 1;
+endif
+
+
+while(mob)
+
+
+if(Distance(me, mob) > dystans)
+RunToward(mob);
+endif
+
+
+if(Distance(me, mob) < dystans)
+RunAwayFrom(mob);
+endif
+
+if(Distance(me, mob) == dystans)
+    if(caster)
+      if(LAST_BREATH <= ReadGameClock())
+        if((CheckLineOfSight(me, mob)) and (Distance(me, mob) <= 15))
+          cast_offensive_spell(me, mob);
+          LAST_BREATH := Cint(ReadGameClock() + (RandomInt(4) + 6));
+        endif
+      endif
+    endif
+endif
+
+sleepms(50);
+
+endwhile
+
+
+var master := SystemFindObjectBySerial(GetObjProperty(me, "master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+
+if(master.dead)
+ApplyRawDamage(me, 6000);
+endif
+
+if(mob.dead)
+RestartScript(me);
+endif*/
+
+  SetOpponent(mob);
+  SetWarMode(1);
+
+  var ev;
+  var czas := 1;
+    while((mob) && (!mob.dead) && (!mob.hidden) && (!mob.concealed) && (Distance(me, mob) < 12))
+      ev := os::wait_for_event(czas);
+    
+      if(Distance(me, mob) > 1)
+        czas := 0;
+        CloseDistance( mob );
+          foreach npc in ListHostiles(me, 1, 0);
+           if((npc.serial != me.serial) && (!npc.dead) && (!npc.hidden) && (!npc.concealed) && (Distance(me, npc) < 11))
+            Fight(mob);
+           endif
+          endforeach
+      else
+       czas := 1;
+      endif
+
+    endwhile
+
+  SetWarMode(0);
+  SetOpponent(0);
+  RestartScript(me);
+  return;
+
+
+endfunction
+
+function CloseDistance( mob )
+
+  case (Distance( me, mob ))
+    1:
+    0:       return 1;
+    default: 
+      if(Distance(me, mob) > 1)
+        RunToward( mob );
+      endif
+      return 0;
+  endcase
+endfunction
+

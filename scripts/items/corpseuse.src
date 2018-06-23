@@ -1,0 +1,26 @@
+use uo;
+use os;
+
+
+program useScript_Corpse(mobile, corpse)
+    if ( GetOwner(corpse) != mobile )
+        return SendViewContainer(mobile, corpse);
+    endif
+    foreach item in ( EnumerateItemsInContainer(corpse) )
+        if ( item.container == corpse )
+            MoveItemToContainer(item, mobile.backpack, item.x, item.y);
+        endif
+        SleepMS(2);
+    endforeach
+    SendSysMessage(mobile, "Zebrales swoje rzeczy.", 3, 63);
+    DestroyItem(corpse);
+    return 1;
+endprogram
+
+function GetOwner(corpse)
+    if ( corpse.ownerserial )
+        return SystemFindObjectBySerial(corpse.ownerserial);
+    elseif ( CInt(GetObjProperty(corpse, "serial")) )
+        return SystemFindObjectBySerial(CInt(GetObjProperty(corpse, "serial")));
+    endif
+endfunction

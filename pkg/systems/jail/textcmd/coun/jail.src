@@ -1,0 +1,62 @@
+use uo;
+use os;
+
+include ":jail:jail";
+include "include/dm/clock";
+include "include/dm/gumps";
+
+var i;
+
+program JailPerson(who,text)
+
+  var whom;
+  if(CInt(text))
+    whom := FindPlayerBySerial(CInt(text));
+  elseif(text)
+    whom := FindCharacterByName(CStr(text));
+  endif
+  
+  if(!whom)
+    whom := Target(who);
+    if(!whom)
+      SendSysMessage(who,"Anulowano.",3,40);
+      return;
+    endif
+  endif
+  
+  if(GetObjProperty(whom,"jailed"))
+    SendSysMessage(who,"Ta osoba siedzi juz w wiezieniu!",3,40);
+    return;
+  endif
+  
+  if(!who.acctname)
+    SendSysMessage(who,"Tego nie mozesz zamknac!",3,40);
+    return;
+  endif
+  
+  if(whom.cmdlevel)
+    SendSysMessage(who,"Tej osoby nie mozesz zamknac w wiezieniu!",3,40);
+    SendSysMessage(whom,who.name+" chcial Cie zamknac w wiezieniu!",3,40);
+    return;
+  endif
+ 
+  var Time := SetJailTime(who,whom);
+  if(!Time)
+    SendSysMessage(who,"Nie wybrales czasu!",3,40);
+    return;
+  endif
+  var Cell := SetCell(who);
+  if(!Cell)
+    SendSysMessage(who,"Nie wybrales celi!",3,40);
+    return;
+  endif
+  SendSysMessage(who,"Za co chcesz zamknac osobe " + whom.name + " ?",3,63);
+  var Reason := RequestInput(who,who.backpack,"");
+  if(!Reason)
+    SendSysMessage(who, "Nie wpisales powodu!",3,40);
+    return;
+  endif
+
+  Jail(who,whom,Time,Cell,Reason);
+
+endprogram

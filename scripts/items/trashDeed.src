@@ -1,0 +1,38 @@
+
+const SEARCH_RANGE := 10;
+const TRASH_BARREL := 0x7007;
+use uo;
+
+program maketrash( who, deed )
+  ReserveItem(deed);
+  SendSysMessage( who, "Gdzie chcesz ustawic smietnik?");
+  var where := TargetCoordinates( who );
+  var place;
+  if(!where)
+    SendSysMessage( who, "Anulowano.");
+    return;
+  else
+    if(!checkfortrashcans(where))
+      place := CreateItemAtLocation( where.x, where.y, where.z, TRASH_BARREL, 1 );
+    else
+      SendSysMessage( who, "Nie mozesz ustawic smietnika w tym miejscu");
+      return;
+    endif
+  endif
+  if(!place)
+    SendSysMessage( who, "Nie udalo Ci sie ustawic smietnika.");
+    return;
+  else
+    DestroyItem(deed);
+  endif
+endprogram
+
+function checkfortrashcans(place)
+  var stuff := ListItemsNearLocation( place.x, place.y,place.z,SEARCH_RANGE);
+  foreach item in stuff
+	if(item.objtype == TRASH_BARREL)
+	  return 1;
+	endif
+  endforeach
+  return 0;
+endfunction

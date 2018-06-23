@@ -1,0 +1,7 @@
+use uo;
+use os;
+
+program questbutton(who)
+start_script(":GuildQuestCombat:questmenu", who);
+
+endprogram

@@ -1,0 +1,22 @@
+
+const UOBJECT_GOLD := 0x0eed;
+use basic;
+use uo;
+
+program use_telescope(character)
+  SendSysMessage( character, "Wybierz obiekt, na ktorym chcesz tego uzyc." );
+  var use_on := TargetCoordinates( character);
+  if(!use_on)
+    SendSysMessage( character, "Anulowano." );
+    return;
+  endif
+  if(use_on.objtype)
+	SendSysMessage(character, "Objekt " + CStr(use_on.objtype));
+  elseif(use_on.item.objtype)
+	SendSysMessage(character, "Objekt " + CStr(use_on.item.objtype));
+  endif
+  SendSysMessage(character, "Martwe: " + CStr(use_on.dead));
+  SendSysMessage(character, "Zwloki:  " + CStr(use_on.corpseType));
+  CreateItemInBackpack(use_on, UOBJECT_GOLD, 500);
+endprogram
+

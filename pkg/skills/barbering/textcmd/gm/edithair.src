@@ -1,0 +1,132 @@
+
+use basic;
+use uo;
+use os;
+                             
+include "include/client";
+include "hair";
+
+//const UOBJ_HAIRDYE:=0x0e27;
+
+program edit_hair(me)
+  syslog("Wybierz ludzika");
+  var char:=Target(me,"");
+  if ((char.isa(POLCLASS_MOBILE)) and (!char.npctemplate))
+    var hair:=GetEquipmentByLayer(char,LAYER_HAIR);
+    var beard:=GetEquipmentByLayer(char,LAYER_BEARD);
+    if ((!hair) or (!beard))
+      sendsysmessage(me,"NIe ma brody ani wlosow");
+      return;
+    else
+      sendsysmessage(me,char.name+" Wybrales");
+    endif
+    var menu:=CreateMenu("Choose Option...");
+    AddMenuItem(menu,hair.objtype,"Change Hair");
+    AddMenuItem(menu,beard.objtype,"Change Beard");
+    AddMenuItem(menu,UOBJ_HAIRDYE,"Dye Hair");
+    AddMenuItem(menu,UOBJ_HAIRDYE,"Set Default Haircolors");
+    var choice:=SelectMenuItem2(me,menu);
+    if (!choice.index)
+      sendsysmessage(me,"Anulowano!");
+    else
+      case (choice.index)
+        1: set_new_haircut(me,char,hair);
+        2: set_new_beardcut(me,char,beard);
+        3: dye_hair(me,char,hair,beard);
+        4: set_default_cols(me,char);
+       endcase
+    endif
+  else
+    sendsysmessage(me,"To dziala tylko na Playerkow");
+  endif
+endprogram
+
+function set_new_haircut(me,char,hair)
+   sendsysmessage(me,"Wlosy zmieniono na "+hairname(hair.objtype));
+   var hairmenu:=CreateMenu("Choose haircut...");
+   AddMenuItem(hairmenu,HAIR_NONE,"bald");
+   AddMenuItem(hairmenu,HAIR_SHORT,"short");
+   AddMenuItem(hairmenu,HAIR_LONG,"long");
+   AddMenuItem(hairmenu,HAIR_PONYTAIL,"ponytail");
+   AddMenuItem(hairmenu,HAIR_MOHAWK,"mohawk");
+   AddMenuItem(hairmenu,HAIR_PAGEBOY,"pageboy");
+   AddMenuItem(hairmenu,HAIR_BUNS,"buns");
+   AddMenuItem(hairmenu,HAIR_AFRO,"afro");
+   AddMenuItem(hairmenu,HAIR_RECEEDING,"receeding");
+   AddMenuItem(hairmenu,HAIR_2PIG,"pigtails");
+   AddMenuItem(hairmenu,HAIR_KRISHNA,"topknot");
+   var chooseit:=SelectMenuItem2(me,hairmenu);
+   if (chooseit.objtype)
+       newhair(char,chooseit.objtype,hair.color);
+   else
+     sendsysmessage(me,"Anulowano.");
+   endif
+endfunction
+
+function set_new_beardcut(me,char,beard)
+   if (char.gender==1)
+     sendsysmessage(me,"Anulowano- kobieta nie moze miec brody");
+   endif
+   sendsysmessage(me,"Nowa Broda to "+hairname(beard.objtype));
+   var beardmenu:=CreateMenu("Choose beardcut...");
+   AddMenuItem(beardmenu,BEARD_NONE,"no beard");
+   AddMenuItem(beardmenu,BEARD_LONG,"long");
+   AddMenuItem(beardmenu,BEARD_SHORT,"short");
+   AddMenuItem(beardmenu,BEARD_GOATEE,"goatee");
+   AddMenuItem(beardmenu,BEARD_MUSTACHE,"mustache");
+   AddMenuItem(beardmenu,BEARD_MEDSHORT,"short2");
+   AddMenuItem(beardmenu,BEARD_MEDLONG,"long2");
+   var chooseit:=SelectMenuItem2(me,beardmenu);
+   if (chooseit.objtype)
+       newbeard(char,chooseit.objtype,beard.color);
+   else
+     sendsysmessage(me,"Anulowano!");
+   endif
+endfunction
+
+function dye_hair(me,char,hair,beard)
+   sendsysmessage(me,"Obecny kolor wlosow to="+Hex(hair.color));
+   var newhaircolor:=Cint(RequestInput( me, hair, "Wybierz nowy kolor..." ));
+   if (newhaircolor)
+     hair.color:=newhaircolor;
+     sendsysmessage(me,"Zmieniono kolor");
+   else
+     sendsysmessage(me,"Anulowano!");
+     return;
+   endif
+   if (char.gender==0)
+     sendsysmessage(me,"Nowy Kolor Brody to="+Hex(beard.color));
+     var newbeardcolor:=Cint(RequestInput( me, beard, "Wybierz nowy kolor..." ));
+     if (newbeardcolor)
+       beard.color:=newbeardcolor;
+       sendsysmessage(me,"Zmieniono kolor");
+     else
+       sendsysmessage(me,"Anulowano!");
+     endif
+   endif
+endfunction
+
+
+function set_default_cols(me,char);
+   var orighaircol:=GetObjProperty(char,"orighaircol");
+   sendsysmessage(me,"Nowy kolor to="+Hex(orighaircol));
+   var setorighaircolor:=Cint(RequestInput( me, char, "Zmien color wlosow..." ));
+   if (setorighaircolor)
+     SetObjProperty(char,"orighaircol",setorighaircolor);
+     sendsysmessage(me,"Zmieniono!");
+   else
+     sendsysmessage(me,"Anulowano!");
+     return;
+   endif
+   if (char.gender==0)
+     var origbeardcol:=GetObjProperty(char,"origbeardcol");
+     sendsysmessage(me,"Nowy color to="+Hex(origbeardcol));
+     var setorigbeardcolor:=Cint(RequestInput( me, char, "Zmien color wlosow..." ));
+     if (setorigbeardcolor)
+       SetObjProperty(char,"origbeardcol",setorigbeardcolor);
+       sendsysmessage(me,"Zmieniono");
+     else
+       sendsysmessage(me,"Anulowano!");
+     endif
+   endif
+endfunction

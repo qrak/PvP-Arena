@@ -1,0 +1,12 @@
+use uo;
+use os;
+
+program backpackctrl( item )
+	var ev;
+	while(item) //exit loop if item is destroyed
+		ev := wait_for_event(120);
+		if(ev)
+
+		endif
+	endwhile
+endprogram

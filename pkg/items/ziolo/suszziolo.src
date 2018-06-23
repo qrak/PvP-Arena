@@ -1,0 +1,55 @@
+use util;
+use os;
+use uo;
+use basic;
+
+include "include/client";
+include "include/attributes";
+include "include/dist";
+include "include/canAccess";
+
+program wysusz(who, ziolo)
+	if(!can_access(who, ziolo))
+		return 0;
+	endif
+  
+	if(ziolo.container != who.backpack)
+		SendSysMessage(who, "Musisz miec ziolo w plecaku.", 3, 40);
+		return 0;
+	endif
+	var forge_near := 0;
+	foreach item in ListStaticsNearLocation(who.x, who.y, who.z, 1)
+		if((item.objtype == 0xfb1) || ((item.objtype >= 0x197a) && (item.objtype <= 0x19a9)))
+			forge_near := 1;
+			break;
+		endif
+	endforeach
+	foreach item in ListItemsNearLocation(who.x, who.y, who.z, 1)
+		if((item.objtype == 0xfb1) || ((item.objtype >= 0x197a) && (item.objtype <= 0x19a9)))
+			forge_near := 1;
+			break;
+		endif
+	endforeach
+	if(forge_near == 0)
+		SendSysMessage(who, "Musisz byc w poblizu pieca.",3,40);
+		return 0;
+	endif
+	SendSysMessage(who, "Zaczynasz suszyc marihuane...", FONT_NORMAL, COLOR_GREEN);
+	sleep(2);
+	if(ziolo.objtype == 0xBFA8)
+		var losowanie := RandomInt(4)+1;
+		var zielsko;
+		case(losowanie)
+			1:
+			zielsko := 0xf014;
+			2:
+			zielsko := 0xf01e;
+			default:
+			zielsko := 0xDCce;
+		endcase
+		DestroyItem(ziolo);
+		CreateItemInBackpack(who, zielsko, 1);
+	endif
+	SendSysMessage(who, "Ususzyles marihuane i wlozyles ja do plecaka.", FONT_NORMAL, COLOR_GREEN);
+
+endprogram

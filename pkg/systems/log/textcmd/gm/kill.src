@@ -1,0 +1,26 @@
+use vitals;
+use file;
+use uo;
+include "include/attributes";
+
+program textcmd_kill( who )
+    var tgt := TargetCoordinates( who );
+    if (tgt.mobile)
+        var mob := tgt.mobile;
+
+        if (!mob.dead)
+            RevokePrivilege( mob, "invul" );
+            SetObjProperty(mob, "guardkill", 1);
+            
+            if(mob.ip)
+
+            LogToFile("kills.txt", "[KILL_GRACZA] ktos z ekipy z konta: " +who.acctname+" zajebal "+mob.name + " na koncie " + mob.acctname  + " serial: " + mob.serial + " x/y/z: " + mob.x + " " + mob.y + " " + mob.z);
+            else
+            LogToFile("kills.txt", "[KILL_NPC] ktos z ekipy z konta: " +who.acctname+" zajebal "+mob.name + " serial: " + mob.serial + " x/y/z: " + mob.x + " " + mob.y + " " + mob.z);                
+            endif
+           ApplyRawDamage( mob, GetHp(mob) );
+        else
+            SendSysMessage( who, "That Tickles!" );
+        endif
+    endif
+endprogram

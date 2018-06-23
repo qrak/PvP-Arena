@@ -1,0 +1,47 @@
+// crash
+
+use basic;
+use os;
+use basicio;
+use util;
+use math;
+use uo;
+
+include "include/client";
+
+const TRUE := 1;
+const FALSE := 0;
+const CMDLEVEL_TEST := 5;
+const CMDLEVEL_ADMIN := 4;
+const CMDLEVEL_GM := 3;
+const CMDLEVEL_SEER := 2;
+const CMDLEVEL_COUN := 1;
+const CMDLEVEL_PLAYER := 0;
+const MSG_CANNOT_REACH := "Nie mozesz tego dosiegnac!";
+const MSG_CANT_USE := "Nie wiesz jak tego uzyc.";
+const MSG_CANCELLED := "Anulowano.";
+const MSG_PROBLEM_WITH_ITEM := "Nie mozna tego zrobic.";
+const MSG_ERROR_CREATE := "Blad tworzenia przedmiotu.";
+const MSG_NOT_IN_OWN_HOUSE := "Musisz byc w swoim domu aby tego uzywac.";
+const MAX_DISTANCE := 2;
+
+program useDiceAndCup(who, dice)
+  if (!ReserveItem(dice))
+    return FALSE;
+  endif
+  if (CheckLineOfSight(who, dice) and (Distance(who, dice) <= 1))
+    PlaySoundEffect(dice, 0x35);
+    var ThrowMsg := "";
+    case (RandomInt(4))
+      0: ThrowMsg := "Kosci zostaly rzucone...";
+      1: ThrowMsg := "Rzuciles kosci...";
+      2: ThrowMsg := "Szczesliwy rzut..";
+      3: ThrowMsg := "Tocza sie kosci..";
+    endcase
+    PrintTextAbove(dice, ThrowMsg);
+    Sleep(2);
+    PrintTextAbove(dice, "...uzyskales " + CStr(RandomInt(6) + 1) + " i " + CStr(RandomInt(6) + 1) + "!");
+    Sleep(1);
+  endif
+  return TRUE;
+endprogram

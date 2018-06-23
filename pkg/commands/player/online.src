@@ -1,0 +1,32 @@
+use basic;
+use uo;
+
+program textcmd_online(who)
+
+    var ilu := 0;
+    foreach player in EnumerateOnlineCharacters();
+        if(!player.cmdlevel)
+            ilu := ilu + 1;
+        endif
+    endforeach
+
+    var text := Cstr(ilu)+" graczy.";;
+
+    var layout := array
+    {
+        "nodispose",
+        "page 0",
+        "resizepic 150 190 5054 250 50",
+        "gumppictiled 160 200 230 30 2624",
+        "checkertrans 160 200 230 30",
+        "htmlgump 165 205 230 50 0 0 0"
+    };
+
+    var data := array
+    {
+        "<basefont color=\"#FFFFF0\"><left> Online: "+text+"</left></basefont>"
+    };
+
+    SendDialogGump(who, layout, data);
+
+endprogram

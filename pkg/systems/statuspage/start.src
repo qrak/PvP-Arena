@@ -1,0 +1,12 @@
+use uo;
+use basic;
+use os;
+
+program statuspage_pkg_start()
+
+  if(!GetGlobalProperty("wwwpass"))
+    SetGlobalProperty("wwwpass", "twojstary8");
+  endif
+  return;
+
+endprogram

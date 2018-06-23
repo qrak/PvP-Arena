@@ -1,0 +1,66 @@
+use os;
+use uo;
+
+include "include/yesNo";
+include "include/kasa";
+include "include/attributes";
+
+program zmienrase(who)
+
+    if(who.dead)
+        return 0;
+    endif
+
+    var magery := GetEffectiveSkill(who, SKILLID_MAGERY);
+    var warrior := GetEffectiveSkill(who, SKILLID_SWORDSMANSHIP);
+
+
+    if(!yesNo(who, "Czy chcesz zmienic rase? Pierwszy raz jest za darmo, za ka¿dym nastepnym razem kosztuje 1000000 gp"))
+        SendSysMessage(who, "Anulowano.",3,40);
+        return 0;
+    endif
+
+    if(warrior > 0 && who.race == 1)
+        ChangeRace(who);
+	return 1;
+    endif
+
+    if(Cint(!GetObjProperty(who, "RaceChanged")))
+        ChangeRace(who);
+	return 1;
+    endif
+
+    if(SubtractCash(who, 1000000))
+        ChangeRace(who);
+	return 1;
+    endif
+
+    
+endprogram
+
+function ChangeRace(who)
+	if(who.race == 0)
+            if(who.gender == 0)
+                who.graphic := 0x25d;
+            else
+                who.graphic := 0x25e;
+            endif
+        who.race := 1;
+        SendSysMessage(who, "Zmieniles sie w elfa.",3,63);
+    elseif(who.race == 1)
+            if(who.gender == 0)
+                who.graphic := 0x190;
+            else
+                who.graphic := 0x191;
+            endif
+        who.race := 0;
+        SendSysMessage(who, "Zmieniles sie w czlowieka.",3,63);
+    endif
+
+    sleep(1);
+    
+
+    SendCharacterRaceChanger( who );
+    SetObjProperty(who, "RaceChanged", 1);
+    return 1;
+endfunction

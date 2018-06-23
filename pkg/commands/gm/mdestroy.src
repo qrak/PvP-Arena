@@ -1,0 +1,24 @@
+//
+// Destroy an item
+//
+
+use uo;
+use basic;
+
+program textcmd_destroy( who, range )
+
+    if (!range)
+        range := 1;
+    endif
+    range := CInt(range);
+    if(range > 10)
+    SendSysMessage(who, "Max. 10 pol lamo.",3,40);
+    return;
+    endif
+    
+    var tgt := ListItemsNearLocation(who.x, who.y, who.z, range );
+    foreach x in tgt
+            DestroyItem( x );
+    endforeach
+        SendSysMessage(who, "Zniszczono wszystko w obrebie " + range + " pol.",3,40);
+endprogram

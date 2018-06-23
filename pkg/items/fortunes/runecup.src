@@ -1,0 +1,89 @@
+/////////////////////////////////////////////////////////
+//						       //
+// Fortune telling script which picks a random fortune //
+//      used in conjunction with a crystal ball.       //
+//						       //
+// 		GM Basara - April 22 2001	       //
+//						       //
+/////////////////////////////////////////////////////////
+
+use util;
+use os;
+use basicio;
+use math;
+use uo;
+
+program runecup(who, item)
+	if (GetObjProperty(item, "inuse") == 1)
+		SendSysMessage(who, "Duchy nie moga przypowiedziec wielu przyszlosci naraz");
+		return;
+	endif
+SendSysMessage (who, " Czyja przyszlosc chcesz poznac ?");
+var tgt := Target(who);
+
+	if(!tgt)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	elseif (tgt == who)
+	SendSysMessage(who, " Nie mozesz przypowiedziec swojej wlasnej przyszlosci");
+		return;
+	elseif (distance(tgt, item) > 2)
+		SendSysMessage(who, tgt.name + " jest za daleko aby spelnic rytual");
+		return;
+	elseif (distance(who, item) > 2)
+		SendSysMessage(who, " Jestes za daleko aby spelnic rytual");
+		return;
+	elseif (tgt.graphic == 400 || tgt.graphic == 401)
+	else
+	SendSysMessage(who, " Nie mozesz przypowiedziec przyszlosci tego");
+	return;
+	detach();
+	endif
+	
+	SetObjProperty(item, "inuse", 1);
+	PrintTextAbove(who, "*" + who.name + " potrzasa kubkiem i rozsypuje runy*");
+	PlaySoundEffect(who, 0x243);
+	Sleep(3);
+	if( item.graphic == 0x0fa7 )
+		item.graphic := 0x0fa5;
+	endif
+	if( item.name == "a rune cup" )
+		item.name := "Rune Stones";
+	endif
+	PrintTextAbove(item, "*Runy wysypuja sie z kubeczka*");
+	PlaySoundEffect(item, 51);
+	Sleep(4);
+	PrintTextAbove(who, "*" + who.name + " odczytuje " + tgt.name + " przyszlosc*" );
+	Sleep(8);
+	readrunes( who );
+	Sleep(10);
+	if( item.graphic == 0x0fa5 )
+		item.graphic := 0x0fa7;
+	endif
+	if( item.name == "Rune Stones" )
+		item.name := "a rune cup";
+	endif
+	PrintTextAbove(item, "*" + who.name + " wklada runy z powrotem do kubka*");
+
+	EraseObjProperty(item, "inuse");
+
+endprogram
+
+function readrunes( who )
+     var randy    := RandomInt(12);
+     
+     case( randy )
+          0: PrintTextAbove( who, "Przyszlosc jest niejasna, sprobuj pozniej...", 3, 38);
+          1: PrintTextAbove( who, "Przyszlosc Ci nie sprzyja. Tyle jestem w stanie powiedziec.", 3, 38);
+          2: PrintTextAbove( who, "Uwazaj na najblizszych! Zdradza Cie !", 3, 38);
+          3: PrintTextAbove( who, "Radze abys byl blisko swych przyjaciol ale jeszcze blizej wrogow", 3, 38);
+          4: PrintTextAbove( who, "Przyszlosc zapowiada sie dobrze.", 3, 38);
+          5: PrintTextAbove( who, "Odpowiesz za swe czyny !", 3, 38);
+          6: PrintTextAbove( who, "Odnajdziesz szczescie w milosci", 3, 38);
+          7: PrintTextAbove( who, "Nie odrzucaj zbyt szybko propozycji pomocy.", 3, 38);
+          8: PrintTextAbove( who, "Pomysl dwa razy zanim sie odezwiesz, nie wiesz kot moze to uslyszec", 3, 38);  
+          9: PrintTextAbove( who, "Daj spokoj Bogom! Bo jak nie to ...", 3, 38);
+          10: PrintTextAbove( who, "Zdrada czycha..", 3, 38);
+          11: PrintTextAbove( who, "Potezne smoki polegna pod gniewem twego miecza", 3, 38);
+endcase
+endfunction

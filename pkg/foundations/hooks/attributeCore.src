@@ -1,0 +1,162 @@
+use util;
+use basic;
+use attributes;
+use polsys;
+use uo;
+use os;
+use cfgfile;
+
+include "include/attributes";
+include "include/eventID";
+
+//const CONST_STATCAP := 280;
+const CONST_SKILLCAP := 50000;
+
+var skillscfg := ReadConfigFile(":*:skills");
+set_event_queue_size(200);
+set_script_option(SCRIPTOPT_NO_RUNAWAY, 1);
+program Attribute_server(who)
+
+
+  SetObjProperty(who, "cap_pid", getpid());
+  var ev;
+  var counter := ReadGameClock() + 300;
+  while(who.connected)
+      ev := wait_for_event(120);
+      if(GetObjProperty(who, "cap_pid") != GetPid())
+        break;
+      endif
+    if(ev)
+        case(ev.type)
+          EVID_SKILLCAP: CheckSkillCap(who, ev);
+          EVID_STATCAP: CheckStatCap(who, ev);
+        endcase
+    endif
+    if(counter < ReadgameClock())
+      counter := ReadGameClock() + 300;
+    endif
+  endwhile
+endprogram
+
+function CheckStatCap(who, ev)
+  if(GetAttributeBaseValue(who, ev.skid) < 5000)
+    SetAttributeBaseValue(who, ev.skid, Cint(ev.base));
+  endif
+  var CONST_STATCAP := Cint(GetObjProperty(who, "statcap"));
+  var skillid := Cint(ev.skil);
+  var stat := skillscfg[skillid]."DropStat";
+  var split := SplitWords(stat);
+  var bs := GetBaseStrength(who);
+  var bd := GetBaseDexterity(who);
+  var bi := GetBaseIntelligence(who);
+  var theLocks := GetObjProperty(who, "StatLockArray"); 
+  if(theLocks[1] == 1)
+    SetBaseStrength(who, GetBaseStrength(who));
+  endif
+  if(theLocks[2] == 1)
+    SetBaseDexterity(who, GetBaseDexterity(who));
+  endif
+  if(theLocks[3] == 1)
+    SetBaseIntelligence(who, GetBaseIntelligence(who));
+  endif
+  
+  var stattotal := CInt(bs + bi + bd);
+  if(stattotal > CONST_STATCAP)
+    var loops := 1;
+    while(stattotal > CONST_STATCAP)
+      if(loops > 5)
+        break;
+      endif
+      if(split[2])
+        stat := split[RandomInt(2) + 1];
+      endif
+      case(stat)
+        "str": bs := bs - 1;
+               SetBaseStrength(who, bs);
+        "dex": bd := bd - 1;
+               SetBaseDexterity(who, bd);
+        "int": bi := bi - 1;
+               SetBaseIntelligence(who, bi);
+      endcase
+      stattotal := Cint(bs + bd + bi);
+      loops := loops + 1;
+    endwhile
+  endif
+  return 1;
+endfunction
+
+function CheckSkillCap(who, ev)
+  var attributeid := ev.skid;
+  var priorValue;
+  var theId;
+  var lowerholder;
+  var lockArray := GetObjProperty(who, "SkLockArray");
+  priorValue := GetAttributeBaseValue(who, attributeid);
+  if(priorValue < 1500)
+    if(ev.base > priorValue)  // Adding Skill, check for lock set to up
+      if((!lockArray) || 
+          (lockArray[GetSkillIdByAttributeId(attributeid) + 1] == 0))
+        SetAttributeBaseValue(who, attributeid, Cint(ev.base));
+      endif
+    elseif(ev.base < priorValue) // Lowering Skill, check for lock set to down
+      if ((lockArray != error) &&
+          (lockArray[GetSkillIdByAttributeId(attributeid) + 1] == 1))
+        SetAttributeBaseValue(who, attributeid, Cint(ev.base));
+      endif
+    endif
+  endif
+  if(GetAttributeBaseValue(who, attributeid) > 1500)
+    priorValue := 1500;
+    SetAttributeBaseValue(who, attributeid, 1500);
+  endif
+  var skillarray := GetObjProperty(who,"SkillArray");
+  var skilltotal := 0;
+  var skillval := 0;
+  var check := 0;
+  var loops := 0;
+  var holder, newval, final;
+  var base, mods, true;
+  while(check == 0)
+    if(loops >= 6)
+      if (priorValue < GetAttributeBaseValue(who, attributeid))
+        SetAttributeBaseValue(who, attributeid, priorValue);
+      endif
+      break;
+    endif
+    skilltotal := 0;
+    lowerholder := -1;
+    
+    for (theId := 0; theID < SKILLID__HIGHEST; theID := theID + 1)
+      true := GetBaseSkillBaseValue(who, theID);
+      base := Cint(true - GetAttributeIntrinsicMod(who, GetAttributeIdBySkillId(theId)));
+      skilltotal := skilltotal + base;
+      
+      if ( (base > 0) &&
+           (lockarray != error) && 
+           (lockarray[theId + 1] == 1) )
+        lowerholder := theId;
+      elseif (base > 0)
+        holder := theId;
+      endif
+      
+      if ((lowerholder >= 0) && (skilltotal > CONST_SKILLCAP))
+        break;
+      endif
+    endfor
+
+    if (lowerholder >=0)
+      holder := lowerholder;
+    endif
+    
+    if(skilltotal > CONST_SKILLCAP)
+      newval := GetBaseSkillBaseValue(who, holder);
+      final := (newval - 1);
+      SetBaseSkillBaseValue(who, holder, final);
+    else
+      check := 1;
+    endif
+    loops := loops + 1;
+  endwhile
+  clear_event_queue();
+  return 1;
+endfunction

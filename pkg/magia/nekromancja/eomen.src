@@ -1,0 +1,35 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_eomen( parms )
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 105);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+  if(Reflected(cast_on))
+	cast_on := caster;
+  endif
+
+if(!cast_on.isa(POLCLASS_MOBILE))
+SendSysMessage(caster, "Nie mozesz uzyc tego czaru na tym.",3,40);
+return 0;
+endif
+
+
+PlayObjectCenteredEffect( cast_on, 0x373a, 20,15 );
+PlaySoundEffect(cast_on, 504);
+Setobjproperty(cast_on, "evilomen", 1);
+
+
+
+endprogram

@@ -1,0 +1,13 @@
+use uo;
+
+include ":newgumps:gumps";
+include ":newgumps:gumps_ex";
+include ":newgumps:htmlgump";
+
+program PromptDemo(who, text)
+	if ( !text )
+		text := "Hey, you didn't enter any text to go with the command!";
+	endif
+	
+	SendHTMLGump(who, "Sample HTML Gump", text);
+endprogram

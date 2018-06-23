@@ -1,0 +1,52 @@
+use uo;
+use vitals;
+use util;
+
+include "include/spellRestrictions";
+include "misc/chrdeath";
+
+program chrcast_rcurse( parms )
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 209);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+  
+  
+if(RandomInt(100) < 30 - (pal/10)) //20% szansy przy 100% pala ze nie wyjdzie
+SendSysMessage(caster, "Nie udalo sie sciagnac klatwy.",3,40);
+return 0;
+endif
+
+PlaySoundEffect(cast_on, SFX_SPELL_CUNNING);
+PlayObjectCenteredEffect( cast_on, FX_BLESS_EFFECT, 7,7);
+
+    
+    if(GetIntelligenceMod(cast_on) < 0)
+        EraseModProp(cast_on, "int");
+    endif
+    if(GetDexterityMod(cast_on) < 0)
+        EraseModProp(cast_on, "dex");                
+    endif
+    if(GetStrengthMod(cast_on) < 0)
+        EraseModProp(cast_on, "str");
+    endif
+
+Eraseobjproperty(cast_on, "bloodoath");
+Eraseobjproperty(cast_on, "evilomen");
+Eraseobjproperty(cast_on, "mindrot");
+
+  
+
+
+
+
+endprogram

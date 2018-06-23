@@ -1,0 +1,157 @@
+use uo;
+use os;
+use util;
+
+include "include/client";
+include ":gumps:gumps";
+
+const ILOSC_SZTAB := 10;  // ilosc sztab
+
+
+program ksiegaczempow(who)
+
+var kula_champ;
+var kula_boss;
+    kula_boss.objtype := 0xa300;
+    kula_champ.objtype := 0xA408;
+
+
+    foreach kule in EnumerateItemsInContainer(who.backpack)
+    
+            if (!kula_champ or !kula_boss)
+               SendSysMessage(who, "Nie posiadasz w plecaku kulki Championa. Wroc jak bedziesz ja mial.",3,40);
+               return 0;
+            endif
+    endforeach
+    
+BuildGump(who); //jesli sa kule to otwiera gumpa
+
+endprogram
+
+
+function BuildGump(who)
+
+GFInitGump(0,0);
+//GFNoClose();
+GFNoDispose();
+
+GFpage (0);
+GFResizePic( 50, 50, 9270, 300, 200 );
+
+GFpage (1);
+GFTextLine(50+10, 50+15, 89, "  Przyjaciele ");
+GFTextLine(50+50, 50+80, 63, "Dodaj przyjaciela");
+
+	var menu1 := GFButtonID( 50+30, 50+80, 2706, 2707, 1 );
+GFTextLine(50+50, 50+100, 63, "Przenies do sali");
+        var menu2 := GFButtonID( 50+30, 50+100, 2706, 2707, 1 );
+GFTextLine(50+50, 50+120, 33, "Usun przyjaciela");
+
+        var menu3 := GFButtonID( 50+30, 50+120, 2706, 2707, 1 );
+	var keys := GFSendGump( who );
+
+if ( keys[0] == menu1.keyid )
+DodajPrzyjaciela(who);
+elseif ( keys[0] == menu2.keyid )
+Otworzwrota(who);
+elseif ( keys[0] == menu3.keyid )
+UsunPrzyjaciela(who);
+endif
+
+endfunction
+
+
+
+function DodajPrzyjaciela(who)
+
+SendSysMessage(who, "Wskaz osobe, ktora chcesz dodac do listy przyjaciol",3,63);
+var friends :={};
+
+while(who)
+	var przyjaciel := Target(who);
+if(!przyjaciel)
+break;
+elseif(!przyjaciel.ip)
+SendSysMessage(who, "Anulowano",3,36);
+	//var serial := przyjaciel.serial;
+break;
+elseif(przyjaciel.serial in friends)
+//var friends :={1,2,3,4,5};
+SendSysMessage(who, "Taka osoba widnieje na twej liscie",3,36);
+break;
+else
+
+friends.append(przyjaciel.serial);
+SendSysMessage(who, "Dodano nowego przyjaciela: " + przyjaciel.name + ".",3,63);
+SetObjProperty(who, "friends", friends);
+endif
+endwhile
+endfunction
+
+
+function Otworzwrota(who)
+
+MoveObjectToLocation(who,5703,639,0);
+SendSysMessage(who, "Jestes w Tajemniczej Komnacie. Uzyj teraz kulki bossa/champa.",3,63);
+           foreach gracze in EnumerateOnlineCharacters()
+                    if ( GetObjProperty(gracze, "friends" ))
+                        MoveObjectToLocation(gracze,5703,639,0);
+                        SendSysMessage(gracze, "Zostales pzreniesiony do Tajemniczej Komnaty",3,63);
+                    endif
+           endforeach
+
+endfunction
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function UsunPrzyjaciela(who)
+
+
+GFInitGump(100, 50);
+
+GFResizePic(0, 0, 3600, 300, 200);
+
+GFTextLine(40, 20, 50, "Lista Przyjaciol");
+
+GFTextLine(60, 60, 36, "Wyczysc liste");
+
+var meniu := GFButtonID( 50, 60, 2706, 2707, 1 );
+
+
+var keys := GFSendGump(who);
+
+
+if ( keys[0] == meniu.keyid )
+
+EraseObjProperty(who,"friends");
+
+
+SendSysMessage(who, "Lista wyczyszczona",3,63);
+
+endif
+
+
+
+
+endfunction
+
+
+
+

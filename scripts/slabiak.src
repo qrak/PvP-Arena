@@ -1,0 +1,11 @@
+use uo;
+use os;
+use util;
+
+include "include/findCity";
+include "include/slabiak";
+
+program StartWeakling()
+	slabiak();
+endprogram
+

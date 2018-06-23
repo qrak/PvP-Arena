@@ -1,0 +1,24 @@
+use polsys;
+use basic;
+use uo;
+
+include "include/client";
+
+program odban(who, konto)
+
+if(!konto)
+	SendSysMessage(who, "Uzycie: .unban konto");
+	return;
+endif
+
+   var act := FindAccount(konto);
+      if(!act)
+		SendSysMessage(who, "Nie znaleziono konta: " + konto);
+		return;
+      endif
+      
+	act.eraseprop("Banned");
+	act.unban();
+	SendSysMessage(who, "Odbanowano: " + konto + ".");
+
+endprogram

@@ -1,0 +1,20 @@
+use uo;
+use basic;
+use os;
+
+program textcmd_wwwpass(who, newpass)
+
+  if(!newpass || newpass == "help")
+    SendSysMessage(who, "Useage: .wwwpass <newpassword>");
+    return;
+  endif
+  if(CStr(SetGlobalProperty("wwwpass", newpass)))
+    syslog("Shard Status Aux Service Password Changed To "+newpass);
+    SendSysMessage(who, "Shard Status Aux Service Password Changed To "+newpass);
+    SendSysMessage(who, "Be sure to edit index.php to use your new password also.");
+  else
+    SendSysMessage(who, "Shard Status Aux Service Password Not Changed");
+  endif
+  return;
+  
+endprogram

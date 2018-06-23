@@ -1,0 +1,41 @@
+use uo;
+use os;
+
+include ":dm:deathmatch";
+include ":dm:initializer";
+
+program StoneControl()
+
+    var forced;
+
+    var stoneserial := Cint(GetGlobalProperty("DMStoneSerial"));
+        
+    if(!stoneserial)
+        if(CreateDMStone())
+            print("Stworzylem kamien deathmatcha gdyz go nie bylo.");
+        else
+            print("Nie udalo sie stworzyc kamienia deathmatcha.");                
+        endif
+    endif
+    
+    SetObjProperty(DMStone(), "StonePid", GetPid());
+    
+    while(1)
+        DMStoneSay(Systime_GetHour() + " : " + Systime_GetMinute() );
+
+        if(CheckDMHour())
+            if(!CheckIfActiveDM())
+                RunDeathMatch();
+            endif
+        endif
+        
+        forced := Cint(GetGlobalProperty("ForceDM"));
+        if(forced)
+            RunDeathMatch();
+        endif
+        
+        sleep(60);
+    endwhile
+
+
+endprogram

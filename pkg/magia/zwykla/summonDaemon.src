@@ -1,0 +1,29 @@
+// crash
+use uo;
+use basic;
+
+include "summon";
+include "include/spellRestrictions";
+include "include/findCity";
+
+program summon_daemon( parms )
+  var circle := 8;
+  var delivery := "indirect";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 61);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var co := "summoneddaemon";
+  if(findcity(cast_on) != "no city")
+      caster.setCriminal(1);
+    endif
+    if(findcity(caster) != "no city")
+      caster.setCriminal(1);
+    endif
+   summon_creature(caster, 8, co, cast_on);
+
+  
+endprogram

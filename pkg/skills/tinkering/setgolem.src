@@ -1,0 +1,84 @@
+// crash
+
+use attributes;
+use os;
+use basic;
+use math;
+use uo;
+use cfgfile;
+
+include "include/attributes";
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+
+var npcdesc := ReadConfigFile("npcdesc");
+
+program setgolem(who, szg)
+	if(szg.movable == 0)
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+	endif
+        if((!Accessible(who, szg)) || (Distance(who, szg) > 1))
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+        endif
+	if(!can_access(who, szg))
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+	endif
+
+	SendSysMessage(who, "Wybierz miejsce, w ktorym chcesz ustawic golema.");
+	var gdzie := TargetCoordinates(who);
+	if(!gdzie)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	endif	
+        if(Distance(who, gdzie) > 2)
+		SendSysMessage(who, "Za daleko.");
+		return;
+        endif
+            var petla := 0;
+	     SendSysMessage(who, "Ustawianie golema...");
+              var ptmod := Cint(GetObjProperty(szg, "ptmod"));
+		var kolor := Cint(GetObjProperty(szg, "kolor"));
+		var nejm := GetObjProperty(szg, "nejm");
+              if(!ptmod)
+              ptmod := 500;
+              endif
+              while(petla < 11)
+                      sleep(1);
+                          if(petla == 1)
+                           SendSysMessage(who, "Pozostalo: 10 sekund");
+                          elseif(petla == 5)
+                           SendSysMessage(who, "Pozostalo: 5 sekund");
+                          elseif(petla == 9)
+                           SendSysMessage(who, "Pozostala: 1 sekunda");
+                          endif
+                    petla := petla + 1;
+              endwhile
+	       var golemik := CreateNpcFromTemplate("golem", gdzie.x, gdzie.y, gdzie.z);
+		if(golemik)
+			PlaySoundEffect(golemik, 0x2B9);
+			var ustawpaliwo := CInt(GetObjProperty(szg, "paliwo"));
+			if(!ustawpaliwo)
+				ustawpaliwo := 400;
+			endif
+			SetObjProperty(golemik, "paliwo", ustawpaliwo);
+                        SetObjProperty(golemik, "master", who.serial);
+                        SetObjProperty(golemik, "script", golemik.script);
+       
+                        SetAttributeBaseValue(golemik, ATTRIBUTEID_STRENGTH, ptmod);
+                        SetAttributeBaseValue(golemik, ATTRIBUTEID_DEXTERITY, ptmod/2);
+                        golemik.setmaster(who);
+                        golemik.script := "golem_brain";
+			golemik.color := kolor;
+			SetName(golemik, "golem" + nejm);
+                        RestartScript(golemik);
+			DestroyItem(szg);
+		        SendSysMessage(who, "Stworzono golema!");
+		else
+			SendSysMessage(who, "Nie udalo sie ustawic golema.");
+			return;
+		endif
+endprogram

@@ -1,0 +1,91 @@
+use npc;
+use math;
+use basic;
+use uo;
+
+include "include/itemutil";
+
+program przenies(who)
+    SendSysMessage(who, "Wybierz worek lub przedmiot.",3,63);
+    var item := Target(who, TGTOPT_CHECK_LOS);
+    if(!IsInContainer(who.backpack, item ))
+        SendSysmessage(who, "To musi byc w twoim plecaku.", 3, 40 );
+        return 0;
+    endif
+    if(!item.movable)
+        SendSysMessage(who, "Nie mozesz tego ruszyc.", 3, 40);
+        return 0;
+    endif
+    if(!Accessible(who, item))
+        SendSysMessage(who, "Nie mozesz tego ruszyc.", 3, 40);
+        return 0;
+    endif
+    if(item.objtype == 0x2006)
+        SendSysMessage(who, "Wykurwiaj.",3,40);
+        return 0;
+    endif
+    if(!CheckLineOfSight(who, item))
+        SendSysMessage(who, "Nie widzisz tego.",3,40);
+        return 0;
+    endif
+    if(Distance(who, item) > 1)
+        SendSysMessage(who, "Za daleko.",3,40);
+        return 0;
+    endif
+    if(Cint(GetObjProperty(item, "secured")))
+        SendSysMessage(who, "Nie mozesz przenosic z bezpiecznych pojemnikow.",3,40);
+        return 0;
+    endif
+    if(item.isa(POLCLASS_CONTAINER))
+        przeniesworek(who,item);
+    elseif(item.isa(POLCLASS_ITEM))
+        przeniesitem(who,item);
+    else
+        return 0;
+    endif
+endprogram
+
+function przeniesworki(who, przedmiot, toitem)
+    if(!przedmiot.movable)
+        return 0;
+    endif
+    if(!Accessible(who, przedmiot))
+        return 0;
+    endif    
+    if(!przedmiot.newbie)
+        MoveItemToContainer(przedmiot, toitem);
+        return 1;
+    endif
+endfunction
+
+function przeniesworek(who, item)
+    SendSysMessage(who, "Gdzie to przeniesc?");
+    var toitem := Target(who, TGTOPT_CHECK_LOS );
+    if(!toitem.isa(POLCLASS_CONTAINER))
+        SendSysMessage(who, "Wykurwiaj.",3,40);
+        return 0;
+    endif
+    foreach przedmiot in EnumerateItemsInContainer(item)
+        przeniesworki(who, przedmiot, toitem);
+    endforeach
+endfunction
+
+function przeniesitem(who, item)
+    SendSysMessage(who, "Gdzie to przeniesc?", 3, 63);
+    var toitem := Target(who, TGTOPT_CHECK_LOS );
+    if(!item.movable)
+        return 0;
+    endif
+    if(!Accessible(who, item))
+        return 0;
+    endif    
+    if(!toitem.isa(POLCLASS_CONTAINER))
+        SendSysMessage(who, "Wykurwiaj.",3,40);
+        return 0;
+    endif
+    foreach przedmiot in EnumerateItemsInContainer( who.backpack );
+        if(przedmiot.objtype == item.objtype)
+            MoveItemToContainer(przedmiot, toitem);
+        endif
+    endforeach
+endfunction

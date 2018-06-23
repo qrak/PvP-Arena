@@ -1,0 +1,149 @@
+// crash
+
+use os;
+use basic;
+use math;
+use uo;
+
+include "include/attributes";
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+
+var zelazo, mikstura;
+
+program golem(who, skrzynia)
+	SendSysMessage(who, "Wskaz material potrzebny do budowy golema.");
+	var zelazo := Target(who);
+	if(!zelazo)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	endif	
+var mod, is_ingot, ptmod, nejm;
+  case(zelazo.objtype)
+    0x6309: is_ingot := 1; ptmod := 2500; nejm := " z zelaza"
+;
+    0x630a: is_ingot := 1; ptmod := 3000;
+ nejm := " z matowej miedzi";
+    0x630b: is_ingot := 1; ptmod := 3500;
+ nejm := " z kalcytu";
+    0x630c: is_ingot := 1; ptmod := 4000;
+ nejm := " z miedzi";
+    0x630d: is_ingot := 1; ptmod := 4500;
+ nejm := " z brazu";
+    0x6314: is_ingot := 1; ptmod := 5000;
+ nejm := " ze srebra";
+    0x630e: is_ingot := 1; ptmod := 5500;
+ nejm := " ze zlota";
+    0x630f: is_ingot := 1; ptmod := 6000;
+ nejm := " z agapitu";
+    0x6310: is_ingot := 1; ptmod := 6500;
+ nejm := " z veritu";
+    0x6311: is_ingot := 1; ptmod := 7000;
+ nejm := " z valoritu";
+    0x6312: is_ingot := 1; ptmod := 7500;
+ nejm := " z magnetytu";
+    0x6313: is_ingot := 1; ptmod := 8000;
+ nejm := " z krwawnika";
+    0x6315: is_ingot := 1; ptmod := 8500;
+ nejm := " z mithrilu";
+    0x6316: is_ingot := 1; ptmod := 9000;
+ nejm := " z namithu";
+    0x631: is_ingot := 1; ptmod := 32000;
+ nejm := " z xilonu";
+    default:		SendSysMessage(who, "To nie sa sztaby.");
+  endcase
+
+if(is_ingot != 1)
+SendSysMessage(who, "To nie sa sztaby.");
+return;
+endif
+
+	if(!can_access(who, zelazo))
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+	endif
+        if((!Accessible(who, zelazo)) || (Distance(who, zelazo) > 1))
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+        endif
+	if(zelazo.movable == 0)
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+	endif
+	if(zelazo.amount < 20000)
+		SendSysMessage(who, "Nie masz wystarczajacej ilosci materialu.");
+                return;
+	endif
+	if(zelazo.amount >= 20000)
+	SendSysMessage(who, "Wskaz duza miksture eksplozji.");
+	var mikstura := Target(who);
+	if(!mikstura)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	endif	
+	if(!can_access(who, mikstura))
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+	endif
+        if((!Accessible(who, mikstura)) || (Distance(who, mikstura) > 1))
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+        endif
+	if(mikstura.movable == 0)
+		SendSysMessage(who, "Nie mozesz tego uzyc.");
+		return;
+	endif
+	if(mikstura.objtype != 0xDC07)
+		SendSysMessage(who, "To nie jest misktura eksplozji.");
+		return;
+	endif
+	if(GetEffectiveSkill(who, SKILLID_TINKERING) >= 98)
+		MakeGolem(who, skrzynia, zelazo, mikstura, ptmod, nejm);
+	else
+		SendSysMessage(who, "Jeszcze nie mozesz tego zrobic.");
+		return;
+	endif
+	else
+		SendSysMessage(who, "Nie masz odpowiedniej ilosci materialu.");
+		return;
+        endif
+     return;
+endprogram
+
+function MakeGolem(who, skrzynia, zelazo, mikstura, ptmod, nejm)
+	var setpaliwo := CInt(GetEffectiveSkill(who, SKILLID_ALCHEMY) * 4);
+	if(setpaliwo > 400)
+		setpaliwo := 400;
+	endif
+	var petla := 0;
+	if(SubtractAmount(zelazo, 20000))
+		 SendSysMessage(who, "Rozpoczales budowe golema...");
+		 while(petla < 6)
+	    	    PlaySoundEffect(who, 0x002b);
+		    sleep(2);
+		    petla := petla + 1;
+		 endwhile
+                 PlaySoundEffect(who, 0x241);
+   		 if(SubtractAmount(mikstura, 1))
+                  sleep(1);
+		  DestroyItem(skrzynia);
+		    var szg := CreateItemInContainer(who.backpack, 0x62EE, 1);
+			if(szg)	
+				skrzynia.color := zelazo.color;
+				SetObjProperty(szg, "paliwo", setpaliwo);
+                                  SetObjProperty(szg, "ptmod", ptmod);
+				  SetObjProperty(szg, "kolor", zelazo.color);
+				  SetObjProperty(szg, "nejm", nejm);
+                                  SendSysMessage(who, "Wykonales skrzynie z golemem!");
+			else
+				SendSysMessage(who, "Nie udalo sie wykonac golema.");
+				return;
+			endif
+		else
+			SendSysMessage(who, "Nie masz odpowiedniej ilosci materialu.");
+		endif
+	else
+		SendSysMessage(who, "Nie masz odpowiedniej ilosci skladnikow.");
+	endif
+endfunction

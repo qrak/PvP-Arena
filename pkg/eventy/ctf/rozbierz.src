@@ -1,0 +1,139 @@
+use uo;
+use basic;
+use os;
+use vitals;
+
+include "include/client";
+
+program rozbierz(me, text)
+	set_critical(1);
+	if (me.dead)
+		return;
+	endif
+
+	case (lower(text))
+	"bizuteria":
+		foreach thing in ListEquippedItems(me)
+			if (RemoveJewl( me, thing))
+				MoveItemToContainer(thing, me.backpack);
+			endif
+		endforeach
+	"bezbizuterii":
+		foreach thing in ListEquippedItems(me)
+			var jewl := 0;
+			if (RemoveIt(me,thing,jewl))
+				MoveItemToContainer(thing, me.backpack);
+			endif
+		endforeach
+	default:
+		foreach thing in ListEquippedItems(me)
+			var jewl := 1;
+			if (RemoveIt(me,thing,jewl))
+				MoveItemToContainer(thing, me.backpack);
+			endif
+		endforeach
+	endcase
+
+
+        RecalcVitals(me);
+
+endprogram
+
+function RemoveIt(me, it, jewl)
+	var ring := GetEquipmentByLayer( me, LAYER_RING );
+	if (it.serial == ring.serial)
+		return jewl;
+	endif
+
+	var bracelet := GetEquipmentByLayer( me, LAYER_WRIST );
+	if (it.serial == bracelet.serial)
+		return jewl;
+	endif
+
+	var earrings := GetEquipmentByLayer( me, LAYER_EARS );
+	if (it.serial == earrings.serial)
+		return jewl;
+	endif
+
+	var neck := GetEquipmentByLayer( me, LAYER_NECK );
+	if (it.serial == neck.serial)
+		if (IsNecklace(it))
+			return jewl;
+		endif
+	endif
+
+	var beard := GetEquipmentByLayer( me, LAYER_BEARD );
+	if (it.serial == beard.serial)
+		return 0;
+	endif
+
+	var hair := GetEquipmentByLayer( me, LAYER_HAIR );
+	if (it.serial == hair.serial)
+		return 0;
+	endif
+
+	var mount :=  GetEquipmentByLayer( me, LAYER_MOUNT );
+	if (it.serial == mount.serial)
+		return 0;
+	endif
+
+	if (it.objtype == 0x204e)
+		return 0;
+	endif
+
+	var mypack := me.backpack;
+	if (it.serial == mypack.serial)
+		return 0;
+	endif
+        RecalcVitals(me);
+	return 1;
+endfunction
+
+function RemoveJewl(me, it)
+	if (it.objtype == 0x204e)
+		return 0;
+	endif
+
+	var ring := GetEquipmentByLayer( me, LAYER_RING );
+	if (it.serial == ring.serial)
+		return 1;
+	endif
+
+	var bracelet := GetEquipmentByLayer( me, LAYER_WRIST );
+	if (it.serial == bracelet.serial)
+		return 1;
+	endif
+
+	var earrings := GetEquipmentByLayer( me, LAYER_EARS );
+	if (it.serial == earrings.serial)
+		return 1;
+	endif
+
+	var neck := GetEquipmentByLayer( me, LAYER_NECK );
+	if (it.serial == neck.serial)
+		if (IsNecklace(it))
+			return 1;
+		endif
+	endif
+        RecalcVitals(me);
+endfunction
+
+function IsNecklace(item)
+	case (item.graphic)
+		0x1085:
+			return 1;
+		0x1088:
+			return 1;
+		0x1089:
+			return 1;
+		0x1f05:
+			return 1;
+		0x1f08:
+			return 1;
+		0x1f0a:
+			return 1;
+		default:
+			return 0;
+	endcase
+	return;
+endfunction

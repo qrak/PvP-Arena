@@ -1,0 +1,118 @@
+// crash
+
+
+const UOBJECT_ARROW := 0xf3f;
+const UOBJECT_BOLT := 0x1bfb;
+const SFX_SHOT := 0x235;
+const SFX_ARROWHIT1 := 0x224;
+const SFX_ARROWHIT2 := 0x225;
+
+const GFX_ARROW_FLIGHT := 0x0f42;
+const GFX_BOLT_FLIGHT := 0x1bfe;
+
+var projectile;
+var used_arrows;
+var used_bolts;
+use os;
+use attributes;
+use basic;
+use cfgfile;
+use math;
+use uo;
+
+include "include/client";
+
+program training_archery( who, butte )
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if (!CheckLineOfSight( who, butte ))
+    SendSysMessage( who, "Nie widzisz celu." );
+    return;
+  endif
+  used_arrows := GetObjProperty( butte, "arrows" );
+  if(!used_arrows)
+    used_arrows := 0;
+    SetObjProperty( butte, "arrows", 0 );
+  endif
+  used_bolts := GetObjProperty( butte, "bolts" );
+  if(!used_bolts)
+    used_bolts := 0;
+    SetObjProperty( butte, "bolts", 0 );
+  endif
+  if( Distance( who, butte ) == 1 )
+    GrabAmmo( who, butte );
+  else
+    var ammunitiontype;
+    var panim;
+    var effect;
+    var cfg := ReadConfigFile(":combat:itemdesc");
+    var objtype := who.weapon.objtype;
+    var skillid := cfg[objtype]."Attribute";
+    if(skillid == "Archery")
+      if((objtype == 0x13b2) or (objtype == 0x9889))
+        ammunitiontype := UOBJECT_ARROW;
+        panim := ANIM_ATTACK_BOW;
+        effect := GFX_ARROW_FLIGHT;
+      elseif ((objtype == 0xf4f ) || (objtype == 0x13fd ))
+        ammunitiontype := UOBJECT_BOLT;
+        panim := ANIM_ATTACK_XBOW;
+        effect := GFX_BOLT_FLIGHT;
+      endif
+      var found := checkforammunition( who, ammunitiontype );
+      if( !found )
+        SendSysMessage( who, "Nie masz amunicji w plecaku." );
+        return;
+      else
+        theshot( who, panim, butte,effect );
+      endif
+    else
+      SendSysMessage( who, "Musisz miec luk, lub kusze w dloni." );
+    endif
+  endif
+endprogram
+
+function checkforammunition( who, ammunitiontype )
+    var mypack := EnumerateItemsInContainer( who.backpack );
+    foreach item in mypack
+        if( item.objtype == ammunitiontype )
+            projectile := item;
+            return 1;
+        endif
+    endforeach
+endfunction
+
+function theshot( who, panim, butte, effect )
+    if( CheckSkill( who, SKILLID_ARCHERY, 10, 40 ) )
+        PerformAction( who, panim );
+                sleep(1);
+                PlayMovingEffectXYZ( who.x, who.y, who.z+9,
+                                     butte.x, butte.y, butte.z+5,
+                                     effect, 10, 0, 0 );
+        sleep(1);
+        PlaySoundEffect( who, SFX_SHOT );
+        SendSysMessage( who, "Dobry strzal." );
+    else
+        PerformAction( who, panim );
+        sleep(1);
+                PlayMovingEffectXYZ( who.x, who.y, who.z+9,
+                                     butte.x, butte.y, butte.z+5,
+                                     effect, 10, 0, 0 );
+        sleep(1);
+        PlaySoundEffect( who, SFX_ARROWHIT1 );
+        SendSysMessage( who, "Spudlowales." );
+    endif
+    SubtractAmount( projectile, 1 );
+        if( projectile.objtype == UOBJECT_ARROW )
+           SetObjProperty( butte, "arrows", used_arrows + 1 );
+        elseif( projectile.objtype == UOBJECT_BOLT )
+           SetObjProperty( butte, "bolts", used_bolts + 1 );
+        endif
+endfunction
+
+function GrabAmmo( who, butte );
+    CreateItemInBackpack( who, UOBJECT_ARROW, used_arrows/2 );
+    CreateItemInBackpack( who, UOBJECT_BOLT, used_bolts/2 );
+    SendSysMessage( who, "Wyjales " + used_arrows/2 + " strzal i " + used_bolts/2 + " belt z tarczy." );
+    SetObjProperty( butte, "arrows", 0 );
+    SetObjProperty( butte, "bolts", 0 );
+endfunction

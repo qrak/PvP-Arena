@@ -1,0 +1,232 @@
+/* $Id: guildCreate.src 1026 2007-03-19 21:56:22Z MontuZ $
+ *    Author: MontuZ
+ *    Created: Sunday, May 21 2006
+ *    Version: 0.01
+ *    Status: Beta
+ */
+
+use uo;
+use guilds;
+
+include "include/kasa";
+
+include ":playerguilds:settings";
+include ":playerguilds:validate";
+include ":playerguilds:ranks";
+include ":playerguilds:playerguilds";
+//include ":playerguilds:factions";
+
+include ":newgumps:yesno";
+include ":newgumps:gumps";
+include ":newgumps:gumps_ex";
+
+
+CONST GCGUMP_X		:= 125;
+CONST GCGUMP_Y		:= 200;
+CONST TXT_CLR_FG 	:= 0;
+CONST TXT_CLR_BG 	:= 2100;
+CONST PREVIOUS_BTN	:= 2322;
+CONST APPLY_BTN		:= 0x0EF;
+CONST OK_BTN		:= 0x0F7;
+CONST CANCEL_BTN	:= 0x817;
+CONST BLUE_BTN		:= 0x845;
+
+var background := GFGetCfgConst("Defaults", "BackGround");
+var foreground := GFGetCfgConst("BackGrounds", "WHITE_PAPER");
+var settings := Guild_GetSettingsCfgElem("Settings");
+var permissions := Guild_GetSettingsCfgElem("Permissions");
+var maxtitle := CInt(settings.MaxTitle);
+var gumpclose;
+var title_options;		// required by guilds.inc
+
+program Guild_Create(character)
+	if ( GetObjProperty(character, "#GuildCreate") > PolCore().systime )
+		SendSysMessage(character, "Menu gildii juz jest otwarte.", 3, 40);
+		return 0;
+	else
+		SetObjProperty(character, "#GuildCreate", PolCore().systime + 10);
+	endif
+
+	repeat
+		if ( !character.ip )
+			EraseObjProperty(character, "#GuildCreate");
+			return 0;
+		endif
+
+		var gump := GFCreateGump(GCGUMP_X, GCGUMP_Y);
+
+		GFPage(gump, 0);
+		GFResizePic(gump, 0, 0, background, 500, 300);
+		GFResizePic(gump, 25, 20, foreground, 450, 25);
+		GFTextMid(gump, 35, 22, 425, TXT_CLR_FG, "Gildie");
+		var cancel := GFAddButton(gump, 25, 250, CANCEL_BTN, CANCEL_BTN + 1, GF_CLOSE_BTN); // Cancel
+
+		GFPage(gump, 1);
+		GFTextLine(gump, 25, 60, TXT_CLR_BG, "Wybierz opcje");
+
+		GFTextLine(gump, 45, 110, TXT_CLR_BG, "Stworz nowa gildie");
+		GFTextLine(gump, 45, 135, TXT_CLR_BG, "Zezwalaj lub ignoruj zaproszenia od gildi");
+		GFTextLine(gump, 45, 160, TXT_CLR_BG, "Wyswietl aktywne gildie");
+
+		GFAddButton(gump, 25, 113, BLUE_BTN, BLUE_BTN + 1, GF_PAGE_BTN, 2);
+		GFAddButton(gump, 25, 138, BLUE_BTN, BLUE_BTN + 1, GF_PAGE_BTN, 3);
+		var viewguilds := GFAddButton(gump, 25, 163, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+
+
+		GFPage(gump, 2);
+		GFTextLine(gump, 25, 60, TXT_CLR_BG, "Jako iz nie jestes czlonkiem zadnej gildi mozesz stworzyc wlasna");
+		GFTextLine(gump, 25, 80, TXT_CLR_BG, "wpisujac unikatowa nazwe gildi i placac cene za jej utworzenie");
+
+		var regist_fee := CInt(settings.RegistrationFee);
+
+		GFTextLine(gump, 25, 140, TXT_CLR_BG, "Cena:");
+		GFResizePic(gump, 150, 140, foreground, 200, 25);
+		GFTextLine(gump, 160, 140, TXT_CLR_FG, regist_fee);
+
+		GFTextLine(gump, 25, 165, TXT_CLR_BG, "Nazwa gildi:");
+		GFResizePic(gump, 150, 165, foreground, 200, 25);
+		var guildname := GFTextEntry(gump, 160, 165, 200, 20, TXT_CLR_FG, "");
+
+		GFTextLine(gump, 25, 190, TXT_CLR_BG, "Skrot:");
+		GFResizePic(gump, 150, 190, foreground, 200, 25);
+		var abbr := GFTextEntry(gump, 160, 190, 200, 20, TXT_CLR_FG, "");
+
+		GFAddButton(gump, 105, 250, PREVIOUS_BTN, PREVIOUS_BTN + 1, GF_PAGE_BTN, 1); // previous page
+		var ok := GFAddButton(gump, 385, 250, OK_BTN, OK_BTN + 1, GF_CLOSE_BTN); // Okay
+
+
+		GFPage(gump, 3);
+		var guild_invites := GetObjProperty(character, "Guild_Invites");
+	
+		if ( !guild_invites )
+			SetObjProperty(character, "Guild_Invites", "ON");
+			guild_invites := GetObjProperty(character, "Guild_Invites");
+		endif
+
+		GFTextLine(gump, 25, 60, TXT_CLR_BG, "Gildia moze wyslac zaproszenie.");
+		GFTextLine(gump, 25, 80, TXT_CLR_BG, "Ta opcja ignoruje lub pozwana na to aby gildie wysylaly ci zaproszenia.");
+
+		GFTextLine(gump, 25, 130, TXT_CLR_BG, "Aktualny status:");
+		case ( guild_invites )
+			"ON":
+				GFTextLine(gump, 125, 130, TXT_CLR_BG + 1, "Pozwalaj");
+			"OFF":
+				GFTextLine(gump, 125, 130, TXT_CLR_BG + 1, "Ignoruj");
+			default:
+				GFTextLine(gump, 125, 130, TXT_CLR_BG + 1, "Pozwalaj");
+		endcase
+
+		GFTextLine(gump, 50, 170, TXT_CLR_BG + 1, "Zmien status");
+		var invites := GFAddButton(gump, 25, 173, BLUE_BTN, BLUE_BTN + 1, GF_CLOSE_BTN);
+		GFAddButton(gump, 105, 250, PREVIOUS_BTN, PREVIOUS_BTN + 1, GF_PAGE_BTN, 1); // previous page
+
+
+		var result := GFSendGump(character, gump);
+		if ( !character.ip )
+			EraseObjProperty(character, "#GuildCreate");
+			return 0;
+		endif
+
+		if ( result[cancel] or !result[0] ) // clicked Cancel
+			gumpclose := 1;
+			SendSysMessage(character, "Anulowano.", 3, 40);
+		elseif ( result[viewguilds] )
+			ShowGuilds(character);
+		elseif ( result[invites] )  // changed invite status
+			case ( guild_invites )
+				"ON":
+					if ( SetObjProperty(character, "Guild_Invites", "OFF") )
+						EraseObjProperty(character, "#GuildCreate");
+						SendSysMessage(character, "Zaproszenia od teraz beda ignorowane.", 3, 40);
+					endif
+				"OFF":
+					if ( SetObjProperty(character, "Guild_Invites", "ON") )
+						EraseObjProperty(character, "#GuildCreate");
+						SendSysMessage(character, "Zaproszenia od teraz nie beda ignorowane.", 3, 63);
+					endif
+			endcase
+		elseif ( result[ok] ) // clicked Okay
+			var guild_name := GFExtractData(result, guildname);
+			var guild_abbr := GFExtractData(result, abbr);
+
+			if ( !guild_name )
+				SendSysMessage(character, "Musisz wpisac nazwe gildii.", 3, 40);
+			elseif ( !guild_abbr )
+				SendSysMessage(character, "Musisz wpisac skrot.", 3, 40);
+			else
+				AddGuild(character, guild_abbr, guild_name);
+			endif
+		endif
+	until ( gumpclose == 1 );
+	EraseObjProperty(character, "#GuildCreate");
+endprogram
+
+
+function AddGuild(guild_gm, guild_abbr, guild_name)
+	var regist_fee := CInt(settings.RegistrationFee);
+	if ( regist_fee == 0 or !regist_fee )
+		SendSysMessage(guild_gm, "Anulowano. Nie ustawiono ceny za tworzenie gildii.", 3, 40);
+		return 0;
+	endif
+
+	if ( CountGoldValue(guild_gm) < regist_fee )
+		SendSysMessage(guild_gm, "Anulowano. Nie masz wystarczajacej ilosci zlota.", 3, 40);
+		return 0;
+	endif
+
+	if ( Len(guild_name) > CInt(settings.MaxNameLen) )
+		SendSysMessage(guild_gm, "Anulowano. Nazwa gildi jest za dluga.", 3, 40);
+		return 0;
+	elseif ( !ValidStr(guild_name) )
+		SendSysMessage(guild_gm, "Anulowano. Nazwa gildi zawiera niedozwolone znaki.", 3, 40);
+		return 0;
+	elseif ( !ValidName(guild_name) )
+		SendSysMessage(guild_gm, "Anulowano. Taka nazwa gildi juz istnieje.", 3, 40);
+		return 0;
+	endif
+
+	if ( Len(guild_abbr) > CInt(settings.MaxAbbrLen) )
+		SendSysMessage(guild_gm, "Anulowano. Skrot jest za dlugi.", 3, 40);
+		return 0;
+	elseif ( !ValidStr(guild_abbr) )
+		SendSysMessage(guild_gm, "Anulowano. Skrot zawiera niedozwolone znaki.", 3, 40);
+		return 0;
+	elseif ( !ValidName(guild_abbr) )
+		SendSysMessage(guild_gm, "Anulowano. Taki skrot gildi juz istnieje.", 3, 40);
+		return 0;
+	endif
+
+	if ( !YesNo(guild_gm, "Stworzyc gildie?", "Tak!", "Nie.") )
+		SendSysMessage(guild_gm, "Anulowano.", 3, 40);
+		return 0;
+	else
+		if ( !SubtractCash(guild_gm, regist_fee) )
+			SendSysMessage(guild_gm, "Anulowano. Nie masz wystarczajaco zlota.", 3, 40);
+			return 0;
+		endif
+	endif
+
+	var guild := CreateGuild();
+
+	if ( guild )
+		var guild_id := guild.guildid;
+		var null_space := "NONE";
+		guild.SetProp("Name", guild_name);
+		guild.SetProp("Abbr",  guild_abbr);
+		guild.SetProp("Master", guild_gm.serial);
+		guild.SetProp("Charter", null_space);
+		guild.SetProp("Website", null_space);
+		guild.SetProp("Faction", "Neutral");
+		guild.AddMember(guild_gm);
+
+		SetObjProperty(guild_gm, "Guild_ID", guild_id);
+		SetGuildRank(guild_gm, 5);
+		SetObjProperty(guild_gm, "Fealty", guild_gm.serial);
+		GuildTitle(guild_gm);
+		SendSysMessage(guild_gm, "Gildia zostala utworzona.", 3, 63);
+		return 1;
+	elseif ( guild.errortext )
+		SendSysMessage(guild_gm, "Anulowano. Stworzenie gildi nie udalo sie.", 3, 40);
+		return 0;
+	endif
+endfunction

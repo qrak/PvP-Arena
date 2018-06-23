@@ -1,0 +1,210 @@
+// crash
+
+use util;
+use basic;
+use os;
+use math;
+use uo;
+
+include "../../foundations/gumps/gumps";
+include "include/attributes";
+include "include/gumpUtil";
+include "include/dist";
+include "include/objtype";
+include "include/client";
+include "include/canAccess";
+
+var dom1 := { 0x6111, "drewniana chata" };
+var dom2 := { 0x601D, "maly drewno i sloma" };
+var dom3 := { 0x601B, "maly drewniany" };
+var dom4 := { 0x601A, "maly kamienny" };
+var dom5 := { 0x6102, "maly farmera" };
+var dom6 := { 0x6019, "maly otynkowany" };
+var dom7 := { 0x601C, "maly cegla tynk" };
+var dom8 := { 0x601e, "maly z cegiel" };
+var dom9 := { 0x6100, "maly drewniany" };
+var dom10 := { 0x6101, "maly drewno tynk" };
+var dom11 := { 0x6105, "mala wieza" };
+var dom12 := { 0x6109, "maly kamienny sklep" };
+var dom13 := { 0x6110, "maly marmurowy sklep" };
+var dom14 := { 0x6108, "dwupietrowa willa" };
+var dom15 := { 0x6020, "duzy z cegiel" };
+var dom16 := { 0x6026, "duzy z tarasem" };
+var dom17 := { 0x6021, "dwupietrowy otynkowany" };
+var dom18 := { 0x6022, "dwupietrowy kamienny" };
+var dom19 := { 0x6104, "duzy marmurowy" };
+var dom20 := { 0x6107, "z piaskowca" };
+
+
+program domek(who, mlotek)
+
+if((!ReserveItem(mlotek)) || (!Accessible(who, mlotek)) || (Distance(who, mlotek) > 2) || (!can_access(who, mlotek)))
+       SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+       return 0;
+endif
+SendSysMessage(who, "Wskaz material do pracy.", FONT_NORMAL, COLOR_GREEN);
+var drewno := Target(who);
+if(!drewno)
+             SendSysMessage(who, "Anulowano.", FONT_NORMAL, 40);
+       return 0;
+endif
+if(drewno.objtype != 0x1BDD)
+             SendSysMessage(who, "Nie mozesz tego na tym uzyc.", FONT_NORMAL, 40);
+       return 0;
+endif
+SendSysMessage(who, "Wskaz sztaby zelaza, ktorych chcesz uzyc do budowy domu.", FONT_NORMAL, COLOR_GREEN);
+var zelazo := Target(who);
+if(!zelazo)
+             SendSysMessage(who, "Anulowano.", FONT_NORMAL, 40);
+       return 0;
+endif
+if(zelazo.objtype != 0x6309)
+             SendSysMessage(who, "Nie mozesz tego na tym uzyc.", FONT_NORMAL, 40);
+       return 0;
+endif
+if(zelazo.amount >= 500000 && drewno.amount >= 15000)
+                 robotka(who, drewno, zelazo);
+else
+                 SendSysMessage(who, "Nie masz odpowiedniej ilosci materialu.", FONT_NORMAL, 40);
+                 SendSysMessage(who, "Potrzebujesz 500000 zelaza i 15000 klod.", 3, 40);
+       return 0;
+endif
+endprogram
+
+function robotka(who, drewno, zelazo)
+GFInitGump( 40 , 50 );
+
+GFGumpPic( 112 , 97 , 0xC8 );
+GFGumpPic( 112 , 53 , 0xC9 );
+GFGumpPic( 68 , 96 , 0xCA );
+GFGumpPic( 538 , 91 , 0xCB );
+GFGumpPic( 68 , 407 , 0xCC );
+GFGumpPic( 538 , 407 , 0xCD );
+GFGumpPic( 68 , 53 , 0xCE );
+GFGumpPic( 538 , 53 , 0xCF );
+GFGumpPic( 329 , 97 , 0xC8 );
+GFGumpPic( 410 , 97 , 0xC8 );
+GFGumpPic( 240 , 97 , 0xC8 );
+GFGumpPic( 412 , 223 , 0xC8 );
+GFGumpPic( 352 , 223 , 0xC8 );
+GFGumpPic( 235 , 223 , 0xC8 );
+GFGumpPic( 111 , 223 , 0xC8 );
+GFGumpPic( 112 , 407 , 0xE9 );
+GFGumpPic( 411 , 282 , 0xC8 );
+GFGumpPic( 345 , 295 , 0xC8 );
+GFGumpPic( 231 , 290 , 0xC8 );
+GFGumpPic( 108 , 288 , 0xC8 );
+GFTextLine(240, 85,   0, "Ktory dom chcesz wybudowac");
+GFTextLine(146, 150,   0, dom1[2]);
+GFTextLine(146, 170,   0, dom2[2]);
+GFTextLine(146, 190,   0, dom3[2]);
+GFTextLine(146, 210,   0, dom4[2]);
+GFTextLine(146, 230,   0, dom5[2]);
+GFTextLine(146, 250,   0, dom6[2]);
+GFTextLine(146, 270,   0, dom7[2]);
+GFTextLine(146, 290,   0, dom8[2]);
+GFTextLine(146, 310,   0, dom9[2]);
+GFTextLine(146, 330,   0, dom10[2]);
+
+GFTextLine(346, 150,   0, dom11[2]);
+GFTextLine(346, 170,   0, dom12[2]);
+GFTextLine(346, 190,   0, dom13[2]);
+GFTextLine(346, 210,   0, dom14[2]);
+GFTextLine(346, 230,   0, dom15[2]);
+GFTextLine(346, 250,   0, dom16[2]);
+GFTextLine(346, 270,   0, dom17[2]);
+GFTextLine(346, 290,   0, dom18[2]);
+GFTextLine(346, 310,   0, dom19[2]);
+GFTextLine(346, 330,   0, dom20[2]);
+
+var przycisk1  := GFButtonID( 120 , 150 , 0xD0 , 0xD1 , 1 );
+var przycisk2  := GFButtonID( 120 , 170 , 0xD0 , 0xD1 , 1 );
+var przycisk3  := GFButtonID( 120 , 190 , 0xD0 , 0xD1 , 1 );
+var przycisk4  := GFButtonID( 120 , 210 , 0xD0 , 0xD1 , 1 );
+var przycisk5  := GFButtonID( 120 , 230 , 0xD0 , 0xD1 , 1 );
+var przycisk6  := GFButtonID( 120 , 250 , 0xD0 , 0xD1 , 1 );
+var przycisk7  := GFButtonID( 120 , 270 , 0xD0 , 0xD1 , 1 );
+var przycisk8  := GFButtonID( 120 , 290 , 0xD0 , 0xD1 , 1 );
+var przycisk9  := GFButtonID( 120 , 310 , 0xD0 , 0xD1 , 1 );
+var przycisk10 := GFButtonID( 120 , 330 , 0xD0 , 0xD1 , 1 );
+
+var przycisk11 := GFButtonID( 320 , 150 , 0xD0 , 0xD1 , 1 );
+var przycisk12 := GFButtonID( 320 , 170 , 0xD0 , 0xD1 , 1 );
+var przycisk13 := GFButtonID( 320 , 190 , 0xD0 , 0xD1 , 1 );
+var przycisk14 := GFButtonID( 320 , 210 , 0xD0 , 0xD1 , 1 );
+var przycisk15 := GFButtonID( 320 , 230 , 0xD0 , 0xD1 , 1 );
+var przycisk16 := GFButtonID( 320 , 250 , 0xD0 , 0xD1 , 1 );
+var przycisk17 := GFButtonID( 320 , 270 , 0xD0 , 0xD1 , 1 );
+var przycisk18 := GFButtonID( 320 , 290 , 0xD0 , 0xD1 , 1 );
+var przycisk19 := GFButtonID( 320 , 310 , 0xD0 , 0xD1 , 1 );
+var przycisk20 := GFButtonID( 320 , 330 , 0xD0 , 0xD1 , 1 );
+
+var przyciski := GFSendGump( who );
+
+if(przycisk1.keyid in przyciski.keys)
+rob_domek(who, dom1[1], drewno, zelazo);
+elseif(przycisk2.keyid in przyciski.keys)
+rob_domek(who, dom2[1], drewno, zelazo);
+elseif(przycisk3.keyid in przyciski.keys)
+rob_domek(who, dom3[1], drewno, zelazo);
+elseif(przycisk4.keyid in przyciski.keys)
+rob_domek(who, dom4[1], drewno, zelazo);
+elseif(przycisk5.keyid in przyciski.keys)
+rob_domek(who, dom5[1], drewno, zelazo);
+elseif(przycisk6.keyid in przyciski.keys)
+rob_domek(who, dom6[1], drewno, zelazo);
+elseif(przycisk7.keyid in przyciski.keys)
+rob_domek(who, dom7[1], drewno, zelazo);
+elseif(przycisk8.keyid in przyciski.keys)
+rob_domek(who, dom8[1], drewno, zelazo);
+elseif(przycisk9.keyid in przyciski.keys)
+rob_domek(who, dom9[1], drewno, zelazo);
+elseif(przycisk10.keyid in przyciski.keys)
+rob_domek(who, dom10[1], drewno, zelazo);
+elseif(przycisk11.keyid in przyciski.keys)
+rob_domek(who, dom11[1], drewno, zelazo);
+elseif(przycisk12.keyid in przyciski.keys)
+rob_domek(who, dom12[1], drewno, zelazo);
+elseif(przycisk13.keyid in przyciski.keys)
+rob_domek(who, dom13[1], drewno, zelazo);
+elseif(przycisk14.keyid in przyciski.keys)
+rob_domek(who, dom14[1], drewno, zelazo);
+elseif(przycisk15.keyid in przyciski.keys)
+rob_domek(who, dom15[1], drewno, zelazo);
+elseif(przycisk16.keyid in przyciski.keys)
+rob_domek(who, dom16[1], drewno, zelazo);
+elseif(przycisk17.keyid in przyciski.keys)
+rob_domek(who, dom17[1], drewno, zelazo);
+elseif(przycisk18.keyid in przyciski.keys)
+rob_domek(who, dom18[1], drewno, zelazo);
+elseif(przycisk19.keyid in przyciski.keys)
+rob_domek(who, dom19[1], drewno, zelazo);
+elseif(przycisk20.keyid in przyciski.keys)
+rob_domek(who, dom20[1], drewno, zelazo);
+endif
+
+endfunction
+
+function rob_domek(who, ktory, drewno, zelazo)
+         PlaySoundEffect(who, 0x23e);
+          sleep(2);
+         PlaySoundEffect(who, 0x23e);
+          sleep(2);
+         PlaySoundEffect(who, 0x23e);
+          sleep(2);
+   if((CInt(GetEffectiveSkill(who, SKILLID_CARPENTRY))) >= 100)
+         if(CreateItemInContainer(who.backpack, ktory, 1))
+                  SendSysMessage(who, "Udalo Ci sie wykonac zwoj na dom.", FONT_NORMAL, COLOR_GREEN);
+          SubtractAmount(drewno, 15000);
+          SubtractAmount(zelazo, 20000);
+         else
+                  SendSysMessage(who, "Nie masz miejsca w plecaku!", FONT_NORMAL, 40);
+                  return 0;
+         endif
+   else
+         SubtractAmount(drewno, RandomInt(20)+5);
+         SubtractAmount(zelazo, RandomInt(20)+5);
+                  SendSysMessage(who, "Nie udalo Ci sie i zniszczyles troche materialu!", FONT_NORMAL, 40);
+                  return 0;
+   endif
+endfunction

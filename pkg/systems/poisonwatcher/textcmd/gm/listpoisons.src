@@ -1,0 +1,22 @@
+// crash
+
+use os;
+use uo;
+
+include "include/poisons";
+
+program Lister(who, type)
+	if ( !type )
+		type := "P";
+	endif
+	SendSysMessage(who, "Wybierz osobe, ktorej trocizne chcesz sprawdzic.");
+	var targ := target(who);
+	if ( !targ.IsA(POLCLASS_MOBILE) )
+		SendSysMessage(who, "Anulowano.");
+		return;
+	endif
+	foreach poison_name in GetAllPoisons(targ);
+		SendSysMessage(who, "->"+poison_name);
+		sleepms(2);
+	endforeach
+endprogram

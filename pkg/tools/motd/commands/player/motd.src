@@ -1,0 +1,24 @@
+use uo;
+use os;
+
+include ":datafile:datafile";
+
+program MOTD(who, text)
+	if ( text )
+		text := Lower(text);
+		var data_file := DFOpenDataFile(":motd:settings", DF_CREATE);
+		var data_elem := DFFindElement(data_file, who.acctname, DF_CREATE);
+		
+		if ( text == "nie" )
+			SendSysMessage(who, "'Wiadomosc dnia' nie bedzie wyskakiwac podczas loginu.",3,40);
+			data_elem.SetProp("noshow", 1);
+		elseif ( text == "tak" )
+			SendSysMessage(who, "'Wiadomosc dnia' bedzie wyskakiwac podczas loginu.",3,63);
+			data_elem.EraseProp("noshow");
+		else
+			SendSysMessage(who, "Skladnia: .motd tak nie");
+		endif
+	else
+		Start_Script("motd", who);
+	endif
+endprogram

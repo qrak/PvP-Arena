@@ -1,0 +1,13 @@
+use uo;
+use os;
+use cfgfile;
+
+program attackhook()
+	Print("New PvP Attack hook by qrak (base by Maeglin (c))");
+	return 1;
+endprogram
+
+exported function NewAttack( attacker, defender)
+
+	start_script ("newattack", {attacker, defender});
+endfunction

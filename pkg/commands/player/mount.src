@@ -1,0 +1,177 @@
+use math;
+use basic;
+use uo;
+include ":gumps:gumps";
+include "include/kasa";
+
+
+var ile, template;
+program dawaj(who)
+    var lastbought := Cint(GetObjProperty(who, "#mounttime"));
+    var igrzyska := GetObjProperty(who, "IgTeam");
+    var CTF := GetObjProperty(who, "CtfTeam");
+    var KTM := GetObjProperty(who, "KTMTeam");
+    
+    if((ReadGameClock() < lastbought) && !igrzyska && !CTF && !KTM) 
+        SendSysMessage(who, "Wierzchowca mozesz kupowac co 5 minut online. Musisz odczekac jeszcze " + (lastbought - ReadGameClock()) + " sekund.",3,40 );
+        return 0;
+    endif
+    if(GetObjProperty(who, "#LlamaBought") && (CTF || igrzyska ||  KTM))
+        SendSysMessage(who, "Wypierdalaj lame flooderze.",3,40 );
+        return 0;
+    endif
+    if(Cint(GetObjProperty(who, "#mountOkno")))
+        SendSysMessage(who, "Juz cos robisz.", 3, 40);
+        return 0;
+    endif
+    SetObjProperty(who, "#mountOkno", 1);
+    GFInitGump(0,0);
+    GFNoClose();
+    GFpage (0);
+    GFResizePic(50, 50, 3600, 550, 500);
+    GFCheckerTrans(50,50,550,500);
+    GFGumpPic( 210, 5, 10452 );
+    GFTilePic(277, 5, 0x04F2);
+    GFTilePic(277, 5, 0x20F6);
+    var lama, kon, ostard, garbacz, kirin, skeletal, jednorozec, koszmar, bs, obs, widmak, widmak2, widmak3, widmak4, widmak5, zuk;
+    if(igrzyska || CTF || KTM)
+        GFTextline(100, 90, 48, "  lama (0 gp)");
+        lama := GFButtonID(85, 90, 1209, 1210, 1);    
+    endif
+    if(!igrzyska && !CTF && !KTM)
+        GFTextline(100, 90, 48, "  lama (500 gp)");
+        lama := GFButtonID(85, 90, 1209, 1210, 1);
+        GFTextline(100, 130, 48, "  kon (700 gp)");
+        kon := GFButtonID(85, 130, 1209, 1210, 1);
+        GFTextline(100, 170, 48, "  ostard (1500 gp)");
+        ostard := GFButtonID(85, 170, 1209, 1210, 1);
+        GFTextline(100, 210, 48, "  garbacz (3750 gp)");
+        garbacz := GFButtonID(85, 210, 1209, 1210, 1);
+        GFTextline(100, 250, 48, "  kirin (5000 gp)");
+        kirin := GFButtonID(85, 250, 1209, 1210, 1);
+        GFTextLine(100, 290, 48, "  nieumarly rumak (10000 gp)");
+        skeletal := GFButtonID(85, 290, 1209, 1210, 1);
+        GFTextLine(100, 330, 48, "  jednorozec (20000 gp)");
+        jednorozec := GFButtonID(85, 330, 1209, 1210, 1);
+        GFTextLine(100, 370, 48, "  koszmar (40000 gp)");
+        koszmar := GFButtonID(85, 370, 1209, 1210, 1);
+        GFTextLine(100, 410, 48, "  bagienny smok (60000 gp)");
+        bs := GFButtonID(85, 410, 1209, 1210, 1);
+        GFTextLine(100, 450, 48, "  opancerzony bagienny smok (70000 gp)");
+        obs := GFButtonID(85, 450, 1209, 1210, 1);
+        GFTextLine(100, 490, 48, "  widmowy kon (60000 gp)");
+        widmak := GFButtonID(85, 490, 1209, 1210, 1);
+        GFTextLine(350, 90, 48, "  widmowy ostard (70000 gp)");
+        widmak2 := GFButtonID(335, 90, 1209, 1210, 1);
+        GFTextLine(350, 130, 48, "  widmowy wielki zuk (80000 gp)");
+        widmak3 := GFButtonID(335, 130, 1209, 1210, 1);
+        GFTextLine(350, 170, 48, "  widmowy smok bagienny (100000 gp)");
+        widmak4 := GFButtonID(335, 170, 1209, 1210, 1);
+        GFTextLine(350, 210, 48, "  widmowy kirin (80000 gp)");
+        widmak5 := GFButtonID(335, 210, 1209, 1210, 1);
+        GFTextLine(350, 250, 48, "  wielki zuk (80000 gp)");
+        zuk := GFButtonID(335, 250, 1209, 1210, 1);
+    endif
+    // przycisk anulowania
+    GFTextLine(445, 500, 48, "Anuluj.");
+    var idzstad := GFButtonID(490, 500, 1209, 1210, 1);
+    // autor
+    GFTextLine(60, 515, 66, ".mount command created by qrak (fakencziken@wp.pl). All rights reserved.");
+    var keys := GFSendGump(who);
+    //
+    if(keys[0] == lama.keyid) // lama
+        ile := 500;
+        template := "llama";
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == kon.keyid) // kon
+        ile := 700;
+        template := "horse3";
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == ostard.keyid) // ostard
+        ile := 1500;
+        template := "desertostard";
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == garbacz.keyid)
+        ile := 3750;
+        template := "ridgeback"; //garbacz
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == kirin.keyid)
+        ile := 5000;
+        template := "Kirin"; //kirin
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == skeletal.keyid)
+        ile := 10000;
+        template := "skeletalmount"; //nieumarly rumak
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == jednorozec.keyid)
+        ile := 20000;
+        template := "unicorn"; //jednorozec
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == koszmar.keyid)
+        ile := 40000;
+        template := "nightmare"; //koszmar
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == bs.keyid)
+        ile := 60000;
+        template := "swampdragon"; //bagienny smok
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == obs.keyid)
+        ile := 70000;
+        template := "swampdragonarmor"; //bagienny smok
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == widmak.keyid)
+        ile := 60000;
+        template := "Etheralhorse"; //widmowy hors
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == widmak2.keyid)
+        ile := 70000;
+        template := "Etheralostard"; //widmowy ostard
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == widmak3.keyid)
+        ile := 80000;
+        template := "Etheralzuk"; //widmowy zuk
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == widmak4.keyid)
+        ile := 100000;
+        template := "etheralswampdragon"; //widmowy smok bagienny
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == widmak5.keyid)
+        ile := 80000;
+        template := "Etheralkirin"; //widmowy kirin
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == zuk.keyid)
+        ile := 100000;
+        template := "giantbeetle"; //zuk
+        dajzwierza(who, ile, template);
+    elseif(keys[0] == idzstad.keyid)
+        SendSysMessage(who, "Anulowano.", 3,40);
+        EraseObjProperty(who, "#mountOkno");
+        return 0;
+    endif
+endprogram
+
+function dajzwierza(who, ile, template)
+    var igrzyska := GetObjProperty(who, "IgTeam");
+    var CTF := GetObjProperty(who, "CtfTeam");
+    var KTM := GetObjProperty(who, "KTMTeam");
+    
+    if(igrzyska || CTF || KTM)
+        ile := 0;
+        SetObjProperty(who, "#LlamaBought", 1);
+    endif
+    if(SubtractCash(who, ile))
+        var npc := CreateNpcFromTemplate(template, who.x, who.y, who.z, 0);
+        SetObjProperty( npc, "happiness", 60000);
+        SetObjProperty( npc, "master", who.serial );
+        SetObjProperty( npc, "script", npc.script );
+        npc.setmaster( who );
+        npc.script := "tamed";
+        SetName(npc, npc.name + " osoby: " + who.name);
+        RestartScript(npc);
+        SetObjProperty(who, "mounttime", 1);
+        EraseObjProperty(who, "#mountOkno");
+        SetObjProperty(who, "#mounttime", ReadGameClock() + 300);
+    endif
+    EraseObjProperty(who, "#mountOkno");
+endfunction
+

@@ -1,0 +1,98 @@
+use os;
+use vitals;
+use uo;
+use util;
+use polsys;
+
+include "include/myUtil";
+include "include/attributes";
+include "include/reportMurder";
+include ":poisonwatcher:poisons";
+include "include/ladunki";
+include "include/sysEvent";
+include "include/dismount";
+include ":ctf:ctfdeath";
+include ":dm:dmdeath";
+include ":dm:dmfrag";
+include ":duelstone:dueldeath";
+include ":igrzyska:igdeath";
+include ":igrzyska:igfrag";
+include "include/frakcja";
+include "chrdeath";
+include "include/tempMod";
+
+const STARTHAIR := 0x2030;
+const ENDHAIR := 0x2060;
+
+program chrdeath(corpse,ghost)
+
+    ghost.frozen := 1;
+    
+    if(ghost.gender == 1)
+        PlaySoundEffect( ghost, 0x53D );
+    else
+        PlaySoundEffect( ghost, 0x540 );
+    endif
+    
+    HandlePolymorph(ghost); // czyszczenie polymorfizmu
+    
+    Killing(ghost); // obsluga fragow
+    DestroyDeathShroudInPack(ghost);
+    SetObjProperty(corpse,"serial", ghost.serial);
+    var mount;
+    foreach item in ListRootItemsInContainerOfObjtype(corpse,0xF021)
+        mount:=item;
+    endforeach
+
+    if( mount )
+       Dismount(ghost,mount);
+    endif
+
+    var corpsenamearray := SplitWords(corpse.name);
+    var corpsenamearraylen := len(corpsenamearray);
+    var x, corpsename := "";
+    for (x := 4; x <= corpsenamearraylen; x := x + 1)
+        corpsename := corpsename + " " + corpsenamearray[x];
+    endfor
+
+    if(Cint(GetGlobalProperty("#zakazwalk")))
+        SetObjProperty(corpse, "nopvp", 1);
+    endif
+
+    if(GetObjProperty(ghost, "IgTeam"))
+        HandleIgDeath(corpse, ghost);   // obsluga smierci podczas igrzysk
+    elseif(GetObjProperty(ghost, "#team"))
+        HandleDuelDeath(corpse, ghost); // obsluga smierci podczas duela
+    elseif(GetObjProperty(ghost, "CtfTeam"))
+        HandleCtfDeath(corpse, ghost); // obsluga smierci podczas Ctfa
+    elseif(GetObjProperty(ghost, "Deathmatch"))
+        HandleDMDeath(corpse, ghost); // obsluga smierci podczas DMa
+    else
+        var giftoflife := Cint(GetObjProperty(ghost, "#glife"));
+        var randominteger := RandomInt(100);
+        if(giftoflife && randominteger > 50)
+            ghost.frozen := 1;
+            SendSysMessage(ghost, "Czar Gift of Life wskrzesil Cie!",3,63);
+            EraseObjProperty(ghost, "#deathcount");
+            InstantResurrect(ghost, corpse);
+        endif
+        var deathcount := Cint(GetObjProperty(ghost, "#deathcount"));
+        SetObjProperty(ghost, "#deathcount", deathcount + 1);
+        if(Cint(GetObjProperty(ghost, "#deathcount")) == 5)
+            SetObjProperty(ghost, "#lastresed", ReadGameClock() + 300);    
+        endif
+    endif
+    EraseObjProperty(ghost, "#LlamaBought");
+    SubtractMagicCharges(corpse); // odejmowanie ladunkow magicznych z magikow
+    PropsCleaning(ghost); // czyszczenie propow po smierci
+    UndoAllMods(ghost);
+    WipeMods(ghost);
+    RecalcVitals( ghost );
+
+    if(Cint(!GetObjProperty(ghost, "jailed")))
+        ghost.frozen := 0;
+    endif
+
+endprogram
+
+

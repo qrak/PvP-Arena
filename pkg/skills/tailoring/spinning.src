@@ -1,0 +1,74 @@
+// crash
+
+use os;
+use basic;
+use math;
+use uo;
+
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+
+const uobj_wheel_start := 0x1015;
+const uobj_wheel_end := 0x101e;
+
+program use_wool(who, wool)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, wool))
+    return;
+  endif
+  if(wool.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!ReserveItem(wool))
+    return;
+  endif
+  SendSysMessage( who, "Wskaz kolowrotek, ktorego chcesz uzyc.", FONT_NORMAL, COLOR_GREEN);
+  var use_on := Target(who);
+  if (!use_on)
+    SendSysMessage(who,"Anulowano.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(wool.amount <= 1)
+	SendSysMessage(who, "Nie masz odpowiedniej ilosci welny.", FONT_NORMAL,40);
+  endif
+  var obj := use_on.objtype;
+  if(((obj >= uobj_wheel_start) && (obj <= uobj_wheel_end)) || ((obj >= 0x10a4) && (obj <= 0x10a6)))
+  while(wool.amount > 1)
+    var gfx;
+    case(obj)
+      4117:   gfx := 0x1016;
+      4119:   gfx := 0x1016;
+      4121:   gfx := 0x101a;
+      4123:   gfx := 0x101a;
+      4124:   gfx := 0x101d;
+      4126:   gfx := 0x101d;
+      4260:   gfx := 0x10a5;
+      4262:   gfx := 0x10a5;
+      default:
+    endcase
+	use_on.graphic := gfx;
+    Detach();
+    Makeyarn(who, wool);
+  endwhile
+	use_on.graphic := use_on.objtype;
+  else
+    SendSysMessage(who, "Mozesz uzywac tego tylko na kolowrotku.", FONT_NORMAL, 40);
+  endif
+endprogram
+
+function Makeyarn(who, item)
+  if(!Accessible(who, item))
+    SendSysMessage(who, "Nie masz zadnej welny!", FONT_NORMAL, 40);
+    return;
+  endif
+  if(SubtractAmount(item, 1))
+    var yarn := CreateItemInBackpack(who, 0xe1f, 3);
+    SendSysMessage(who, "Uprzedles welne i zrobiles przedze.", FONT_NORMAL, COLOR_GREEN);
+    sleep(2);
+  else
+    SendSysMessage(who, "Masz za malo welny, aby uprzasc przedze.", FONT_NORMAL, 40);
+  endif
+endfunction

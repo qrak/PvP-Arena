@@ -1,0 +1,51 @@
+use basic;
+use uo;
+use cfgfile;
+
+include "include/canAccess";
+
+var cfg  := ReadConfigFile( ":*:itemdesc" );
+
+program dyeable(who, dyetub)
+  if(who.cmdlevel >=2)
+    var item := Target(who);
+    if(!item)
+      SendSysMessage(who, "Anulowano.");
+      return;
+    endif
+    item.color := dyetub.color;
+    PlaySoundEffect(who, 0x23f);
+    return;
+  endif
+  if(!can_access(who, dyetub))
+    return;
+  endif
+  if(!ReserveItem(dyetub))
+	return;
+  endif
+  SendSysMessage(who, "Wybierz przedmiot do zafarbowania.");
+  var item := Target(who);
+  if(!item)
+    SendSysMessage(who, "Anulowano.");
+    return;
+  endif
+  if(!can_access(who, item))
+    return;
+  endif
+  if(!ReserveItem(item))
+    SendSysMessage(who, "Nie mozesz tego uzyc!");
+    return;
+  elseif(!Accessible(who, item))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac!");
+    return;
+  endif
+  var element  := FindConfigElem(cfg,  item.objtype);
+  var dyeable  := GetConfigInt(element, "dyeable");
+  if(dyeable == 1)
+    item.color := dyetub.color;
+    PlaySoundEffect(who, 0x23f);
+  else
+    SendSysMessage( who, "Nie mozesz tego zafarbowac.");
+    return;
+  endif
+endprogram

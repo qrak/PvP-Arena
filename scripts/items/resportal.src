@@ -1,0 +1,31 @@
+use polsys;
+use basic;
+use uo;
+
+include "include/attributes";
+include "include/yesNo";
+include "include/resurrect";
+
+program resportal(who)
+
+    if(!who.dead)
+        return 0;
+    endif
+    EraseObjProperty(who, "#LlamaBought");
+    if(Cint(GetGlobalProperty("#IgRound")) && GetObjProperty(who, "IgTeam" ))
+        SendSysMessage(who, "Aby sie wskrzesic musisz poczekac do konca rundy.",3,40);
+        return 0;
+    endif
+    
+    if(!GetObjProperty(who, "IgTeam") && !GetObjProperty(who, "KTMTeam") )
+        if(!ResurrectWithPenalty(who))
+            return 0;
+        endif
+    else
+        Resurrect(who);
+        SetMaxVitals(who);
+    endif
+
+endprogram
+
+

@@ -1,0 +1,131 @@
+// crash
+
+use math;
+use npc;
+use os;
+use uo;
+use basic;
+
+include "include/client";
+include "include/objtype";
+include "include/spellRestrictions";
+include "include/isValidLoc";
+include "include/findCity";
+
+program recall(parms)
+  var circle := 4;
+  var failure := 0;
+  var delivery := "notarget";
+  var noto := "neutral";
+
+
+  var result := maincast(parms, delivery, circle, noto, 32);
+  var caster := result[1];
+  
+  if(findcity(caster) == "Paka")
+    return;
+  endif
+  setobjproperty(caster, "rekall", 1);  
+  eraseobjproperty(caster, "rekall");
+  if(result == 0)
+    return;
+  endif
+
+  if(!getobjproperty(caster, "wraith"))
+	SendSysMessage(caster, "Nie mozesz uzywac tego czaru.");
+        PlaySoundEffect(caster,0x005d);
+        PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+	return 0;
+  endif
+
+  if(GetObjProperty(caster, "#team") || GetObjProperty(caster, "IgTeam") || GetObjProperty(caster, "CtfTeam"))
+      SendSysMessage(caster, "Gdzie kurwa?",3,40);        
+      return 0;
+  endif
+
+
+  var cast_on := Target(caster);
+  if((cast_on.objtype != UOBJ_RUNE) && (cast_on.objtype != 0x6100))
+    SendSysMessage(caster, "Mozesz uzywac tego czaru tylko na runach przywolania!");
+	return;
+  endif
+  if(!ReserveItem(cast_on))
+    return;
+  endif
+  if(GetObjProperty(cast_on, "Vendored"))
+    SendSysMessage(caster, "Nie mozesz uzywac run znajdujacych sie u vendora.");
+    return;
+  endif
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  if(!tox)
+    SendSysMessage(caster, "Runa musi byc zaznaczona.");
+    return;
+  endif
+  if(!isValidLoc(tox,toy))
+    SendSysMessage(caster, "Nie mozesz tam sie przeniesc.");
+    DestroyItem(cast_on);
+    return;
+  endif
+  PlaySoundEffect(caster, 0x210);
+  Detach();
+
+  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1);
+  multicheck.hidden := 1;
+  if(!MoveObjectToLocation(multicheck, tox, toy, toz, multicheck.realm, MOVEOBJECT_NORMAL))
+    SendSysMessage(caster, "Cos blokuje miejsce docelowe.");
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+
+  endif
+  if(multicheck.multi)
+    SendSysMessage(caster,"Cos blokuje miejsce docelowe.");
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    elseif(cast_on.objtype == 0x6100)
+      removeentry(cast_on);
+    endif
+    return;
+
+  endif
+  DestroyItem(multicheck);
+
+  if (failure == 0);
+		SetObjProperty(caster, "#Teleported", 1);
+	MoveObjectToLocation( caster, tox, toy, toz );
+			EraseObjProperty(caster, "#Teleported");
+  var KTM := GetObjProperty(caster, "KTMTeam");
+	if(KTM)
+		EraseObjProperty(caster, "KTMTeam");
+	endif
+  elseif (failure == 2)
+    SendSysMessage(caster, "Czar sie nie udal i zniszczyl runa!");
+    if(cast_on.objtype == UOBJ_RUNE)
+      DestroyItem(cast_on);
+    endif
+  endif
+  PlaySoundEffect(caster, 0x1fd);
+
+endprogram
+
+function removeentry(cast_on)
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  var defs := GetObjProperty(cast_on, "runedefs");
+  var holder := {};
+  foreach thing in defs
+    if((Cint(thing[2]) != tox) or (Cint(thing[3]) != toy) or (Cint(thing[4]) != toz))
+      holder.append(thing);
+    endif
+  endforeach
+  SetObjProperty(cast_on, "runedefs", holder);
+  EraseObjProperty(cast_on, "x");
+  EraseObjProperty(cast_on, "y");
+  EraseObjProperty(cast_on, "z");
+  return;
+endfunction

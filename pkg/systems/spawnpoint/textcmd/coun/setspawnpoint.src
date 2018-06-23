@@ -1,0 +1,31 @@
+Use uo;
+Use os;
+
+use os;
+use basic;
+use math;
+use uo;
+
+program textcmd_hidespawnpoints( who, range )
+
+	var counter := 0;
+
+	SendSysMessage( who,"Setting all spawnpoints in the world." );
+	SendSysMessage( who,"This may take a moment." );
+
+	foreach spawnpoint in ListObjectsInBox( 0, 0, -110, 5119, 4095, 110 )
+		if( spawnpoint.graphic == 0x1EA7 )
+			Var Type := GetObjProperty( spawnpoint, "Spawn" );
+            If( Lower( Type ) == Lower( "factionguard" ) )
+            SetObjProperty( spawnpoint, "MinDelay", 1 );
+            SetObjProperty( spawnpoint, "MaxDelay", 60 );
+			counter	:= counter + 1;
+            Endif
+          SetObjProperty( spawnpoint, "Range", 0 );
+		endif
+        SleepMS( 2 );
+	endforeach
+
+	SendSysMessage( who,"A total of " + counter + " spawnpoints have been set." );
+
+endprogram

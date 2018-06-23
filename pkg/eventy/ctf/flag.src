@@ -1,0 +1,88 @@
+use uo;
+
+include ":ctf:ctf";
+
+program flag(who, flag)
+    var flagteam := GetCtfTeam(flag);
+    var whoteam := GetCtfTeam(who); 
+    
+    if(!whoteam)
+        SendSysMessage(who, "Nie masz druzyny!",3,40);
+        return 0;
+    endif
+    
+    if(flag.container == who.backpack)
+        SendSysMessage(who, "Juz masz czyjas flage!",3,40);
+        return 0;
+    endif
+
+    if(whoteam != flagteam && flag.container != who.backpack)
+        TakeEnemyFlag(who, flag);
+    elseif(whoteam == flagteam && flag.container != who.backpack)
+        ReturnFlag(who, flag);    
+    endif
+endprogram
+
+function TakeEnemyFlag(who, flag)
+
+    MsgToCtfPlayers(who.name + " zabral flage druzyny " + GetCtfTeam(flag) + "! Odbierzcie mu!",40);
+    SendSysMessage(who, "Masz flage druzyny przeciwnika. Zanies ja do bazy!",3,63);
+    
+    RedFlag().movable := 1;
+    BlueFlag().movable := 1;    
+
+    if(GetCtfTeam(flag) == "blue")
+        if(!MoveItemToContainer(BlueFlag(), who.backpack))
+            syslog("Nie mozna zabrac flagi druzyny niebieskiej.");
+        endif
+    else
+        if(!MoveItemToContainer(RedFlag(), who.backpack))
+            syslog("Nie mozna zabrac flagi druzyny czerwonej.");
+        endif
+    endif
+
+    RedFlag().movable := 0;
+    BlueFlag().movable := 0;    
+    var i := 0;
+    
+    Detach();
+    while(flag.container == who.backpack)
+        PrintTextAbove(who, "ma flage " + GetCtfTeam(flag),3,40);
+        if(GetCtfTeam(flag) != GetCtfTeam(who))
+            if(flag.container != who.backpack)
+                break;
+            endif
+            if(!who.connected)
+                LostFlag(who);
+                break;
+            endif
+        endif
+        i := i + 1;
+        sleep(1);
+    endwhile
+    
+
+endfunction
+
+function ReturnFlag(who, flag)
+    var coords := BaseTileXYZ(flag);
+
+    if(flag.x != Cint(coords[1]) || flag.y != Cint(coords[2]) || flag.z != Cint(coords[3]))
+        flag.movable := 1;
+        MoveObjectToBase(flag);
+        MsgToCtfPlayers(who.name + " zwrocil flage swojej druzyny do bazy!",40);
+        flag.movable := 0;
+    endif
+endfunction
+
+function LostFlag(who)
+    foreach flag in EnumerateItemsInContainer(who)
+        if(flag.objtype == 0x7034)
+            flag.movable := 1;
+            if(MoveObjectToLocation(flag, who.x, who.y, who.z, _DEFAULT_REALM, 4))
+                MsgToCtfPlayers(who.name + " stracil flage druzyny " + GetCtfTeam(flag) + "! Zwroccie ja do bazy!",40);
+            endif
+            flag.movable := 0;            
+        endif
+    endforeach
+endfunction

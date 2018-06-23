@@ -1,0 +1,18 @@
+// crash
+
+use uo;
+use basic;
+
+include "include/poisons";
+
+program CmdCurePoison(who, amount)
+	amount := CInt(amount);
+	if ( !amount )
+		SendSysMessage(who, "Uzycie: .curepoison <ilosc>");
+	endif
+	SendSysMessage(who, "Kogo chcesz uleczyc?");
+	var targ := target(who);
+	if ( targ )
+		CurePoison(targ, amount);
+	endif
+endprogram

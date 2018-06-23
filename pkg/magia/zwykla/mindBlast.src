@@ -1,0 +1,62 @@
+// crash
+
+use vitals;
+use basicio;
+use cfgfile;
+use math;
+use uo;
+use basic;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_mind_blast( parms )
+  var circle := 5;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 37);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var my_int := CInt(GetBaseIntelligence(caster));
+  var his_int := CInt(GetBaseIntelligence(cast_on));
+  if(GetObjProperty(cast_on, "LastHit")[2] != caster.serial)
+  SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "mind blast" });
+  endif
+    var modif := my_int - (his_int*2);
+  if(his_int > my_int)
+    modif := (his_int*2) - my_int;
+	cast_on := caster;
+  elseif(his_int == my_int)
+	return;
+  endif
+  if(modif > 30)
+    modif:= 30;
+  endif
+  if(Reflected(cast_on))
+    cast_on := caster;
+  endif
+  PlaySoundEffect(cast_on, SFX_SPELL_MIND_BLAST);
+  PlayObjectCenteredEffect(cast_on, FX_CURSE_EFFECT, 7,0x10);
+  var dmg := modif;
+  var diff := dmg;
+  // absorbcja
+  var cfg := ReadConfigFile("::npcdesc");
+  var odbij := cfg[cast_on.npctemplate].Resuje;
+  if(odbij == "umysl")
+    diff := diff / 2;
+    PrintTextAbove(cast_on, "*absorbuje energie*");
+  endif
+// koniec absorbcji
+
+	if(IsNoob(caster) || IsNoob(cast_on))
+		return 0;
+	endif
+	if(!CheckAttack(caster, cast_on))
+		return 0;
+	endif
+  ApplyRawDamage(cast_on, diff);
+
+endprogram

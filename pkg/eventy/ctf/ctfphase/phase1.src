@@ -1,0 +1,56 @@
+////////////////////////////////////////////////////
+//     CTF v1.0 faza 1 - tworzenie portalu        //
+////////////////////////////////////////////////////
+
+use os;
+use uo;
+
+include ":ctf:ctf";
+include "include/frakcja";
+
+program Phase1()
+    
+    var i := 5;
+
+    Detach();
+    SetGlobalProperty("#zakazwalk", 1);
+    repeat
+        BroadCast("Portale na ctf otworza sie za " + i + " minut w miastach glownych.",3,89);
+        i := i - 1;
+        sleep(60);
+    until(i <= 0);
+
+    foreach smieci in ListItemsAtLocation(FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, _DEFAULT_REALM)
+        DestroyItem(smieci);
+    endforeach
+    
+    foreach smieci in ListItemsAtLocation(FRAKCJA_2_X, FRAKCJA_2_Y, FRAKCJA_2_Z, _DEFAULT_REALM)
+        DestroyItem(smieci);
+    endforeach
+    
+    var portal := CreateItemAtLocation( FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, 0x7031, 1, _DEFAULT_REALM );
+    var portal2 := CreateItemAtLocation( FRAKCJA_2_X, FRAKCJA_2_Y, FRAKCJA_2_Z, 0x7031, 1, _DEFAULT_REALM );
+    
+    if(portal && portal2)
+        SetObjProperty(CtfStone(), "CtfRounds", GetRounds()); // nadaje ilosc rund CTF
+        SetObjProperty(CtfStone(), "CtfContestants", 0); // nadaje ilosc uczestnikow poczatkowych
+        BroadCast("Portale na Capture The Flag otwarte! Zamknie sie samoczynnie za dwie minuty i nie bedzie mozliwosci uczestnictwa.",3,89);
+        sleep(120);
+        BroadCast("Portale na Capture The Flag zamkniete!",3,89);
+        DestroyItem(portal);
+        DestroyItem(portal2);
+        EraseGlobalProperty("#zakazwalk");
+            sleep(5);
+            var uczestnicy := Cint(GetObjProperty(CtfStone(), "CtfContestants"));
+            if(uczestnicy < 4)
+                BroadCast("Na CTFie nikt sie nie pojawil albo za malo osob. Anulowano rozgrywki.",3,89);
+                StoneSay("LoL! :(");
+                return 0;
+            endif
+            sleep(5);    
+            start_script(":ctf:ctfphase/phase2");
+    else
+        StoneSay("Blad! Nie moge utworzyc portalu kurwa! :(");
+    endif
+    
+endprogram

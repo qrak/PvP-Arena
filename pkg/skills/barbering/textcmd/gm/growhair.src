@@ -1,0 +1,12 @@
+
+
+use uo;
+
+include "include/client";
+include "hair";
+
+program grow(me)
+	Sendsysmessage( me , "Komu dzis wlosy urosna?" );
+	var who := Target( me , "" );
+	makehairgrow(who);
+endprogram

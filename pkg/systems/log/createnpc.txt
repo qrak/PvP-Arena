@@ -1,0 +1,675 @@
+[CREATENPC] osoba z konta: admin stworzyla NPC: Kelnerka wspolrzedne (X/Y/Z): 2510 560 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: kon wspolrzedne (X/Y/Z): 5854 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Kelnerka wspolrzedne (X/Y/Z): 2509 560 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Kelnerka wspolrzedne (X/Y/Z): 2509 560 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Kelnerka wspolrzedne (X/Y/Z): 2562 482 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: wielki lodowy wonsz wspolrzedne (X/Y/Z): 5287 1170 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Straznik Smierci wspolrzedne (X/Y/Z): 5223 1746 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5855 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: kon wspolrzedne (X/Y/Z): 5850 1169 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: skurwol wspolrzedne (X/Y/Z): 5851 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5850 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5862 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3755 1212 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3787 1229 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3801 1258 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3796 1262 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3800 1263 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3780 1287 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3767 1307 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3754 1282 2
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3725 1278 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3755 1243 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5906 24 44
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5852 1160 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: gargulec ruchacz wspolrzedne (X/Y/Z): 5862 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: pustynny dinozaur wspolrzedne (X/Y/Z): 5863 1158 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: <gwyrm> wspolrzedne (X/Y/Z): 5864 1152 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: <dragon> wspolrzedne (X/Y/Z): 5866 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: pederastozaur wspolrzedne (X/Y/Z): 2505 4022 3
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3795 1262 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3801 1256 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3801 1263 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5822 525 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5731 918 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5772 928 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5730 878 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5831 364 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5674 321 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 5815 579 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5834 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5849 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5846 1164 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5846 1166 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5472 1853 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5460 1854 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Krwawa lama wspolrzedne (X/Y/Z): 5854 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Krwawa lama wspolrzedne (X/Y/Z): 5857 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Radioaktywna lama wspolrzedne (X/Y/Z): 5855 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5825 535 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5730 924 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 3755 1294 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 3786 1291 1
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 3784 1237 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 3788 1183 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 3754 1176 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3763 1150 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3789 1157 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3682 1124 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3675 1089 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 3658 1129 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 3692 1118 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5833 338 1
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 1927 864 -1
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5502 220 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5225 46 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5257 85 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5267 24 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5540 201 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5594 171 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5605 212 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5517 215 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5501 218 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5506 220 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5561 171 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5516 215 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 1473 1644 20
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 1455 1655 10
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5831 358 -1
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 1815 2820 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5855 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 2503 555 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5548 1808 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5547 1809 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: zywiol krwi wspolrzedne (X/Y/Z): 5839 1146 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: zywiol krwi wspolrzedne (X/Y/Z): 5851 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5256 21 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5260 25 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5263 27 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5234 51 25
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5238 49 25
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5240 45 25
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5234 44 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5231 40 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5256 25 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5244 44 31
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5259 28 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5235 38 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5249 27 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 5236 34 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5238 35 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5241 38 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5236 39 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5251 26 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Balron wspolrzedne (X/Y/Z): 5579 1901 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5658 557 20
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5719 559 20
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5731 558 20
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5854 1160 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5853 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5691 568 25
+[CREATENPC] osoba z konta: kan stworzyla NPC: ognista szkapa wspolrzedne (X/Y/Z): 5467 1819 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: ognista szkapa wspolrzedne (X/Y/Z): 3643 2537 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5855 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5857 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5814 361 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5855 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5854 1164 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5856 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5857 1167 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5851 1162 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5855 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5854 1157 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5848 1157 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5858 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5857 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5856 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5858 1160 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5865 1162 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: ognista szkapa wspolrzedne (X/Y/Z): 5854 1164 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: kon wspolrzedne (X/Y/Z): 2560 621 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zaglady wspolrzedne (X/Y/Z): 5214 25 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3787 1180 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 3789 1153 20
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5866 1168 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5859 1171 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5855 1169 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5862 1152 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5847 1124 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5892 1169 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: zywiolak krysztalu wspolrzedne (X/Y/Z): 5858 1162 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: zywiolak krysztalu wspolrzedne (X/Y/Z): 2571 484 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: zywiolak krysztalu wspolrzedne (X/Y/Z): 2572 483 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 5855 1165 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: zywiolak krysztalu wspolrzedne (X/Y/Z): 2570 481 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5579 632 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 2923 3410 5
+[CREATENPC] osoba z konta: kan stworzyla NPC: Minax wspolrzedne (X/Y/Z): 5678 1415 73
+[CREATENPC] osoba z konta: kan stworzyla NPC: opancerzony bagienny smok wspolrzedne (X/Y/Z): 5713 1414 42
+[CREATENPC] osoba z konta: kan stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 5826 1498 -3
+[CREATENPC] osoba z konta: kan stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 5836 1497 1
+[CREATENPC] osoba z konta: kan stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 5834 1501 -3
+[CREATENPC] osoba z konta: kan stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 5826 1500 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: piekielny Ogar wspolrzedne (X/Y/Z): 5829 1500 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5851 1166 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: opancerzony koszmar wspolrzedne (X/Y/Z): 5854 1165 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: sfinks wspolrzedne (X/Y/Z): 5855 1166 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5853 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: ognista szkapa wspolrzedne (X/Y/Z): 5859 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5661 571 20
+[CREATENPC] osoba z konta: admin stworzyla NPC: sfinks wspolrzedne (X/Y/Z): 5858 1160 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5852 1166 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: ognista szkapa wspolrzedne (X/Y/Z): 5865 1175 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: ognista szkapa wspolrzedne (X/Y/Z): 5869 1170 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5859 1173 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5863 1176 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5865 1169 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5868 1166 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5867 1173 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5868 1172 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5856 1171 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5869 1168 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5864 1178 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5864 1178 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5851 1177 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5859 1175 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 5850 1176 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5848 1177 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: widmowy wielki zuk wspolrzedne (X/Y/Z): 5834 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5504 1810 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 5852 1166 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: GorX - Champion wspolrzedne (X/Y/Z): 5852 1161 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5857 1167 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1163 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5852 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 3684 1303 20
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 3683 1253 20
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 5330 1616 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 5345 1631 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 5366 1614 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5865 1162 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5866 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5864 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5866 1165 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5864 1165 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5862 1165 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5863 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5864 1165 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5864 1165 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5865 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5864 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5862 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5864 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5863 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5867 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5861 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5861 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: kon wspolrzedne (X/Y/Z): 5861 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: kon wspolrzedne (X/Y/Z): 5863 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5920 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1154 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1154 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1154 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5920 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5919 1157 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5922 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5922 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1157 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5920 1157 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5923 1155 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5923 1156 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5922 1157 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5921 1158 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5920 1158 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5835 1104 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5836 1106 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5835 1107 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5833 1108 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5839 1106 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5838 1107 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5836 1108 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5834 1109 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5835 1109 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5837 1102 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5838 1102 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5839 1102 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5839 1102 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5837 1102 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5836 1103 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5836 1103 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5836 1103 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5833 1104 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5831 1108 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5831 1108 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5831 1109 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5832 1109 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5811 1121 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5809 1122 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5810 1123 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5811 1122 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5808 1123 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5808 1124 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5809 1124 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5811 1124 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5810 1125 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5812 1122 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5812 1123 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5812 1114 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5812 1115 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5813 1115 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5814 1115 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5806 1122 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5806 1123 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5806 1124 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5807 1125 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5807 1122 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5807 1123 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5808 1124 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5808 1125 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1160 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1162 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5861 1162 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5858 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5858 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5859 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5861 1159 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5861 1160 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5862 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5861 1162 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5860 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5859 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5862 1157 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5901 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5901 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5901 1169 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5902 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5902 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5903 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5903 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5902 1169 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5903 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5901 1170 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5903 1169 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5902 1170 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5900 1171 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5901 1171 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5903 1170 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1169 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5902 1171 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1167 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1168 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1169 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1170 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5903 1171 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: kon wspolrzedne (X/Y/Z): 5901 1166 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5884 1137 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5882 1139 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5876 1130 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5868 1120 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5862 1111 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5861 1112 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1112 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5857 1105 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5858 1108 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5854 1105 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5852 1105 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5851 1102 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5849 1100 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5841 1091 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5825 1074 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5836 1057 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5835 1058 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5831 1060 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5829 1051 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5840 1037 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5855 1036 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5868 1033 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5877 1036 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5875 1141 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5900 1115 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5920 1094 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5939 1075 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5959 1051 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5960 1051 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5959 1052 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5980 1031 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5995 1015 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6012 996 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6020 1004 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6037 986 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6038 987 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6052 1000 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6071 979 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6092 951 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6112 929 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6131 907 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6114 889 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6099 870 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6099 868 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6086 855 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6077 838 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6063 822 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5873 1145 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5886 1133 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5885 1133 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1113 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1114 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1113 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1114 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1113 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5906 1095 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5905 1093 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5921 1076 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5920 1075 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5921 1075 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5922 1073 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5922 1070 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5915 1067 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5914 1066 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5915 1066 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5914 1066 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5914 1066 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5930 1048 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5928 1047 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5931 1045 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5930 1047 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5954 1030 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5953 1031 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5953 1031 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5953 1032 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5972 1011 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5972 1011 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5972 1011 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5972 1011 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5992 991 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5993 991 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5992 991 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6008 972 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6008 972 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6022 963 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6029 956 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6045 938 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6045 938 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6045 938 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6044 937 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6045 938 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6064 925 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6064 926 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6064 926 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6080 909 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6092 895 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 881 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 866 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6120 866 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 866 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 866 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 866 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 5161 106 5
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 5213 23 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 5212 25 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5853 1165 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1158 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1158 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1159 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5877 1140 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5878 1139 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5876 1141 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5876 1140 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5899 1118 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5917 1099 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5914 1097 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5917 1097 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5918 1096 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5933 1072 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5933 1071 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5933 1071 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5932 1071 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5953 1049 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5953 1049 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5952 1049 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5952 1050 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5964 1034 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5976 1021 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5974 1021 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5976 1021 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5995 999 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5994 999 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5994 999 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6019 978 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6038 959 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6038 959 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6037 959 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6065 931 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6075 922 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6076 920 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6075 922 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6092 905 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6093 903 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6090 905 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6106 890 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6105 891 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6116 871 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6109 878 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 878 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 877 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5857 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5857 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5857 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5856 1161 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5868 1149 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5867 1151 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5886 1131 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5887 1131 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5886 1131 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5887 1131 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5904 1112 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5866 1152 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5856 1164 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5887 1145 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5857 1160 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 5859 1162 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 5855 1164 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: koszmar wspolrzedne (X/Y/Z): 5857 1162 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5854 1159 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> - lord ogrow wspolrzedne (X/Y/Z): 5860 1160 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: kon wspolrzedne (X/Y/Z): 5852 1164 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5786 1173 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: lama wspolrzedne (X/Y/Z): 5851 1159 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5856 1163 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5860 1158 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5907 1128 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5908 1126 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5909 1127 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 5908 1128 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5910 1127 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5908 1129 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5909 1128 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5910 1128 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 5909 1129 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6106 3057 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3056 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 3055 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3057 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 3057 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6109 3056 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6109 3058 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3059 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 3058 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6110 3056 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6110 3057 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6105 3059 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6106 3060 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 3059 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6109 3059 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: kon wspolrzedne (X/Y/Z): 6109 3053 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6115 3050 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: kon wspolrzedne (X/Y/Z): 6117 3049 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6116 3050 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3035 26
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3036 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6106 3036 26
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6106 3037 26
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3037 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3036 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 3036 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6108 3037 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6107 3038 25
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6108 3037 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6108 3032 23
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6117 3057 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6118 3056 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6118 3058 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6119 3056 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6116 3058 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6116 3059 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6117 3059 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6120 3058 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6120 3056 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6119 3058 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6118 3060 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6119 3059 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6117 3061 18
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6115 3061 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6120 3057 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6121 3057 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6121 3055 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6122 3055 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6114 3058 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6119 3061 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6118 3055 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6114 3050 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6114 3051 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6115 3054 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6114 3051 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6116 3052 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6114 3053 18
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6121 3048 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 3048 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 3050 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6124 3049 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6123 3050 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6125 3048 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6126 3049 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6125 3050 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6124 3051 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6122 3052 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6123 3052 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6125 3052 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6126 3051 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6126 3050 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6118 3055 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6115 3046 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6117 3040 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6118 3040 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Zla wspolrzedne (X/Y/Z): 6118 3041 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6114 3051 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6115 3051 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6115 3052 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6116 3052 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6124 3038 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6095 3056 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6095 3056 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6122 3039 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6008 2894 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6009 2893 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6009 2895 18
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6010 2894 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6011 2893 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6011 2895 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6010 2896 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6012 2894 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6013 2893 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6009 2896 18
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6013 2891 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6007 2896 12
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6008 2897 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6009 2897 17
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6010 2897 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6011 2896 13
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6012 2895 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6014 2895 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6014 2893 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6013 2897 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6009 2898 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6005 2892 16
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6008 2889 14
+[CREATENPC] osoba z konta: kan stworzyla NPC: Straznik Piekla wspolrzedne (X/Y/Z): 6009 2888 15
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6011 2892 15
+[CREATENPC] osoba z konta: fromasz stworzyla NPC: qrak wspolrzedne (X/Y/Z): 5854 1159 0
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2984 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2983 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2985 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2984 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2983 31
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2984 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2985 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6073 2986 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2986 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2986 32
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2985 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2986 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2986 32
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2987 33
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2987 33
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2988 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2987 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2988 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6073 2988 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2988 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2989 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2989 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2989 31
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6077 2985 32
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6079 2979 31
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6079 2979 31
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6082 2981 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6082 2979 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6079 2977 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2984 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6077 2983 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6076 2984 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6077 2984 32
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6078 2983 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6072 2983 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6073 2983 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6073 2984 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2984 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6072 2985 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6074 2985 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6074 2976 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2981 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2979 31
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6072 2980 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6075 2978 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6072 2979 33
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6073 2980 33
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6071 2977 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6073 2973 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: trzy glowy potwor wspolrzedne (X/Y/Z): 6076 2975 32
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6077 2972 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6074 2973 28
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6066 2971 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6068 2970 29
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6065 2976 32
+[CREATENPC] osoba z konta: kan stworzyla NPC: 69 Exodus - Champion wspolrzedne (X/Y/Z): 6068 2969 27
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6069 2971 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: IxodyniX - Champion wspolrzedne (X/Y/Z): 6067 2975 30
+[CREATENPC] osoba z konta: kan stworzyla NPC: duzy smok wspolrzedne (X/Y/Z): 6069 2973 30
+[CREATENPC] osoba z konta: admin stworzyla NPC: <random> wspolrzedne (X/Y/Z): 5853 1167 0
+[CREATENPC] osoba z konta: admin stworzyla NPC: Exodus Niszczyciel wspolrzedne (X/Y/Z): 5855 1167 0

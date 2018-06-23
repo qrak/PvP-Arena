@@ -1,0 +1,23 @@
+use uo;
+use basic;
+
+include "include/client";
+
+program color(who, param)
+
+   var suck := SplitWords(param);
+   var kolor := Cint(suck[1]);
+
+if(!kolor)
+	SendSysMessage(who, "Uzycie: .color numer");
+	return;
+endif
+
+sendsysmessage(who, "Wybierz cel.",3,66);
+
+ var tgt := Target( who, TGTOPT_NOCHECK_LOS );
+
+ tgt.color := kolor;
+  
+
+endprogram

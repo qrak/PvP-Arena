@@ -1,0 +1,30 @@
+include ":spells:summon";
+include "include/spellRestrictions";
+
+
+program chrcast_sfamiliar( parms )
+	var circle := 8;
+	var delivery := "notarget";
+	var noto := "neutral";
+	var result := maincast(parms, delivery, circle, noto, 112);
+	if(result == 0)
+		return;
+	endif
+	var caster := result[1];
+	var familiar :=systemfindobjectbyserial(Cint(getobjproperty(caster, "familiar")));
+	if(familiar)
+		MoveObjectToLocation(familiar,10,10,10, familiar.realm,MOVEOBJECT_FORCELOCATION);
+		ApplyRawDamage(familiar, GetHp(familiar) + 10);
+		eraseobjproperty(caster, "familiar");
+	endif
+	var wisp := Createnpcfromtemplate("shadowwisp", caster.x, caster.y, caster.z, 0, caster.realm);
+	playsoundeffect(wisp, 534);
+	wisp.setmaster(caster);
+	setobjproperty(wisp, "master", caster.serial);
+	SetObjProperty(wisp, "summoned",1);
+	setobjproperty(wisp, "familiar", 1);
+	setobjproperty(wisp, "shadowwisp", 1);
+	setobjproperty(caster, "familiar", wisp.serial);
+	wisp.script:= "familiar";
+	restartscript(wisp);
+endprogram

@@ -1,0 +1,16 @@
+//skrzynia
+//fromasz
+
+use uo;
+
+program skrzynia(who, item)
+
+    BroadCast(+ who.name + " znalazl skrzynie z kluczem. Lecie uwolnic ksiezniczke",3,89);
+
+    CreateItemInBackpack(who, 0xeef, 15000); //nagroda za znalezienie klucza
+    CreateItemInBackpack(who, 0xaa3,1); //twozrenie klucza u osoby ktora znalazla skrzynie
+    SendSysMessage(who, "Klucz oraz nagroda za znalezienie skrzyni znalazly sie w twoim plecaku",3,63);
+
+    DestroyItem(item);
+   
+endprogram

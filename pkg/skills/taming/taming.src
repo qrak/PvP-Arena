@@ -1,0 +1,138 @@
+use basicio;
+use os;
+use basic;
+use cfgfile;
+use math;
+use uo;
+
+include "include/eventID";
+include "include/attributes";
+include "include/others";
+include "include/client";
+include "../../systems/spawnregion/spawnregion";
+
+program tame( who )
+	if(IsBusy(who, 0, 0))
+		return 0;
+	endif
+	SetBusyTime(who, GetSkillDelay(SKILLID_TAMING));
+	if(who.hidden)
+		who.hidden := 0;
+	endif
+	SendSysMessage( who, "Co chcesz oswoic?",3,66 );
+	var thecreature := Target(who);
+	if(!thecreature)
+		SendSysMessage(who, "Anulowano.",3,40);
+		return 0;
+	endif
+	if(!CheckLineOfSight(who, thecreature))
+		SendSysMessage(who, "Nie widzisz tego.",3,40);
+		return 0;
+	endif
+	if(Distance(who,thecreature) > 8)
+		SendSysMessage(who, "Musisz podejsc blizej.",3,40);
+		return ; 
+	endif
+
+	if (thecreature.script == "tamed")
+		SendSysMessage(who, "To juz jest oswojone.",3,40);
+		return 0;
+	endif
+	if(NumTamed(who, thecreature) > 2 )
+		SendSysMessage(who, "Nie mozesz oswoic wiecej stworzen.",3,40);
+		return 0;
+	endif
+	var cfg := ReadConfigFile("::npcdesc");
+	var tameskill := Cint(cfg[thecreature.npctemplate].tameskill);
+	if(!tameskill)
+		SendSysMessage(who, "Tego sie nie da oswoic.",3,40);
+		return 0;
+	endif
+	var hardness := Cint(GetObjProperty(thecreature, "ciezkosc"));
+	if(!hardness)
+		hardness := 0;
+		SetObjProperty(thecreature, "ciezkosc", hardness);
+	endif
+	var stat, nazwa;
+	var magery := GetEffectiveSkill(who, SKILLID_MAGERY);
+	var sword := GetEffectiveSkill(who, SKILLID_SWORDSMANSHIP);
+	var arch := GetEffectiveSkill(who, SKILLID_ARCHERY);
+	if(magery > 30)
+		stat := Cint(GetBaseIntelligence(who));
+		nazwa := "inteligencji";
+	elseif(sword > 30 || arch > 30)
+		stat := Cint(GetBaseDexterity(who));
+		nazwa := "zrecznosci";
+	endif
+	if(Cint(stat) < tameskill + hardness)
+		SendSysMessage(who, "Za malo " + nazwa + " aby oswoic to stworzenie. Twoja wartosc oswajania wynosi " + Cint(stat/1.3) + ". Potrzeba " + (tameskill + hardness) +".",3,40);
+		return 0;
+	endif
+	var critterhp := GetHp(thecreature);
+	var counter := 0;
+	sleep(1);
+	while(counter < 4)
+		if(who.dead)
+			break;
+		else
+			critterhp := GetHp(thecreature);
+			case(counter)
+				0: PrintTextAbove(who, "Ale zajebisty " + thecreature.name + "!");
+				1: PrintTextAbove(who, "Zawsze chcialem miec takiego " + thecreature.name + " jak ty.");
+				2: PrintTextAbove(who, thecreature.name + ", zostaniesz moim przyjacielem?");
+				3: PrintTextAbove(who, "Nie skrzywdze cie.");
+			endcase
+			counter := counter + 1;
+			sleep(3);
+			if(GetHp(thecreature) < critterhp/2)
+				SendSysMessage(who,"To zwierze jest zbyt zdenerwowane aby nadal oswajac.",3,40);
+				return 0;
+			endif
+			if(Distance(who,thecreature) > 8)
+				SendSysMessage(who, "Oddaliles sie.",3,40);
+				return 0;
+			endif
+		endif
+	endwhile
+	if(who.dead)
+		SendSysMessage(who, "Nie mozesz oswajac bedac trupem.", 3, 40);
+		return 0;
+	endif
+	if(thecreature.script == "tamed")
+		SendSysMessage(who, "To zwierze jest juz oswojone.",3,40);
+		return 0;
+	endif
+	SendSysMessage(who, "Udalo ci sie oswoic " + thecreature.name,3,66);
+	Run_Script_To_Completion(":spawnregion:death", thecreature);
+	var tamed := GetObjProperty(who, "TamedPets");
+	if ( !tamed )
+		tamed := array;
+	endif
+	tamed.append(thecreature.serial);
+	SetObjProperty(who, "TamedPets", tamed);
+	SetObjProperty (thecreature, "master", who.serial);
+	thecreature.script := "tamed";
+	RestartScript(thecreature);
+endprogram
+
+function NumTamed(who, targ)
+	var num_tamed := 0;
+	var tamed := GetObjProperty(who, "TamedPets");
+	if ( !tamed )
+		return 0;
+	endif
+	
+	foreach serial in tamed
+		var pet := SystemFindObjectBySerial(serial);
+		if ( pet.master == who )
+			num_tamed := num_tamed+1;
+		elseif ( !pet || pet.master !=who )
+			tamed.erase(_serial_iter);
+			SetObjProperty(who, "TamedPets", tamed);
+		endif
+		sleepms(2);
+	endforeach
+		
+	return num_tamed;
+endfunction
+

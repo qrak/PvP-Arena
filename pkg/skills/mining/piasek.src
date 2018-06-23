@@ -1,0 +1,121 @@
+use attributes;
+use os;
+use basic;
+use uo;
+
+include "include/attributes";
+include "include/client";
+include "include/dist";
+include "include/objtype";
+
+const GROUP_SAND := 2;
+var mining_type := 0;
+
+program piasek(character, item)
+
+SendSysmessage (character, "Wybierz miejsce gdzie chcesz kopac piasek.", FONT_NORMAL, COLOR_GREEN);
+
+var mining_loc := TargetCoordinates (character);
+if (!mining_loc)
+SendSysMessage (character, "Anulowano.",3,33);
+return;
+endif
+
+var distt := coordist (character.x, character.y, mining_loc.x, mining_loc.y );
+
+	if ( distt > 2 )
+		SendSysmessage (character, "Za daleko.",3,33);
+		return;
+	endif
+
+
+
+
+var info := GetMapInfo (mining_loc.x , mining_loc.y);
+	if ( IsSandTile (info.landtile) )
+	mining_type := GROUP_SAND;
+             else
+             SendSysMessage (character, "To nie piasek.",3,33);
+             return;
+             endif
+
+var bonus := Cint(GetObjProperty(item, "exp"));
+if(!bonus || bonus.errortext)
+bonus := 1;
+endif
+
+case (mining_type)
+
+			GROUP_SAND:
+				if (DigForSand (character, mining_loc, info, bonus))
+					return;
+				endif
+                           default:
+                           SendSysMessage (character, "To nie piasek.",3,33);
+                           return;
+endcase
+
+
+endprogram
+
+function IsSandTile (theobj)
+
+	if (theobj >= 0x0016 and theobj <=  0x004b)
+		return 1;
+	elseif (theobj >= 0x011e and theobj <= 0x012d)
+		return 1;
+	elseif (theobj >= 0x0192 and theobj <= 0x01ab)
+		return 1;
+	elseif (theobj >= 0x01b9 and theobj <= 0x01d1)
+		return 1;
+	elseif (theobj >= 0x0282 and theobj <= 0x0291)
+		return 1;
+	elseif (theobj >= 0x03b7 and theobj <= 0x03ca)
+		return 1;
+	elseif (theobj >= 0x064b and theobj <= 0x0672)
+		return 1;
+	else
+		return 0;
+	endif
+
+endfunction
+
+function DigForSand (character, use_on, info, bonus)
+	var tdiff := GetHarvestDifficulty ( "sand", use_on.x , use_on.y , info.landtile );
+	if( !tdiff )
+		SendSysMessage (character, "Nie ma tu wiecej piasku.", 3,33);
+		return 1;
+	endif
+
+	for i := 1 to 5
+		PerformAction (character, 0x0b);
+		sleepms (1500);
+		PlaySoundEffect (character, 0x126);
+	endfor
+
+
+var gain := Cint(GetEffectiveSkill(character, SKILLID_MINING)/2)+CINT(bonus*2);
+
+	if ( CheckSkill (character, SKILLID_MINING, tdiff, gain ) )
+		var check_amt := HarvestResource ( "sand", use_on.x, use_on.y, 2, 2);
+		if (!check_amt)
+			SendSysMessage (character, "Nie ma tu wiecej piasku.",3,33);
+			return 1;
+		endif
+                var miningskil := ((GetEffectiveSkill(character, SKILLID_MINING)/20)+1);
+		var amount := bonus+(miningskil/2);
+
+                var thesand := CreateItemInContainer(character.backpack, UOBJ_SAND, amount);
+		if (!thesand)
+			SendSysMessage(character, "Twoj plecak jest pelny.",3,33);
+			return 1;
+		else
+			thesand.movable := 1;
+			SendSysMessage(character, "Wlozyles " + amount + " piasku do plecaka",3,COLOR_GREEN);
+		endif
+	endif
+
+	return 0;
+
+endfunction
+

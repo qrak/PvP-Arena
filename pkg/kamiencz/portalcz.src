@@ -1,0 +1,17 @@
+use os;
+use uo;
+
+
+
+program portalcz(who)
+	
+var friends := GetObjProperty(who, friends);
+	
+if(!GetObjProperty(who, "friends"))
+SendSysMessage(who,"Ty to wypierdalaj",32,67);
+else
+MoveObjectToLocation(who, 5871, 1099, 0 );
+endif	
+return 1;
+	
+endprogram

@@ -1,0 +1,34 @@
+// crash
+
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+
+
+program cast_AGILITY( parms )
+  var circle := 2;
+  var delivery := "direct";
+  var noto := "helpful";
+  var id := 9;
+  var result := maincast(parms, delivery, circle, noto, id);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  PlaySoundEffect(caster, 0x1e8);
+  PlayObjectCenteredEffect(caster, 0x373a, 7,7);
+  var int := GetBaseIntelligence(caster);
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var eval := GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var medit := GetEffectiveSkill(caster, SKILLID_MEDITATION);
+  var mod_amount := Cint(int/4);
+  if(mod_amount < 12)
+    mod_amount := 12;
+  endif
+  var duration := CInt(int + magery + eval + medit);
+  if(CanMod(cast_on, "dex"))
+    DoTempMod(cast_on, "dex", mod_amount, duration);
+  endif
+endprogram

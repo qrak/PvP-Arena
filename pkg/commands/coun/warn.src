@@ -1,0 +1,30 @@
+use os;
+use uo;
+
+include "include/client";
+
+program textcmd_warn(who)
+	var kogo := Target(who);
+	if(!kogo)
+		SendSysMessage(who, "Anulowano.");
+	endif
+	PlayLightningBoltEffect(kogo);
+	PlaySoundEffect( kogo, 0x0207 );
+        sleepms(500);
+       	PlayLightningBoltEffect(kogo);
+	PlaySoundEffect( kogo, 0x0207 );
+        sleepms(500);
+      	PlayLightningBoltEffect(kogo);
+	PlaySoundEffect( kogo, 0x0207 );
+	SendSysMessage( kogo, "Bogowie sa bardzo wkurwieni Twoim zachowaniem !!! Przepros!",3,40 );
+	SendSysMessage(who, kogo.name + " zostal ostrzezony.",3,40 );
+	PlayLightningBoltEffect(kogo);
+	PlaySoundEffect( kogo, 0x0029 );
+        sleepms(500);
+      	PlayLightningBoltEffect(kogo);
+	PlaySoundEffect( kogo, 0x0207 );
+          sleepms(500);
+      	PlayLightningBoltEffect(kogo);
+	PlaySoundEffect( kogo, 0x0207 );
+
+endprogram

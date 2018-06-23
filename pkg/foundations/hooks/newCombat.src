@@ -1,0 +1,75 @@
+use uo;
+use os;
+use util;
+
+include "include/skillpoints";
+include "include/random";
+include "include/nopvp";
+include "include/gaincheck";
+
+
+var itcfg  := ReadConfigFile(":*:itemdesc");
+
+program shilcombat()
+return 0;
+	print( "Using ShilcombatAdvancement..." );
+	return 1;
+
+endprogram
+
+
+exported function ShilCombatAdvancement( attacker, weapon, defender )
+
+	if(IsNoob(attacker) || IsNoob(defender))
+		return 0;
+	endif
+	if(defender.enabled("invul"))
+		return 0;
+	endif
+	if(!CanSkillGain(defender))
+		return 0;
+	endif
+	if(!attacker.npctemplate)
+		var base_str	:= GetBaseStrength(attacker);
+		var base_dex	:= GetBaseDexterity(attacker);
+		var base_int	:= GetBaseIntelligence(attacker);
+		var stattotal := CInt(base_str + base_dex + base_int);
+		if(stattotal >= CheckStatcap(attacker))
+			return 0;
+		endif
+	endif
+	var bonuspoints := 0;
+	var dmg := itcfg[attacker.weapon.objtype].Damage;
+	if(defender.npctemplate)
+		bonuspoints := Cint((((RandomDiceRoll(dmg) * attacker.weapon.hp) / attacker.weapon.maxhp) * attacker.weapon.quality) + attacker.weapon.dmg_mod);
+	else
+		bonuspoints := -50;
+	endif
+
+	if( weapon )
+		AwardStatPoints( attacker, 43, bonuspoints);
+		//AwardSkillPoints( attacker, FindSkillidByIdentifier(weapon.attribute), 20 );
+		//FindSkillidByIdentifier(weapon.Attribute)
+		//print("weapon skill for " + weapon.desc + " is " + Cstr(weapon.Attribute));
+	else
+		AwardStatPoints( attacker, 43, bonuspoints );
+		//AwardSkillPoints( attacker, 43, 20 );
+	endif
+
+
+endfunction
+
+function FindSkillidByIdentifier(skid)
+  var retval;
+  case(skid)
+    "Wrestling": retval := SKILLID_WRESTLING;
+    "Fencing":   retval := SKILLID_FENCING;
+    "Swords":    retval := SKILLID_SWORDSMANSHIP;
+    "Swordsmanship":    retval := SKILLID_SWORDSMANSHIP;
+    "Mace":      retval := SKILLID_MACEFIGHTING;
+    "Macefighting":      retval := SKILLID_MACEFIGHTING;
+    "Archery":    retval := SKILLID_ARCHERY;
+    "Tactics":    retval := SKILLID_TACTICS;
+  endcase 
+  return retval;
+endfunction

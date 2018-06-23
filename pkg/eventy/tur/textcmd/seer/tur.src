@@ -1,0 +1,82 @@
+/*
+System turniejowy stworzony przez Fromasza na
+potrzeby shardu PvP Arena. Skrypt wykonuje nastepuajce rzeczy:
+- Rozpoczynaa proces otwierania portalu
+- Losuje graczy z poczekalni 1 i 2
+- Odlicza graczom
+- Przenosi cialo oraz zwyciezcow i pzregranych do odpowiednich pomieszczen. Po zakonczeniu walki
+- Rozdaje nagrody wygranym.
+*/
+
+use uo;
+use os;
+use file;
+
+include ":tur:turniej";
+include "include/attributes";
+include ":gumps:gumps";
+
+
+
+program turniej(who)
+
+BuildGump(who);
+
+endprogram
+
+function BuildGump(who)
+
+	GFInitGump(80,80);
+	GFNoDispose();
+	GFPage(0);
+	GFResizePic(0,20, 2520,510,410);
+	GFResizePic(28,54, 3600,454,340);
+	GFGumpPic(340, 70, 5547);
+	GFGumpPic(250, 100, 5551);
+	GFGumpPic(320, 150, 5569);
+	GFTextLine(170,30,40, "Turniej PvP");
+	GFTextLine(45,70,550,"Otworz portal");
+	GFTextLine(45,90,550,"Losuj graczy z poczekalni1");
+	GFTextLine(45,110,550,"Losuj graczy z poczekalni2");
+	GFTextLine(45,130,550,"Odlicz");
+	GFTextLine(45,150,550,"Po walce 1");
+	GFTextLine(45,170,550,"Po walce 2");
+ 	GFTextLine(45,190,550,"Daj nagrody");
+ 	GFTextLine(45,210,550,"Wyjscie");
+
+
+	var portal := GFButtonID(200, 70, 1209, 1210, 1);
+	var l1 := GFButtonID(200, 90, 1209, 1210, 98);
+	var l2 := GFButtonID(200, 110, 1209, 1210, 1);
+	var odliczanie := GFButtonID(200, 130, 1209, 1210, 1);
+	var powalce := GFButtonID(200, 150, 1209, 1210, 1);
+	var powalce_2 := GFButtonID(200, 170, 1209, 1210, 1);
+	var nagroda := GFButtonID(200, 190, 1209, 1210, 1);
+	var quit := GFButtonID(200, 200, 1209, 1210, 1);
+ 
+	var keys := GFSendGump(who);
+	if(keys[0] == quit.keyid)
+		SendSysMessage(who, ":):):)",3,40);
+	endif
+	if(keys[portal.keyid])
+		PortalTur(who);
+	endif
+	if(keys[l1.keyid])
+		Losuj1(who);
+	endif
+	if(keys[l2.keyid])
+		Losuj2(who);
+	endif
+	if(keys[odliczanie.keyid])
+		Odlicz(who);
+	endif
+	if(keys[powalce.keyid])
+		PoWalce1(who);
+	endif
+	if(keys[powalce_2.keyid])
+		PoWalce2(who);
+	endif
+	if(keys[nagroda.keyid])
+		DajNagrode(who);
+	endif
+endfunction

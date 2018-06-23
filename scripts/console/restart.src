@@ -1,0 +1,18 @@
+// crash
+
+use polsys;
+use os;
+use uo;
+use basicio;
+
+include "include/clock";
+
+program restart(cmd)
+print("System Message: Za minute wylaczenie.");
+
+foreach onlinechr in EnumerateOnlineCharacters()
+   SendSysMessage(onlinechr, "Uwaga! Za minute nastapi wylaczenie i ponowne uruchomienie serwera!",3,38);
+endforeach
+    sleep( 60 );
+  Shutdown();
+endprogram

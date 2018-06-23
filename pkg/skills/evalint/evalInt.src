@@ -1,0 +1,81 @@
+use os;
+use basic;
+use attributes;
+use uo;
+use polsys;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+include "../../foundations/gumps/gumps"; 
+include "include/skillpoints";
+include "include/random";
+
+program evalint( who )
+
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_EVALINT));
+
+  SendSysMessage( who, "Wybierz cel.", FONT_NORMAL, COLOR_GREEN);
+  var subject := Target(who);
+  if(!subject)
+    return;
+  elseif(!subject.IsA(POLCLASS_MOBILE))
+    SendSysMessage(who, "Nie jestes pewien...", FONT_NORMAL, 40);
+    return;
+  elseif(subject == who)
+    SendSysMessage(who, "Ta osoba wyglada milo.", FONT_NORMAL, COLOR_GREEN);
+    return;
+  elseif(CheckSkill(who,SKILLID_EVALINT, -1, 0))
+    var intel := GetIntelligence(subject);
+    if((intel > 0) && (GetEffectiveSkill(who, SKILLID_EVALINT) > 70))
+      var intdesc := GetIntDesc( intel );
+      var percentmana := 100 * GetMana(subject) / GetMaxMana(subject);
+      var manadesc := GetManaDesc( percentmana );
+      SendSysMessage(who, "Obiekt jest " + intdesc + " i ma " + manadesc + ".", FONT_NORMAL, COLOR_GREEN);
+    else
+      SendSysMessage(who, "Obiekt jest " + GetIntDesc(intel) + ".", FONT_NORMAL, COLOR_GREEN);
+    endif
+      AwardStatPoints( who, 16 );
+  else
+      SendSysMessage(who, "Nie udalo Ci sie ocenic tego stworzenia.", FONT_NORMAL, 40);
+  endif
+
+endprogram
+
+function GetIntDesc(intel)
+  if(intel >= 10)
+    return "glupi jak but";
+  elseif(intel >= 20)
+    return "calkiem glupi";
+  elseif(intel >= 40)
+    return "nie za madry";
+  elseif(intel >= 60)
+    return "nawet inteligentny";
+  elseif(intel >= 80)
+    return "calkiem madry";
+  elseif(intel >= 100)
+    return "bardzo inteligentny";
+  elseif(intel >= 110)
+    return "jak drugi einstein";
+  endif
+endfunction
+
+function GetManaDesc(percentmana)
+  if(percentmana >= 10)
+    return "prawie nie ma many";
+  elseif(percentmana >= 20)
+    return "malo many";
+  elseif(percentmana >= 40)
+    return "srednia ilosc many";
+  elseif(percentmana >= 60)
+    return "duza ilosc many";
+  elseif(percentmana >= 80)
+    return "bardzo duza ilosc many";
+  elseif(percentmana >= 95)
+    return "pelne zasoby many";
+  endif
+endfunction

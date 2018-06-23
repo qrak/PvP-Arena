@@ -1,0 +1,19 @@
+//////////////////////////////////////////////////////////////////////
+// TODO:
+// =====
+//
+// - add more justice ( criminal / murderer / reportables ) stuff.
+//   ( respenalties if a gm resurrects a crim ? )
+//
+// - further check UO****** config files for errors
+//
+// - possible improved merchant support (waiting on distro developements....)
+//
+// - move usegmstaff.src gump to SendDialogGump form (for speed)
+//
+// - move textcmd createitem.src gump to SendDialogGump form (for speed)
+//
+// - confirm guildinfo.src works correctly with updated guildstone pkg (pol094 service pack 3)
+//
+// - add a gm broadcast option (using the stafflist pkg) to the usegmstaff gump
+//

@@ -1,0 +1,37 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_dfury( parms )
+	var circle := 2;
+	var delivery := "notarget";
+	var noto := "helpful";
+	var result := maincast(parms, delivery, circle, noto, 205);
+	if(result == 0)
+		return 0;
+	endif
+	var caster := result[1];
+	if(Cint(GetObjProperty(caster, "DivineFury")))
+		SendSysMessage(caster, "Juz jestes pod wplywem tego czaru.",3,40);
+		return 0;
+	endif
+	var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+	PlayObjectCenteredEffect( caster, FX_BLESS_EFFECT, 7,7);
+	PlaySoundEffect(caster, 0x5BF);
+	var czas := pal;
+	Setobjproperty(caster, "DivineFury", 1);
+	detach();
+	var i;
+		for( i:= 0; i < czas * 3 ; i:= i + 1)
+			PlayObjectCenteredEffect( caster, 0x1153, 10,45 );
+			sleepms(500);
+			if(Cint(!GetObjProperty(caster, "DivineFury")))
+				break;
+			endif
+    endfor
+	if(Cint(GetObjProperty(caster, "DivineFury")))
+		SendSysMessage(caster, "Czar Divine Fury zakonczyl swoje dzialanie.",3,40);
+		Eraseobjproperty(caster, "DivineFury");
+	endif
+endprogram

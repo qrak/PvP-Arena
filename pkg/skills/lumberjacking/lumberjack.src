@@ -1,0 +1,559 @@
+use basicio;
+use vitals;
+use npc;
+use math;
+use util;
+use attributes;
+use basic;
+use os;
+use uo;
+use polsys;
+use cfgfile;
+
+include "include/client";
+include "include/attributes";
+include "include/string";
+include "include/objtype";
+include "include/canAccess";
+include "include/dist";
+include "../../foundations/gumps/gumps";
+include "include/itemutil";
+
+const UACTION_CHOP := 0x0d;
+const FX_POISON_GAS := 0x113a;
+var mex;
+var mey;
+
+var lumbconfigfile := ReadConfigFile("bowcraft");
+
+program use_axe(me, axe)
+  var ileczas := ReadGameClock();
+  SetObjProperty(me, "#Czas", ileczas);
+  SetObjProperty(me, "#LastSkill", "Lumberjacking");
+  EraseObjProperty(me, "IsMeditating");
+  EraseObjProperty(me, "HealTimer");
+  SetObjProperty(me, "#LastSkill", "Lumberjack");
+  if(!can_access(me, axe))
+    return;
+  endif
+  if(!ReserveItem(axe))
+    return;
+  endif
+  if(!IsAxEquipped(me, axe))
+    SendSysMessage(me,"Musisz miec siekere w rece!", FONT_NORMAL, 40);
+    return;
+  endif
+  var tree := TreeNearby(me, axe);
+  if(!tree)
+    return 0;
+  endif
+  SendSysMessage(me, "Zaczynasz scinac drzewo...", FONT_NORMAL, COLOR_GREEN);
+  var checker := 0;
+  mex := me.x;
+  mey := me.y;
+  var mount;
+  repeat
+    mount := GetEquipmentByLayer(me, 25);
+    if(mount)
+      SendSysMessage(me,"Nie mozesz scinac drzewa siedzac na wierzchowcu.", FONT_NORMAL, 40);
+      return;
+    endif
+    if(!axe)
+      return;
+    endif
+    me.hidden := 0;
+    var petla := 0;
+    var loops := 4;
+    var fastwork := Cint(GetObjProperty(axe,"FasterWork"));
+    if(fastwork)
+      loops := 2;
+    endif
+    for(petla := 1; petla < loops; petla := petla + 1);
+      PerformAction(me, UACTION_CHOP);
+      PlaySoundEffect(me, SFX_SKILL_LUMBERJACK);
+      sleepms(1500);
+    endfor
+    checker := Do_Chops(me, axe, tree);
+  until(checker == 1);
+endprogram
+
+function Do_Chops(me, axe, tree)
+  var difficulty := GetHarvestDifficulty("wood", tree.x, tree.y, tree.objtype);
+  // OK here is where I am going to add my custom log case statement
+    var logtype := 0;
+    //0x1bdd; basic log
+      difficulty := -1;
+      /*case (tree.objtype)
+      0x12b8 : logtype := 0x1c15; difficulty := 50; // yew log
+      0x12b9 : logtype := 0x1c15; difficulty := 50;// yew log
+      0x12ba : logtype := 0x1c15; difficulty := 50;// yew log
+      0x12bb : logtype := 0x1c15; difficulty := 50;// yew log
+      0x0ce0 : logtype := 0x1c16; difficulty := 55;// walnut log
+      0x0c9e : logtype := 0x1c17; difficulty := 65;// Cypress log
+      0x0CFB : logtype := 0x1c17; difficulty := 65;// Cypress log
+      0x0cdd : logtype := 0x1c18; difficulty := 75;// Oak Log
+      0x0cda : logtype := 0x1c18; difficulty := 75;// Oak Log
+      0x0cd8 : logtype := 0x1c19; difficulty := 80;// Cedar Log
+      0x0cd6 : logtype := 0x1c19; difficulty := 80;// Cedar Log
+      0x0ce6 : logtype := 0x1c1a; difficulty := 90;// Ohii Log
+      0x2476 : logtype := 0x18B6; difficulty := 90;// pink log
+      0x2477 : logtype := 0x18B6; difficulty := 90;// pink log
+      0x26ED : logtype := 0x18B6; difficulty := 90;// pink log
+    endcase*/
+	
+	if((tree.objtype >= 0xcca && tree.objtype <= 0xcd5) || (tree.objtype >= 0xd41 && tree.objtype <= 0xd53) || (tree.objtype >= 0xd55 && tree.objtype <= 0xd93) || (tree.objtype >= 0xce6 && tree.objtype <= 0xce8))
+		logtype := 0x1bdd; // normal trees
+	elseif(tree.objtype >= 0xcd6 && tree.objtype <= 0xcd9)	
+		logtype := 0x1c19; // cedar trees
+	elseif(tree.objtype >= 0xcda && tree.objtype <= 0xcdf)	
+		logtype := 0x1c18; // oak trees
+	elseif(tree.objtype >= 0xce0 && tree.objtype <= 0xce5)	
+		logtype := 0x1c16; // orzechy
+	elseif(tree.objtype >= 0xcf8 && tree.objtype <= 0xd03)	
+		logtype := 0x1c17; // cyprys
+	elseif(tree.objtype >= 0x12b5 && tree.objtype <= 0x12c7)	
+		logtype := 0x1c15; // jew
+	elseif(tree.objtype == 0xc9e)	
+		logtype := 0x1c1a; // ohii
+	endif 
+  if(difficulty == error)
+    SendSysMessage(me, "Nie ma tu juz wiecej drzewa do scinania", FONT_NORMAL, 40);
+    return 1;
+  endif
+  var i, theamount, distt;
+  if((me.x != mex) || (me.y != mey))
+    SendSysMessage(me,"Przestales scinac.", FONT_NORMAL, 40);
+    return 1;
+  endif
+
+  if(me.dead)
+    return 1;
+  endif
+  if(CheckSkill(me, SKILLID_LUMBERJACKING, difficulty, 0))
+    var ileciac := Cint(GetEffectiveSkill(me, SKILLID_LUMBERJACKING));
+    var dmgmod := axe.dmg_mod + (ileciac/10);
+		if(!dmgmod)
+			dmgmod := 0;
+		endif
+    if(Cint(GetObjProperty(axe, "exceptional")))
+	dmgmod := dmgmod + 5;
+    endif
+    var wood_amount := HarvestResource( "wood", tree.x, tree.y, 1, dmgmod );
+    if(RandomInt(800) == 5)
+      CreateItemInBackpack(me, 0xA303 , 1);
+      SendSysMessage(me, "Znalazles lacznik GorX-a!",3,89);
+    endif
+    if(wood_amount == 0)
+      SendSysMessage(me, "Nie ma tu juz wiecej drzewa do scinania.", FONT_NORMAL, 40);
+
+      return 1;
+    endif
+
+    if(!CreateItemInBackpack(me, logtype, wood_amount))
+//    SendSysMessage(me, "Your backpack is too full.");
+      return 1;
+    else
+      if(RandomInt(400) == 10)            
+        CreateNpcFromTemplate( "ent", me.x, me.y, me.z); 
+        SendSysMessage(me, "Twoje scinanie sprowadzilo enta!",3,40);
+      endif
+      var swings := GetObjProperty(axe,"swings");
+      var indest := Cint(GetObjProperty(axe,"indes"));
+      if(!swings)
+        SetObjProperty(axe,"swings", 0);
+        swings := 0;
+      endif
+      var moc := axe.dmg_mod;
+      if(!moc || moc.errortext)
+        moc := 1;
+      endif 
+      if(swings > moc*200 && !indest)
+        DestroyItem(axe);
+        SendSysMessage(me,"Zniszczyles narzedzie.", 3, 40);
+        return 1;
+      endif
+      swings := swings + 1;
+      SetObjProperty(axe,"swings", swings);
+      SendSysMessage(me, "Wlozyles troche klod do plecaka", FONT_NORMAL, COLOR_GREEN);
+      return 0;
+    endif
+  else
+    SendSysMessage(me, "Nie udalo Ci sie znalezc uzytecznego drzewa.", FONT_NORMAL, 40);
+    return 0;
+  endif
+endfunction
+
+function TreeNearby(me, axe)
+  SendSysMessage( me, "Wybierz cos do sciecia.", FONT_NORMAL, COLOR_GREEN );
+  var tree := TargetCoordinates( me );
+  if(!tree)
+    SendSysMessage(me, "Anulowano.", FONT_NORMAL, 40);
+    return 0;
+  endif
+  var distt := coordist( me.x, me.y, tree.x, tree.y );
+  if(distt > 1 )
+    if(!tree.item.container)
+      SendSysMessage(me,"To jest za daleko", FONT_NORMAL, 40);
+      return 0;
+    endif
+  endif
+  if(is_furniture(tree.item.objtype, tree.item))
+    chopfurniture(me, tree.item);
+    return 0;
+  elseif(is_tree(tree.objtype))
+    var difficulty := -1;
+		
+    if(difficulty == error)
+      SendSysMessage(me, "Nie ma tu wiecej drzewa do scinania.", FONT_NORMAL, 40);
+      return 0;
+    endif
+    return tree;
+  else
+    use_blade(me, axe, tree.item);
+    return 0;
+  endif
+endfunction
+
+function is_furniture(theobj, thing)
+  var miscobjtypes := { 0x7007, 0xa30, 0xa34, 0xa38, 0xfae, 0x9e40};
+  if((theobj >= 0x9a8) && (theobj <= 0x9ab))
+    return 1;
+  elseif((theobj >= 0xa2a) && (theobj <= 0xa2c))
+    return 1;
+  elseif((theobj >= 0xa4c) && (theobj <= 0xa53))
+    return 1;
+  elseif((theobj >= 0xa97) && (theobj <= 0xa9e))
+    return 1;
+  elseif((theobj >= 0xb2c) && (theobj <= 0xb40))
+    return 1;
+  elseif((theobj >= 0xb49) && (theobj <= 0xb90))
+    return 1;
+  elseif((theobj >= 0xe3c) && (theobj <= 0xe43))
+    return 1;
+  elseif((theobj >= 0xe7c) && (theobj <= 0xe80))
+    return 1;
+  elseif((theobj >= 0xf65) && (theobj <= 0xf77))
+    return 1;
+  elseif(theobj in miscobjtypes)
+    return 1;
+  elseif(GetObjProperty(thing, "ItemsCreatedSerials"))
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function is_tree(theobj)
+
+	if((theobj >= 0xcca && theobj <= 0xcd5) || (theobj >= 0xd41 && theobj <= 0xd53) || (theobj >= 0xd55 && theobj <= 0xd93) || (theobj >= 0xce6 && theobj <= 0xce8))
+		return 1;
+	elseif(theobj >= 0xcd6 && theobj <= 0xcd9)	
+		return 1; // cedar trees
+	elseif(theobj >= 0xcda && theobj <= 0xcdf)	
+		return 1; // oak trees
+	elseif(theobj >= 0xce0 && theobj <= 0xce5)	
+		return 1; // orzechy
+	elseif(theobj >= 0xcf8 && theobj <= 0xd03)	
+		return 1; // cyprys
+	elseif(theobj >= 0x12b5 && theobj <= 0x12c7)	
+		return 1; // jew
+	elseif(theobj == 0xc9e)	
+		return 1; // ohii
+	else
+		return 0;
+	endif 	
+endfunction
+
+
+function IsAxEquipped(me,axe)
+  if((!Accessible(me,axe)) || (Distance(me, axe) > 1))
+    return 0;
+  endif
+  foreach item in ListEquippedItems(me)
+    if (axe.serial == item.serial )
+      return 1;
+    endif
+  endforeach
+  return EquipItem(me, axe );
+endfunction
+
+function chopfurniture(me, theobj)
+  if(!can_access(me, theobj))
+    return;
+  endif
+  var sign;
+  if(GetObjProperty(theobj, "lockeddown") || GetObjProperty(theobj, "secure"))
+    SendSysMessage(me, "Nie mozesz nizczyc zabezpieczonych, lub zablokowanych przedmiotow.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(theobj.objtype == 0x7007)
+    var houseserial := GetObjProperty(theobj, "houseserial");
+    sign := SystemFindObjectBySerial(houseserial);
+    if(GetObjProperty(sign, "barrelserial") == theobj.serial)
+      EraseObjProperty(sign, "barrelserial");
+      SendSysMessage(me, "Nie mozesz zniszczyc tego gdy jest zablokowane.", FONT_NORMAL, 40);
+      return;
+    endif
+  endif
+  if(!Accessible(me, theobj))
+    SendSysMessage(me, "Nie mozesz tego dosiegnac.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(me.multi)
+    if(GetObjProperty((me.multi), "ownerserial") != me.serial)
+      var house := me.multi;
+      foreach thing in (house.components)
+        if((thing.objtype == 0x0bd0) || (thing.objtype == 0x0bd2))
+          sign := thing;
+          break;
+        endif
+      endforeach
+      var coowner := 0;
+      var coownerlist := GetObjProperty(sign, "coownerlist");
+      foreach thing in coownerlist
+        if(thing == me.serial)
+          coowner := 1;
+          break;
+        endif
+      endforeach
+      if(!coowner)
+        SendSysMessage(me, "To nie nalezy do Ciebie!", FONT_NORMAL, 40);
+        return;
+      endif
+    endif
+  endif
+  foreach thing in EnumerateItemsInContainer(theobj)
+    if(theobj.container)
+      MoveItemToContainer(thing, theobj.container);
+    else
+      MoveObjectToLocation(thing, theobj.x, theobj.y, theobj.z, thing.realm, MOVEOBJECT_FORCELOCATION);
+    endif
+  endforeach
+  if(theobj.usescript == ":tinkering:tinkerTraps")
+    var traptype := GetObjProperty(theobj,"trap_type");
+    var trapstrength := GetObjProperty(theobj,"trap_strength");
+    var trapperserial := CInt(GetObjProperty(theobj, "trapper"));
+    var trapper := SystemFindObjectBySerial(trapperserial, SYSFIND_SEARCH_OFFLINE_MOBILES);
+    if(trapper)
+      SetObjProperty(me, "LastHit", {trapper.name, trapper.serial, "trapped chest" });
+      SetScriptController(trapper);
+    endif
+    case (traptype)
+      "1" :   PlaySoundEffect(me, SFX_224);
+              var dmg := (RandomInt(20) + CInt(trapstrength));
+              SendSysMessage(me, "Uruchomiles pulapke strzalkowa!", FONT_NORMAL, COLOR_GREEN);
+              ApplyDamage(me, dmg);
+              theobj.usescript := "";
+              EraseObjProperty( theobj, "trap_type" );
+              EraseObjProperty( theobj, "trap_strength" );
+      "2" :   PlaySoundEffect(me, SFX_232);
+              PrintTextAbovePrivate(me, "Wylonczyles pulapke!", me);
+              PlayObjectCenteredEffect( me, FX_POISON_GAS, 10,10);
+              var plevel := CInt(GetObjProperty(me, "poison_level"));
+              SetObjProperty(me, "PoisonStamp", ReadGameClock());
+              SetObjProperty(me, "poison_level",CStr(trapstrength));
+              var passparms := { me, me, "poison trap" };
+              start_script(":spells:poisonDamage", passparms);
+              theobj.usescript := "";
+              EraseObjProperty( theobj, "trap_type" );
+              EraseObjProperty(theobj, "trap_strength");
+      "3" :   PlaySoundEffect(me, SFX_208);
+              SendSysMessage(me, "Uruchomiles pulapke wybuchowa!");
+              PlayObjectCenteredEffect( me, FX_EXPLODE_3, 10,10);
+              var dmg := (RandomInt(20) + CInt(trapstrength));
+              ApplyRawDamage(me, dmg);
+              theobj.usescript := "";
+              EraseObjProperty( theobj, "trap_type" );
+              EraseObjProperty( theobj, "trap_strength" );
+    endcase
+  endif
+  var created := GetObjProperty(theobj, "ItemsCreatedSerials");
+  if(created)
+    var holder;
+    foreach thing in created
+      holder := SystemFindObjectBySerial(thing);
+      if(holder)
+        DestroyItem(holder);
+      endif
+    endforeach
+  else
+    DestroyItem(theobj);
+  endif
+  PlaySoundEffect(me, 0x13a);
+  return;
+endfunction
+
+function use_blade(who, blade, use_on)
+  if(!can_access(who,use_on))
+    return;
+  endif
+  if(!ReserveItem(use_on))
+    return;
+  endif
+  var checkme := use_on.objtype;
+  if((checkme == UOBJ_LOGS) || (checkme == 0x1bd7))
+    SendSysMessage(who, "To nie jest odpowiedni przedmiot.", FONT_NORMAL, COLOR_RED);
+    return;
+  elseif(use_on.npctemplate == "sheep")
+   SendSysMessage(who, "To nie jest odpowiedni przedmiot.", FONT_NORMAL, COLOR_RED);
+    return;
+  elseif(use_on.objtype == UOBJ_CORPSE)
+    SendSysMessage(who, "To nie jest odpowiedni przedmiot.", FONT_NORMAL, COLOR_RED);
+    return;
+  elseif(IsABow(use_on))
+    CutArcheryWeapons(who, use_on);
+    return;
+  else
+    SendSysMessage(who, "Nie wiesz jak uzyc te przedmioty razem.", FONT_NORMAL, COLOR_RED);
+  endif
+endfunction
+
+function IsABow(item)
+  var itemdesc := ReadConfigFile(":combat:itemdesc");
+  var atrybut  := CStr(itemdesc[item.objtype].Attribute);
+  case(atrybut)
+    "Archery": return 1;
+  endcase
+  if(item.container)
+    foreach przedmiot in EnumerateItemsInContainer(item)
+      if(CStr(itemdesc[przedmiot.objtype].Attribute) == "Archery")
+        return 1;
+      endif
+    endforeach
+  endif
+  return 0;
+endfunction
+
+function CutArcheryWeapons(who, cut_that)
+  var bowcraft_cfg := ReadConfigFile("::bowcraft");
+  var itemcfg   := ReadConfigFile("::itemdesc");
+  /*SendSysMessage(who, "Wybierz przedmiot, ktory chcesz pociac.", 3, 63);
+  var use_on := Target(who, TGTOPT_CHECK_LOS);
+  if(!use_on)
+    SendSysMessage(who, "Anulowano.", 3, 40);
+    return;
+  endif
+  if(use_on == cut_that)
+    return 0;
+  endif*/
+  
+  var use_on := cut_that;
+  
+  if(!can_access(who, use_on))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  if(!Accessible(who, use_on) || !ReserveItem( use_on ))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  
+  if(!IsInContainer(who.backpack, use_on ))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+		return 0;
+	endif
+  
+  if(use_on.isa(POLCLASS_CONTAINER)) // jezeli wybierzemy container
+    var contitems := EnumerateItemsInContainer(use_on, 0x2); // 0x2 - root container only
+    var skill, amt, elemcol, ingot, color;
+    var valid_wood := { 0x1BDD, 0x1c15, 0x1c16, 0x1c17, 0x1c18, 0x1c19, 0x1c1a, 0x18B6 };
+    var whox := who.x;
+    var whoy := who.y;
+    foreach thing in contitems
+      if(Cint(GetObjProperty(thing, "exceptional")) || thing.objtype == cut_that.objtype || thing.newbie)
+        continue;
+      endif
+        
+      if(whox != who.x || whoy != who.y)
+        break;
+      endif
+        
+      if(bowcraft_cfg[thing.objtype])
+        skill := Cint(bowcraft_cfg[thing.objtype]."SkillRequired");
+        amt := CInt(bowcraft_cfg[thing.objtype]."Material");
+        Tnij(who, skill, thing, amt, elemcol, ingot, color, valid_wood, itemcfg);
+      endif
+    endforeach
+  else // jezeli wybierzemy przedmiot
+    var skill := Cint(bowcraft_cfg[use_on.objtype]."SkillRequired");
+    var amt := CInt(bowcraft_cfg[use_on.objtype]."Material");
+    if((!skill) || (!amt))
+      SendSysMessage(who, "Nie mozesz tego pociac.", 3, 40);
+      return;
+    endif
+    amt := CInt((amt * GetEffectiveSkill(who,SKILLID_TAILORING) * 55 ) / 10000);
+    if(amt < 1)
+      amt := 1;
+    endif
+    if(!itemcfg)
+      return 0;
+    endif
+    
+    var elemcol;
+    var ingot := -1;
+    var color := use_on.color;
+    var valid_wood := { 0x1BDD, 0x1c15, 0x1c16, 0x1c17, 0x1c18, 0x1c19, 0x1c1a, 0x18B6 };
+    foreach entry in valid_wood
+      elemcol := itemcfg[entry]."Color";
+      if(color == elemcol)
+        ingot := entry;
+        break;
+      endif
+    endforeach
+    if(ingot == -1)
+      PrintTextAbovePrivate(use_on, "Nie mozesz tego pociac.", who);
+      return;
+    endif
+    PlaySoundEffect(who, 0x0249);
+    sleep(1);
+    PlaySoundEffect(who, 0x0249);
+
+    if(SubtractAmount(use_on, use_on.amount))
+      if(CheckSkill(who, SKILLID_TAILORING, skill, 10))
+        SendSysMessage(who, "Uzyskales z tego troche materialu.", 3, COLOR_GREEN);
+        CreateItemInBackpack(who, ingot, amt);
+      else
+        SendSysMessage(who, "Nie udalo Ci sie i zniszczyles przedmiot.", 3, 40);
+      endif
+      return;
+    endif
+endif
+endfunction
+
+function Tnij(who, skill, thing, amt, elemcol, ingot, color, valid_ingot, itemcfg)
+        if((!skill) || (!amt))
+          SendSysMessage(who, "Nie mozesz tego pociac.", 3, 40);
+          return;
+        endif
+        amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BOWCRAFT) * 55 ) / 10000);
+        if(amt < 1)
+          amt := 1;
+        endif
+        ingot := -1;
+        color := thing.color;
+        foreach entry in valid_ingot
+          elemcol := itemcfg[entry]."Color";
+          if(color == elemcol)
+            ingot := entry;
+            break;
+          endif
+        endforeach
+
+        if(ingot == -1)
+          PrintTextAbovePrivate(thing, "Nie mozesz tego pociac", who);
+          return;
+        endif
+        PlaySoundEffect(who, 0x0249);
+        sleep(1);
+        PlaySoundEffect(who, 0x0249);
+        if(SubtractAmount(thing, thing.amount))
+          if(CheckSkill(who, SKILLID_TAILORING, skill, 10))
+            SendSysMessage(who, "Uzyskales z tego troche materialu.", 3, COLOR_GREEN);
+            CreateItemInBackpack(who, ingot, amt);
+          else
+            SendSysMessage(who, "Nie udalo Ci sie i zniszczyles przedmiot.", 3, 40);
+          endif
+        endif
+        sleep(1);
+
+endfunction

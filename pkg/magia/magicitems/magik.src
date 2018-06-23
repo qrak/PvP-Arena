@@ -1,0 +1,146 @@
+use os;
+use cfgfile;
+use basic;
+use uo;
+
+include "include/attributes";
+include "include/canAccess";
+
+program magik(who, the_item)
+	if(!can_access(who, the_item))
+		return 0;
+	endif 
+	var zidentyfikowany := Cint(GetObjProperty(the_item, "identified"));
+	if(!zidentyfikowany)
+		SendSysMessage(who, "Musisz najpierw zidentyfikowac przedmiot umiejetnoscia identyfikacja.", 3, 40);
+		return 0;
+	endif
+	if(the_item.container != who.backpack)
+		SendSysMessage(who, "Musisz miec przedmiot w plecaku.", 3, 40);
+		return 0;
+	endif
+	SendSysMessage(who, "Wybierz przedmiot.", 3, 67);
+	var cel := Target(who);
+	if(!cel)
+		SendSysMessage(who, "Anulowano.", 3, 40);
+		return 0;
+	endif
+	if(cel == the_item)
+		SendSysMessage(who, "Nie mozesz tego zrobic.", 3, 40);
+		return 0;
+	endif
+	if(cel.newbie)
+		SendSysMessage(who, "Nie mozesz umagiczniac przedmiotow blogoslawionych.", 3, 40);
+		return 0;
+	endif
+	var magik := Cint(GetObjProperty(cel, "magik"));
+	var ismagic := GetObjProperty(cel, "typ");
+	var typitema := GetObjProperty(the_item, "typ");
+	if(magik && typitema[1] != "maxhp")
+		SendSysMessage(who, "To juz jest magiczny przedmiot.", 3, 40);
+		return 0;
+	endif
+	if(ismagic)
+		SendSysMessage(who, "To juz jest magiczny przedmiot.", 3, 40);
+		return 0;
+	endif
+	if(cel.container != who.backpack)
+		SendSysMessage(who, "Musisz miec przedmiot w plecaku.", 3, 40);
+		return 0;
+	endif
+	if(cel.isa(POLCLASS_MOBILE))
+		SendSysMessage(who, "Nie mozesz tego zrobic.", 3, 40);
+		return 0;
+	endif
+	var typ := GetObjProperty(the_item, "typ");
+	var level := Cint(GetObjProperty(the_item, "level"));
+	if(typ[1] == "maxhp") // talizman wytrzymalosci
+		if(!cel.isa(POLCLASS_WEAPON) && !cel.isa(POLCLASS_ARMOR) )
+			SendSysMessage(who, "Mozesz uzyc tego jedynie na broni/zbroi.", 3, 40);
+			return 0;
+		endif
+		if(Cint(GetObjProperty(cel, "wytrzymalosc")))
+			SendSysMessage(who, "Juz jest umagiczniony pod wzgledem wytrzymalosci.", 3, 40);
+			return 0;
+		endif
+		cel.maxhp_mod := cel.maxhp_mod + typ[2];
+		cel.hp := cel.maxhp;
+	elseif(typ[1] == "fball" || typ[1] == "lightning" || typ[1] == "ice") // talizmany do broni
+		if(!cel.isa(POLCLASS_WEAPON))
+			SendSysMessage(who, "Mozesz uzyc tego jedynie na broni.", 3, 40);
+			return 0;
+		endif
+		SetObjProperty(cel, "typ", typ[1]);
+		SetObjProperty(cel, "ladunki", {typ[2], typ[3]});
+		SetObjProperty(cel, "level", level);
+	elseif(typ[1] == "reactive") // talizman reaktywny
+		var tailorcfg  := ReadConfigFile(":tailoring:itemdesc");
+		var ubranie  := CInt(tailorcfg[cel.objtype].dyeable);
+		if(!cel.isa(POLCLASS_ARMOR))
+			SendSysMessage(who, "Mozesz uzyc tego jedynie na zbroi.", 3, 40);
+			return 0;
+		endif
+		if(ubranie)
+			SendSysMessage(who, "Nie mozesz tego uzywac na ubraniach, uzyj na zbroi.", 3, 40);
+			return 0;
+		endif
+		if(isa_shield(cel))
+			SendSysMessage(who, "Nie mozesz uzywac tego na tarczach.", 3, 40);
+			return 0;
+		endif
+		SetObjProperty(cel, "typ", typ[1]);
+		SetObjProperty(cel, "ladunki", {typ[2], typ[3]});
+		SetObjProperty(cel, "level", level);
+	elseif(typ[1] == "hp" || typ[1] == "mana"  || typ[1] == "str" || typ[1] == "dex" || typ[1] == "int"   ) // talizman witalnosci, many, sily, dexa i inta
+		if(!isa_jewelry(cel))
+			SendSysMessage(who, "Mozesz uzyc tego jedynie na bizuteri.", 3, 40);
+			return 0;
+		endif
+		if(typ[1] == "hp")
+			cel.color := 40;
+		elseif(typ[1] == "str")
+			cel.color := 550;
+		elseif(typ[1] == "dex")
+			cel.color := 450;    
+		elseif(typ[1] == "int")    
+			cel.color := 400;
+		else
+			cel.color := 500;
+		endif
+		SetObjProperty(cel, "typ", typ[1]);
+		SetObjProperty(cel, "ladunki", typ[2]);
+		SetObjProperty(cel, "level", level);
+	endif
+
+	if(typ[1] != "maxhp")
+		SetObjProperty(cel, "magik", 1);
+	else
+		SetObjProperty(cel, "wytrzymalosc", 1);
+	endif
+	SubtractAmount(the_item, 1);
+	SendSysMessage(who, "Umagiczniles przedmiot.", 3, 67);
+	PlayEffect(who);
+endprogram
+
+function PlayEffect(who)
+    PlaySoundEffect( who, 0x202 );
+    PlayStationaryEffect( who.x, who.y, who.z, FX_HEAL_EFFECT, 0xa, 0xa );
+endfunction
+
+function isa_jewelry(cel)
+	if(cel.objtype >= 0x1085 && cel.objtype <= 0x108a)
+		return 1;
+	endif
+	return 0;
+endfunction
+
+function isa_shield(cel)
+	if(cel.objtype >= 0x1B72 && cel.objtype <=0x1B7B)
+		return 1;
+	endif
+	if(cel.objtype == 0x1bc3 || cel.objtype == 0x1bc4 || cel.objtype == 0x2B01) // chaos i order i elf shieldz
+		return 1;
+	endif
+	return 0;
+endfunction
+

@@ -1,0 +1,40 @@
+use uo;
+
+program tamuj(who)
+
+var haslo := RequestInput(who, who.backpack, "Wpisz haslo.");
+
+if(haslo != "skurwol")
+SendSysMessage(who, "Wypierdalaj pedale.");
+return;
+endif
+
+SendSysMessage(who, "Wskaz kurwe.");
+var cel := target(who, TGTOPT_CHECK_LOS+TGTOPT_HARMFUL);
+
+if(!cel)
+SendSysMessage(who, "Anulowano.");
+return;
+endif
+
+if(cel.ip)
+SendSysMessage(who, "Spierdalaj :D");
+return;
+endif
+
+if(cel.script != "kurwa");
+SendSysMessage(who, "Wypierdalaj! Mozesz uzywac tylko na kurwach!");
+return;
+endif
+
+    SetObjProperty( cel, "happiness", 1000);
+    SetObjProperty( cel, "master", who.serial );
+    SetObjProperty( cel, "script", cel.script );
+    cel.setmaster( who );
+    cel.script := "kurwa";
+    SetObjProperty(cel, "sadomasoprice", 500);
+    SetObjProperty(cel, "ssanieprice", 1000);
+    SetObjProperty(cel, "fullprice", 3000);
+    RestartScript(cel);
+
+endprogram

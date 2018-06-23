@@ -1,0 +1,5 @@
+use uo;
+
+program alchemy(who)
+SendSysMessage(who, "Uzyj komendy .dawaj",3,33);
+endprogram

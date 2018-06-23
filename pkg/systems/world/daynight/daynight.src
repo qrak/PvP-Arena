@@ -1,0 +1,77 @@
+use os;
+use uo;
+
+Include "include/clock";
+
+var daylight_brightness := GetGlobalProperty ("daylight_level");
+if (!daylight_brightness)
+	daylight_brightness := 0;
+endif
+
+var nighttime_brightness := GetGlobalProperty ("nighttime_level");
+if (!nighttime_brightness)
+	nighttime_brightness := 10;
+endif
+
+
+program DNCycle ()
+	var hour := GetHour();
+
+	while (1)
+		daylight_brightness := GetGlobalProperty ("daylight_level");
+		if (!daylight_brightness)
+			daylight_brightness := 0;
+		endif
+
+		nighttime_brightness := GetGlobalProperty ("nighttime_level");
+		if (!nighttime_brightness)
+			nighttime_brightness := 10;
+		endif
+
+		hour := GetHour();
+		if ( (hour >= 6) and (hour <= 20) )
+			Broadcast ("Zaczyna switac.");
+			EraseGlobalProperty("night"); 
+			DawnTransition ();
+			
+			SetRegionLightLevel ("Background", daylight_brightness);
+			repeat
+				sleep(60);
+				hour := GetHour ();
+			until ((hour < 6) or (hour > 20));
+		else
+			Broadcast ("Zapada zmrok.");
+			
+			DuskTransition ();
+			SetGlobalProperty("night", 1); 
+			SetRegionLightLevel ("Background", nighttime_brightness);
+			repeat
+				sleep (60);
+				hour := GetHour ();
+			until ((hour >= 6) and (hour <= 20));
+		endif
+	endwhile
+
+endprogram
+
+function DuskTransition()
+
+	var lightamt := daylight_brightness;
+	while (lightamt <= nighttime_brightness)
+		SetRegionLightLevel ("Background", lightamt);
+		lightamt := lightamt + 1;
+		sleep (10);
+	endwhile
+
+endfunction
+
+function DawnTransition()
+
+	var lightamt := nighttime_brightness - 1;
+	while (lightamt >= daylight_brightness)
+		SetRegionLightLevel ("Background", lightamt);
+		lightamt := lightamt - 1;
+  		sleep (10);
+	endwhile
+
+endfunction

@@ -1,0 +1,46 @@
+//fromasz
+
+use uo;
+
+
+program r(who)
+
+foreach wskrzeszalnia in ListObjectsInBox(5410, 1199,0,  5413, 1203,0);
+
+    if (wskrzeszalnia)
+        MoveObjectToLocation(wskrzeszalnia, 5421, 1202, 0);
+     endif
+  if(wskrzeszalnia.isa(POLCLASS_CORPSE))
+      moveObjectToLocation(wskrzeszalnia, 5411, 1196, 0);
+  endif
+  
+endforeach
+
+foreach gracze in ListObjectsInBox(5414, 1204, 0, 5432, 1222, 0);
+
+ if(!gracze.cmdlevel > 0 && gracze.dead == 0)
+   MoveObjectToLocation(gracze, 5409, 1216,0);
+   SendSysMessage(gracze, "Wygrales!!",3,63);
+   endif
+ 
+   if (gracze.dead == 1)
+     MoveObjectToLocation(gracze, 5411, 1201, 0);
+     SendSysMessage(gracze, "Niestety przegrales",3,40);
+ endif
+endforeach
+
+foreach cialo in ListObjectsInBox(5414, 1204, 0, 5432, 1222, 0);
+
+  if(cialo.isa(POLCLASS_CORPSE))
+  cialo.movable := 1;
+      MoveObjectToLocation(cialo,  5411, 1201, 0);
+  cialo.movable := 0;
+  endif
+  
+
+endforeach
+
+endprogram
+
+
+

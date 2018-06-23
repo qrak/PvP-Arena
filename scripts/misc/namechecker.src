@@ -1,0 +1,22 @@
+use uo;
+use cfgfile;
+use basic;
+
+program checkname(who)
+  var hisname := lower(who.name);
+  var cfg := ReadConfigFile("badnames");
+  var elem := FindConfigElem(cfg, hisname);
+  if(!elem)
+    return;
+  endif
+  who.name := "zle imie";
+  while(who.name == "zle imie")
+    var newname := SendTextEntryGump( who, "Wybrales imie zabronione w tym swiecie.", TE_CANCEL_DISABLE, TE_STYLE_NORMAL, 20, "Prosze wybierz nowe.");
+    var elem := FindConfigElem(cfg, lower(newname));
+    if(!elem)
+      SendSysMessage(who, "Dobry wybor, " + newname + "!");
+      who.name := newname;
+      return;
+    endif
+  endwhile
+endprogram

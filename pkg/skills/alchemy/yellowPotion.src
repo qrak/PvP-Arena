@@ -1,0 +1,24 @@
+use vitals;
+use util;
+use basic;
+use uo;
+include "drinkPotion";
+include "include/canAccess";
+
+program drink_blue (who, potion)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego wypic.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!checkifcandrink(who, "#yellow"))
+    return;
+  endif
+  PlaySoundEffect(who,727);
+  RegenerateVital(who, potion, "hp");
+
+endprogram

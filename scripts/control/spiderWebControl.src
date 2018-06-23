@@ -1,0 +1,7 @@
+use uo;
+use os;
+
+program spiderwebctl(web)
+	sleep(60);
+	DestroyItem(web);
+endprogram

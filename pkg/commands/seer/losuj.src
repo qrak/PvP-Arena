@@ -1,0 +1,15 @@
+use uo;
+
+program losuj(who)
+  var ile := 0;
+    foreach gracz in ListObjectsInBox(1220, 1884, 0, 1226, 1892,0)
+      if(gracz.ip)
+        ile := ile + 1;
+      endif
+      MoveObjectToLocation(gracz, who.x+1, who.y, who.z, gracz.realm);
+      if(ile >= 2)
+        ile := 0;
+        break;
+      endif
+    endforeach
+endprogram

@@ -1,0 +1,1084 @@
+use util;
+use attributes;
+use basic;
+use os;
+use uo;
+use cfgfile;
+
+include "../../foundations/gumps/gumps";
+include "include/attributes";
+include "include/gumpUtil";
+include "include/dist";
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+include "include/toolWear";
+include "include/itemutil";
+include "include/tfunctions";
+
+const UOBJ_SEWING_KIT   := 0x0f9d;
+const UOBJ_BOLT_START   := 0x0f95;
+const UOBJ_BOLT_END     := 0x0f9c;
+const UOBJ_CLOTH_STARTS := 0x175d;
+const UOBJ_CLOTH_END    := 0x1768;
+const UOBJ_MUTLI_CLOTH  := 0x1766;
+
+var itemcfg          := ReadConfigFile( "itemdesc" );
+var tailor_cfg       := ReadConfigFile( "tailoring" );
+var leather_cfg      := ReadConfigFile( "leather" );
+var armod;
+
+program use_sewing_kit(who, sewing_kit)
+  if(!can_access(who, sewing_kit))
+    return;
+  endif
+  if(sewing_kit.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!ReserveItem(sewing_kit))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  SendSysMessage( who, "Wskaz material, ktorego chcesz uzyc.", FONT_NORMAL, COLOR_GREEN);
+  var use_on := Target( who );
+  if (!use_on)
+    return;
+  endif
+  if(!can_access(who, use_on))
+    return;
+  endif
+  if(!ReserveItem(use_on))
+    return;
+  endif
+  if(!Accessible(who, use_on))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!IsInContainer(who.backpack, use_on ))
+    SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+    return 0;
+	endif
+  if(use_on.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  var obj_type := use_on.objtype;
+  if(((obj_type >= UOBJ_BOLT_START)  && (obj_type <= UOBJ_BOLT_END)) || ((obj_type >= UOBJ_CLOTH_STARTS) && (obj_type <= UOBJ_CLOTH_END)) )  // stacks of cloth
+    MakeClothItems(who, use_on, sewing_kit);
+    return;
+  elseif(IsLeather(obj_type))
+    if(!itemcfg[obj_type].skill)
+      itemcfg[obj_type].skill := 0;
+    endif
+    if(itemcfg[obj_type].skill > GetEffectiveSkill(who, SKILLID_TAILORING))
+    	SendSysMessage(who, "Twoja wiedza jest za mala by moc pracowac z tym materialem.", FONT_NORMAL, 40);
+    	return;
+    endif
+    armod := SetAr_Mod(obj_type);
+
+    MakeLeatherItems(who, use_on, sewing_kit);
+    
+  elseif(obj_type == 0x13C7 || obj_type == 0x13CD || obj_type == 0x13C6 || obj_type == 0x1DB9 || obj_type == 0x13CB || obj_type == 0x13CC || obj_type == 0x13D3 || obj_type == 0x13D6 || obj_type == 0x13D5 || obj_type == 0x13D4 || obj_type == 0x13DA || obj_type == 0x13DB || obj_type == 0x1C02 || obj_type == 0x1c04 || obj_type == 0x1C06 || obj_type == 0x1C08 || obj_type == 0x1C0A || obj_type == 0x1C0C || obj_type == 0x1C00 || obj_type == 0x170B || obj_type == 0x1711)
+       if(use_on.hp == use_on.maxhp)
+	   SendSysMessage(who, "Ten przedmiot nie jest w ogole zniszczony.", FONT_NORMAL, COLOR_GREEN);
+	   return;
+       elseif(use_on.hp <= 2)
+	   SendSysMessage(who, "Ten przedmiot jest za bardzo zniszczony by moc go naprawic.", FONT_NORMAL, 40);
+	   return;
+       else
+	  PlaySoundEffect(who, TAILOR_SND);
+	  sleep(1);
+	  PlaySoundEffect(who, TAILOR_SND);
+	  sleep(1);
+	   SendSysMessage(who, "Naprawiles przedmiot.", 3, COLOR_GREEN);
+	   use_on.hp := use_on.maxhp;
+	   return;
+       endif
+  else
+    SendSysMessage(who, "Mozesz szyc jedynie z materialow i skor.", 3, 40);
+    return;
+  endif
+endprogram
+
+function SetAr_Mod(obj_type)
+  var value := 0;
+  case(obj_type)
+    0x7020: value := 1;
+    0x702c: value := 2;
+    0xdc13: value := 3;
+    0xdc0a: value := 4;
+    0x702e: value := 5;
+    0x7022: value := 6;
+    0x7023: value := 7;
+    0x7024: value := 8;
+    0x7025: value := 9;
+    0x7027: value := 10;
+    0x7028: value := 11;
+    0x7029: value := 12;
+    0x702a: value := 13;
+    0xfffA: value := 14;
+    0x7026: value := 15;
+    0x702f: value := 17;
+    0x702b: value := 19;
+    0xfffB: value := 20;
+    0xfffC: value := 35;
+    0xA402: value := 35; // ixodynix
+  endcase
+  return value;
+endfunction
+
+function IsLeather(obj_type)
+  case (obj_type)
+    0x7020:
+    0x702c:
+    0xdc13:
+    0xdc0a:
+    0x702e:
+    0x7022:
+    0x7023:
+    0x7024:
+    0x7025:
+    0x7027:
+    0x7028:
+    0x7029:
+    0x702a:
+    0xfffA:
+    0x7026:
+    0x702f:
+    0x702b:
+    0xfffB:
+    0xfffC:
+    0xA402: return 1;
+  endcase
+endfunction
+
+function MakeClothItems(who, cloth, kit)
+  GFInitGump(60, 0);
+  GFNoDispose();
+  GFNoClose();
+  GFPage(0);
+  GFResizePic(0, 60, 9270, 700, 400);
+  GFTextLine(180,  80, 900, "Menu Krawiectwa");
+  GFTextLine( 160, 121, 1109, "Koszule");
+  GFTextLine(310, 121, 1109, "Spodnie");
+  GFTextLine(450, 121, 1109, "Togi/Suknie");
+  GFTextLine(425, 351, 1109, "Czapki");
+  GFTextLine(245, 351, 1109, "Rozne");
+  GFTextLine( 190, 380, 900, "To co ostatnio");
+  var lastitm := GFButtonID( 70, 384,   3, 4, 99);
+  var close   := GFButtonID(410, 380, 242, 241, 1);
+  GFButtonPage(110, 125, 1209, 1210, 2);
+  GFButtonPage(260, 125, 1209, 1210, 3);
+  GFButtonPage(425, 125, 1209, 1210, 4);
+  GFButtonPage(190, 355, 1209, 1210, 5);
+  GFButtonPage(370, 355, 1209, 1210, 6);
+  GFTextLine(  300, 420, 900, "Ilosc:");
+  var sa := GetObjProperty(who, "#TailorAmt");
+  if(!sa)
+    sa := 1;
+  endif
+  var ct := GFTextEntry(330, 420, 100, 30, 900, sa);
+  ComposeClothSubMenu(who);
+  var res := GFSendGump(who);
+  if((res[0] == 999) || (res[close.keyid]))
+    SendSysMessage(who, "Anulowano.", FONT_NORMAL, COLOR_RED);
+    return;
+  endif
+  var amt := CInt(SplitWords(res[ct.keyid])[2]);
+  if(!amt)
+    amt := 1;
+  elseif(amt > 50)
+    SendSysMessage(who, "Mozesz szyc naraz nawyzej piecdziesiat rzeczy.", FONT_NORMAL, 40);
+    return;
+  endif
+  SetObjProperty(who, "#TailorAmt", amt);
+  var cont := kit.container;
+  if(!cont)
+    cont := who.backpack;
+  endif
+  var objtype := res[0];
+  if(res[lastitm.keyid])
+    objtype := GetObjProperty(who, "LastTailorItem");
+    if(!objtype)
+      SendSysMessage(who, "Niczego wczesniej nie szyles.", FONT_NORMAL, 40);
+      return;
+    endif
+  endif
+  SetObjProperty(who, "LastTailorItem", objtype);
+  var material := CInt(tailor_cfg[objtype]."material");
+  var skill    := CInt(tailor_cfg[objtype]."skill");
+  var itemname := tailor_cfg[objtype]."name";
+  var totalcloth, mainclothused;
+  if((cloth.objtype >= UOBJ_BOLT_START) && (cloth.objtype <= UOBJ_BOLT_END))
+    totalcloth := cloth.amount * 50;
+    if(DestroyItem(cloth))
+      mainclothused := CreateItemInBackpack(who, UOBJ_MUTLI_CLOTH, totalcloth);
+    endif
+  else
+    mainclothused := cloth;
+  endif
+  if(!ReserveItem(mainclothused))
+    SendSysMessage(who,"Nie mozesz uzyc tego materialu.", FONT_NORMAL, 40);
+    return;
+  endif
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  var tname, dif, theitem, hisskill, rint;
+  while(counter < amt)
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Przestales szyc.", FONT_NORMAL, 40);
+      break;
+    endif
+    totalcloth := mainclothused.amount;
+    if(totalcloth >= material)
+      dif := (GetEffectiveSkill(who, SKILLID_TAILORING) - skill);
+      if(dif < 5)
+        dif := 5;
+      elseif(dif > 40)
+        dif := 50;
+      endif
+      if(CheckSkill(who, SKILLID_TAILORING, skill, skill))
+        if(SubtractAmount(mainclothused, material))
+          if(!PlayTailorAnimation(who, kit))
+            SendSysMessage(who, "Przestales szyc.", 3, 40);
+            return 0;
+          endif
+          theitem := CreateItemInContainer(cont, objtype, 1);
+          if(!theitem)
+            counter := 100;
+            SendSysMessage(who, "Nie masz miejsca w plecaku., FONT_NORMAL, 40");
+          endif
+          hisskill := GetEffectiveSkill(who, SKILLID_TAILORING);
+          if(RandomInt(500) < dif)
+            if(hisskill >= 100)
+              theitem.quality := EXP_QUALITY;
+              tname := "Wyjatkowej jakosci " + itemname + " [Wykonany przez " + who.name + "]";
+            elseif(hisskill >= 98)
+              theitem.quality := EXP_QUALITY;
+              tname := "Wyjatkowej jakosci " + itemname + " [Wykonany przez " + who.name + "]";
+            else
+              tname := "Wyjatkowej jakosci " + itemname;
+            endif
+            SetName(theitem, tname);
+            SendSysMessage(who, "Uszyles wyjatkowej jakosci przedmiot i wlozyles go do plecaka.", FONT_NORMAL, 90);
+            
+          else
+            rint := RandomInt(100);
+            var debil := 10;
+            
+             if(rint < debil)
+              SendSysMessage( who, "Uszyles przedmiot, aczkolwiek niskiej jakosci.", FONT_NORMAL, 40);
+              rint := RandomInt(2) + 1;
+              case(rint)
+                1: theitem.quality := 0.7;
+                2: theitem.quality := 0.8;
+                3: theitem.quality := 0.9;
+              endcase
+            else
+              SendSysMessage( who, "Uszyles przedmiot i wlozyles go do plecaka.", FONT_NORMAL, COLOR_GREEN );
+              theitem.quality := 1.0;
+            endif
+          endif
+          theitem.hp := theitem.maxhp;
+        endif
+      else
+        if(!PlayTailorAnimation(who, kit))
+          SendSysMessage(who, "Przestales szyc.", 3, 40);
+          return 0;
+        endif
+        SendSysMessage(who, "Nie udalo Ci sie tego uszyc i zniszczyles czesc materialu.", FONT_NORMAL, 40);
+        SubtractAmount(mainclothused, RandomInt(material+1));
+      endif
+      if(Cint(GetObjProperty(theitem, "exceptional")))
+        break;
+      endif
+      counter := counter + 1;
+    else
+      SendSysMessage(who,"Masz za malo materialu.", FONT_NORMAL, 40);
+      counter := 100;
+    endif
+  endwhile
+endfunction
+
+function MakeLeatherItems(who, cloth, kit)
+  GFInitGump(60, 0);
+  GFNoDispose();
+  GFNoClose();
+  GFPage(0);
+  GFResizePic(0, 60, 9270, 500, 400);
+  GFTextLine(180,  80, 900, "Wyroby Skorzane");
+  GFTextLine( 70, 121, 1109, "Lekkie");
+  GFTextLine(190, 121, 1109, "Utwardzane");
+  GFTextLine(375, 121, 1109, "Damskie");
+  GFTextLine(325, 351, 1109, "Obuwie");
+  GFTextLine(125, 351, 1109, "Pojemniki");
+  GFTextLine( 90, 380, 900, "To co ostatnio");
+  var lastitm := GFButtonID( 70, 384,   3, 4, 99);
+  var close   := GFButtonID(410, 380, 242, 241, 1);
+  GFButtonPage(110, 125, 1209, 1210, 2);
+  GFButtonPage(260, 125, 1209, 1210, 3);
+  GFButtonPage(425, 125, 1209, 1210, 4);
+  GFButtonPage(190, 355, 1209, 1210, 5);
+  GFButtonPage(370, 355, 1209, 1210, 6);
+  GFTextLine(  300, 420, 900, "Ilosc:");
+  var sa := GetObjProperty(who, "#TailorAmt");
+  if(!sa)
+    sa := 1;
+  endif
+  var ct := GFTextEntry(330, 420, 100, 30, 900, sa);
+  ComposeLeatherSubMenu(who);
+  var res := GFSendGump(who);
+  if((res[0] == 999) || (res[close.keyid]))
+    SendSysMessage(who, "Anulowano.", FONT_NORMAL, 40);
+    return;
+  endif
+  var amt := CInt(SplitWords(res[ct.keyid])[2]);
+  if(!amt)
+    amt := 1;
+  elseif(amt > 50)
+    SendSysMessage(who, "Mozesz szyc najwyzej piecdziesiat rzeczy naraz.", FONT_NORMAL, 40);
+    return;
+  endif
+  SetObjProperty(who, "#TailorAmt", amt);
+  var cont := kit.container;
+  if(!cont)
+    cont := who.backpack;
+  endif
+  var objtype := res[0];
+  if(res[lastitm.keyid])
+    objtype := GetObjProperty(who, "LastTailorItem");
+    if(!objtype)
+      SendSysMessage(who, "Niczego wczesniej nie szyles.", FONT_NORMAL, 40);
+      return;
+    endif
+  endif
+  SetObjProperty(who, "LastTailorItem", objtype);
+  var material := CInt(leather_cfg[objtype]."material");
+  var skill    := CInt(leather_cfg[objtype]."skill");
+  var itemname := leather_cfg[objtype]."name";
+  var ixodynixprop := Cint(GetObjProperty(cloth, "ixodynix"));
+  var daemonprop := Cint(GetObjProperty(cloth, "daemon"));
+  var wodnaprop := Cint(GetObjProperty(cloth, "wodna"));
+  if(!ReserveItem(cloth))
+    SendSysMessage(who,"Nie mozesz uzyc tej skory.", FONT_NORMAL, 40);
+    return;
+  endif
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  var tname, dif, theitem, hisskill, rint, totalcloth;
+  var scolor := cloth.color;
+  while(counter < amt)
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Przestales szyc.", FONT_NORMAL, 40);
+      break;
+    endif
+    totalcloth := cloth.amount;
+    if(totalcloth >= material)
+      dif := (GetEffectiveSkill(who, SKILLID_TAILORING) - skill);
+      if(dif < 5)
+        dif := 5;
+      elseif(dif > 40)
+        dif := 50;
+      endif
+      DamageTool(who, kit);
+      if(CheckSkill(who, SKILLID_TAILORING, skill, skill*2))
+        if(SubtractAmount(cloth, material))
+          if(!PlayTailorAnimation(who, kit))
+            SendSysMessage(who, "Przestales szyc.", 3, 40);
+            return 0;
+          endif
+          theitem := CreateItemInContainer(cont, objtype, 1);
+          theitem.color := scolor;
+          theitem.ar_mod := armod;
+          theitem.hp := theitem.maxhp;
+          if(ixodynixprop)
+            SetObjProperty(theitem, "ixodynix", 1);
+          endif
+	  if(daemonprop)
+            SetObjProperty(theitem, "daemon", 1);
+          endif
+		
+	  if(wodnaprop)
+            SetObjProperty(theitem, "wodna", 1);
+          endif
+
+          var hidename := getobjproperty(cloth, "cname");
+          if(!hidename)
+            hidename := "";
+          endif
+          if(!theitem)
+            counter := 100;
+            SendSysMessage(who, "Nie masz miejsca w plecaku.", FONT_NORMAL, 40);
+          endif
+          hisskill := GetEffectiveSkill(who, SKILLID_TAILORING);
+          var str := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH) / 10);
+	  var magery := Cint(GetEffectiveSkill(who, SKILLID_MAGERY));
+          var int := 0;
+	  if(magery > 0)
+          	int := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_INTELLIGENCE) / 10);
+	  else
+		int := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY) / 10);
+	  endif
+
+          var statmody := str + int;
+          var itembonus := Cint(GetObjProperty(theitem, "exp"));
+          var champbonus := 0;
+          if(Cint(GetObjProperty(kit, "69exodus")))
+            champbonus := 200;
+          endif
+          if(!itembonus)
+            itembonus := 1;
+          endif
+          var excmod := Cint((hisskill / 10) + 3) + statmody + itembonus + champbonus;
+          var modpts := 0;
+          if(hisskill > (skill - 20))
+            modpts := (hisskill - skill);
+          endif
+          if((excmod + modpts) >= RandomInt(7000) && hisskill > 80)
+            if(hisskill >= 100)
+              theitem.quality := EXP_QUALITY;
+              theitem.hp := theitem.maxhp;
+               theitem.ar_mod := armod + 10;
+              tname := "Wyjatkowej jakosci " + itemname + " " + hidename + " [Wykonany przez " + who.name + "]";
+            elseif(hisskill >= 98)
+              theitem.quality := EXP_QUALITY;
+              theitem.hp := theitem.maxhp;
+              tname := "Wyjatkowej jakosci " + itemname + " " + hidename + " [Wykonany przez " + who.name + "]";
+            else
+              tname := "Wyjatkowej jakosci " + itemname + " " + hidename;
+            endif
+            SetName(theitem, tname);
+            SendSysMessage(who, "Uszyles wyjatkowej jakosci przedmiot i wlozyles go do plecaka.", FONT_NORMAL, 90);
+            SetObjProperty(theitem, "exceptional", 1);
+          else
+            rint := RandomInt(100);
+            var debil := 5;
+            if(rint < debil)
+              SendSysMessage( who, "Uszyles przedmiot, aczkolwiek niskiej jakosci.", FONT_NORMAL, 40 );
+              rint := RandomInt(2) + 1;
+              var hname := hidename;
+              theitem.ar_mod := armod -3;
+              theitem.name := "przecietnej jakosci " + itemname + " " + hname;
+              case(rint)
+                1: theitem.quality := 0.7;
+                2: theitem.quality := 0.8;
+                3: theitem.quality := 0.9;
+              endcase
+            theitem.hp := theitem.maxhp;
+            theitem.ar_mod := armod;
+
+            else
+              SendSysMessage( who, "Uszyles przedmiot i wlozyles go do plecaka.", FONT_NORMAL, COLOR_GREEN );
+              theitem.quality := 1.0;
+              var hname := hidename;
+              theitem.name := itemname + " " + hname;
+              theitem.ar_mod := armod;
+              theitem.hp := theitem.maxhp;
+            endif
+          endif
+        endif
+      else
+        if(!PlayTailorAnimation(who, kit))
+          SendSysMessage(who, "Przestales szyc.", 3, 40);
+          return 0;
+        endif
+
+        SendSysMessage(who, "Nie udalo Ci sie tego uszyc i zniszczyles czesc materialu.", FONT_NORMAL, 40);
+        SubtractAmount(cloth, RandomInt(material+1));
+      endif
+      counter := counter + 1;
+    else
+      SendSysMessage(who,"Masz za malo skor.", FONT_NORMAL, 40);
+      counter := 100;
+    endif
+  endwhile
+endfunction
+
+function ComposeClothSubMenu(who)
+  var num := 2;
+  var skill := (GetEffectiveSkill(who, SKILLID_TAILORING) + 20);
+  var color := 0;
+  var cfg := ReadConfigFile(":tailoring:tailoring");
+  while(num < 11)
+    case(num)
+       2: GFPage(2);        // Page 2 (shirts)
+          if(skill >= CInt(cfg[0x1517]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 1209, 1210, 1, 5399);
+          endif
+          GFTextLine( 80, 175, color, "koszula");
+          GFTilePic(  60, 200, 5399);
+          color := 0;
+          if(skill >= CInt(cfg[0x1efd]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 1209, 1210, 1, 7933);
+          endif
+          GFTextLine(150, 175, color, "jedwabna koszula");
+          GFTilePic( 160, 200, 7933);
+          color := 0;
+          if(skill >= CInt(cfg[0x1ffd]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 1209, 1210, 1, 8189);
+          endif
+          GFTextLine(265, 175, color, "wyjsciowa");
+          GFTilePic( 250, 200, 8189);
+          color := 0;
+          if(skill >= CInt(cfg[0x1fa1]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 1209, 1210, 1, 8097);
+          endif
+          GFTextLine(375, 175, color, "tunika");
+          GFTilePic( 350, 200, 8097);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x27A1]."skill"))
+            color := 900;
+           GFButtonIDC(510, 200, 1209, 1210, 1, 10145);
+          endif
+          GFTextLine(475, 175, color, "jin-baori");
+          GFTilePic( 450, 200, 10145);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x2B04]."skill"))
+            color := 900;
+           GFButtonIDC(510, 295, 1209, 1210, 1, 11012);
+          endif
+          GFTextLine(475, 270, color, "plaszcz krolewski");
+          GFTilePic( 430, 295, 11012);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x1515]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 1209, 1210, 1, 5397);
+          endif
+          GFTextLine( 75, 270, color, "plaszcz");
+          GFTilePic(  50, 295, 5397);
+          color := 0;
+          if(skill >= CInt(cfg[0x1f9f]."skill"))
+            color := 900;
+           GFButtonIDC(210, 295, 1209, 1210, 1, 8095);
+          endif
+          GFTextLine(160, 270, color, "suknia blazna");
+          GFTilePic( 150, 295, 8095);
+          color := 0;
+          if(skill >= CInt(cfg[0x1f7b]."skill"))
+            color := 900;
+            GFButtonIDC(310, 295, 1209, 1210, 1, 8059);
+          endif
+          GFTextLine(275, 270, color, "dublet");
+          GFTilePic( 245, 295, 8059);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x279C]."skill"))
+            color := 900;
+            GFButtonIDC(410, 295, 1209, 1210, 1, 10140);
+          endif
+          GFTextLine(375, 270, color, "hakama-shita");
+          GFTilePic( 345, 295, 10140);
+          color := 0;
+          
+        3: GFPage(3);        // Page 4 (pants)
+          if(skill >= CInt(cfg[0x152e]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 1209, 1210, 1, 5422);
+          endif
+          GFTextLine( 90, 175, color, "krotkie spodnie");
+          GFTilePic( 100, 200, 5422);
+          color := 0;
+          if(skill >= CInt(cfg[0x1539]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 1209, 1210, 1, 5433);
+          endif
+          GFTextLine(240, 175, color, "dlugie spodnie");
+          GFTilePic( 250, 200, 5433);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x279A]."skill"))
+            color := 900;
+            GFButtonIDC(450, 200, 1209, 1210, 1, 10138);
+          endif
+          GFTextLine(390, 175, color, "hakama");
+          GFTilePic( 400, 200, 10138);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x1537]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 1209, 1210, 1, 5431);
+          endif
+          GFTextLine(120, 270, color, "kilt");
+          GFTilePic( 100, 295, 5431);
+          color := 0;
+          if(skill >= CInt(cfg[0x1516]."skill"))
+            color := 900;
+            GFButtonIDC(300, 295, 1209, 1210, 1, 5398);
+          endif
+          GFTextLine(260, 270, color, "spodnica");
+          GFTilePic( 250, 295, 5398);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x279B]."skill"))
+            color := 900;
+            GFButtonIDC(450, 295, 1209, 1210, 1, 10139);
+          endif
+          GFTextLine(410, 270, color, "tattsuke-hakama");
+          GFTilePic( 400, 295, 10139);
+          color := 0;
+          
+       4: GFPage(4);        // Page 4 (robes/dresses)
+          if(skill >= CInt(cfg[0x1f01]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 1209, 1210, 1, 7937);
+          endif
+          GFTextLine(110, 175, color, "suknia");
+          GFTilePic(  90, 200, 7937);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x2782]."skill"))
+            color := 900;
+            GFButtonIDC(300, 295, 1209, 1210, 1, 10114);
+          endif
+          GFTextLine(235, 270, color, "meskie kimono");
+          GFTilePic(  235, 295, 10114);
+          color := 0;
+          
+            if(skill >= CInt(cfg[0x2799]."skill"))
+            color := 900;
+            GFButtonIDC(415, 295, 1209, 1210, 1, 10137);
+          endif
+          GFTextLine(350, 270, color, "kamishimo");
+          GFTilePic(  350, 295, 10137);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x1eff]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 1209, 1210, 1, 7935);
+          endif
+          GFTextLine(235, 175, color, "stylowa suknia");
+          GFTilePic( 235, 200, 7935);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x2783]."skill"))
+            color := 900;
+            GFButtonIDC(415, 200, 1209, 1210, 1, 10115);
+          endif
+          GFTextLine(350, 175, color, "damskie kimono");
+          GFTilePic( 350, 200, 10115);
+          color := 0;
+          if(who.race == 1)
+            if(skill >= CInt(cfg[0x2FB9]."skill"))
+            color := 900;
+            GFButtonIDC(530, 200, 1209, 1210, 1, 12217);
+          endif
+          GFTextLine(465, 175, color, "elfia toga");
+          GFTilePic(465, 200, 12217);
+          color := 0;
+          
+           if(skill >= CInt(cfg[0x2FBA]."skill"))
+            color := 900;
+            GFButtonIDC(530, 295, 1209, 1210, 1, 12218);
+          endif
+          GFTextLine(465, 270, color, "elfia toga");
+          GFTilePic(465, 295, 12218);
+          color := 0;
+          endif
+         if(skill >= CInt(cfg[0x9945]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 1209, 1210, 1, 39237);
+          endif
+          GFTextLine(120, 270, color, "suknia");
+          GFTilePic(  90, 295, 7939);
+          color := 0;
+       5: GFPage(5);        //Page 5 (miscellaneous)
+          if(skill >= CInt(cfg[0x1541]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 1209, 1210, 1, 5441);
+          endif
+          GFTextLine(100, 175, color, "przepaska");
+          GFTilePic( 100, 200, 5441);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x27A0]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 1209, 1210, 1, 10144);
+          endif
+          GFTextLine(250, 175, color, "obi");
+          GFTilePic( 250, 200, 10144);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x153b]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 1209, 1210, 1, 5435);
+          endif
+          GFTextLine(95, 270, color, "maly fartuch");
+          GFTilePic( 100, 295, 5435);
+          color := 0;
+          if(skill >= CInt(cfg[0x153d]."skill"))
+            color := 900;
+            GFButtonIDC(300, 295, 1209, 1210, 1, 5437);
+          endif
+          GFTextLine(245, 270, color, "pelny fartuch");
+          GFTilePic( 250, 295, 5437);
+          color := 0;
+       6: GFPage(6);        //Page 6 (hats)
+          if(skill >= CInt(cfg[0x153f]."skill"))
+            color := 900;
+            GFButtonIDC(110, 170, 1209, 1210, 1, 5439);
+          endif
+          GFTextLine( 70, 145, color, "bandana");
+          GFTilePic(  60, 170, 5439);
+          color := 0;
+          if(skill >= CInt(cfg[0x1543]."skill"))
+            color := 900;
+            GFButtonIDC(260, 170, 1209, 1210, 1, 5443);
+          endif
+          GFTextLine(225, 145, color, "chusta");
+          GFTilePic( 210, 170, 5443);
+          color := 0;
+          if(skill >= CInt(cfg[0x1715]."skill"))
+            color := 900;
+            GFButtonIDC(410, 170, 1209, 1210, 1, 5909);
+          endif
+          GFTextLine(370, 145, color, "czapka");
+          GFTilePic( 360, 170, 5909);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x2798]."skill"))
+            color := 900;
+            GFButtonIDC(510, 170, 1209, 1210, 1, 10136);
+          endif
+          GFTextLine(470, 145, color, "kasa");
+          GFTilePic( 460, 170, 10136);
+          color := 0;
+          
+          if(skill >= CInt(cfg[0x1718]."skill"))
+            color := 900;
+            GFButtonIDC(110, 240, 1209, 1210, 1, 5912);
+          endif
+          GFTextLine( 55, 215, color, "kapelusz maga");
+          GFTilePic(  60, 240, 5912);
+          color := 0;
+          if(skill >= CInt(cfg[0x171a]."skill"))
+            color := 900;
+            GFButtonIDC(260, 240, 1209, 1210, 1, 5914);
+          endif
+          GFTextLine(210, 215, color, "z piorkiem");
+          GFTilePic( 210, 240, 5914);
+          color := 0;
+          if(skill >= CInt(cfg[0x1713]."skill"))
+            color := 900;
+            GFButtonIDC(410, 240, 1209, 1210, 1, 5907);
+          endif
+          GFTextLine(360, 215, color, "farmera");
+          GFTilePic( 360, 240, 5907);
+          color := 0;
+          if(skill >= CInt(cfg[0x1714]."skill"))
+            color := 900;
+            GFButtonIDC(110, 310, 1209, 1210, 1, 5908);
+          endif
+          GFTextLine( 65, 285, color, "z rondlem");
+          GFTilePic(  60, 310, 5908);
+          color := 0;
+          if(skill >= CInt(cfg[0x171b]."skill"))
+            color := 900;
+            GFButtonIDC(260, 310, 1209, 1210, 1, 5915);
+          endif
+          GFTextLine(210, 285, color, "trojkatny");
+          GFTilePic( 210, 310, 5915);
+          color := 0;
+          if(skill >= CInt(cfg[0x171c]."skill"))
+            color := 900;
+            GFButtonIDC(410, 310, 1209, 1210, 1, 5916);
+          endif
+          GFTextLine(350, 285, color, "czapka blazna");
+          GFTilePic( 360, 310, 5916);
+          color := 0;
+    endcase
+    num := num + 1;
+  endwhile
+  return;
+endfunction
+
+
+function ComposeLeatherSubMenu(who)
+  var num := 2;
+  var skill := (GetEffectiveSkill(who, SKILLID_TAILORING) + 20);
+  var color := 0;
+  var cfg := ReadConfigFile(":tailoring:tailoring");
+ while(num < 11)
+    case(num)
+       2: GFPage(2);        // Page 2 (leather)
+        if(who.race == 0)
+          if(skill >= CInt(cfg[0x1db9]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 1209, 1210, 1, 7609);
+          endif
+          GFTextLine( 75, 175, color, "czepiec");
+          GFTilePic(  60, 200, 7609);
+          color := 0;
+        else
+
+          if(skill >= CInt(cfg[0x2B72]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 1209, 1210, 1, 11122);
+          endif
+          GFTextLine( 75, 175, color, "czepiec");
+          GFTilePic(  60, 200, 11122);
+          color := 0;
+        endif
+        
+          if(skill >= CInt(cfg[0x13c7]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 1209, 1210, 1, 5063);
+          endif
+          GFTextLine(165, 175, color, "karczek");
+          GFTilePic( 160, 200, 5063);
+          color := 0;
+          if(skill >= CInt(cfg[0x13c6]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 1209, 1210, 1, 5062);
+          endif
+          GFTextLine(265, 175, color, "rekawice");
+          GFTilePic( 250, 200, 5062);
+          color := 0;
+          if(skill >= CInt(cfg[0x13cd]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 1209, 1210, 1, 5069);
+          endif
+          GFTextLine(360, 175, color, "naramienniki");
+          GFTilePic( 350, 200, 5069);
+          color := 0;
+          if(skill >= CInt(cfg[0x13cb]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 1209, 1210, 1, 5067);
+          endif
+          GFTextLine( 65, 270, color, "nogawnice");
+          GFTilePic(  50, 295, 5067);
+          color := 0;
+          if(skill >= CInt(cfg[0x13cc]."skill"))
+            color := 900;
+           GFButtonIDC(210, 295, 1209, 1210, 1, 5068);
+          endif
+          GFTextLine(175, 270, color, "tunika");
+          GFTilePic( 150, 295, 5068);
+          color := 0;
+          
+      
+          
+       3: GFPage(3);        // Page 4 (studded leather)
+        if(who.race == 0)
+          if(skill >= CInt(cfg[0x13d6]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 1209, 1210, 1, 5078);
+          endif
+          GFTextLine( 70, 175, color, "karczek");
+          GFTilePic(  60, 200, 5078);
+          color := 0;
+          if(skill >= CInt(cfg[0x13d5]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 1209, 1210, 1, 5077);
+          endif
+          GFTextLine(165, 175, color, "rekawice");
+          GFTilePic( 160, 200, 5077);
+          color := 0;
+          if(skill >= CInt(cfg[0x13d4]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 1209, 1210, 1, 5076);
+          endif
+          GFTextLine(260, 175, color, "naramienniki");
+          GFTilePic( 250, 200, 5076);
+          color := 0;
+          if(skill >= CInt(cfg[0x13da]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 1209, 1210, 1, 5082);
+          endif
+          GFTextLine(365, 175, color, "nogawnice");
+          GFTilePic( 350, 200, 5082);
+          color := 0;
+          if(skill >= CInt(cfg[0x13db]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 1209, 1210, 1, 5083);
+          endif
+          GFTextLine( 75, 270, color, "tunika");
+          GFTilePic(  50, 295, 5083);
+          color := 0;
+          
+        else // rzeczy elfowe
+        
+        if(skill >= CInt(cfg[0x2B76]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 1209, 1210, 1, 11126);
+          endif
+          GFTextLine( 70, 175, color, "karczek");
+          GFTilePic(  60, 200, 11126);
+          color := 0;
+          if(skill >= CInt(cfg[0x2B75]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 1209, 1210, 1, 11125);
+          endif
+          GFTextLine(165, 175, color, "rekawice");
+          GFTilePic( 160, 200, 11125);
+          color := 0;
+          if(skill >= CInt(cfg[0x2B77]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 1209, 1210, 1, 11127);
+          endif
+          GFTextLine(260, 175, color, "naramienniki");
+          GFTilePic( 250, 200, 11127);
+          color := 0;
+          if(skill >= CInt(cfg[0x2B78]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 1209, 1210, 1, 11128);
+          endif
+          GFTextLine(365, 175, color, "nogawnice");
+          GFTilePic( 350, 200, 11128);
+          color := 0;
+          if(skill >= CInt(cfg[0x2B74]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 1209, 1210, 1, 11124);
+          endif
+          GFTextLine( 75, 270, color, "tunika");
+          GFTilePic(  50, 295, 11124);
+          color := 0;
+        endif
+          // koniec elfowych
+          
+       4: GFPage(4);        // Page 4 (female)
+          if(skill >= CInt(cfg[0x1c0a]."skill"))
+            color := 900;
+            GFButtonIDC(110, 200, 1209, 1210, 1, 7178);
+          endif
+          GFTextLine( 55, 175, color, "napiersnik");
+          GFTilePic(  60, 200, 7178);
+          color := 0;
+        if(who.race == 0)
+          if(skill >= CInt(cfg[0x1c0c]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 1209, 1210, 1, 7180);
+          endif
+          GFTextLine(135, 175, color, "nabijany napiersnik");
+          GFTilePic( 160, 200, 7180);
+          color := 0;
+        else
+          if(skill >= CInt(cfg[0x2B79]."skill"))
+            color := 900;
+            GFButtonIDC(210, 200, 1209, 1210, 1, 11129);
+          endif
+          GFTextLine(135, 175, color, "elfi nabijany napiersnik");
+          GFTilePic( 160, 200, 11129);
+          color := 0;
+        endif
+          if(skill >= CInt(cfg[0x1c00]."skill"))
+            color := 900;
+            GFButtonIDC(310, 200, 1209, 1210, 1, 7168);
+          endif
+          GFTextLine(270, 175, color, "spodnie");
+          GFTilePic( 265, 200, 7168);
+          color := 0;
+          if(skill >= CInt(cfg[0x1c08]."skill"))
+            color := 900;
+            GFButtonIDC(410, 200, 1209, 1210, 1, 7176);
+          endif
+          GFTextLine(370, 175, color, "spodnica");
+          GFTilePic( 360, 200, 7176);
+          color := 0;
+          if(skill >= CInt(cfg[0x1c06]."skill"))
+            color := 900;
+            GFButtonIDC(110, 295, 1209, 1210, 1, 7174);
+          endif
+          GFTextLine( 30, 270, color, "zenska skorzana");
+          GFTilePic(  50, 295, 7174);
+          color := 0;
+          if(skill >= CInt(cfg[0x1c02]."skill"))
+            color := 900;
+           GFButtonIDC(210, 295, 1209, 1210, 1, 7170);
+          endif
+          GFTextLine(140, 270, color, "kobieca nabijana");
+          GFTilePic( 150, 295, 7170);
+          color := 0;
+       5: GFPage(5);        //Page 5 (containers)
+          if(skill >= CInt(cfg[0x0e76]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 1209, 1210, 1, 3702);
+          endif
+          GFTextLine(120, 175, color, "torba");
+          GFTilePic(  90, 200, 3702);
+          color := 0;
+          if(skill >= CInt(cfg[0x0e79]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 1209, 1210, 1, 3705);
+          endif
+          GFTextLine(265, 175, color, "mieszek");
+          GFTilePic( 235, 200, 3705);
+          color := 0;
+          if(skill >= CInt(cfg[0x0e75]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 1209, 1210, 1, 3701);
+          endif
+          GFTextLine(115, 270, color, "plecak");
+          GFTilePic(  90, 295, 3701);
+          color := 0;
+          if(skill >= CInt(cfg[0x2b02]."skill"))
+            color := 900;
+            GFButtonIDC(300, 295, 1209, 1210, 1, 0x2b02);
+          endif
+          GFTextLine(265, 270, color, "kolczan");
+          GFTilePic(  235, 295, 0x2b02);
+          color := 0;
+       6: GFPage(6);        //Page 6 (shoes)
+          if(skill >= CInt(cfg[0x170d]."skill"))
+            color := 900;
+            GFButtonIDC(150, 200, 1209, 1210, 1, 5901);
+          endif
+          GFTextLine(115, 175, color, "sandaly");
+          GFTilePic( 100, 200, 5901);
+          color := 0;
+          if(skill >= CInt(cfg[0x170f]."skill"))
+            color := 900;
+            GFButtonIDC(300, 200, 1209, 1210, 1, 5903);
+          endif
+          GFTextLine(270, 175, color, "buty");
+          GFTilePic( 250, 200, 5903);
+          color := 0;
+          if(skill >= CInt(cfg[0x170b]."skill"))
+            color := 900;
+            GFButtonIDC(150, 295, 1209, 1210, 1, 5899);
+          endif
+          GFTextLine(100, 270, color, "skorzane buty");
+          GFTilePic( 100, 295, 5899);
+          color := 0;
+          if(skill >= CInt(cfg[0x1711]."skill"))
+            color := 900;
+            GFButtonIDC(300, 295, 1209, 1210, 1, 5905);
+          endif
+          GFTextLine(240, 270, color, "wysokie buty");
+          GFTilePic( 250, 295, 5905);
+          color := 0;
+          
+              if(who.race == 1)
+          if(skill >= CInt(cfg[0x2FC4]."skill"))
+            color := 900;
+            GFButtonIDC(450, 200, 1209, 1210, 1, 12228);
+          endif
+          GFTextLine(405, 175, color, "elfie buty");
+          GFTilePic( 385, 200, 12228);
+          color := 0;
+              endif
+    endcase
+    num := num + 1;
+  endwhile
+  return;
+endfunction
+
+
+function GFButtonIDC(x, y, release, press, close, retval)
+        close := close;
+        var line := "button " + CStr(gfref.x + CInt(x)) + " " + CStr(gfref.y + CInt(y));
+        line := line + " " + CStr(CInt(release)) + " " + CStr(CInt(press)) + " ";
+        line := line + "1 0 ";
+        line := line + CStr(retval);
+        gflayout.append( line );
+        return XGFRetVal( gflayout.size(), -1, gfbutid - 1 );
+endfunction

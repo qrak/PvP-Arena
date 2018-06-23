@@ -1,0 +1,42 @@
+use uo;
+use os;
+
+include ":ctf:ctf";
+include ":ctf:initializer";
+
+program StoneControl()
+
+    var forced;
+
+    var stoneserial := Cint(GetGlobalProperty("CtfStoneSerial"));
+        
+    if(!stoneserial)
+        if(CreateCtfStone())
+            print("Stworzylem kamien CTfa gdyz go nie bylo.");
+        else
+            print("Nie udalo sie stworzyc kamienia CTF.");                
+        endif
+    endif
+    
+    SetObjProperty(CtfStone(), "StonePid", GetPid());
+    
+    while(1)
+        StoneSay(Systime_GetHour() + " : " + Systime_GetMinute() );
+
+        if(CheckCtfHour())
+            if(!CheckIfActiveCtf())
+                RunCtf();
+            endif
+        endif
+        
+        forced := Cint(GetGlobalProperty("ForceCtf"));
+        if(forced)
+            RunCtf();
+        endif
+        
+        sleep(60);
+    endwhile
+
+
+endprogram
+

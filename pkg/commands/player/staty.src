@@ -1,0 +1,175 @@
+use uo;
+use basic;
+use vitals;
+
+include "include/yesNo";
+include "include/attributes";
+include "include/staty";
+include ":gumps:gumps";
+include "include/yesNo";
+
+const MAX_PRZYDZIELENIE := 225;
+
+program staty(who)
+
+
+BuildGump(who);
+
+endprogram
+
+function BuildGump(who)
+
+    var theLocks := GetObjProperty(who, "StatLockArray"); 
+    var i;
+    if (!theLocks)
+        theLocks := {}; 
+        for (i:=1; i<=3; i:=i+1) 
+            theLocks.append(0); 
+        endfor 
+        SetObjProperty(who, "StatLockArray", theLocks); 
+    endif
+
+
+    if(Getobjproperty(who, "poly") == 2)
+        SendSysMessage(who, "Nie mozesz zmieniac statystyk w tej postaci.",3,40);
+        return 0;
+    endif
+
+    var suma := 0;
+    var blstr, bldex, blint;
+    GFInitGump(0,0);
+    GFpage (0);
+    GFResizePic(200, 180, 3600, 370, 250);
+    GFCheckerTrans(200,180,370,250);
+    GFTextline(310, 280, 48, "str");
+    GFTilePic(300, 240, 0x208F);
+    var str := GFTextEntry(310, 300, 100, 30, 900, GetBaseStrength(who));
+    if(theLocks[1] == 1)
+        blstr := GFButtonID(310, 320, 11410, 11411, 1);
+    else
+        blstr := GFButtonID(310, 320, 11400, 11401, 1);
+    endif
+    GFTextline(370, 280, 48, "dex");
+    GFTilePic(360, 240, 0x2088);
+    var dex := GFTextEntry(370, 300, 100, 30, 900, GetBaseDexterity(who));
+    if(theLocks[2] == 1)
+        bldex := GFButtonID(370, 320, 11410, 11411, 1);
+    else
+        bldex := GFButtonID(370, 320, 11400, 11401, 1);
+    endif
+    GFTextline(430, 280, 48, "int");
+    GFTilePic(420, 240, 0x2089);
+    var int := GFTextEntry(430, 300, 100, 30, 900, GetBaseIntelligence(who));
+    if(theLocks[3] == 1)
+        blint := GFButtonID(430, 320, 11410, 11411, 1);
+    else
+        blint := GFButtonID(430, 320, 11400, 11401, 1);
+    endif
+    GFTextline(450, 320, 48, "blokuj/odblokuj");
+
+    //var wolne := GetBaseStrength(who) + GetBaseDexterity(who) + GetBaseIntelligence(who);
+    //GFTextline(310, 200, 50, "TWOJ STATCAP: " + CheckStatCap(who));
+    //GFTextline(310, 220, 50, "WOLNYCH PUNKTOW: " + (Cint(CheckStatCap(who)) - wolne));
+    var okay := GFButtonID(350, 360, 2130, 2129, 1);
+    var anuluj := GFButtonID(346, 380, 242, 241, 1);
+    var okno := GFSendGump(who);
+
+    if((okno[0] == 1)  || okno[anuluj.keyid])
+        SendSysMessage(who, "Anulowano.",3,40);
+        RecalcVitals(who);
+        return 0;
+    endif
+
+    if(okno[0] == blstr.keyid) // tu sie zaczyna blokowanie stata
+        BlockStr(who, theLocks);
+    elseif(okno[0] == bldex.keyid)
+        BlockDex(who, theLocks);
+    elseif(okno[0] == blint.keyid)
+        BlockInt(who, theLocks);
+    endif
+
+
+    if(okno[okay.keyid])
+        var sila := Cint(SplitWords(okno[str.keyid])[2]);
+        var zrecz := Cint(SplitWords(okno[dex.keyid])[2]);
+        var intel := Cint(SplitWords(okno[int.keyid])[2]);
+	var lata := Cint(Getobjproperty(who, "lata")) ;
+        suma := sila + zrecz + intel;
+        if(!yesNo(who, "Czy chcesz zmnienic swoje statystyki do nastepujacych wartosci? Pamietaj ze ustawianie wiekszej sumy niz " + MAX_PRZYDZIELENIE + " nie zadziala i jest to jednorazowe. UWAGA ZMIANY NIEODWRACALNE! W PRZYPADKU POMYLKI NIE ZOSTANA CI PRZYWROCONE STATYSTYKI PRZEZ GMA!"));
+            return 0;
+        endif
+
+	if(lata > 18 && Cint(GetObjProperty(who, "Staty")) == 1)
+		var base_str	:= GetBaseStrength(who);
+		var base_dex	:= GetBaseDexterity(who);
+		var base_int	:= GetBaseIntelligence(who);
+		if(sila < base_str)
+			SetBaseStrength(who, sila);
+		elseif(zrecz < base_dex)
+			SetBaseDexterity(who, zrecz);
+		elseif(intel < base_int)
+			SetBaseIntelligence(who, intel);
+		endif
+		SendSysMessage(who, "Zmniejszyles swoje statysyki.",3,63);
+		return 0;
+	endif
+
+
+	if(suma > MAX_PRZYDZIELENIE)
+		SendSysMessage(who, "W chuja lecisz? Suma wieksza niz " + MAX_PRZYDZIELENIE + "!",3,40);
+		return 0;
+	endif
+
+	if(Cint(GetObjProperty(who, "Staty")) == 1)
+		SendSysMessage(who, "Juz uzywales tej komendy, jak wczesniej wspominano mozna uzyc jeden raz.", 3, 40);
+		return 0;
+	endif
+
+            SetBaseStrength(who, sila);
+            SetBaseDexterity(who, zrecz);
+            SetBaseIntelligence(who, intel);
+		SetObjProperty(who, "Staty", 1);
+            RecalcVitals(who);
+            BuildGump(who);
+
+    
+    endif
+    
+endfunction
+
+function BlockStr(who, theLocks)
+    if(theLocks[1] == 0)
+        theLocks[1] := 1;
+        SendSysMessage(who, "Zablokowales przyrost sily.", 3,40);
+    else
+        theLocks[1] := 0;
+        SendSysMessage(who, "Odblokowales przyrost sily.", 3,63);
+    endif
+    SetObjProperty(who, "StatLockArray", theLocks); 
+    BuildGump(who);
+endfunction
+
+function BlockDex(who, theLocks)
+    if(theLocks[2] == 0)
+        theLocks[2] := 1;
+        SendSysMessage(who, "Zablokowales przyrost zrecznosci.", 3,40);
+    else
+        theLocks[2] := 0;
+        SendSysMessage(who, "Odblokowales przyrost zrecznosci.", 3,63);
+    endif
+    SetObjProperty(who, "StatLockArray", theLocks); 
+    BuildGump(who);
+endfunction
+
+function BlockInt(who, theLocks)
+    if(theLocks[3] == 0)
+        theLocks[3] := 1;
+        SendSysMessage(who, "Zablokowales przyrost inteligencji.", 3,40);
+    else
+        theLocks[3] := 0;
+        SendSysMessage(who, "Odblokowales przyrost inteligencji.", 3,63);
+    endif
+    SetObjProperty(who, "StatLockArray", theLocks); 
+    BuildGump(who);
+endfunction
+

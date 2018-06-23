@@ -1,0 +1,33 @@
+use uo;
+
+include "util/bank";
+
+program wipedupe(who)
+
+SendSysMessage(who, "Wybierz gracza ktoremu chcesz usunac zduplikowane itemy.");
+
+var cel := Target(who);
+
+if(!cel)
+return 0;
+endif
+
+
+var bank := FindBankBox(cel);
+
+if(!bank)
+return 0;
+endif
+
+foreach duped in EnumerateItemsInContainer(bank) 
+
+if(GetObjProperty(duped, "Duped"))
+if(!duped.isa(POLCLASS_CONTAINER))
+DestroyItem(duped);
+endif
+endif
+
+endforeach
+
+
+endprogram

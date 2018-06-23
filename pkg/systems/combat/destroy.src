@@ -1,0 +1,94 @@
+use vitals;
+use uo;
+use cfgfile;
+
+include "include/yesNo";
+include "include/clock";
+include "include/attributes";
+include "unequip";
+include ":combat:rare/unequip/setuneq";
+
+var licz := 0;
+var licz2 := 0;
+var itemdesc := ReadConfigFile("itemdesc");
+
+program HandleMods(item)
+   // if(who.cmdlevel)
+     //   return 1;
+    //endif
+    //print(who.name + " zdejmuje " + item.desc + " serial: " + Hex(item.serial));
+    var ser := GetObjProperty(item, "#equippedby");
+    var who := SystemFindObjectBySerial(cint(ser), SYSFIND_SEARCH_OFFLINE_MOBILES);
+    var penalty  := CInt(itemdesc[item.objtype].DexPenalty);
+    var penaltystr  := CInt(itemdesc[item.objtype].StrPenalty);
+    var platemail := 0;
+    if(item.objtype==0x1c04 || (item.objtype>=0x1408 && item.objtype<=0x1419) || (item.objtype>=0x1410 && item.objtype<=0x1418) || item.objtype == 0x27C8 || item.objtype == 0x27CB || item.objtype == 0x27D3 || item.objtype == 0x27C4 || item.objtype == 0x27C0 || (item.objtype>=0x3160 && item.objtype<=0x3164)  )
+        platemail :=1;
+    endif
+                    
+    if(item.objtype>=0x2B06 && item.objtype<=0x2B12)
+        platemail :=1;
+    endif
+                    
+    if(item.objtype>=0x1B72 && item.objtype<=0x1B7B || item.objtype == 0x1BC3 || item.objtype == 0x1BC4 || item.objtype == 0x2B01) // tarcze
+        platemail := 1;
+    endif
+
+      case(item.objtype)
+        0x2641:
+        0x2647:
+        0x2643:
+        0x2657:
+        0x2645:
+        0x2646:
+            SetObjProperty(who, "#resist_mod", Cint(GetObjProperty(who, "#resist_mod")) - 5);
+            ModifyAttributeTemporaryMod(who, ATTRIBUTEID_MAGICRESISTANCE, Cint(GetObjProperty(who, "#resist_mod")));
+            EraseObjProperty(who, "#resist_mod");            
+    endcase
+
+    if(penalty)
+      SetDexterityMod(who, GetDexterityMod(who) + penalty);
+    endif
+    if(penaltystr)
+      SetStrengthMod(who, GetStrengthMod(who) + penaltystr);
+    endif
+    if(Cint(GetObjProperty(item, "ixodynix")) && platemail == 0)
+        CheckIxodynix(who);
+    endif
+    if(Cint(GetObjProperty(item, "gorx")))
+        CheckGorx(who, item);
+    endif
+    if(Cint(GetObjProperty(item, "wodna")))
+        CheckWodna(who);
+    endif
+    if(Cint(GetObjProperty(item, "daemon")))
+        CheckDaemon(who);
+    endif
+
+	var skora;
+	var count := 0;
+	var itemdesc_cfg := ReadConfigFile( ":*:itemdesc" );
+	var czyskora;
+	foreach item in ListEquippedItems(who)
+		czyskora := Cint(itemdesc_cfg[item.objtype].skora);
+		if(czyskora)
+			count := count + 1;
+		endif
+	endforeach
+	who.weapon.speed_mod := count;
+
+    if(Cint(GetObjProperty(item, "#Consecrate")))
+        SendSysMessage(who, "Zdjales bron ktora byla pod wplywem czaru consecrate weapon. Dzialanie czaru zakonczone.",3,40);
+        var thepid := CInt(GetObjProperty(who, "#ConsecratePid"));
+        var process := GetProcess(thepid);
+        process.Kill();
+        EraseObjproperty(item, "#Consecrate");
+        EraseObjproperty(who, "#ConsecratePid");        
+    endif
+
+    EraseObjProperty( item, "EquippedAlready");
+    EraseObjProperty(item, "#equippedby");
+    MagicItems(who, item);
+    RareItems(who, item);
+    return 1;
+endprogram

@@ -1,0 +1,48 @@
+use math;
+use uo;
+include "include/client";
+
+
+program sadz(who, nasiono)
+if (!ReserveItem (nasiono))
+		SendSysMessage (who, "Nie mozesz teraz tego uzyc.");
+		return;
+	endif
+
+case (nasiono.objtype)
+0xf015: //maryha
+endcase
+
+        var location_x := who.x;
+	var location_y := who.y;
+	var location_z := who.z;
+        
+
+
+
+        foreach juzjest in ListItemsAtLocation( location_x, location_y, location_z);
+if(juzjest.objtype == 0xf015 || juzjest.objtype == 0xBFA8)
+sendsysmessage(who, "Juz tu ktos cos zasadzil.", 3, 40);
+return;
+endif
+        endforeach
+        subtractamount(nasiono,1);
+	sendsysmessage(who, "Posadziles nasiono marihuany, musisz teraz poczekac kilka minut az cos sie pojawi.", FONT_NORMAL, COLOR_GREEN);
+
+	var plant := CreateItemAtLocation (location_x, location_y, location_z, 0xf015, 1);
+
+	plant.graphic := 1;
+	SetObjProperty (plant, "new", 1);
+
+    
+endprogram
+
+function czytrawa(theobj)
+if((theobj >= 0x3 && theobj <= 0x6) || (theobj >= 0x7D && theobj <= 0x7E) || (theobj >= 0xC0 && theobj <= 0xC3) || (theobj >= 0xD8 && theobj <= 0xDB) || (theobj >= 0x1A4 && theobj <= 0x1A7) || (theobj >= 0x231 && theobj <= 0x234) || (theobj >= 0x36F && theobj <= 0x376) || 
+(theobj >= 0x37B && theobj <= 0x37E) || (theobj >= 0x3CB && theobj <= 0x3CE) || (theobj >= 0x579 && theobj <= 0x580) || (theobj >= 0x58B && theobj <= 0x58C) || (theobj >= 0x67D && theobj <= 0x684) || (theobj >= 0x6A1 && theobj <= 0x6A4) || (theobj >= 0x6B5 && theobj <= 0x6BA) || (theobj >= 0x6BF && theobj <= 0x6C2) || (theobj >= 0x6DE && theobj <= 0x6E1))
+	return 1;
+else
+	return 0;
+endif
+endfunction
+

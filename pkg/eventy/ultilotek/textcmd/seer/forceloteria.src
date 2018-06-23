@@ -1,0 +1,56 @@
+//Uruchamianie loterii
+
+use uo;
+use os;
+use util;
+
+include "include/yesNo";
+//include ":ultilotek:include/loteria";
+
+program forceloteria(who)
+/*
+
+    if(!yesNo(who, "Czy chcesz uruchomic loterie?"));
+        return 0;
+    endif
+    
+    SetGlobalProperty("LOTERIA", 1);
+    
+    BroadCast("Uwaga Uwaga! Lord Brithish oglasza WIELKA LOTERIE!!",3,89);
+    sleep(5);
+    BroadCast("Bedzie mozna w niej wygrac duza ilosc zlotych monet.",3,89);
+    sleep(8);
+    BroadCast("W miastach: Minoc, Britian, Cove, Papua mozna nabyc losy korzystajac z specjalnych kamieni.",3,89);
+    sleep(10);
+    BroadCast("Wysokosc wygranej zalezy od ilosci zakupionych losow.",3,89);
+    sleep(8);
+    BroadCast("Zachecamy wszystkich do kupowaia losow! Zeby wygrac trzeba grac!",3,89);
+    sleep(15);
+    BroadCast("Loteria bedzie trwala 30 minutu.  W tym czasie mozecie nabywac losy",3,89);
+    sleep(10);
+    BroadCast("Po uplywanie 30 minut odbedzie sie losowanie szczesliwych numerow",3,89);
+    sleep(10);
+
+	var b := 30;
+	repeat
+		BroadCast("Za " + b + " minut nastapi losowanie liczb w Wielkiej Loterii!!",3,63);
+		b := b - 5;
+		sleep(300); //300sekund
+	until(b <= 0);
+            sleep(60); //60
+	var i := 4;
+	repeat
+		BroadCast("Za " + i + " minuty nastapi losowanie liczb w Wielkiej Loterii. Kupujcie losy puki czas!!",3,63);
+		i := i - 1;
+		sleep(60); // 60
+	until(i <= 0);
+
+     BroadCast("Koniec czasu. Juz nie mozna zakupic losow!",3,63);
+     EraseGlobalProperty("LOTERIA");
+    
+    losowanie(who);
+    */
+endprogram
+
+
+

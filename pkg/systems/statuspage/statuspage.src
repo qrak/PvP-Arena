@@ -1,0 +1,58 @@
+use uo;
+use basic;
+use os;
+
+program showstatus(connection)
+
+  var ev;
+  var wwwpass := GetGlobalProperty("wwwpass");
+  if(wwwpass == "defaultpass")
+    print("Shard Status Aux Service Password MUST be changed! Use .wwwpass" );
+  endif
+  while(connection)
+    ev := wait_for_event(1);
+    if(ev)
+      wwwpass := GetGlobalProperty("wwwpass");
+      var evvalue := Splitwords(ev.value);
+      if(evvalue[2] != wwwpass)
+        connection.transmit(0);
+      else
+        ev.value := evvalue[1];
+      endif
+      case(ev.value)
+        "statuslist": connection.transmit(ProcessRequest());
+        default: connection.transmit(0);
+      endcase
+    endif
+  endwhile
+
+endprogram
+
+function ProcessRequest()
+
+  var retvalue := array;
+  var uptime := polcore().uptime;
+  var struptime;
+  uptime := uptime / 60;
+  if (uptime > 60)
+    uptime := uptime /60;
+    struptime := CStr(uptime) + "h";
+  else
+    struptime := CStr(uptime) + "min";
+  endif
+
+  retvalue.append(CStr(struptime));
+
+  var tot := 0;
+  foreach chr in EnumerateOnlineCharacters()
+    if (chr.cmdlevel < 2)
+      tot := tot+1;
+    endif
+  endforeach
+
+  retvalue.append(CStr(tot));
+  
+
+  return retvalue;
+
+endfunction

@@ -1,0 +1,65 @@
+// crash
+
+use basic;
+use os;
+use uo;
+use polsys;
+
+include "include/client";
+include "include/objtype";
+include "include/canAccess";
+include "../../foundations/gumps/gumps";
+
+program use_thread(who, thread)
+var ileczas := ReadGameClock();
+SetObjProperty(who, "#Czas", ileczas);
+SetObjProperty(who, "#LastSkill", "Tailoring");
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, thread))
+    return;
+  endif
+  if(thread.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+    return;
+  endif
+  SendSysMessage(who, "Wybierz krosno, ktorego chcesz uzyc.", FONT_NORMAL, COLOR_GREEN);
+  var useon := Target(who);
+  if (!useon)
+    return;
+  endif
+  if(!ReserveItem(useon))
+    SendSysMessage(who,"To jest juz w uzyciu.", FONT_NORMAL, 40);
+    return;
+  endif
+  var obj := useon.objtype;
+  if ( (obj < UOBJ_LOOM_START) || (obj > UOBJ_LOOM_END))
+    SendSysMessage(who,"Mozesz uzywac tego tylko na krosnie.", FONT_NORMAL, 40);
+    return;
+  else
+    MakeCloth(who, thread);
+  endif
+endprogram
+
+function MakeCloth(character, yarn)
+  if(!Accessible(character, yarn))
+    SendSysMessage(character, "Nie masz zadnych nici!", FONT_NORMAL, 40);
+    return;
+  endif
+  if(yarn.amount >= 5)
+    set_critical(1);
+    if(yarn.amount >= 5)
+     while(yarn.amount >= 5)
+      if(SubtractAmount(yarn, 5))
+        var cloth := CreateItemInBackpack(character, UOBJ_CLOTH, 1);
+        SendSysMessage(character, "Zuzyles troche przedzy i zrobiles bale materialu.", FONT_NORMAL, COLOR_GREEN);
+      endif
+      sleep(2);
+     endwhile
+    else
+       SendSysMessage(character, "Nie masz wystarczajacej ilosci nici na bale materialu.", FONT_NORMAL, 40);
+    endif
+  else
+    SendSysMessage(character, "Nie masz wystarczajacej ilosci nici na bale materialu.", FONT_NORMAL, 40);
+  endif
+endfunction

@@ -1,0 +1,154 @@
+#
+#  DATASTORE.TXT: DataStore Data
+#
+
+DataFile
+{
+	Descriptor	:attributes:attributes
+	Name	attributes
+	Package	attributes
+	Flags	0
+	Version	2
+	OldVersion	2
+}
+
+DataFile
+{
+	Descriptor	:control:cmdbar
+	Name	cmdbar
+	Package	control
+	Flags	0
+	Version	396
+	OldVersion	395
+}
+
+DataFile
+{
+	Descriptor	:control:gumps
+	Name	gumps
+	Package	control
+	Flags	0
+	Version	1
+	OldVersion	1
+}
+
+DataFile
+{
+	Descriptor	:control:packages
+	Name	packages
+	Package	control
+	Flags	0
+	Version	396
+	OldVersion	395
+}
+
+DataFile
+{
+	Descriptor	:control:usrsettings
+	Name	usrsettings
+	Package	control
+	Flags	0
+	Version	1
+	OldVersion	1
+}
+
+DataFile
+{
+	Descriptor	:gmstaff:GmStaff
+	Name	GmStaff
+	Package	gmstaff
+	Flags	0
+	Version	134
+	OldVersion	133
+}
+
+DataFile
+{
+	Descriptor	:motd:settings
+	Name	settings
+	Package	motd
+	Flags	0
+	Version	11484
+	OldVersion	11484
+}
+
+DataFile
+{
+	Descriptor	:skilllocks:settings
+	Name	settings
+	Package	skilllocks
+	Flags	0
+	Version	1
+	OldVersion	1
+}
+
+DataFile
+{
+	Descriptor	:spawnregion:SpawnGroups
+	Name	SpawnGroups
+	Package	spawnregion
+	Flags	0
+	Version	34
+	OldVersion	34
+}
+
+DataFile
+{
+	Descriptor	:spawnregion:SpawnRegionData
+	Name	SpawnRegionData
+	Package	spawnregion
+	Flags	0
+	Version	22939
+	OldVersion	22938
+}
+
+DataFile
+{
+	Descriptor	:spawnregion:SpawnRegionFreq
+	Name	SpawnRegionFreq
+	Package	spawnregion
+	Flags	0
+	Version	21330
+	OldVersion	21330
+}
+
+DataFile
+{
+	Descriptor	:spawnregion:SpawnRegions
+	Name	SpawnRegions
+	Package	spawnregion
+	Flags	0
+	Version	88
+	OldVersion	88
+}
+
+DataFile
+{
+	Descriptor	:spawnsystem:Groups
+	Name	Groups
+	Package	spawnsystem
+	Flags	0
+	Version	1
+	OldVersion	1
+}
+
+DataFile
+{
+	Descriptor	:spawnsystem:Realms
+	Name	Realms
+	Package	spawnsystem
+	Flags	0
+	Version	1
+	OldVersion	1
+}
+
+DataFile
+{
+	Descriptor	:spawnsystem:Regions
+	Name	Regions
+	Package	spawnsystem
+	Flags	0
+	Version	52
+	OldVersion	52
+}
+

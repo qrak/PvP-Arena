@@ -1,0 +1,157 @@
+use uo;
+use npc;
+use os;
+use util;
+use cfgfile;
+
+
+var me := Self();
+
+include "include/sysEvent";
+include "include/distance";
+include "include/eventy";
+include "include/lucznikeventy";
+include "include/attributes";
+include "main/loot";
+
+var ev;
+
+var itemdesc := ReadConfigFile(":combat:itemdesc");
+var bron := me.weapon;
+
+program spellkill_ai()
+
+    
+  
+    start_script("::NPCKeeper", me);
+    EnableEvents(SYSEVENT_ENGAGED);
+    EnableEvents(SYSEVENT_DAMAGED);
+    EnableEvents(SYSEVENT_ENTEREDAREA, ENTERED_AREA);
+    EnableEvents(SYSEVENT_LEFTAREA, LEFT_AREA);
+    while(me)
+        ev := wait_for_event(15);
+        if(ev)
+            case(ev.type)
+                SYSEVENT_ENGAGED: 
+                
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                    Walcz( ev.source );
+                endif
+                
+                SYSEVENT_DAMAGED: 
+
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                    Walcz( ev.source );
+                endif
+                
+                SYSEVENT_ENTEREDAREA:
+
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                    Walcz( ev.source );
+                endif
+                
+                SYSEVENT_LEFTAREA:
+                
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                SzukajPrzeciwnikow();
+                endif
+                
+
+            endcase
+        
+        endif
+        
+                    if(ReadGameClock() > next_wander)
+                        next_wander := ReadGameClock() + 10;
+                        SzukajPrzeciwnikow();
+                        
+                        if(RandomInt(2) == 1)
+                            PlaySoundEffect(me, idlesnd1);
+                            else
+                            PlaySoundEffect(me, idlesnd2);
+                        endif
+                        
+                        grabloot();
+                    endif
+        
+    endwhile
+endprogram
+
+function Walcz(przeciwnik)
+
+if ((przeciwnik.cmdlevel > 0) || (przeciwnik.serial == me.serial) || (przeciwnik.npctemplate))
+    SetWarMode(0);
+    przeciwnik := 0;
+    return 0;
+endif
+
+
+
+SetWarMode(1);
+SetOpponent(przeciwnik);
+
+    if(Cint(GetObjProperty(przeciwnik, "#journey")))
+        SetWarMode(0);
+        przeciwnik := 0;
+        return 0;
+    endif
+    
+var loops := 0;
+var megaloops := 0;
+var waittime := 0;
+var Odleglosc := 6; // defaultowo z lukiem z jakiej odleglosci przeciwnik ma byc napierdalany
+var atrybut := CStr(itemdesc[me.weapon.objtype].Attribute);
+
+while((przeciwnik) && (!przeciwnik.dead) && (!przeciwnik.hidden) && (!przeciwnik.concealed)  && (!przeciwnik.cmdlevel))
+
+    ev := wait_for_event(waittime);
+
+    if(!BiegnijLucznik(me, przeciwnik))
+    loops := loops + 1;
+        if(loops > 100)
+        loops := 0;
+        SzukajPrzeciwnikow();
+        endif
+    endif
+    
+       
+    if(Distance(me, przeciwnik) == Odleglosc)
+    waittime := 1;
+    
+    elseif(Distance(me,przeciwnik) > LEFT_AREA)
+    SetWarMode(0);
+    SetOpponent(0);
+    break;
+    elseif(Distance(me,przeciwnik) == 0)
+        waittime := 1;
+    else
+    waittime := 0;
+        if(CheckLineOfSight(me, przeciwnik) && (Distance(me, przeciwnik) > Odleglosc && Distance(me, przeciwnik) < ENTERED_AREA))
+            megaloops := megaloops + 1;
+            if(megaloops > 50)
+            RunRandom(przeciwnik);
+            megaloops := 0;
+            endif
+            
+
+        
+        endif
+        
+
+    
+    endif
+    
+    
+    if(przeciwnik.dead)
+        SzukajPrzeciwnikow();
+    endif
+    
+endwhile
+
+
+SzukajPrzeciwnikow();
+
+
+endfunction
+
+

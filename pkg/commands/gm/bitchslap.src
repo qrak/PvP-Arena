@@ -1,0 +1,54 @@
+use uo;
+use os;
+
+include "include/dist";
+
+program kurwuj(who)
+
+
+
+
+
+var cel := Target(who);
+
+if(!cel)
+SendSysMessage(who, "Anulowano.",3,33);
+return;
+endif
+
+if(Distance(who, cel) > 1)
+SendSysMessage(who, "Za daleko.",3,33);
+return;
+endif
+var facing;
+if(who.y < cel.y)
+  if(who.x > cel.x)
+    facing := 1;
+  elseif(who.x < cel.x)
+    facing := 7;
+  else
+    facing := 0;
+  endif
+elseif(who.y > cel.y)
+  if(who.x > cel.x)
+    facing := 3;
+  elseif(who.x < cel.x)
+    facing := 5;
+  else
+    facing := 4;
+  endif
+else
+  if(who.x > cel.x)
+    facing := 2;
+  elseif(who.x < cel.x)
+    facing := 6;
+  endif
+endif
+cel.facing := facing;
+
+PerformAction( who, 0x0021 );
+PrintTextAbove(who, "*wymierza siarczystego policzka " + cel.name + " jak taniej kurwie!*");
+sleep(1);
+PrintTextAbove(cel, "*czuje na sobie reke Pana*");
+
+endprogram

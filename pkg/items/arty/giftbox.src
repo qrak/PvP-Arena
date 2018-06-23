@@ -1,0 +1,20 @@
+use uo;
+
+
+program giftbox(who, box)
+    SendSysMessage(who, "Rozjebales paczke z prezentem i wlozyles pospiesznie jej zawartosc do plecaka.",3,63);
+    var bag := CreateItemInContainer(who.backpack, 0x0E76, 1);
+    bag.color := 1153;
+    CreateItemInContainer(bag, 0xEED, 60000);
+    CreateItemInContainer(bag, 0xEEF, 10000);
+    var smok := CreateItemInContainer(bag, 9753, 1);
+    var bilet := CreateItemInContainer(bag, 0x14EF, 1);
+    var toga := CreateItemInContainer(bag, 0x1F03, 1);
+    toga.newbie := 1;
+    toga.color := 1153;
+    toga.name := "toga swiateczna";
+    SetObjProperty(toga, "swiateczna", 1);
+    SetName(smok, "figurka renifera");
+    bilet.name := "Wesolych Swiat i Szczesliwego Nowego Roku zyczy qrak i ekipa PvP!";
+    DestroyItem(box);
+endprogram

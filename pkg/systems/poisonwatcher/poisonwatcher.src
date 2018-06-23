@@ -1,0 +1,238 @@
+// crash
+
+use basicio;
+use basic;
+use uo;
+use os;
+
+include "include/poisons";
+
+set_priority(5);
+
+program PoisonWatcher(who)
+	if ( !who.IsA(POLCLASS_MOBILE) )
+		who := who[1];
+	endif
+	var num_poisons := 0;
+	var poisons := dictionary;
+	StartUp(who, poisons, num_poisons);
+	while ( 1 )
+		SetObjProperty(who, "#PoisonPID", getpid());
+		SetObjProperty(who, "Poisons", poisons);
+		var event := wait_for_event(1);
+		who.SetPoisoned(num_poisons);
+		if( event.type == EVENT_ADD_POISON )
+			Add_Poison(who, event, poisons, num_poisons);
+		elseif( event.type == EVENT_CURE_POISON )
+			Cure_Poison(who, event, poisons, num_poisons);
+		elseif( event.type == EVENT_CURE_SPECIFIC_POISON )
+			Cure_Specific(who, event, poisons, num_poisons, 1);
+		elseif( event.type == EVENT_DEAD || who.dead )
+			Cure_Death(who, event, poisons, num_poisons);
+		endif
+		CheckPids(who, poisons, num_poisons);
+		WearDown(who, poisons, num_poisons);
+		Set_Critical(1);
+		if( !ShouldRun(who, poisons.keys()) )
+			who.SetPoisoned(0);
+			LogOff(who, poisons, num_poisons);
+			exit;
+		endif
+		Set_Critical(0);
+	endwhile
+endprogram
+
+function StartUp(who, byref poisons, byref num_poisons)
+	var templist := GetObjProperty(who, "Poisons");
+	EraseObjProperty(who, "Poisons");
+	if( !templist )
+		templist := dictionary;
+		SetObjProperty(who, "Poisons", templist);
+	endif
+	foreach poison_name in (templist.keys())
+		var event := struct;
+		event.+name := poison_name;
+		event.+amount := templist[poison_name].duration;
+		event.+level := templist[poison_name].level;
+
+		Add_Poison(who, event, poisons, num_poisons);
+		sleepms(2);
+	endforeach
+endfunction
+
+function LogOff(who, byref poisons, byref num_poisons)
+	Set_Critical(1);
+	SetObjProperty(who, "Poisons", poisons);
+	foreach poison_name in ( poisons.keys() )
+		KillPoison(poisons[poison_name].pid, poisons, poison_name);
+		if( CfgInfo(poison_name).LogOutScript )
+			who := SystemFindObjectBySerial(who.serial, SYSFIND_SEARCH_OFFLINE_MOBILES);
+			var LogOutScript := start_script(CfgInfo(poison_name).LogOutScript, {who});
+			if( LogOutScript.errortext )
+				Print("PoisonWatcher LogoffScript: (" +  who.name + ") " + LogOutScript.errortext);
+			endif
+		endif
+		sleepms(2);
+	endforeach
+	EraseObjProperty(who, "#PoisonPID");
+	Set_Critical(0);
+endfunction
+
+function Cure_Death(who, byref event, byref poisons, byref num_poisons)
+	Set_Critical(1);
+	foreach poison_name in ( poisons.keys() )
+		if( !CfgInfo(poison_name).ContinueOnDeath )
+			var event := struct;
+			event.+name := poison_name;
+			event.+amount := -1;
+
+			Cure_Specific(who, event, poisons, num_poisons, 0);
+		endif
+		sleepms(2);
+	endforeach
+	Set_Critical(0);
+endfunction
+
+function CheckPids(who, byref poisons, byref num_poisons)
+	foreach poison_name in ( poisons.keys() )
+		if( CfgInfo(poison_name).CureOnEnd )
+			var script := GetProcess(poisons[poison_name].pid);
+			if( !script )
+				var event := struct;
+				event.+name := poison_name;
+				event.+amount := -1;
+				Cure_Specific(who, event, poisons, num_poisons, 0);
+			endif
+		endif
+		sleepms(2);
+	endforeach
+endfunction
+
+function WearDown(who, byref poisons, byref num_poisons)
+	foreach poison_name in ( poisons.keys() )
+		if( !CfgInfo(poison_name).NoEnd )
+			if (poisons[poison_name].duration <= 1)
+				KillPoison(poisons[poison_name].pid, poisons, poison_name);
+				CleanupPoison(who, poison_name, num_poisons);
+			else
+		poisons[poison_name].duration := poisons[poison_name].duration-1;
+			endif
+		endif
+		sleepms(2);
+	endforeach
+endfunction
+
+function Add_Poison(who, byref event, byref poisons, byref num_poisons)
+	if(!CfgInfo(event.name) )
+		return;
+	endif
+	if(!poisons.exists(event.name) )
+		var script := CfgInfo(event.name).Script;
+		script := start_script(script, {who, event.attacker, event.level});
+		if( script.errortext )
+			return;
+		endif
+		poisons[event.name] := struct;
+		poisons[event.name].+duration := event.amount;
+		poisons[event.name].+pid := script.pid;
+		poisons[event.name].+level := event.level;
+		if( CfgInfo(event.name).IndicatePoison)
+			num_poisons := num_poisons+1;
+		endif
+	else
+		var lvl := poisons[event.name].level;
+		var amt := event.amount;
+		if ((event.level) && lvl)
+			amt := amt * ((event.level*1.0) / poisons[event.name].level);
+			if (lvl >= event.lvl)
+			poisons[event.name].duration := poisons[event.name].duration + amt;
+			else
+				KillPoison(poisons[event.name].pid, poisons, event.name);
+				event.amt := amt;
+				Add_Poison(who, event, poisons, num_poisons);
+			endif
+		endif
+		poisons[event.name].duration := poisons[event.name].duration + amt;
+	endif
+endfunction
+
+function Cure_Poison(who, byref event, byref poisons, byref num_poisons)
+	foreach poison_name in ( poisons.keys() )
+		var poisoncfg := CfgInfo(poison_name);
+		if (!event.poisontype || (event.poisontype == poisoncfg.Type))
+			if( !CfgInfo(poison_name).NoCure )
+				event.name := poison_name;
+				Cure_Specific(who, event, poisons, num_poisons, 1);
+			endif
+			if( event.amount <= 0 )
+				break;
+			endif
+			sleepms(2);
+		endif
+	endforeach
+endfunction
+
+function Cure_Specific(who, byref event, byref poisons, byref num_poisons, check_virulence:=0)
+	if( !CfgInfo(event.name) )
+		return;
+	endif
+	var cure_amount := event.amount;
+	var level := event.level;
+	if( poisons.exists(event.name) )
+		if( cure_amount == -1 )
+			check_virulence:=0;
+			cure_amount := poisons[event.name].duration + 1;
+			level := 1;
+		elseif( check_virulence )
+			var virulence := CfgInfo(event.name).Virulence;
+			if( !virulence )
+				virulence := 1;
+			endif
+			cure_amount := CInt(event.amount / CfgInfo(event.name).Virulence);
+		endif
+		var multiply := (level*1.0)/(poisons[event.name].level);
+		if (!multiply)
+			multiply := 1;
+		endif
+		if( (multiply*cure_amount) >= poisons[event.name].duration )
+		event.amount := event.amount - (poisons[event.name].duration / multiply);
+			KillPoison(poisons[event.name].pid, poisons, event.name);
+			CleanupPoison(who, event.name, num_poisons);
+		else
+	poisons[event.name].duration := poisons[event.name].duration - cure_amount*multiply;
+			event.amount := 0;
+		endif
+	endif
+endfunction
+
+function ShouldRun( who, byref poison_keys )
+	if ( Events_Waiting() >= 1 )
+		return 1;
+	elseif( (who.npctemplate) || (GetObjProperty(who, "#Online")) )
+		if( poison_keys.size() > 0 )
+			return 1;
+		endif
+	endif
+
+	return 0;
+endfunction
+
+function KillPoison(pid, byref poisons, event_name)
+	var script := GetProcess(pid);
+	script.kill();
+	poisons.erase(event_name);
+endfunction
+
+function CleanupPoison(who, poison_name, byref num_poisons)
+	if( CfgInfo(poison_name).IndicatePoison )
+		num_poisons := num_poisons-1;
+	endif
+	if( CfgInfo(poison_name).CureMessage )
+		SendSysMessage(who, CfgInfo(poison_name).CureMessage);
+	endif
+	if( CfgInfo(poison_name).CureScript )
+		var script := start_script(CfgInfo(poison_name).CureScript, {who});
+		if( script.errortext )
+		endif
+	endif
+endfunction

@@ -1,0 +1,51 @@
+use polsys;
+use math;
+use os;
+use basic;
+use uo;
+
+program textcmd_wylacz(who)
+
+var czas1;
+SendSysMessage(who, "Ile minut?",3,89);
+czas1 := RequestInput(who, who.backpack, "");
+var czas;
+czas := Cint(czas1);
+while(czas > 0)
+var koncowka;
+if(czas == 3)
+koncowka := "minuty";
+elseif(czas == 2)
+koncowka := "minuty";
+elseif(czas == 1)
+koncowka := "minute";
+elseif(czas == 10)
+koncowka := "minut";
+elseif(czas == 9)
+koncowka := "minut";
+elseif(czas == 5)
+koncowka := "minut";
+elseif(czas == 6)
+koncowka := "minut";
+elseif(czas == 7)
+koncowka := "minut";
+elseif(czas == 4)
+koncowka := "minuty";
+else
+koncowka := "minut";
+endif
+
+Broadcast( "Server zostanie wylaczony za " + czas + " " + koncowka,3,63 );
+sleep(60);
+czas := czas -1;
+
+if(czas == 0)
+BroadCast( "Zapisywanie stanu swiata...",3,39);
+SaveWorldState();
+BroadCast( "Server zostal zdetonowany duza iloscia C4!",3,39);
+ShutDown();
+endif
+
+endwhile
+
+endprogram

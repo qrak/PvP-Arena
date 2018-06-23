@@ -1,0 +1,113 @@
+
+use math;
+use basicio;
+use basic;
+use os;
+use uo;
+
+include "include/client";
+include "include/objtype";
+include "include/tempMod";
+var ziolo;
+
+
+program jaranie (who, item)
+EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+
+var jara;
+var czyjara := GetObjProperty(who, "jara");
+if (czyjara == 1)
+SendSysMessage(who, "Nie ma tak dobrze.",3,40);
+return 0;
+endif
+
+SendSysMessage(who, "Najpierw wybierz lufke.",3,80);
+var lufa := Target(who);
+
+if(lufa.objtype != 0xbfA9)
+SendSysMessage(who, "Anulowano.",3,40);
+return;
+endif
+
+if(!ReserveItem(lufa))
+    return;
+  endif
+  lufa.movable := 0;
+  
+SendSysMessage(who, "Montujesz lufe w wiadrze...",3,80);
+sleep(3);
+
+SendSysMessage(who, "Zmontowales osprzet!",3,80);
+DestroyItem(lufa);
+sleep(1);
+
+SendSysMessage(who, "Co chcesz zapalic?",3,80);
+
+var cel := Target(who);
+
+ // if(!item)
+
+if (!cel)
+SendSysMessage(who, "Anulowano.",3,40);
+CreateItemInBackpack(who, 0xbfA9);
+return 0;
+endif
+
+
+
+   //  endif
+
+        var duration;
+	if (cel.objtype == 0xDCce)
+        duration := 400;
+        elseif(cel.objtype == 0xf014)
+        duration := 600;
+        elseif(cel.objtype == 0xf01e)
+        duration := 800;
+        else
+         SendSysMessage(who, "To nie marihuana!",3,40);
+         CreateItemInBackpack(who, 0xbfA9);
+        return 0;
+	endif
+
+Destroyitem(cel);
+
+
+SetObjProperty(who, "jara", 1);
+PrintTextAbove(who,"*nabija ziolo*", FONT_NORMAL, 72);
+Detach();
+sleep(5);
+PrintTextAbove(who,"*przypala z wiadra*", FONT_NORMAL, 72);
+who.setCriminal(1);
+sleep(6);
+PrintTextAbove(who,"*mocno sie zaciaga*", FONT_NORMAL, 72);
+sleep(8);
+PrintTextAbove(who,"*trzyma dym w plucach*", FONT_NORMAL, 72);
+sleep(8);
+PrintTextAbove(who,"*wypuszcza aromatyczny dym z pluc*", FONT_NORMAL, 72);
+PlayObjectCenteredEffect (who, 0x3735, 0x0a, 0x1e);
+sleep(6);
+CreateItemInBackpack(who, 0xbfA9);
+EraseObjProperty(who, "jara");
+SendSysMessage(who, "Zaczynasz czuc moc marihuany!",3,80);
+     if(Cint(GetObjProperty(who, "#Syf")))
+          SendSysMessage(who, "Wyleczyles syfa!",3,80);
+          EraseObjProperty(who, "#Syf");
+     endif
+sleep(1);
+if(CanMod(who, "str"))
+    DoTempMod(who, "str", 30, duration);
+  endif
+  if(CanMod(who, "dex"))
+    DoTempMod(who, "dex", 30, duration);
+  endif
+  if(CanMod(who, "int"))
+    DoTempMod(who, "int", 30, duration);
+  endif  
+
+     who.setCriminal(0);
+ 
+
+endprogram
+

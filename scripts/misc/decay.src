@@ -1,0 +1,13 @@
+
+function decay(object, blood)
+    sleep(60);
+    DestroyItem(object);
+    sleep(60);
+    DestroyItem(blood);
+endfunction
+use uo;
+use os;
+
+program p_decay( theparms )
+    decay(theparms[1], theparms[2]);
+endprogram

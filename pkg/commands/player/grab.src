@@ -1,0 +1,133 @@
+use uo;
+use os;
+
+include "include/dist";
+include "include/client";
+
+var PackItm, Pass := 0;
+
+const START_RAREREGS := 0x0F78;
+const END_RAREREGS := 0x0F91;
+const STARTHAIR                 := 0x2030;
+const ENDHAIR                   := 0x2060;
+
+program LootNear(who, text)
+
+    var grab := 0;
+    text := lower(text);
+    if(text == "ziola")
+        grab := 1;
+    elseif(text == "zloto")
+        grab := 2;
+    endif
+
+    if(who.dead)
+        SendSysMessage(who, "Nie mozesz tego wziac ze soba!",FONT_NORMAL,RED_COLOR);
+        EraseObjProperty(who, "#looting");
+        return;
+    endif
+
+    if(GetObjProperty(who, "#looting"))
+        SendSysMessage(who, "Juz zbierasz przedmioty!",FONT_NORMAL,RED_COLOR);
+        return 0;
+    endif
+
+    SetObjProperty(who, "#looting", 1);
+
+    foreach item in ListItemsNearLocation(who.x, who.y, who.z, 1)
+        if(item.objtype == 0x2006 )
+            foreach thingie in EnumerateItemsInContainer( item, ENUMERATE_ROOT_ONLY );
+                if(who.dead)
+                    SendSysMessage(who, "Jestes trupem, co chcesz zbierac?",FONT_NORMAL,RED_COLOR);
+                    EraseObjProperty(who, "#looting");
+                    return 0;
+                endif
+                if(Distance(who, item) > 1)
+                    SendSysMessage(who, "Jestes za daleko.",FONT_NORMAL,RED_COLOR);
+                    EraseObjProperty(who, "#looting");
+                    return 0;
+                endif
+                if(thingie.container == item)
+                    Grabit(who, thingie,grab);
+                endif
+            endforeach
+        elseif(item)
+            if(who.dead)
+                SendSysMessage(who, "Jestes trupem, co chcesz zbierac?",FONT_NORMAL,RED_COLOR);
+                EraseObjProperty(who, "#looting");
+                return 0;
+            endif
+            if(Distance(who, item) > 1)
+                SendSysMessage(who, "Jestes za daleko.",FONT_NORMAL,RED_COLOR);
+                EraseObjProperty(who, "#looting");
+                return 0;
+            endif
+            if(!item.container)
+                Grabit(who, item, 0);
+            endif
+        endif
+    endforeach
+
+    if(Pass)
+        SendSysMessage(who, "Wysiorbales juz wszystko.",FONT_NORMAL,BLUE_COLOR);
+    else
+        SendSysMessage(who, "Nie ma tu juz nic.",FONT_NORMAL,GREEN_COLOR);
+    endif
+
+    EraseObjProperty(who, "#looting");
+
+endprogram
+
+function GrabIt(who, it, grab)
+
+    if(!grab or (grab == 1 and IsRegi(it.objtype)) or (grab == 2 and it.objtype == 0xEED))
+        if(!it.movable or !it)
+            return 0;
+        endif
+        
+        if(!Accessible(who, it))
+            return 0;
+        endif
+        
+        if((it.objtype >= STARTHAIR) and (it.objtype <= ENDHAIR))
+            return 0;
+        endif
+        
+        PackItm := FindObjTypeInContainer(who.backpack, it.objtype);
+        if(PackItm)
+	    if(PackItm.name == it.name)
+            	if(AddAmount(PackItm, it.amount))
+                	if(!DestroyItem(it))
+                    		SubtractAmount(PackItm, it.amount);
+                	else
+                   		PrintTextAbove(who, "*yoink*");
+                    		sleep(1);
+                    		Pass := 1;
+                    		return 0;
+                	endif
+	        endif
+	    endif
+        endif
+        
+        if(MoveItemToContainer(it, who.backpack))
+            PrintTextAbove (who, "*yoink*");
+            if(who.hidden)
+                who.hidden := 0;
+            endif
+            sleep(1);
+            Pass := 1;
+        endif
+    endif
+
+endfunction
+
+function IsRegi(objtype)
+
+    if(objtype >= START_RAREREGS and objtype <= END_RAREREGS)
+        return 1;
+    endif
+
+    return 0;
+
+endfunction
+

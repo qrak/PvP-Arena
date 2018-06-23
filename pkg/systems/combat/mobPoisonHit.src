@@ -1,0 +1,26 @@
+use os;
+use basicio;
+use util;
+use uo;
+use cfgfile;
+
+include "include/attributes";
+
+program poisonhit(param)
+  var npccfg := ReadConfigFile("::npcdesc");
+  var attacker := param[1];
+  var defender := param[2];
+  var weapon := param[3];
+  var armor := param[4];
+  var basedamage := param[5];
+  var rawdamage := param[6];
+  var attackerdex := Cint(GetDexterity(attacker));
+  if((RandomInt(attackerdex)) < 10)
+    var level := GetObjProperty(attacker, "poison_strength");
+    Detach();
+    PrintTextAbovePrivate(defender, "Zatrul Cie " + attacker.name +"!", defender,3,40);
+    var passparms := { defender, attacker, "poisoned weapon", level};
+    SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, "poisoned weapon" });
+    start_script(":spells:poisonDamage", passparms);
+  endif
+endprogram

@@ -1,0 +1,22 @@
+use uo;
+
+program multiaccount(who, param)
+   var ble := SplitWords(param);
+   var konto := ble[1];
+   var blok := ble[2];
+   if(!konto)
+	SendSysMessage(who, "Uzycie: .multi konto on/off");
+	return;
+   endif
+      var act := FindAccount(konto);
+      if(!act)
+		SendSysMessage(who, "Nie znaleziono konta: " + konto);
+		return;
+      endif
+    case(blok)
+	"on":   act.setprop("MAcctAllow", 1);
+		SendSysMessage(who, "Multiaccount dozwolone, konto: " + konto + ".", 3, 63);	
+	"off":  act.eraseprop("MAcctAllow");
+		SendSysMessage(who, "Multiaccount niedozwolone, konto: " + konto + ".", 3, 40);	
+    endcase
+endprogram

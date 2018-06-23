@@ -1,0 +1,61 @@
+use math;
+use uo;
+use os;
+use file;
+
+
+include "include/eventID";
+include "include/clock";
+
+program on_insert(who, backpack, movetype, inserttype, item, existing_stack, amount_to_add)
+//  inNoise(who, backpack, item);
+  set_critical(1);
+  if(GetObjProperty(backpack, "Hold"))
+    SendSysMessage(who, "Mozesz dodawac tylko jeden przedmiot naraz.");
+    if(!MoveItemToContainer(item, who.backpack))
+      MoveObjectToLocation(item, who.x, who.y, who.z, item.realm, MOVEOBJECT_FORCELOCATION);
+    endif
+    return;
+  endif
+
+  if(who.cmdlevel)
+	SetObjProperty(item, "Created", who.name);
+  endif
+
+  var createdbygm := GetObjProperty(item, "Created");
+  if(createdbygm && !who.cmdlevel)
+     LogToFile(":log:containers.txt", who.name + " wlozyl do plecaka " + item.desc + " w ilosci: " + amount_to_add + " stworzonego przez " + createdbygm + " serial: " + item.serial, 1);
+     LogToFile(":log:containers.txt", GetObjPropertyNames(item), 1);
+  endif
+
+
+
+var vendorserial := GetObjProperty(backpack,"Vendored");
+
+
+  if(!vendorserial)
+var ownerserial := GetObjProperty(backpack, "Owner");
+    if(item.isa(POLCLASS_CONTAINER) && ownerserial)
+      SetObjProperty(item, "Owner", ownerserial);
+    endif
+    return;
+  endif
+  sendsysmessage(who, "Vendor");
+  var vendor := SystemFindObjectBySerial(vendorserial);
+  SetObjProperty(backpack, "Hold", 1);
+  if(item.isA(POLCLASS_CONTAINER))
+    foreach thing in EnumerateItemsInContainer(item)
+      thing.movable := 0;
+    endforeach
+  endif
+  item.movable := 0;
+  var ev := array;
+  ev.+type := EVID_ITEM_GIVEN;
+  ev.+source := who;
+  ev.+item := item;
+  ev.+vendor := 1;
+  ev.+container := backpack;
+  SendEvent(vendor, ev);
+  return 1;
+  set_critical(0);
+endprogram

@@ -1,0 +1,105 @@
+Element bagienne
+{
+	npc a4:S13:swamptentacleS8:bogthingS7:boglingS8:quagmire
+}
+
+Element drzewa
+{
+	npc a2:S3:entS6:reaper
+}
+
+Element elfy
+{
+	npc a6:S16:mountedelfarcherS17:mountedelfwarriorS13:darkelfarcherS14:darkelfwarriorS11:darkelfmageS13:darkelfhealer
+}
+
+Element ettin
+{
+	npc a2:S5:ettinS6:ettin2
+}
+
+Element gargojle
+{
+	npc a4:S16:EnforcerGargoyleS16:EnslavedGargoyleS12:firegargoyleS17:destroyergargoyle
+}
+
+Element humanoidy
+{
+	npc a4:S5:titanS6:efreetS8:evilmageS8:magelord
+}
+
+Element humanoidy2
+{
+	npc a4:S6:ettin2S6:troll2S4:ogreS4:orc2
+}
+
+Element jaszczuroludzie
+{
+	npc a3:S10:lizardman1S10:lizardman2S10:lizardman3
+}
+
+Element lizardmen
+{
+	npc a3:S10:lizardman1S10:lizardman2S10:lizardman3
+}
+
+Element meer
+{
+	npc a5:S11:meercaptainS11:meerwarriorS8:meermageS11:meerarcmageS10:meerarcher
+}
+
+Element mrowki
+{
+	npc a4:S17:terathanmatriarchS15:terathanavengerS15:terathanwarriorS13:Terathandrone
+}
+
+Element ogrelord
+{
+	npc a1:S8:ogrelord
+}
+
+Element ogry
+{
+	npc a1:S4:ogre
+}
+
+Element ophidany
+{
+	npc a3:S15:ophidianavengerS20:ophidianknighterrantS12:ophidianmage
+}
+
+Element orki
+{
+	npc a3:S7:orcmageS4:orc1S4:orc2
+}
+
+Element pirate
+{
+	npc a1:S6:pirate
+}
+
+Element pustynne
+{
+	npc a3:S10:sandvortexS5:sfinxS14:desertdinosaur
+}
+
+Element ratman
+{
+	npc a3:S7:ratman1S7:ratman2S7:ratman3
+}
+
+Element straszne
+{
+	npc a3:S10:braineaterS8:mindlordS10:shadowlord
+}
+
+Element troll
+{
+	npc a3:S6:troll1S6:troll2S6:troll3
+}
+
+Element wampiry
+{
+	npc a5:S7:vampireS13:vampireknightS17:vampirelieutenantS15:vampireassassinS11:vampiremage
+}
+

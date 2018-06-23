@@ -1,0 +1,69 @@
+use uo;
+use os;
+
+include "include/dm/clock";
+include "include/dm/gumps";
+include ":jail:jail";
+
+program JailCounter(who,text)
+
+    var Targ, JailProps, WhoJailing,Reason,i;
+    if(CInt(Text))
+        Targ := FindPlayerBySerial(Text);
+    elseif(text)
+        Targ := FindCharacterByName(CStr(text));
+    else
+        Targ := Target(who);
+    endif
+
+    if(!Targ)
+        SendSysMessage(who,"Anulowano.",3,40);
+        return;
+    endif
+
+    var AllJails := GetObjProperty(Targ,"AllJails");
+
+    GInit( 20 , 30 );
+    GPage();
+    GResPic(0,0,3600,800,460);
+    GAddPageData(765,17,2650,2651,765,423,2648,2647);
+
+    var c,kary;
+    var godzin := 0;
+    for(c:=1; c<=AllJails.size(); c:=c+1)
+        kary := AllJails[c][3,1];
+        godzin := godzin + Cint(kary);
+    endfor
+
+    GTextLine(20,15,590, "Wszystkich odsiadek: "+AllJails.size());
+    GTextLine(345,15,590, "Przesiedzial lacznie godzin: "+RealHourTime(godzin));
+
+    for(i:=1; i<=AllJails.size(); i:=i+1)
+        GCheckNextPage(10);
+        GButton( 45 , (40+(GNPCount()*40)) , 2714, 2715, 1000+i);
+        GButton( 70, (40+(GNPCount()*40)),2714,2715, 2000+i);
+        GTextLine(20,(40+(GNPCount()*40)),560,i);
+        JailProps := AllJails[i];
+        WhoJailing := FindPlayerBySerial(JailProps[5]);
+        if(WhoJailing)
+            WhoJailing := WhoJailing.name;
+        else
+            WhoJailing := "nieznany";
+        endif
+        Reason := JailProps[4];
+        if(!Reason)
+          Reason := "brak";
+        endif
+        GTextLine(95, (40+(GNPCount()*40)),590, Targ.name + "/" + Targ.acctname);
+        GTextLine(345,(40+(GNPCount()*40)),660, RealHourTime(JailProps[3]));
+        GTextLine(395,(40+(GNPCount()*40)),640, RealTime((JailProps[2] + JailProps[3]) - ReadGameClock()));
+        GTextLine(540,(40+(GNPCount()*40)),560, "Wsadzil: "+WhoJailing);
+        GTextLine(95,(60+(GNPCount()*40)),550, "Powod: "+Reason);
+        if(JailProps[7] == 1)
+            GtextLine(700,(40+(GNPCount()*40)),538, "Ulaskawiony");
+        endif
+    endfor
+
+    GSend(who);
+
+endprogram

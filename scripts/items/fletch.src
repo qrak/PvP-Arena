@@ -1,0 +1,70 @@
+use util;
+use basic;
+use attributes;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/objtype";
+include "include/utility";
+include "include/canAccess";
+
+program on_fletch(who, shafts)
+  EraseObjProperty(who, "IsMeditating");
+    EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, shafts))
+    return;
+  endif
+  var thepoints := GetEffectiveSkill(who, SKILLID_BOWCRAFT) / 2;
+  if(thepoints < 10)
+    thepoints := 10;
+  endif
+  SendSysMessage(who, "Wybierz piora, ktorych chcesz uzyc.");
+  var feathers := Target(who);
+  if(!feathers)
+    SendSysMessage(who, "Anulowano.");
+    return;
+  endif
+  if(!can_access(who, feathers))
+    return;
+  endif
+  if(shafts.objtype == 0x1bd1)
+    if(GetObjType(feathers) != 0x1bd4)
+      SendSysMessage(who, "Mozesz robic strzaly tylko z gryfow i pior.");
+      return;
+    endif
+  elseif(shafts.objtype == 0x1bd4)
+    if(GetObjType(feathers) != 0x1bd1)
+      SendSysMessage(who, "Mozesz robic strzaly tylko z gryfow i pior.");
+      return;
+    endif
+  else
+    SendSysMessage(who, "Mozesz robic strzaly tylko z gryfow i pior.");
+  endif
+  var choice := SelectMenuItem2(who, "fletching");
+  if(!Accessible(who, shafts))
+    SendSysMessage(who, "Nie mozesz uzyc tych gryfow.");
+    return;
+  endif
+  if(!Accessible(who, feathers))
+    SendSysMessage(who, "Nie mozesz uzyc tych pior.");
+    return;
+  endif
+  if(choice == 0)
+    SendSysMessage(who, "Anulowano.");
+    return;
+  endif
+  var difficulty := -1;
+
+  if(CheckSkill(who, SKILLID_BOWCRAFT, difficulty, thepoints))
+    var num_to_make := Min(GetAmount(shafts), GetAmount(feathers));
+    if((SubtractAmount(shafts, num_to_make)) && (SubtractAmount(feathers, num_to_make)))
+      var arrows := CreateItemInBackpack(who, choice.objtype, num_to_make);
+      SendSysMessage(who, "Zrobiles " +num_to_make+ " strzal i wlozyles je do plecaka.");
+    endif
+  else
+    SubtractAmount(shafts, RandomInt(2)+1);
+    SubtractAmount(feathers, RandomInt(2)+1);
+    SendSysMessage(who, "Zniszczyles czesc materialu.");
+  endif
+endprogram

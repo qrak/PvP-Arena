@@ -1,0 +1,34 @@
+// crash
+
+use basic;
+use uo;
+
+include "include/attributes";
+
+program unpoly(who)
+  if(!GetObjProperty(who, "poly") || Cint(GetObjProperty(who, "poly")) == 2)
+    return 0;
+  endif
+  var origform  := CInt(GetObjProperty(who, "poly_form"));
+  var origcolor := CInt(GetObjProperty(who, "poly_color"));
+  var origname  := GetObjProperty(who, "poly_name");
+  var origtitle := GetObjProperty(who, "poly_title");
+  var origgild  := GetObjProperty(who, "poly_guild");
+
+    
+  who.graphic  	:= origform;
+  who.color    	:= origcolor;
+  SetName(who, origname);
+  who.ar	  	:= 0;
+  who.title_suffix 	:= origtitle;
+  who.title_guild 	:= origgild;
+  if(origname)
+    SetName(who, origname);
+  endif
+  EraseObjProperty(who, "poly");
+  EraseObjProperty(who, "poly_name");
+  EraseObjProperty(who, "poly_form");
+  EraseObjProperty(who, "poly_color");
+  EraseObjProperty(who, "poly_title");
+  EraseObjProperty(who, "poly_guild");
+endprogram

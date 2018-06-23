@@ -1,0 +1,103 @@
+use uo;
+use os;
+use util;
+use cfgfile;
+use vitals;
+
+include "include/eventID";
+include "include/nopvp";
+
+Const MOVING_EFFECT_PURPLE_POTION  := 0x0F0D; 
+Const SOUND_EFFECT_EXPLOSION	   := 0x208; 
+Const EFFECT_EXPLOSION             := 0x36b0;
+
+program use_explosion ( character, potion )
+
+	var potion_strength := 1;
+	case (potion.objtype)
+		0xdc08:	potion_strength := 1;
+		0xdc09:	potion_strength := 2;
+		0xdc07:	potion_strength := 4;
+	endcase;
+
+	if(IsNoob(character))
+		SendSysMessage (character, "Jestes jeszcze za mlody aby tu rzucac butlami wybuchowymi.", 3, 40);
+		return 0;
+	endif
+	
+	if(findcity(character) == "Sala" || findcity(character) == "SalaCTF"  || findcity(character) == "SalaDM"  || findcity(character) == "ZagadkaRoom")
+    return 0;
+  endif
+	
+	var last_explosion := GetObjProperty (character, "#lastexplosionpotion");
+	if (last_explosion and last_explosion + 10 > ReadGameClock())
+		SendSysMessage (character, "Jeszcze nie mozesz rzucic kolejnej butli.", 3, 40);
+		return;
+	endif
+
+	if (!Accessible (character, potion))
+		SendSysmessage (character, "Nie mozesz tego dosiegnac.", 3, 40);
+		return;
+	endif
+
+	if (!ReserveItem (potion) )
+		SendSysMessage (character, "Nie mozesz tego uzyc w tym momencie.", 3, 40);
+		return;
+	endif
+
+	SetObjProperty (character, "#lastexplosionpotion", ReadGameClock());
+
+	character.hidden := 0;
+	SendSysmessage (character, "Wybierz cel.", 3, 63);
+	var cast_on := TargetCoordinates( character );
+	if (!cast_on)
+		SendSysmessage(character, "Anulowano.", 3, 40);
+		EraseObjProperty (character, "#lastexplosionpotion");
+		return;
+	endif
+	if (!CheckLosAt( character, cast_on.x, cast_on.y, cast_on.z ))
+		SendSysmessage(character, "Nie widzisz tego.", 3, 40);
+		EraseObjProperty (character, "#lastexplosionpotion");
+ 		return;
+	endif
+	if(CoordinateDistance(character.x, character.y, cast_on.x, cast_on.y) >= 12 )
+		SendSysmessage(character, "Za daleko", 3, 40);
+		return 0;
+	endif
+	if(IsNoob(character))
+		return 0;
+	endif
+	SubtractAmount (potion, 1);    
+	Detach();
+
+	PlayMovingEffectXYZ (character.x, character.y, character.z+15,
+				cast_on.x, cast_on.y, cast_on.z,
+				MOVING_EFFECT_PURPLE_POTION, 8, 0, 0 );
+
+
+	var lookout := CreateItemAtLocation( cast_on.x, cast_on.y, cast_on.z, 0x0f0d, 1 );
+	lookout.movable := 0;
+
+	PrintTextAbove( lookout, "*3*");
+	sleepms(500);
+	PrintTextAbove( lookout, "*2*");
+	sleepms(500);
+	PrintTextAbove( lookout, "*1*");
+  sleepms(500);
+	PlayObjectCenteredEffect( lookout, EFFECT_EXPLOSION, 7 , 0x10 );
+	var ev := array;
+	ev.+type := EVID_ENGAGED;
+	ev.+source := character;
+
+	foreach critter in ListMobilesNearLocationEx (lookout.x, lookout.y, lookout.z, potion_strength, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+		SendEvent( critter, ev );
+		PlayObjectCenteredEffect( critter, EFFECT_EXPLOSION, 7 , 0x10 );
+		var dmg := 7 * potion_strength;
+		if(!IsNoob(critter))
+			SetObjProperty(critter, "LastHit", {character.name,character.serial, "explosionpotion" });
+			ApplyRawDamage(critter, dmg ); // note this is raw damage
+		endif
+	endforeach
+	DestroyItem ( lookout );
+endprogram
+

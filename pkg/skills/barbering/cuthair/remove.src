@@ -1,0 +1,8 @@
+use uo;
+use os;
+use npc;
+
+program RemoveJunk(item)
+	sleep(90);
+	DestroyItem(item);
+endprogram

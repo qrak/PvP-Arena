@@ -1,0 +1,24 @@
+
+use npc;
+use basic;
+use math;
+use uo;
+
+program textcmd_resme( who )
+  if(who.dead)
+    Resurrect( who );
+    foreach item in ListItemsNearLocation(who.x, who.y, who.z, 0)
+      if(GetObjProperty(item,"serial") == who.serial)
+
+        foreach thing in EnumerateItemsInContainer(item)
+          if(thing.container == item)
+            MoveItemToContainer(thing, who.backpack);
+          endif
+        endforeach
+      endif
+      break;
+    endforeach
+  else
+    SendSysMessage( who, "But I'm not dead yet!" );
+  endif
+endprogram

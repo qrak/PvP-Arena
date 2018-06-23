@@ -1,0 +1,51 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+
+program chrcast_pspike( parms )
+    var circle := 8;
+    var delivery := "notarget";
+    var noto := "harmful";
+    var result := maincast(parms, delivery, circle, noto, 115);
+
+    if(result == 0)
+        return 0;
+    endif
+
+    var caster := result[1];
+    var nek := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
+    var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+    var int := GetIntelligence(caster);
+    var bonus := 0;
+    
+    if(caster.ip)
+        bonus := int/5;
+    endif
+
+
+    var  dmg := ((nek + sspeak)/2) + bonus;
+    PlaySoundEffect(caster, 0x458);
+    foreach osoba in ListMobilesInLineOfSight(caster, 8)
+        SetObjProperty(osoba, "LastHit", {caster.name, caster.serial, "wither" });
+        PlayObjectCenteredEffect( osoba, FX_CURSE_EFFECT, 10,10);
+        PlayMovingEffect(caster, osoba, 0x36f4 ,10, 20);
+	var daemon := Cint(GetObjProperty(osoba, "#Daemon"));
+	    var daemonqual := daemon * 0.01;
+	if(daemon == 0)
+		EraseObjProperty(osoba, "#Daemon");
+	endif
+	if(daemon)
+		dmg := dmg - (daemonqual*100);
+	endif
+
+        ApplyRawDamage(osoba, Resisted(circle, caster, osoba, dmg));
+        dmg := dmg/2; // ponizej applyrawdamage poniewaz zmniejsza dmg o polowe dopiero po 1 mobie
+    endforeach
+
+
+
+
+
+endprogram

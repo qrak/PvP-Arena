@@ -1,0 +1,9 @@
+use uo;
+
+program statreduce(who, item)
+	var score := GetObjProperty(who, "Score");
+	SetObjProperty(who, "Score", {score[1], 0});
+	PlaySoundEffect(who, 0x1e1);
+	DestroyItem(item);
+	SendSysMessage(who, "Wyzerowales licznik smierci!", 3, 63);
+endprogram

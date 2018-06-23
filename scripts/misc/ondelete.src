@@ -1,0 +1,64 @@
+use basic;
+use uo;
+use os;
+
+include "include/startEqp";
+include "util/bank";
+
+var nagrobek_1_x := 1326;
+var nagrobek_1_y := 1829;
+var nagrobek_1_z := 0;
+
+
+program ondelete(who)
+    
+
+    SysLog("Account ["+who.acctname+"] deleting character "+who.name+" ("+who.serial+")");
+    WipeBankBox(who);
+    MakeFuneral(who);
+    
+endprogram
+
+function MakeFuneral(who)
+
+    if(Cint(GetObjProperty(who, "lata") < 30))
+        return 0;
+    endif
+    
+    if(Cint(!GetObjProperty(who, "lata")))
+        return 0;
+    endif
+    
+
+    if(who.cmdlevel) 
+        return 0;
+    endif
+
+
+    if(!GetGlobalProperty("nagrobki"))
+        SetGlobalProperty("nagrobki", {nagrobek_1_x, nagrobek_1_y, nagrobek_1_z});
+    endif
+
+    var nagrobki := GetGlobalProperty("nagrobki");
+    var nagrobek;
+
+    if(nagrobki[1] > 1312)
+        SetGlobalProperty("nagrobki", {nagrobki[1] - 2, nagrobki[2], nagrobki[3]});
+        nagrobek := CreateItemAtLocation(nagrobki[1], nagrobki[2], nagrobki[3], 0xEDE, 1, _DEFAULT_REALM );
+    elseif(nagrobki[2] < 1800)
+        return 0;
+    else
+        SetGlobalProperty("nagrobki", {nagrobek_1_x, nagrobki[2] - 2, nagrobki[3]});
+        nagrobek := CreateItemAtLocation(nagrobki[1], nagrobki[2], nagrobki[3], 0xEDE, 1, _DEFAULT_REALM );
+    endif
+    var lata := Cint(GetObjProperty(who, "lata"));
+    if(lata >= 30 && lata <= 39)
+        nagrobek.name := "Tu spoczywa elitarny gracz " + who.name + " mial " + lata + " lat. Na zawsze w pamieci graczy i ekipy.";
+    elseif(lata >= 40)
+        nagrobek.color := 100;
+        nagrobek.name := "Tu spoczywa legendarny gracz " + who.name + " mial " + lata + " lat. Na zawsze w pamieci graczy i ekipy.";
+    endif
+
+
+endfunction
+

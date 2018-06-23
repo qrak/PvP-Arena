@@ -1,0 +1,114 @@
+use uo;
+use vitals;
+use util;
+
+include "include/spellRestrictions";
+include "include/isValidLoc";
+include "include/findCity";
+
+program chrcast_rcurse( parms )
+  var circle := 3;
+  var delivery := "notarget";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 210);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+
+  
+ if(findcity(caster) == "Paka")
+  return 0;
+ endif
+
+eraseobjproperty(caster, "rekall");
+
+var wrogowie := 0;
+
+foreach wrog in ListHostiles( caster, 10 );
+wrogowie := 1;
+endforeach
+
+if(wrogowie == 1)
+SendSysMessage(caster, "Uciekac z pola walki? Wstyd!",3,40);
+return 0;
+endif
+
+  if(GetObjProperty(caster, "#team") || GetObjProperty(caster, "IgTeam") || GetObjProperty(caster, "CtfTeam"))
+      SendSysMessage(caster, "Gdzie kurwa?",3,40);        
+      return 0;
+  endif
+  
+
+
+  SendSysMessage(caster, "Wskaz rune przywolania.",3,66);
+  var cast_on := Target(caster);
+  if((cast_on.objtype != 0x1f14) && (cast_on.objtype != 0x6100))
+    SendSysMessage(caster, "Mozesz uzywac tego czaru tylko na runach przywolania.",3,40);
+    return 0;
+  endif
+
+
+  if(!ReserveItem(cast_on))
+    return;
+  endif
+  if(GetObjProperty(cast_on, "Vendored"))
+    SendSysMessage(caster, "Nie mozesz uzywac run znajdujacych sie u vendora.",3,40);
+    return 0;
+  endif
+
+  var tox := CInt(GetObjProperty( cast_on, "x" ));
+  var toy := CInt(GetObjProperty( cast_on, "y" ));
+  var toz := CInt(GetObjProperty( cast_on, "z" ));
+  if(!tox)
+    SendSysMessage(caster, "Runa musi byc zaznaczona.",3,40);
+    return;
+  endif
+  if(!isValidLoc(tox,toy))
+    SendSysMessage(caster, "Nie mozesz tam sie przeniesc.",3,40);
+    DestroyItem(cast_on);
+    return;
+  endif
+
+  Detach();
+
+  var multicheck := CreateItemAtLocation(5833, 1125, 0, 0xeed, 1);
+  multicheck.hidden := 1;
+  if(!MoveObjectToLocation(multicheck, tox, toy, toz, multicheck.realm, MOVEOBJECT_NORMAL))
+    SendSysMessage(caster, "Cos blokuje miejsce docelowe.",3,40);
+    if(cast_on.objtype == 0x1f14)
+      DestroyItem(cast_on);
+    endif
+
+  endif
+  if(multicheck.multi)
+    SendSysMessage(caster,"Cos blokuje miejsce docelowe.",3,40);
+    if(cast_on.objtype == 0x1f14)
+      DestroyItem(cast_on);
+    endif
+    return;
+
+  endif
+  DestroyItem(multicheck);
+
+PlaySoundEffect( caster, 0x01ff );
+PlayStationaryEffect( caster.x, caster.y, caster.z, 0x3728, speed:=0xa, loop:=0xa );
+
+	SetObjProperty(caster, "#Teleported", 1);
+MoveObjectToLocation( caster, tox, toy, toz );
+	EraseObjProperty(caster, "#Teleported");
+
+		var KTM := GetObjProperty(caster, "KTMTeam");
+		if(KTM)
+			EraseObjProperty(caster, "KTMTeam");
+		endif
+  
+PlayStationaryEffect( tox, toy, toz, 0x3728, speed:=0xa, loop:=0xa );
+
+
+
+
+
+endprogram

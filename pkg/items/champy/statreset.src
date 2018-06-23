@@ -1,0 +1,8 @@
+use uo;
+
+program statreduce(who, item)
+	EraseObjProperty(who, "Staty");
+	PlaySoundEffect(who, 0x1e1);
+	DestroyItem(item);
+	SendSysMessage(who, "Mozesz ponownie uzyc komendy .staty", 3, 63);
+endprogram

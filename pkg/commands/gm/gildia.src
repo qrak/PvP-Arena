@@ -1,0 +1,19 @@
+use uo;
+
+program nadaj_gildie(who, text)
+
+if(!text)
+SendSysMessage(who, "Ssij i podaj jakas nazwe gildii",3,33);
+return;
+endif
+ if(text == "kasuj")
+  SendSysMessage(who, "Komu skasowac Gildie?",3,63);
+  var targ1 := Target(who);
+  targ1.title_guild := "";
+ elseif(text != "kasuj")
+  var targ := Target(who);
+  targ.title_guild := text;
+  SendSysMessage(who, "Zmieniam",3,63);
+  SendSysMessage(targ, "Zmienione",3,63);
+  endif
+endprogram

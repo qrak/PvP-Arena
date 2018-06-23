@@ -1,0 +1,58 @@
+// crash
+
+use uo;
+
+include "include/spellRestrictions";
+include "include/isValidLoc";
+
+program cast_mark(parms)
+  var circle := 6;
+  var delivery := "notarget";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 45);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := Target(caster);
+  if (cast_on.objtype != UOBJ_RUNE)
+    SendSysMessage(caster, "Mozesz uzywac tego czaru tylko na runach przywolania!");
+	return;
+  endif
+  if(caster.multi)
+    SendSysMessage(caster,"Nie mozesz zaznaczac run w tym miejscu.");
+    PlaySoundEffect(caster,0x005d);
+    PlayObjectCenteredEffect(caster, 0x3735,0x0a, 0x1e);
+    return;
+  endif
+  if(((caster.x >= 5120) && (caster.x < 6140) && (caster.y >= 0) && (caster.y <= 2300)) or (caster.multi))
+    SendSysMessage(caster, "Nie mozesz zaznaczyc runa w tym miejscu.");
+    return;
+  endif
+  
+    if(!isValidLoc(caster.x, caster.y) or (caster.multi))
+    SendSysMessage(caster, "Nie mozesz zaznaczyc runa w tym miejscu.");
+    return;
+  endif
+  
+  if (!Accessible(caster, cast_on))
+	SendSysMessage(caster, "Nie mozesz tego dosiegnac!");
+  endif
+  if (cast_on.objtype != UOBJ_RUNE)
+	SendSysMessage(caster, "Mozesz uzywac tego czaru tylko na runach przywolania!");
+	return;
+  endif
+  if(!ReserveItem(cast_on))
+    SendSysMessage(caster,"Czar sie nie udal.");
+    return;
+  endif
+  PlayObjectCenteredEffect(  caster, FX_MARK_EFFECT, 10, 10);
+  PlaySoundEffect( caster, SFX_SPELL_MARK );
+    SetObjProperty(cast_on, "x", caster.x);
+    SetObjProperty(cast_on, "y", caster.y);
+    SetObjProperty(cast_on, "z", caster.z);
+    
+  SetName(cast_on, "zaznaczona runa przywolania");
+  cast_on.graphic := 0x1f15;
+      cast_on.newbie := 1;
+endprogram

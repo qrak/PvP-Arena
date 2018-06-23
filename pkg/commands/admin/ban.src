@@ -1,0 +1,26 @@
+use polsys;
+use uo;
+
+
+program odban(who, param)
+   var suck := SplitWords(param);
+   var konto := suck[1];
+
+
+if(!konto)
+	SendSysMessage(who, "Uzycie: .ban konto");
+	return;
+   endif
+
+   var act := FindAccount(konto);
+      if(!act)
+		SendSysMessage(who, "Nie znaleziono konta: " + konto);
+		return;
+      endif
+      
+                act.eraseprop("Banned", 1);
+		act.ban();
+		SendSysMessage(who, "Zbanowano: " + konto + ".");
+
+
+endprogram

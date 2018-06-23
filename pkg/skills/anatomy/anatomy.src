@@ -1,0 +1,106 @@
+use math;
+use os;
+use attributes;
+use basic;
+use polsys;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+include "../../foundations/gumps/gumps";
+
+program anatomy( who )
+
+	if(IsBusy(who, 0, 0))
+		return 0;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_ANATOMY));
+  
+  SendSysMessage( who, "Wybierz cel.", FONT_NORMAL, 63);
+  var subject := Target(who);
+  if(!subject)
+    SendSysMessage(who, "Anulowano.", 3, 40);
+    return 0;
+  endif
+  if(!subject.IsA(POLCLASS_MOBILE))
+	SendSysMessage(who, "Nie mozesz tego ocenic.", FONT_NORMAL, 40);
+	return;
+  elseif(subject == who)
+    SendSysMessage(who, "Ta osoba wyglada milo.", FONT_NORMAL, 63);
+    return;
+  endif
+  if(subject.serial == who.serial)
+    SendSysMessage(who, "Ta osoba wyglada milo.", FONT_NORMAL, 63);
+    return;
+  endif
+  var prog := Cint(GetEffectiveSkill(who, SKILLID_ANATOMY));
+  var pts := CInt(GetEffectiveSkill(who, SKILLID_ANATOMY) + 2);
+  if(pts < 10)
+    pts := 10;
+  endif
+  if(CheckSkill(who,SKILLID_ANATOMY, -1, pts))
+    var streng := findstrength(GetStrength(subject));
+    var dext := finddex(GetDexterity(subject));
+    SendSysMessage(who, "Obiekt Twoich zainteresowan " + dext + " i " + streng, FONT_NORMAL, 63);
+    sleep(1);
+    if(subject.graphic == 400 or subject.graphic == 401)
+     if(prog >= 80)
+     SendSysMessage(who, "Ta osoba ma " + Cint(GetObjProperty(subject, "lata")) + " lat ",3,89);
+     endif
+    elseif(subject.graphic == 987)
+    SendSysMessage(who, "Chcialbys to wiedziec..",3,89);
+    endif
+    else
+        SendSysMessage(who, "Nie udalo Ci sie ocenic tego stworzenia.", FONT_NORMAL, 40);
+    endif
+endprogram
+
+function findstrength(str)
+  if(str >= 110)
+    return "bierze z 500 kg na klate.";
+  elseif(str >= 100)
+    return "jest silniejszy od pudziana.";
+  elseif(str >= 90)
+    return "jest silny niczym pudzian.";
+  elseif(str >= 80)
+    return "jest nadnaturalnie silny.";
+  elseif(str >= 70)
+    return "jest bardzo silny.";
+  elseif(str >= 60)
+    return "jest silny.";
+  elseif(str >= 50)
+    return "jest dosyc silny.";
+  elseif(str >= 40)
+    return "jest leszczem.";
+  elseif(str >= 30)
+    return "jest strasznym leszczem.";
+  elseif(str >=  20)
+    return "mialby problem z podniesieniem najlzejszych przedmiotow.";
+  endif
+endfunction
+
+function finddex(str)
+  if(str >= 110)
+    return "wyglada na zwinnego niczym bog";
+  elseif(str >= 100)
+    return "wyglada na najszybsza z istot, ktore kiedykolwiek widziales";
+  elseif(str >= 90)
+    return "wyglada na nadludzko zwinnego";
+  elseif(str >= 80)
+    return "wyglada na nadnaturalnie zwinnego";
+  elseif(str >= 70)
+    return "wyglada na niezwykle zwinnego";
+  elseif(str >= 60)
+    return "wyglada na bardzo zwinnego";
+  elseif(str >= 50)
+    return "wyglada na calkiem zwinnego";
+  elseif(str >= 40)
+    return "wyglada na zwinnego";
+  elseif(str >= 30)
+    return "wyglada na niezdarnego";
+  elseif(str >=  20)
+    return "wyglada na utrzymujacego rownowage z wielkim trudem";
+  endif
+endfunction

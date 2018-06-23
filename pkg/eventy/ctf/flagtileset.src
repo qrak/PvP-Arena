@@ -1,0 +1,28 @@
+use uo;
+
+include ":ctf:ctf";
+
+program flagtile(who, tile)
+    
+    if(!who.cmdlevel)
+        PrintTextAbove(tile, "Nie dotykaj mnie!",3,40);
+        return 0;
+    endif
+    
+    var teamtile := GetCtfTeam(tile);
+    
+    if(!teamtile)
+        SetCtfTeam(tile, "red");
+    endif
+
+    if(teamtile == "red")
+        SetCtfTeam(tile, "blue");
+    elseif(teamtile == "blue")
+        SetCtfTeam(tile, "red");
+    endif
+
+    tile.color := GetTeamColor(tile); // ustawia kolor podlodze w zaleznosci od teamu
+
+endprogram
+
+

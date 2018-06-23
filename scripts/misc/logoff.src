@@ -1,0 +1,65 @@
+use uo;
+use os;
+use vitals;
+
+
+
+program onlogoff(who)
+
+
+
+  var sessiontime := ReadGameClock() - GetObjProperty(who,"logontime");
+  var timer := GetObjProperty(who,"onlinetimer");
+  if(!timer)
+    timer := 0;
+  endif
+  SetObjProperty(who,"onlinetimer",timer+sessiontime);
+  EraseObjProperty(who,"LoggedIn");
+
+    if(!who.cmdlevel)
+        who.Disable("invul"); // wypierdala invula gracza
+        RevokePrivilege(who, "invul");
+    endif
+  
+    if(Cint(GetObjProperty(who, "#duelOkno")) || Cint(GetObjProperty(who, "#team")))
+        EraseGlobalProperty("arena");
+    endif
+    RemoveMods(who);
+    start_script(":unpoly:unpoly", who);
+
+endprogram
+
+
+
+function RemoveMods(who)
+    EraseObjProperty(who, "#resist_mod");  // do magikow
+    EraseObjProperty(who, "IsMeditating"); // usuwa medytacje
+    EraseObjProperty(who, "#duelOkno"); // okno duela
+    EraseObjProperty(who, "#team");  // duelowanie
+    EraseObjProperty(who, "#mountOkno");    
+    EraseObjProperty(who, "DivineFury"); //usuwa propa czaru divinefury (paladyn)
+    EraseObjproperty(who.weapon, "#Consecrate"); // usuwa propa czaru consecrate weapon (paladyn)
+    EraseObjProperty(who, "rodzajstrzal");
+    EraseObjProperty(who, "private");
+    EraseObjProperty(who, "hairlastgrew");
+    EraseObjProperty(who, "origbeardcol");
+    EraseObjProperty(who, "orighaircol");
+    EraseObjProperty(who, "Powtorzenia");
+    EraseObjProperty(who, "ostatniorozjebal");
+    EraseObjproperty(who, "bloodoath");
+    EraseObjproperty(who.weapon, "przekleta");
+    EraseObjproperty(who, "evilomen");
+    EraseObjproperty(who, "mindrot");
+    EraseObjproperty(who, "EnemyOfOne");
+    EraseObjProperty (who, "GorxSet");
+    EraseObjProperty (who, "IxodynixSet");    
+    EraseObjProperty(who, "strangle");
+    EraseObjProperty(who, "#glife");
+    eraseobjproperty(who,"NewRegenRateForLife");
+    eraseobjproperty(who,"NewRegenRateForMana");
+    eraseobjproperty(who,"NewRegenRateForStamina");
+    if(!who.cmdlevel)
+        RevokePrivilege(who, "hearghosts");
+    endif
+    RecalcVitals(who);    
+endfunction

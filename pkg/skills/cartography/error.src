@@ -1,0 +1,6 @@
+use uo;
+
+program blad(who)
+	SendSysMessage(who, "Musisz najpierw zidentyfikowac mape umiejetnoscia kartografia.", 3, 40);
+	return 0;
+endprogram

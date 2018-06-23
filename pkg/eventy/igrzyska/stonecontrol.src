@@ -1,0 +1,41 @@
+use uo;
+use os;
+
+include ":igrzyska:igrzyska";
+include ":igrzyska:initializer";
+
+program StoneControl()
+
+    var forced;
+
+    var stoneserial := Cint(GetGlobalProperty("IgStoneSerial"));
+        
+    if(!stoneserial)
+        if(CreateIgStone())
+            print("Stworzylem kamien igrzysk gdyz go nie bylo.");
+        else
+            print("Nie udalo sie stworzyc kamienia igrzysk.");                
+        endif
+    endif
+    
+    SetObjProperty(IgStone(), "StonePid", GetPid());
+    
+    while(1)
+        StoneSay(Systime_GetHour() + " : " + Systime_GetMinute() );
+
+        if(CheckIgHour())
+            if(!CheckIfActiveIg())
+                RunIg();
+            endif
+        endif
+        
+        forced := Cint(GetGlobalProperty("ForceIg"));
+        if(forced)
+            RunIg();
+        endif
+        
+        sleep(60);
+    endwhile
+
+
+endprogram

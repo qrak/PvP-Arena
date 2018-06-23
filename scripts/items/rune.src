@@ -1,0 +1,18 @@
+use uo;
+include "include/canAccess";
+
+program dblclick_rune(who, rune)
+  if(!can_access(who, rune))
+    return;
+  endif
+  if(GetObjProperty(rune, "x") == error)
+    SendSysMessage(who, "Te runo nie jest zaznaczone",3, 40);
+    return;
+  endif
+  var runedescription := RequestInput(who, rune, "Wpisz nazwe runa.");
+
+  if(runedescription)
+	rune.name := runedescription;
+	SendSysMessage(who, "Zmieniono nazwe.",3,63);
+  endif
+endprogram

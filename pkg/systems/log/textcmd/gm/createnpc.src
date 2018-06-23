@@ -1,0 +1,15 @@
+use uo;
+use file;
+
+program textcmd_createnpc( who, template )
+
+    var loc := TargetCoordinates(who);
+
+    var result := CreateNpcFromTemplate( template, loc.x, loc.y, loc.z );
+    if (!result)
+        SendSysMessage( who, "NPC Creation Failed: " + result.errortext );
+        return 0;
+    endif
+    
+    LogToFile(":log:createnpc.txt", "[CREATENPC] osoba z konta: " +who.acctname+" stworzyla NPC: " + result.name + " wspolrzedne (X/Y/Z): " + result.x + " " + result.y + " " + result.z);
+endprogram

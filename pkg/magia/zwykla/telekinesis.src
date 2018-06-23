@@ -1,0 +1,53 @@
+// crash
+
+use basicio;
+use npc;
+use basic;
+use os;
+use vitals;
+use util;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program telekinesis(parms)
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 21);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  PlaySoundEffect( caster, SFX_SPELL_TELEKINESIS );
+  if( cast_on.npctemplate || cast_on.acctname )
+    SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "telekenesis" });
+    if(Reflected(cast_on))
+      cast_on := caster;
+    endif
+    PlaySoundEffect(cast_on, 0x144);
+    PlayObjectCenteredEffect(cast_on, 0x37b9,0x03, 0x0a);
+    var dmg := RandomInt(GetEffectiveSkill(caster, SKILLID_MAGERY) / 10);
+    ApplyRawDamage(cast_on, Resisted(circle,caster,cast_on,dmg));
+    if((cast_on.graphic  == 0x190) or (cast_on.graphic == 0x191) or (cast_on.graphic == 0x25d) or (cast_on.graphic == 0x25e) )
+      PerformAction(cast_on, 20);
+    endif
+  elseif(cast_on.multi.serial)
+    SendSysMessage(caster, "Nie mozesz uzywac tego czaru w domach.");
+    return;
+  elseif(cast_on.container)
+    SendSysMessage(caster, "Nie mozesz uzywac tego czaru na pojemnikach.");
+    return;
+  elseif(cast_on.movable == 0)
+    SendSysMessage(caster, "Nie mozesz uzywac tego czaru na przedmiotach nieruchomych.");
+    return;
+  else
+    if(MoveItemToContainer( cast_on, caster.backpack, x := -1, y := -1 ))
+      PrintTextAbovePrivate(caster, "Podniosles przedmiot sila umyslu.", caster);
+    else
+      PrintTextAbovePrivate(caster, "Nie udalo Ci sie zmusic tego do ruchu.", caster);
+    endif
+  endif
+endprogram

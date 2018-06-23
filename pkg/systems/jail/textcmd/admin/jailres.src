@@ -1,0 +1,17 @@
+use uo;
+use os;
+
+include "include/client";
+
+program JailRestart(who)
+
+    SendSysMessage(who, "Restartowanie wiezienia.",FONT_NORMAL,GREEN_COLOR);
+
+    var Proc := GetProcess(CInt(GetGlobalProperty("JailPid")));
+    if(Proc)
+        Proc.kill();
+    endif
+
+    start_script(":jail:jailout");
+
+endprogram

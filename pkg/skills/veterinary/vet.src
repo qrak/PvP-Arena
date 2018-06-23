@@ -1,0 +1,62 @@
+use uo;
+
+include "include/attributes";
+include "include/frakcja";
+
+program veterinary(who)
+	if(who.cmdlevel)
+		return 0;
+	endif
+	SendSysMessage(who, "Wybierz martwe zwierze.", 3, 63);
+	var corpse := Target(who);
+	var is_npc := GetObjProperty(corpse, "npctemplate");
+	var master := GetObjProperty(corpse, "master");
+	if(!corpse)
+		SendSysMessage(who, "Anulowano.", 3, 40);
+		return 0;
+	endif
+	if(!is_npc && !corpse.isa(POLCLASS_CORPSE))
+		SendSysMessage(who, "Tego nie mozesz wskrzesic.", 3, 40);
+		return 0;
+	endif
+	if(master != who.serial)
+		SendSysMessage(who, "Nie jestes wlascicielem tego stworzenia.", 3, 40);
+		return 0;
+	endif
+	if(Distance(who, corpse) > 2)
+		SendSysMessage(who, "Za daleko.", 3, 40);
+		return 0;
+	endif
+	Detach();
+	SendSysMessage(who, "Zaczynasz wskrzeszac zwierze...", 3, 63);
+	var XXX:=who.x; // zmienne do ruchu
+	var YYY:=who.y;
+	sleep(3);
+	if((XXX <> who.x || YYY <> who.y))
+		SendSysMessage (who, "Oddaliles sie.", 3, 40);
+		return 0;
+	endif
+	if(RandomInt(100) > 70)
+		SendSysMessage (who, "Nie udalo ci sie wskrzesic zwierza i je zabiles.", 3, 40);
+		DestroyItem(corpse);
+		return 0;
+	endif
+	var propnames := GetObjPropertyNames(corpse);
+	var npcek := CreateNpcFromTemplate( Cstr(is_npc), BARN_X, BARN_Y, BARN_Z, 0, _DEFAULT_REALM);
+	MoveObjectToLocation( npcek, corpse.x, corpse.y, corpse.z, _DEFAULT_REALM, flags := MOVEOBJECT_FORCELOCATION );
+	var i := 1;
+	for (i:=1;i<=len(propnames);i:=i+1)
+		SetObjProperty(npcek, propnames[i], GetObjProperty(corpse,propnames[i]));
+	endfor
+	foreach item in EnumerateItemsInContainer(corpse)
+		MoveItemToContainer( item, npcek.backpack);
+	endforeach
+	DestroyItem(corpse);
+	SetName(npcek, GetObjProperty(corpse, "nazwa"));
+	npcek.script := "tamed";
+	SetVital( npcek, "Life" , 100);
+	SetVital( npcek, "Stamina" , 100);
+	SetVital( npcek, "Mana" , 100);
+	RestartScript(npcek);
+	SendSysMessage(who, "Wskrzesiles zwierze.", 3, 63);
+endprogram

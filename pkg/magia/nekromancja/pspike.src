@@ -1,0 +1,68 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_pspike( parms )
+  var circle := 6;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 109);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+  var nek := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
+  var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+  var int := GetIntelligence(caster);
+	var daemon := Cint(GetObjProperty(cast_on, "#Daemon"));
+	var daemonqual := daemon * 0.01;
+
+
+  var bonus := 0;
+
+  if(caster.ip)
+    bonus := int/5;
+  endif
+
+  if(Reflected(cast_on))
+    cast_on := caster;
+  endif
+  
+  PlaySoundEffect(caster, 674);
+  var  dmg := ((nek + sspeak)/3) + bonus;
+
+ if(daemon == 0)
+		EraseObjProperty(cast_on, "#Daemon");
+	endif
+	if(daemon)
+		dmg := dmg - (daemonqual*100);
+	endif
+
+
+
+
+  if(GetObjProperty(cast_on, "LastHit")[2] != caster.serial)
+    SetObjProperty(cast_on, "LastHit", {caster.name, caster.serial, "painspike" });
+  endif
+  if(Cint(GetObjProperty(caster, "#pspike")))
+    SendSysMessage(caster, "Musisz poczekac do czasu przywrocenia przeciwnikowi czesci obrazen",3,40);
+    return 0;
+  endif
+  SetObjProperty(caster, "#pspike", 1);
+  ApplyRawDamage(cast_on, Resisted(circle, caster, cast_on, dmg));
+  Detach();
+  sleep(3);
+  if(!cast_on.dead && cast_on.ip)
+    HealDamage(cast_on, dmg/4);
+    PrintTextAbove(cast_on, "+" + Cint(dmg/4),3,63);
+  elseif(!cast_on.dead && cast_on.npctemplate)
+    HealDamage(cast_on, dmg/3);
+    PrintTextAbove(cast_on, "+" + Cint(dmg/3),3,63);
+  endif
+  EraseObjProperty(caster, "#pspike");
+endprogram

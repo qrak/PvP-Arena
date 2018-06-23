@@ -1,0 +1,25 @@
+use uo;
+use file;
+
+program przeniescialo(who)
+	SendSysMessage(who, "Wybierz cialo (ESC - przerywa).",3,67);
+	while (1)
+		var cialo := Target(who, 0);
+		if(!cialo)
+			return 0;
+		endif
+
+		if(!cialo.isa(POLCLASS_CORPSE))
+			SendSysMessage(who, "To nie jest cialo.",3,40);
+			return 0;
+		endif
+
+		var gdzie := TargetCoordinates(who);
+		cialo.movable := 1;
+		LogToFile(":log:commands.txt", "[.CIALO] " + who.acctname + " przeniosl " + cialo.desc + " Z: " + cialo.x + " " + cialo.y + " " + cialo.z + " DO:" + gdzie.x + " " + gdzie.y + " " + gdzie.z, 1);
+		MoveObjectToLocation( cialo, gdzie.x, gdzie.y, gdzie.z, who.realm, 4 );
+		cialo.movable := 0;
+		SendSysMessage(who, "Cialo przeniesione!",3,67);
+
+	endwhile
+endprogram

@@ -1,0 +1,44 @@
+// crash
+
+use os;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_invis( parms )
+  var circle := 6;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 44);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  
+
+  var mount := GetEquipmentByLayer(cast_on, 25);
+  var widmowy := cint(getobjproperty(cast_on, "widmak"));
+
+  if(mount && !widmowy)
+    SendSysMessage(caster, "Cel musi sie znajdowac na widmowym wierzchowcu.");
+    return 0;
+  endif
+
+  if(cast_on.npctemplate)
+    SendSysMessage(caster, "Nie mozesz tego schowac.");
+    return 0;
+  endif
+  if(GetObjProperty(cast_on, "CtfTeam"))
+    SendSysMessage(caster, "Nie mozesz schowac gracza znajdujacego sie na CTFie.");
+    return 0;
+  endif
+  PlaySoundEffect(cast_on, 965);
+  cast_on.hidden := 1;
+  Detach();
+  sleep(CInt(GetEffectiveSkill(caster, SKILLID_MAGERY)));
+  cast_on.hidden := 0;
+endprogram
+

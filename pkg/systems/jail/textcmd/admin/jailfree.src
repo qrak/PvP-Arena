@@ -1,0 +1,45 @@
+use uo;
+use os;
+
+include "include/client";
+include "include/gumps";
+include ":jail:jail";
+
+var i;
+
+program JailFree(who, text)
+
+    var Cell;
+    var jailedperson := GetGlobalproperty("jailedperson");
+
+    if(CInt(text) > 0 and CInt(text) <=len(coords))
+        Cell := CInt(text);
+    else
+        Cell := SetCell(who);
+    endif
+
+    if(!Cell)
+        SendSysMessage(who, "Anulowano.",FONT_NORMAL,RED_COLOR);
+        return;
+    endif
+
+    if(!jailedperson[Cell])
+        SendSysMessage(who, "W tej Celi nikt nie siedzi!",FONT_NORMAL,RED_COLOR);
+        return;
+    endif
+
+    var jailed := SystemFindObjectBySerial(CInt(jailedperson[Cell]));
+    if(!jailed)
+        jailed := SystemFindObjectBySerial(CInt(jailedperson[Cell]), SYSFIND_SEARCH_OFFLINE_MOBILES );
+    endif
+
+
+    if(!jailed)
+        SendSysMessage(who, "Osoba w celi "+Cell+" nie istnieje! Zwalnianie celi.",FONT_NORMAL,RED_COLOR);
+        EraseFromCell(Cell);
+    else
+        SendSysMessage(who, "Przebaczyles grzechy osobie "+jailed.name+".",FONT_NORMAL,BLUE_COLOR);
+        FreeFromJail(jailed);
+    endif
+
+endprogram

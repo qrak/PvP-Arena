@@ -1,0 +1,13 @@
+use npc;
+use basic;
+use uo;
+
+program textcmd_dserial(who, text)
+  var a := SystemFindObjectBySerial(CInt(text));
+  if(!a)
+    SendSysMessage(who,"no such thing");
+    return;
+  endif
+  SendSysMessage(who, a.name + " zostal zniszczony.", 3, 63);
+  DestroyItem(a);
+endprogram

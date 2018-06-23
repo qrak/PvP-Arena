@@ -1,0 +1,30 @@
+use vitals;
+use uo;
+use os;
+include "include/attributes";
+
+var number := 0;
+program npcres( you )
+ Set_Script_Option( SCRIPTOPT_NO_RUNAWAY, 1 );
+set_critical(0);
+
+var x, y, z;
+print("TRWA USUWANIE SUMMONOW, NIE UPOWAC");
+sleep(2);
+for( x := 7167; x > 16; x := x  - 32)
+
+    for( y := 16; y < 4095; y := y + 32 )
+        for( z := -60; z <= 60; z := z + 30 )
+            foreach npc in ListMobilesNearLocation( x, y, z, 32 )
+                if(npc.npctemplate)
+                    SetObjProperty(npc, "guardkill", 1);
+                    ApplyRawDamage(npc, GetMaxHP(npc)-10);
+                    number := number + 1;
+                endif
+            endforeach
+        endfor
+    endfor
+
+endfor
+print("SUMMONY USUNIETE");
+endprogram

@@ -1,0 +1,53 @@
+use os;
+use util;
+use uo;
+
+include "include/attributes";
+
+program alienhit(param)
+	var attacker := param[1];
+  var defender := param[2];
+  if(Cint(GetObjProperty(defender, "#Alien")))
+    return 0;
+  endif
+  
+  if(!defender.dead && !defender.npctemplate)
+		defender.paralyzed := 1;
+		PrintTextAbove(attacker, "*wklada obslizgla macke do ust " + defender.name + "!*", 3, 40);
+		sleep(1);
+		defender.paralyzed := 0;
+    GrowAlien(defender);
+  endif
+    
+endprogram
+
+function GrowAlien(mobile)
+	var duration := 60;
+	for ( duration; duration > 0; duration:=duration-1 )
+		if ( mobile.dead )
+			duration += 1; // Ghosts cant have birth!
+		endif
+		
+		SetObjProperty(mobile, "#Alien", duration);
+
+		case ( duration )
+			89: SendSysMessage(mobile, "Czujesz ciezko na zoladku.", 3, 40); break;
+			60: SendSysMessage(mobile, "Czujesz ze Twoj zoladek jest wypelniony.", 3, 40); break;
+			50: SendSysMessage(mobile, "Twoj brzuch zaczyna sie powiekszac.", 3, 40); break;
+			40: SendSysMessage(mobile, "Czujesz silne bole brzucha.", 3, 40); break;
+			35: SendSysMessage(mobile, "Czujesz silne bole brzucha.", 3, 40); break;
+			25: SendSysMessage(mobile, "Czujesz jakby cos ostrego przekluwalo ci zoladek od wewnatrz.", 3, 40); break;
+			15: SendSysMessage(mobile, "Czujesz ostre bole brzucha, jakby kulo cie tysiace szpilek.", 3, 40); break;
+			10: SendSysMessage(mobile, "Czujesz jak Twoje wnetrznosci sie rozrywaja!", 3, 40); break;
+			1: SendSysMessage(mobile, "Czujesz ze cos zaczyna wychodzic z Twojego ciala!", 3, 40); break;
+		endcase
+			PrintTextAbove(mobile, "*burczy w brzuchu*", 3, 40);
+		Sleep(5);
+	endfor
+
+	PrintTextAbove(mobile, "*Byt ktory zyl w ciele "+mobile.name+" zaczyna rozrywac jego cialo!*", 3, 55);
+	CreateNPCFromTemplate("skitteringhopper", mobile.x, mobile.y, mobile.z, 0, mobile.realm);
+	ApplyRawDamage(mobile, GetMaxHp(mobile)+100);
+	EraseObjProperty(mobile, "#Alien");
+
+endfunction

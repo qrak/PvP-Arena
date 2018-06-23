@@ -1,0 +1,122 @@
+/////////////////////////////////////////////////////////
+//						       //	
+// Fortune telling script which picks a random fortune //
+//      used in conjunction with a crystal ball.       //
+//						       //
+// 		GM Basara - April 1 2001	       //
+//						       //
+/////////////////////////////////////////////////////////
+
+use util;
+use os;
+use basicio;
+use math;
+use uo;
+
+include "include/client";
+
+program crystalball(who, item)
+	if (GetObjProperty(item, "inuse") == 1)
+		SendSysMessage(who, " Duchy nie moga przypowiedziec wielu przyszlosci naraz");
+		return;
+	endif
+SendSysMessage (who, " Czyja przyszlosc chcesz poznac ?");
+var tgt := Target(who);
+
+	if(!tgt)
+		SendSysMessage(who, "Anulowano.");
+		return;
+	elseif (tgt == who)
+	SendSysMessage(who, " Nie mozesz przypowiedziec swojej wlasnej przyszlosci");
+		return;
+	elseif (distance(tgt, item) > 2)
+		SendSysMessage(who, tgt.name + " jest za daleko aby spelnic rytual");
+		return;
+	elseif (distance(who, item) > 2)
+		SendSysMessage(who, " Jestes za daleko aby spelnic rytual");
+		return;
+	elseif (tgt.graphic == 400 || tgt.graphic == 401)
+	else
+	SendSysMessage(who, "Nie mozesz przypowiedziec przyszlosci tego");
+	return;
+	detach();
+	endif
+	
+	SetObjProperty(item, "inuse", 1);
+	PrintTextAbove(who, "*" + who.name + " rozpoczyna Mantre*");
+	PerformAction(who, ANIM_CAST_AREA);
+	PlaySoundEffect(who, SFX_SKILL_SPIRITSPEAK);
+	Sleep(2);
+	PerformAction(who, ANIM_CAST_AREA);
+	PlaySoundEffect(who, SFX_SKILL_SPIRITSPEAK);
+	Sleep(2);
+	if( item.graphic == 0x0e2d )
+		item.graphic := 0x0e2e;
+	endif
+	PrintTextAbove(item, "*Mgla w kuli zaczyna wirowac*");
+	PlaySoundEffect(item, 260);
+	PlayObjectCenteredEffect( tgt, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PlayObjectCenteredEffect( tgt, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PlayObjectCenteredEffect( tgt, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PlayObjectCenteredEffect( tgt, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_BLESS_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PrintTextAbove(item, "*W kuli pojawia sie obraz i przemawia przez " + who.name + "*" );
+	Sleep(8);
+	PrintTextAbove(who, tgt.name + ", teraz odsloni sie Twoja przyszlosc!" , 3, 38);
+	Sleep(8);
+	tellfortune( who );
+	Sleep(8);
+	PrintTextAbove(who, "*" + who.name + " rozpoczyna inna Mantre*");
+	PerformAction(who, ANIM_CAST_AREA);
+	PlaySoundEffect(who, SFX_SKILL_SPIRITSPEAK);
+	Sleep(2);
+	PerformAction(who, ANIM_CAST_AREA);
+	PlaySoundEffect(who, SFX_SKILL_SPIRITSPEAK);
+	Sleep(2);
+	PlaySoundEffect(item, 260);
+	PlayObjectCenteredEffect( tgt, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PlayObjectCenteredEffect( tgt, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PlayObjectCenteredEffect( tgt, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PlayObjectCenteredEffect( tgt, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	PlayObjectCenteredEffect( who, FX_HEAL_EFFECT, 0x0a, 0x1e);
+	Sleep(2);
+	PrintTextAbove(item, "*Obraz w kuli powoli zaczyna sie rozmywac*");
+	if( item.graphic == 0x0e2e )
+		item.graphic := 0x0e2d;
+	endif
+	EraseObjProperty(item, "inuse");
+		
+endprogram
+
+
+function tellfortune( who )
+     var randy    := RandomInt(12);
+     
+     case( randy )
+          0: PrintTextAbove( who, "Przyszlosc jest niejasna, sprobuj pozniej...", 3, 38);
+          1: PrintTextAbove( who, "Przyszlosc Ci nie sprzyja. Tyle jestem w stanie powiedziec.", 3, 38);
+          2: PrintTextAbove( who, "Uwazaj na najblizszych! Zdradza Cie !", 3, 38);
+          3: PrintTextAbove( who, "Radze abys byl blisko swych przyjaciol ale jeszcze blizej wrogow", 3, 38);
+          4: PrintTextAbove( who, "Przyszlosc zapowiada sie dobrze.", 3, 38);
+          5: PrintTextAbove( who, "Odpowiesz za swe czyny !", 3, 38);
+          6: PrintTextAbove( who, "Odnajdziesz szczescie w milosci", 3, 38);
+          7: PrintTextAbove( who, "Nie odrzucaj zbyt szybko propozycji pomocy.", 3, 38);
+          8: PrintTextAbove( who, "Pomysl dwa razy zanim sie odezwiesz, nie wiesz kto moze to uslyszec", 3, 38);  
+          9: PrintTextAbove( who, "Daj spokoj Bogom! Bo jak nie to ...", 3, 38);
+          10: PrintTextAbove( who, "Zdrada czycha..", 3, 38);
+          11: PrintTextAbove( who, "Potezne smoki polegna pod gniewem twego miecza", 3, 38);
+endcase
+endfunction

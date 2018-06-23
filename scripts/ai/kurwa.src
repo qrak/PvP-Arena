@@ -1,0 +1,595 @@
+use npc;
+use os;
+use uo;
+use vitals;
+
+include "include/attributes";
+include "include/eventID";
+include "include/sysEvent";
+include "include/client";
+include "include/anchors";
+include "util/bank";
+
+var bank;
+var me := Self();
+
+
+
+var wyplacono;
+
+program banker();
+
+ubierz(me);
+
+  EnableEvents(SYSEVENT_SPEECH,1);
+
+  var text;
+  while(1)
+    var ev;
+    ev := os::wait_for_event(120);
+     case(ev.type)
+    SYSEVENT_SPEECH:
+      text := lower(ev.text);
+      TurnToward(ev.source);
+      if(text["pomoc"] || text["wita"] || text["chce"] || text["ile"] || text["konkret"])
+      Pomoc(ev.source);
+      elseif(text["sadomaso"])
+      Sadomaso(ev.source);
+      elseif(text["ssij"])
+      Ssanko(ev.source);
+      elseif(text["pelna obsluga"])
+      Ruchanko(ev.source);
+      elseif(text["podazajcie"] && GetObjProperty( me, "master") == ev.source.serial)
+      say ("Prowadz!");
+      Follow(ev.source);
+        elseif(text["balans"])
+        PrintTextAbove(me, "Aktualnie zarobilam: " + Cint(GetObjProperty(me, "zarobione")) + " sztuk zlota.");
+     elseif(text["zwalniam cie"] && GetObjProperty( me, "master") == ev.source.serial)
+     
+	PerformAction (me, ANIM_CAST_DIR);
+	say("Kal Aqua");
+	sleep (2);
+	PlaySoundEffect (me, SFX_SPELL_RECALL);
+	RevokePrivilege (me, "invul");
+        KillMe();
+     elseif(text["ustaw ceny"] && GetObjProperty( me, "master") == ev.source.serial)
+    ustawceny(me, ev);
+      elseif(text["dawaj zloto"] && GetObjProperty( me, "master") == ev.source.serial)
+            	TurnToward (ev.source);
+		CashOut (ev.source);
+      
+      endif
+  
+
+
+      
+endcase
+
+   endwhile
+endprogram
+
+function Pomoc(you)
+var sadomasoprice := Cint(GetObjProperty(me, "sadomasoprice"));
+var fullprice := Cint(GetObjProperty(me, "fullprice"));
+var ssanieprice := Cint(GetObjProperty(me, "ssanieprice"));
+TurnToward(you);
+PrintTextAbove(me, "Swiadcze roznego rodzaju uslugi.");
+sleep(2);
+PrintTextAbove(me, "Mow co mam zrobic, a to wykonam: ssij, sadomaso, pelna obsluga");
+sleep(2);
+PrintTextAbove(me, "Aktualny cennik:");
+sleep(2);
+PrintTextAbove(me, "ssanie - " + SSANIEPRICE + " sztuk zlota");
+sleep(2);
+PrintTextAbove(me, "sadomaso - " + SADOMASOPRICE + " sztuk zlota");
+sleep(2);
+PrintTextAbove(me, "pelna obsluga - " + FULLPRICE + " sztuk zlota");
+clear_event_queue();
+endfunction
+
+function Sadomaso(you)
+var contents := EnumerateItemsInContainer(you.backpack);
+var amt := 0;
+var ubranie, i;
+
+for(i := 1; i < 8; i := i + 1)
+ubranie := GetEquipmentByLayer(you, i);
+
+if(ubranie)
+PrintTextAbove(me, "Moze bys sie rozebral ?!");
+return;
+endif
+
+endfor
+
+   foreach item in contents
+            if(item.objtype == 0xeed)
+            amt := (amt + item.amount);
+            endif
+
+
+   endforeach
+
+var sadomasoprice := Cint(GetObjProperty(me, "sadomasoprice"));
+
+
+if(amt < SADOMASOPRICE)
+PrintTextAbove(me, "Masz za malo zlota!");
+return;
+endif
+
+
+
+   foreach item in contents
+            if(item.objtype == 0xeed)
+            amt := (amt + item.amount);
+
+if(!SubtractAmount(item, SADOMASOPRICE));
+PrintTextAbove(me, "Masz za malo zlota!");
+return;
+endif
+
+            endif
+
+
+   endforeach
+              EraseObjProperty(me, "wyplata");
+         SetObjProperty(me, "zarobione", GetObjProperty(me, "zarobione")+sadomasoprice);
+PrintTextAbove(me, "No to zaczynamy!");
+sleep(1);
+you.frozen := 1;
+var bicz := CreateItemInBackpack(me, 0x143A, 1);
+EquipItem(me, bicz);
+bicz.color := 10;
+SetName(bicz, "pejcz");
+PrintTextAbove(me, "Bedzie zabawa!");
+PrintTextAbove(me, "*wymuje pejcz*",3,33);
+sleep(1);
+bij(me);
+PrintTextAbove(me, "Jestem Twoja mistrzynia!");
+bij(me);
+PrintTextAbove(me, "Warcz psie!");
+sleep(1);
+PrintTextAbove(you, "*warczy jak pies*",3, COLOR_GREEN);
+bij(me);
+var plec := you.gender;
+if(plec == 0)
+PrintTextAbove(me, "Byles niegrzeczny! Blagaj o litosc!!!");
+else
+PrintTextAbove(me, "Bylas niegrzeczna! Blagaj o litosc!!!");
+endif
+sleep(1);
+PrintTextAbove(you, "*blaga o litosc*");
+bij(me);
+
+DestroyItem(bicz);
+you.frozen := 0;
+
+SendSysMessage(you, "Poczules sie lepiej!", 3, COLOR_GREEN);
+MakeBetter(you);
+
+
+clear_event_queue();
+endfunction
+
+function Ssanko(you)
+var contents := EnumerateItemsInContainer(you.backpack);
+var amt := 0;
+var ubranie,i;
+for(i := 1; i < 8; i := i + 1)
+ubranie := GetEquipmentByLayer(you, i);
+
+if(ubranie)
+PrintTextAbove(me, "Moze bys sie rozebral ?!");
+return;
+endif
+
+
+endfor
+
+   foreach item in contents
+            if(item.objtype == 0xeed)
+            amt := (amt + item.amount);
+            endif
+
+
+   endforeach
+
+var ssanieprice := Cint(GetObjProperty(me, "ssanieprice"));
+if(amt < SSANIEPRICE   && GetObjProperty( me, "master") != you.serial)
+PrintTextAbove(me, "Masz za malo zlota!");
+return;
+endif
+
+
+
+   foreach item in contents
+            if(item.objtype == 0xeed)
+            amt := (amt + item.amount);
+
+if(!SubtractAmount(item, SSANIEPRICE)  && GetObjProperty( me, "master") != you.serial);
+PrintTextAbove(me, "Masz za malo zlota!");
+return;
+endif
+
+            endif
+
+
+   endforeach
+
+PrintTextAbove(me, "No to zaczynamy!");
+sleep(1);
+you.frozen := 1;
+
+var plec := you.gender;
+              EraseObjProperty(me, "wyplata");
+                SetObjProperty(me, "zarobione", GetObjProperty(me, "zarobione")+ssanieprice);
+
+PrintTextAbove(me, "*pochyla sie*", 3,33);
+sleep(2);
+
+if(plec == 0)
+PrintTextAbove(me, "*wklada jego ognistego wojownika do swoich ust*", 3,33);
+else
+PrintTextAbove(me, "*zaczyna delikatnie lizac jej rozgrzana studnie*", 3,33);
+endif
+
+posysa(me, you);
+you.frozen := 0;
+SendSysMessage(you, "Poczules sie lepiej!", 3, COLOR_GREEN);
+MakeBetter(you);
+
+clear_event_queue();
+endfunction
+
+
+function bij(me)
+sleep(2);
+PrintTextAbove(me, "*uderza pejczem*", 3,33);
+PerformAction(me, 11);
+sleep(2);
+PrintTextAbove(me, "*uderza pejczem*", 3,33);
+PerformAction(me, 11);
+sleep(2);
+endfunction
+
+function posysa(me, you)
+sleep(2);
+PrintTextAbove(me, "*ssie!*", 3,33);
+PerformAction(me, 32);
+sleep(1);
+PrintTextAbove(you, "*ohh*", 3,COLOR_GREEN);
+PerformAction(me, 32);
+sleepms(500);
+PrintTextAbove(you, "*ahhh*", 3,COLOR_GREEN);
+PerformAction(me, 32);
+sleepms(500);
+PrintTextAbove(you, "*aaaahh*", 3,COLOR_GREEN);
+PerformAction(me, 32);
+sleepms(500);
+PrintTextAbove(you, "*uhhhh*", 3,COLOR_GREEN);
+PerformAction(me, 32);
+sleepms(500);
+PerformAction(me, 32);
+sleepms(500);
+PerformAction(me, 32);
+PrintTextAbove(you, "*ahhh*", 3,COLOR_GREEN);
+sleepms(500);
+PerformAction(me, 32);
+sleepms(500);
+PerformAction(me, 32);
+PrintTextAbove(you, "*uuoohh*", 3,COLOR_GREEN);
+sleepms(500);
+PerformAction(me, 32);
+sleepms(500);
+PerformAction(me, 32);
+sleepms(500);
+PerformAction(me, 32);
+var i;
+for(i :=1;i < 30; i := i + 1)
+sleepms(500);
+var losowosc := RandomInt(5)+1;
+if(losowosc == 1)
+PrintTextAbove(you, "*uuoohh*", 3,COLOR_GREEN);
+elseif(losowosc == 2)
+PrintTextAbove(you, "*ahh*", 3,COLOR_GREEN);
+elseif(losowosc == 3)
+PrintTextAbove(you, "*ooooo*", 3,COLOR_GREEN);
+endif
+
+
+PerformAction(me, 32);
+endfor
+sleep(3);
+var plec := you.gender;
+if(plec == 0)
+PrintTextAbove(you, "*DOSZEDL!*", 3,COLOR_GREEN);
+sleep(3);
+PrintTextAbove(me, "*polyka cala wydzieline*", 3,COLOR_GREEN);
+sleep(1);
+PrintTextAbove(you, "*wyciska ostatki*", 3,COLOR_GREEN);
+sleep(2);
+PrintTextAbove(me, "*zlizuje*", 3,COLOR_GREEN);
+else
+PrintTextAbove(you, "*DOSZLA!*", 3,COLOR_GREEN);
+endif
+sleep(2);
+
+endfunction
+
+
+function ubierz(me)
+var x, i;
+
+	for (i := 1; i <= 24; i := i + 1)
+		      x := GetEquipmentByLayer(me, i);
+         		DestroyItem(x);
+		
+	endfor
+
+SetName(me, "Terra Patrick - Kurwa");
+var plecak := CreateItemAtLocation(me.x, me.y, me.z, 0x966C);
+EquipItem(me, plecak);
+
+me.gender := 1;
+me.graphic := 401;
+
+var wlosy := CreateItemInBackpack(me, 0x203C);
+EquipItem(me, wlosy);
+wlosy.color := 33;
+
+var cyckonosz := CreateItemInBackpack(me, 0x1c0c);
+EquipItem(me, cyckonosz);
+
+cyckonosz.color := 1645;
+SetName(cyckonosz, "ubranie pokraka");
+
+var nogi := CreateItemInBackpack(me, 0x1C00);
+EquipItem(me, nogi);
+nogi.color := 1645;
+SetName(nogi, "ubranie pokraka");
+
+var czepiec := CreateItemInBackpack(me, 0x1DB9);
+EquipItem(me, czepiec);
+czepiec.color := 1645;
+SetName(czepiec, "ubranie pokraka");
+
+
+var obroza := CreateItemInBackpack(me, 0x13C7);
+EquipItem(me, obroza);
+obroza.color := 1645;
+SetName(obroza, "obroza pokraka");
+
+endfunction
+
+function follow (byref mmaster)
+	var d := distance (mmaster, me);
+var ev;
+	while (mmaster)
+		d:= distance (mmaster, me);
+		if (d > 1)
+			RunToward (mmaster);
+          
+                 else
+			sleep (1);
+		endif
+  
+  
+  	ev := wait_for_event(0);
+		
+			if (ev.type == EVID_SPEECH)
+				if ((GetObjProperty( me, "master") == ev.source.serial) and (ev.text["stoj"]))
+
+			
+					say ("Dobrze, zostane zatem tutaj.");
+                                          break;
+					return;
+					endif
+
+
+				endif
+			
+		
+  
+endwhile
+endfunction
+
+function ustawceny(me, ev)
+
+var cena1 := RequestInput(ev.source, ev.source.backpack, "Wpisz cene sadomaso.");
+SetObjProperty(me, "sadomasoprice", cena1);
+var cena2 := RequestInput(ev.source, ev.source.backpack, "Wpisz cene ssania.");
+SetObjProperty(me, "ssanieprice", cena2);
+var cena3 := RequestInput(ev.source, ev.source.backpack, "Wpisz cene pelnej obslugi.");
+SetObjProperty(me, "fullprice", cena3);
+
+endfunction
+
+function KillMe ()
+	foreach item in EnumerateItemsInContainer(me.backpack, 0x2)
+		if (!item.newbie and item.movable)
+			if ((item.objtype < 0x203b or item.objtype > 0x204d))
+				MoveObjectToLocation (item, me.x, me.y, me.z, MOVEOBJECT_FORCELOCATION, _DEFAULT_REALM);
+				if (item.decayat)
+					item.decayat := ReadGameClock() + 600;
+				endif
+			endif
+		endif
+	endforeach
+	MoveObjectToLocation (me, 5288, 1176, 0, MOVEOBJECT_FORCELOCATION, _DEFAULT_REALM);
+	SetObjProperty (me, "guardkill", 1);
+	ApplyRawDamage (me, GetVital (me, "Life") + 100);
+endfunction
+
+function CashOut (mmaster)
+	var mygold := CINT (getobjproperty (me, "zarobione"));
+	var bankbox := FindBankBox(mmaster);
+	if (mygold and mygold > 0)
+		var payamt := mygold;
+		while (payamt > 60000)
+			if (!CreateItemInContainer (bankbox, 0x0eed, 60000))
+ 			PrintTextAbovePrivate (me, "Twoj plecak jest pleny!", mmaster);
+				SetObjProperty (me, "zarobione", payamt);
+				return 0;
+			endif
+			payamt := payamt - 60000;
+		endwhile;
+		if (!CreateItemInContainer (bankbox, 0x0eed, payamt))
+			PrintTextAbovePrivate (me, "Twoj plecak jest pelny!", mmaster);
+			SetObjProperty (me, "zarobione", payamt);
+			return 0;
+		endif
+		PlaySoundEffect (me, 0x38);
+		PrintTextAbovePrivate (me, "Wplacilam " + mygold + " sztuk zlota do Twojego banku.", mmaster);
+		SetObjProperty (me, "zarobione", 0);
+	else
+		PrintTextAbovePrivate (me, "Nie mam zadnego zlota dla Ciebie.", mmaster);
+	endif
+
+	return 1;
+endfunction
+
+function Ruchanko(you)
+var contents := EnumerateItemsInContainer(you.backpack);
+var amt := 0;
+var ubranie,i;
+for(i := 1; i < 8; i := i + 1)
+ubranie := GetEquipmentByLayer(you, i);
+
+if(ubranie)
+PrintTextAbove(me, "Moze bys sie rozebral ?!");
+return;
+endif
+
+
+endfor
+
+   foreach item in contents
+            if(item.objtype == 0xeed)
+            amt := (amt + item.amount);
+            endif
+
+
+   endforeach
+
+var ssanieprice := Cint(GetObjProperty(me, "ssanieprice"));
+if(amt < SSANIEPRICE   && GetObjProperty( me, "master") != you.serial)
+PrintTextAbove(me, "Masz za malo zlota!");
+return;
+endif
+
+
+
+   foreach item in contents
+            if(item.objtype == 0xeed)
+            amt := (amt + item.amount);
+
+if(!SubtractAmount(item, SSANIEPRICE)  && GetObjProperty( me, "master") != you.serial);
+PrintTextAbove(me, "Masz za malo zlota!");
+return;
+endif
+
+            endif
+
+
+   endforeach
+
+PrintTextAbove(me, "No to zaczynamy!");
+sleep(1);
+you.frozen := 1;
+
+var plec := you.gender;
+              EraseObjProperty(me, "wyplata");
+              var fullprice := Cint(GetObjProperty(me, "fullprice"));
+                SetObjProperty(me, "zarobione", GetObjProperty(me, "zarobione")+fullprice);
+PrintTextAbove(me, "Najpierw lodzik!", 3,33);
+sleep(2);
+PrintTextAbove(me, "*pochyla sie*", 3,33);
+sleep(2);
+
+if(plec == 0)
+PrintTextAbove(me, "*wklada jego ognistego wojownika do swoich ust*", 3,33);
+else
+PrintTextAbove(me, "*zaczyna delikatnie lizac jej rozgrzana studnie*", 3,33);
+endif
+
+sleep(2);
+PrintTextAbove(me, "*lekko ssie*", 3,33);
+PerformAction(me, 32);
+sleep(2);
+PerformAction(me, 32);
+sleep(2);
+PerformAction(me, 32);
+sleep(2);
+PerformAction(me, 32);
+sleep(2);
+PrintTextAbove(me, "*zdejmuje spodnie*", 3,33);
+var gacie := GetEquipmentByLayer( me, 4 );
+MoveItemToContainer(gacie, me.backpack);
+sleep(1);
+if(plec == 0)
+PrintTextAbove(you, "*wklada ognistego wojownika do rozgrzanej cipki kurtyzany*", 3,33);
+sleep(2);
+PrintTextAbove(you, "*ostro posuwa*", 3,33);
+PerformAction(you, 0x1882);
+sleep(2);
+PrintTextAbove(you, "*ostro posuwa*", 3,33);
+PerformAction(you, 0x1882);
+sleep(2);
+PrintTextAbove(you, "*ostro posuwa*", 3,33);
+PerformAction(you, 0x1882);
+sleep(2);
+PrintTextAbove(you, "*ostro posuwa*", 3,33);
+PerformAction(you, 0x1882);
+sleep(2);
+PrintTextAbove(you, "*ostro posuwa*", 3,33);
+PerformAction(you, 0x1882);
+sleep(3);
+PrintTextAbove(you, "*ORGAZM!*", 3,33);
+sleep(1);
+PrintTextAbove(you, "*krzyczy z rozkoszy!*", 3,33);
+sleep(1);
+PrintTextAbove(you, "*spuszcza sie do cipki kurtyzany*", 3,33);
+sleep(1);
+PrintTextAbove(you, "*mega wytrysk*", 3,33);
+sleep(1);
+PrintTextAbove(you, "*ohh!*", 3,33);
+sleep(1);
+PrintTextAbove(you, "*ahhh!*", 3,33);
+
+
+else
+PrintTextAbove(me, "*wklada sztucznego penisa do Twojej cipki*", 3,33);
+sleep(2);
+PrintTextAbove(me, "*mocno pcha*", 3,33);
+PerformAction(me, 0x1931);
+sleep(2);
+PrintTextAbove(me, "*mocno pcha*", 3,33);
+PerformAction(me, 0x1931);
+sleep(2);
+PrintTextAbove(me, "*mocno pcha*", 3,33);
+PerformAction(me, 0x1931);
+sleep(2);
+PrintTextAbove(me, "*mocno pcha*", 3,33);
+PerformAction(me, 0x1931);
+sleep(2);
+PrintTextAbove(me, "*mocno pcha*", 3,33);
+PerformAction(me, 0x1931);
+sleep(3);
+PrintTextAbove(you, "*WIELOKROTNY ORGAZM!*", 3,33);
+sleep(1);
+PrintTextAbove(you, "*krzyczy z rozkoszy!*", 3,33);
+endif
+EquipItem(me, gacie);
+
+you.frozen := 0;
+SendSysMessage(you, "Poczules sie lepiej!", 3, COLOR_GREEN);
+MakeBetter(you);
+clear_event_queue();
+endfunction
+
+function MakeBetter(you)
+	SetHp(you, GetMaxHp(you));
+	SetMana(you, GetMaxMana(you));
+	SetStamina(you, GetMaxStamina(you));
+endfunction

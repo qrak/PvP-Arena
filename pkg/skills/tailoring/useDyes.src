@@ -1,0 +1,84 @@
+use uo;
+
+include "include/canAccess";
+include ":gumps:gumps";
+include "include/gumpUtil";
+include "include/attributes";
+include "include/yesNo";
+
+program use_dyes(who, dyes)
+  var skill := GetEffectiveSkill(who, SKILLID_TAILORING);
+  if(skill < 40)
+	SendSysMessage(who, "Tylko krawiec moze tego uzywac.", 3, 40);
+	return;
+  endif
+  if(!ReserveItem(dyes))
+    SendSysMessage(who, "Tych farb ktos juz uzywa.", 3, 40);
+    return;
+  endif
+  if(!can_access(who, dyes))
+    return;
+  endif
+  SendSysMessage(who, "Wybierz pojemnik, w ktorym chcesz rozrobic farby.", 3, COLOR_GREEN);
+  var dyetub := Target(who, TGTOPT_CHECK_LOS);
+  if(!ReserveItem(dyetub))
+     SendSysMessage(who, "Ktos juz tego uzywa.", 3, 40);
+     return;
+  endif
+  if(!can_access(who, dyetub))
+    return;
+  endif
+  if(!Accessible(who, dyetub))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac!", 3, 40);
+    return;
+  endif
+  if((dyetub.objtype != 0xb00f) && (dyetub.objtype != 0x0fab))
+    SendSysMessage(who, "Nie mozesz rozrobic w tym farb!", 3, 40);
+    return;
+  endif
+  var color;
+  if(skill < 85)
+	color := SelectColor(who, dyetub);
+  elseif(skill >= 80)
+     if(!YesNo(who, "Uzyc nowych barw?"))
+	color := SelectColor(who, dyetub);
+     else
+	GFInitGump(400,300);
+	GFResizePic(60, 23, 5170, 230, 100);
+	GFTextMid(124, 24, 128, 0, "Wybierz kolor");
+	var bial := GFButtonID(98, 53, 2152, 2153, 1);
+	GFTextLine(100, 80, 0, "Zacny");
+	var lodo := GFButtonID(156, 53, 2152, 2153, 1);
+	GFTextLine(152, 80, 0, "Niebieski");
+	var czar := GFButtonID(218, 53, 2152, 2153, 1);
+	GFTextLine(212, 80, 0, "Czerwonawy");
+	var przyciski := GFSendGump(who);
+	var trud, mana, book, name;
+	if(bial.keyid in przyciski.keys)
+	  if(skill > 95)
+		color := 999;
+	  else
+		SendSysMessage(who, "Niestety! Jeszcze nie mozesz uzywac tego koloru.", 3, 40);
+		return 1;
+	  endif
+	elseif(lodo.keyid in przyciski.keys)
+	  if(skill > 97)
+		color := 92;
+	  else
+		SendSysMessage(who, "Niestety! Jeszcze nie mozesz uzywac tego koloru.", 3, 40);
+		return 1;
+	  endif
+	elseif(czar.keyid in przyciski.keys)
+	  if(skill > 99)
+		color := 738;
+	  else
+		SendSysMessage(who, "Niestety! Jeszcze nie mozesz uzywac tego koloru.", 3, 40);
+		return 1;
+	  endif
+	else
+		SendSysMessage(who, "Anulowano.", 3, COLOR_RED);
+	endif
+     endif
+  endif
+ dyetub.color := color;
+endprogram

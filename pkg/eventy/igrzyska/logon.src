@@ -1,0 +1,50 @@
+use uo;
+use os;
+
+include "util/bank";
+
+program logoff(who)
+
+  foreach eqitem in ListEquippedItems(who) // clears igrzyska equipped items
+        if(CanDestroyItem(eqitem))
+            DestroyItem(eqitem);
+        endif
+    endforeach
+
+    foreach item in EnumerateItemsInContainer(who.backpack)  // clears igrzyska items from backpack
+        if(CanDestroyItem(item))
+            DestroyItem(item);
+        endif
+    endforeach
+    
+    var bankbox := FindBankBox(who);
+    foreach item in EnumerateItemsInContainer(bankbox)  // clears igrzyska items from bank
+        if(CanDestroyItem(item))
+            DestroyItem(item);
+        endif
+    endforeach
+    
+    if(GetObjProperty(who, "player_guild"))
+        who.title_guild := GetObjProperty(who, "player_guild");
+    else
+        who.title_guild := "";
+    endif
+    
+    EraseObjProperty(who, "IgTeam");
+    EraseObjProperty(who, "CtfTeam");
+    EraseObjProperty(who, "CtfStuff");
+    EraseObjProperty(who, "IgStuff");    
+endprogram
+
+function CanDestroyItem(rzecz)
+
+    if(Cint(GetObjProperty(rzecz, "IgStuff")))
+        return 1;
+    endif
+    
+    if(Cint(GetObjProperty(rzecz, "CtfStuff")))
+        return 1;
+    endif
+
+    return 0;
+endfunction

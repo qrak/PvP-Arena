@@ -1,0 +1,152 @@
+use http;
+use uo;
+use os;
+
+include "include/attributes";
+
+CONST SORT_ASCENDING	:= 0x0; // Default
+
+program showstats()
+    var zHtmlText := "";
+    var zabitych;
+    var dane := "";
+    var klasa := "";
+    var lp := 0;
+    var level;
+    var bestkillerever := GetGlobalProperty("bestkillerever");
+    var oldestplayerever := GetGlobalProperty("oldestplayerever");
+    var bestlevelerever := GetGlobalProperty("bestlevelerever");
+    if(!bestkillerever)
+        SetGlobalProperty("bestkillerever", {0, "brak"});
+    endif
+    if(!oldestplayerever)
+        SetGlobalProperty("oldestplayerever", {0, "brak"});
+    endif
+    if(!bestlevelerever)
+        SetGlobalProperty("bestlevelerever", {0, "brak"});
+    endif
+    var bestkiller := {};
+    var oldestplayer := {};
+    var bestleveler := {};
+    foreach liczonline in EnumerateOnlineCharactersABC()
+        if(!liczonline.cmdlevel)
+            lp := lp +1;
+        endif
+    endforeach
+    lp := 0; // zeruje zliczanie graczy
+    foreach mPlayer in EnumerateOnlineCharactersABC() 
+        if(!mPlayer.cmdlevel)
+            zabitych := Cint(GetObjProperty(mPlayer,"longmurders"));
+            if(!zabitych)
+                zabitych := 0;
+            endif
+            lp := lp +1;
+            klasa := GetClassName(mPlayer);
+            dane := Cint(GetObjProperty(mPlayer,"lata"));
+            level := GetObjProperty(mPlayer,"doswiadczenie");
+            bestkiller.append({zabitych, mPlayer.name});
+            oldestplayer.append({dane, mPlayer.name});
+            bestleveler.append({level[2], mPlayer.name});
+            SetObjProperty(mPlayer, "sort", sortuj(bestkiller)); 
+            bestkiller := GetObjProperty(mPlayer, "sort"); 
+            EraseObjProperty(mPlayer, "sort");
+            SetObjProperty(mPlayer, "sort", sortuj(oldestplayer)); 
+            oldestplayer := GetObjProperty(mPlayer, "sort"); 
+            EraseObjProperty(mPlayer, "sort");
+            SetObjProperty(mPlayer, "sort", sortuj(bestleveler)); 
+            bestleveler := GetObjProperty(mPlayer, "sort"); 
+            EraseObjProperty(mPlayer, "sort");
+            zHtmlText := zHtmlText + "<font size=2><center>" + lp + ". " + mPlayer.name + "<br>" + klasa +  "<br>zabitych: " + zabitych + "<br>wiek: "+ dane + "<br>" + "poziom: " + level[2] + "<br><br>"; 
+        endif
+    endforeach
+    if(bestkiller[1][1] > bestkillerever[1])
+        SetGlobalProperty("bestkillerever", {bestkiller[1][1], bestkiller[1][2]});
+    endif
+    if(oldestplayer[1][1] > oldestplayerever[1])
+        SetGlobalProperty("oldestplayerever", {oldestplayer[1][1], oldestplayer[1][2]});
+    endif
+    if(bestleveler[1][1] > bestlevelerever[1])
+        SetGlobalProperty("bestlevelerever", {bestleveler[1][1], bestleveler[1][2]});
+    endif
+    WriteHtml("<body bgcolor=#000000 text=white>");
+    WriteHtml("<body bgcolor=#000000 text=white>");
+    WriteHtml(zHtmlText);
+    WriteHtml("<br><br>");
+    WriteHtml("Najstarszy gracz w grze:<br><br> <center>" + oldestplayer[1][2] + "<br>wiek: " + oldestplayer[1][1] + "<br><br></center></html>");
+    WriteHtml("Najstarszy gracz na PvP:<br><br> <center>" + oldestplayerever[2] + "<br>wiek: " + oldestplayerever[1] + "<br><br></center></html>");
+    WriteHtml("<br><br>");
+    WriteHtml("<br><br>");
+    WriteHtml("Gracz o najwyzszym poziomie w grze:<br><br> <center>" + bestleveler[1][2] + "<br>poziom: " + bestleveler[1][1] + "<br><br>");
+    WriteHtml("Gracz o najwyzszym poziomie na PvP:<br><br> <center>" + bestlevelerever[2] + "<br>poziom: " + bestlevelerever[1][1] + "<br><br></center></html>");
+    WriteHtml("<br><br>");
+    WriteHtml("<br><br>");
+    WriteHtml("Najlepszy zabojca w grze:<br><br><center>" + bestkiller[1][2] + "<br>punktow: " + bestkiller[1][1] + "<br><br>");
+    WriteHtml("Najlepszy zabojca na PvP:<br><br><center>" + bestkillerever[2] + "<br>punktow: " + bestkillerever[1] + "<br></font>");
+    bestkiller.erase();
+    oldestplayer.erase();
+    bestleveler.erase();
+endprogram
+
+function GetClassName(who)
+    var classname := "";
+    if(GetBaseSkill(who,SKILLID_ARCHERY) > 50)
+        classname := "*lucznik*";
+    elseif(GetBaseSkill(who,SKILLID_MAGERY) > 50)
+        classname := "*mag*";
+    elseif(GetBaseSkill(who,SKILLID_SWORDSMANSHIP) > 50)
+        classname := "*wojownik*";
+    else
+        classname := "*noob*";
+    endif
+    return classname;
+endfunction
+
+function sortuj(tab)  // sortowanie babelkowe
+    var i,j; 
+    var buf := {}; 
+    var rozmiar := tab.size(); 
+    for(i := 1; i<=rozmiar; i:=i+1) 
+        for(j:=1; j<=rozmiar; j:=j+1) 
+            if(tab[j][1] < tab[j+1][1]) 
+                buf := tab[j]; 
+                tab[j] := tab[j+1]; 
+                tab[j+1] := buf; 
+            endif 
+        endfor 
+    endfor 
+    return tab; 
+endfunction
+
+function EnumerateOnlineCharactersABC(dir:=SORT_ASCENDING, cmdlevel:=-1)
+	var dict := dictionary;
+	foreach player in ( EnumerateOnlineCharacters() )
+		if ( cmdlevel != -1 )
+			if ( player.cmdlevel > cmdlevel )
+				continue;
+			endif
+		endif
+
+		var key := Upper(player.name);
+		if ( !dict.Exists(key) )
+			dict[key] := array{};
+		endif
+		dict[key].Append(player);
+		SleepMS(2);
+	endforeach
+
+	var z_list := array{};
+	foreach list in ( dict )
+		foreach player in ( list )
+			if ( dir == SORT_ASCENDING )
+				z_list.Append(player);
+			else
+				z_list.Insert(1, player);
+			endif
+			SleepMS(2);
+		endforeach
+		SleepMS(2);
+	endforeach
+
+	return z_list;
+endfunction
+

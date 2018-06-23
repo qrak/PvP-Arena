@@ -1,0 +1,7 @@
+use uo;
+use vitals;
+
+program rec(who)
+	RecalcVitals(who);
+	SendSysMessage(who, "Powinno byc juz ok.", 3, 63);
+endprogram

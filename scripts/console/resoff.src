@@ -1,0 +1,13 @@
+use basicio;
+use uo;
+
+program restart(who)
+    if(GetGlobalProperty("restart"))
+	EraseGlobalProperty("restart");
+	print("Wylaczono zakaz logowania na restarcie.");
+	return;
+    else
+	print("Zakaz logowania na restarcie nie jest wlaczony.");
+	return;
+    endif
+endprogram

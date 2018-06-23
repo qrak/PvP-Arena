@@ -1,0 +1,300 @@
+use uo;
+
+include ":gumps:gumps";
+include "include/canAccess";
+include "include/attributes";
+include "include/yesNo"; 
+include "include/webPage"; 
+
+
+program kamienblue(who, kamien)
+	if(Distance(who, kamien) > 2)
+		SendSysMessage(who, "Za daleko.",3,40);
+		return 0;
+	endif
+	if(!who.cmdlevel)
+		PrintTextAbove(who, "*oglada statystyki*",3,0);
+	endif
+	BuildGump(who);
+endprogram
+
+function BuildGump(who)
+	GFInitGump(80,80);
+	GFNoDispose();
+	GFPage(0);
+	GFResizePic(0,20, 2520,510,410);
+	GFResizePic(28,54, 3600,454,340);
+	GFGumpPic(340, 70, 5547);
+	GFGumpPic(250, 100, 5551);
+	GFGumpPic(320, 150, 5569);
+	GFTextLine(170,30,40, "Kamien statystyk");
+	GFTextLine(45,70,550,"Pokaz statystyke shardu.");
+	GFTextLine(45,90,550,"Pokaz statystyke graczy.");
+	GFTextLine(45,110,550,"Najlepsi.");
+	GFTextLine(45,130,550,"PvP Strona WWW");
+	GFTextLine(45,170,550,"Losuj ciekawostke.");
+	GFTextLine(45,190,550,"Opusc menu.");
+	var randomizer := RandomInt(7)+1;
+	if(randomizer == 1)
+		GFTextLine(45,240,40,"Czy wiesz ze: Mozesz zwiekszac swoje staty");
+		GFTextLine(45,260,40,"przy pomocy kulek statow ktore znajdziesz w championach?");
+	elseif(randomizer == 2)
+		GFTextLine(45,240,40,"Czy wiesz ze: Wciskajac w paperdolu drugi zwoj");
+		GFTextLine(45,260,40,"od lewej mozesz stworzyc wlasna druzyne?");
+		GFTextLine(45,280,40,"Pozwoli ci to miedzy innymi na leczenie");
+		GFTextLine(45,300,40,"swoich za pomoca jednego klikniecia na krysztalek.");
+  elseif(randomizer == 3)
+		GFTextLine(45,240,40,"Czy wiesz ze: Wciskajac w paperdolu pierwszy zwoj");
+		GFTextLine(45,260,40,"od lewej mozesz napisac swoj opis postaci?");
+  elseif(randomizer == 4)
+		GFTextLine(45,240,40,"Czy wiesz ze: Mozesz latwo wybierac cele korzystajac z makra");
+		GFTextLine(45,260,40,"dla woja: TargetNext/AttackLast lub dla maga TargetNext/LastTarget?");
+  elseif(randomizer == 5)
+		GFTextLine(45,240,40,"Czy wiesz ze: Kopiac w kopalniach xilonu w gorach wind");
+		GFTextLine(45,260,40,"masz dwa razy wieksza szanse wykopania xilonu niz w zwyklej kopalni?");
+  elseif(randomizer == 6)
+		GFTextLine(45,240,40,"Czy wiesz ze: Mozesz wylawiac rude wodna uzywajac wedki?");
+  elseif(randomizer == 7)
+		GFTextLine(45,240,40,"Czy wiesz ze: Mozesz zamieniac luki/kusze w drewno przy pomocy");
+		GFTextLine(45,260,40,"siekiery klikajac na przedmiot lub na worek w ktorym sie on znajduje?");
+  endif
+	var shardstat := GFButtonID(200, 70, 1209, 1210, 1);
+	var playerstat := GFButtonID(200, 90, 1209, 1210, 98);
+	var thebest := GFButtonID(200, 110, 1209, 1210, 1);
+	var vote := GFButtonID(200, 130, 1209, 1210, 1);
+	var randomhint := GFButtonID(200, 170, 1209, 1210, 1);
+	var quit := GFButtonID(200, 190, 1209, 1210, 1);
+	var keys := GFSendGump(who);
+	if(keys[0] == quit.keyid)
+		SendSysMessage(who, "Nara.",3,40);
+	endif
+	if(keys[shardstat.keyid])
+		PokazStat(who);
+	endif
+	if(keys[playerstat.keyid])
+		PokazStatPlayerow(who);
+	endif
+	if(keys[thebest.keyid])
+		TheBestPlayers(who);
+	endif
+	if(keys[vote.keyid])
+		VoteStone(who);
+	endif
+	if(keys[randomhint.keyid])
+		BuildGump(who);
+	endif
+endfunction
+
+function VoteStone (who) 
+	var vote := yesno(who, "Witaj " +who.name+ " ! Czy chcesz otworzyc przegladarke i wejsc na oficjalna strone shardu PvP Arena?"); 
+	if(vote == 1)  
+		OpenWebSite(who, "http://monar.no-ip.biz/"); 
+	endif 
+endfunction
+
+function TheBestPlayers(who)
+	CheckForBestPlayers();
+	GFInitGump(100, 20);
+	GFNoDispose();
+	GFNoClose();
+	GFPage(0);
+	GFResizePic(0,0, 2520,450,410);
+	GFResizePic(28,34, 3600,394,340);
+	var close := GFButtonID(50, 50, 1209, 1210, 1);
+	GFTextLine(70,50,550,"Opusc menu.");
+	var bestkillerever := GetGlobalProperty("bestkillerever");
+	var oldestplayerever := GetGlobalProperty("oldestplayerever");;
+	var bestduelerever := GetGlobalProperty("bestduelerever");
+	var bestkillerIG := GetGlobalProperty("bestkillereverIG");
+	var bestctferever := GetGlobalProperty("bestkillereverCTF");
+	
+	GFTextLine(70, 70, 560, "Najlepszy zabojca w PvP: " + bestkillerever[3]);
+	GFTextLine(90, 90, 560, "Fragow: " + bestkillerever[1] + " Smierci: " + bestkillerever[2]);
+	GFTextLine(70, 110, 560, "Najstarszy gracz w PvP: " + oldestplayerever[2]);
+	GFTextLine(90, 130, 560, "wiek: " + oldestplayerever[1]);
+	GFTextLine(70, 150, 560, "Najlepszy zabojca na duelach: " + bestduelerever[3]);
+	GFTextLine(90, 170, 560, "Fragow: " + bestduelerever[1] + " Smierci: " + bestduelerever[2]);
+	GFTextLine(70, 190, 560, "Najlepszy zabojca na igrzyskach: " + bestkillerIG[2]);
+	GFTextLine(90, 210, 560, "Fragow: " + bestkillerIG[1]);
+	GFTextLine(70, 230, 560, "Najlepszy lapacz flag na CTFie: " + bestctferever[2]);
+	GFTextLine(90, 250, 560, "Zdobytych flag: " + bestctferever[1]);
+
+	var gumpik := GfSendGump(who);
+	if(gumpik[close.keyid])
+		BuildGump(who);
+	endif
+endfunction
+
+function CheckForBestPlayers()
+	var bestkillerever := GetGlobalProperty("bestkillerever");
+	var oldestplayerever := GetGlobalProperty("oldestplayerever");;
+	var bestduelerever := GetGlobalProperty("bestduelerever");
+	var bestkillereverIG := GetGlobalProperty("bestkillereverIG");
+	var bestctferever := GetGlobalProperty("bestkillereverCTF");
+	if(!bestctferever)
+			SetGlobalProperty("bestkillereverCTF", {0, "brak"});
+	endif
+	if(!bestkillerever)
+		SetGlobalProperty("bestkillerever", {0, 0, "brak"});
+	endif
+	if(!oldestplayerever)
+		SetGlobalProperty("oldestplayerever", {0, "brak"});
+	endif
+	if(!bestduelerever)
+		SetGlobalProperty("bestduelerever", {0, 0, "brak"});
+	endif
+	if(!bestkillereverIG)
+		SetGlobalProperty("bestkillereverIG", {0, "brak"});
+	endif
+	if(!bestctferever)
+		SetGlobalProperty("bestkillereverCTF", {0, "brak"});
+	endif
+	var fragi, wiek, duelfrags, dueldeaths, fragiIG, flagsscored;
+	foreach gracz in EnumerateOnlineCharacters()
+		if(!gracz.cmdlevel)
+			fragi := GetObjProperty(gracz,"Score");
+			wiek := Cint(GetObjProperty(gracz, "lata"));
+			duelfrags := GetObjProperty(gracz,"duelfrags");
+			dueldeaths := GetObjProperty(gracz,"dueldeaths");
+			fragiIG := Cint(GetObjProperty(gracz,"igrzyskapunkt"));
+			flagsscored := Cint(GetObjProperty(gracz,"FlagsScored"));
+			if(!fragi)
+				fragi := {0, 0};
+			endif
+			if(!duelfrags)
+				duelfrags := 0;
+			endif
+			if(!dueldeaths)
+				dueldeaths := 0;
+			endif
+			if(fragi[1] > bestkillerever[1])
+				SetGlobalProperty("bestkillerever", {fragi[1], fragi[2], gracz.name});
+			endif
+			if(wiek > oldestplayerever[1])
+				SetGlobalProperty("oldestplayerever", {wiek, gracz.name});
+			endif
+			if(duelfrags > bestduelerever[1])
+				SetGlobalProperty("bestduelerever", {duelfrags, dueldeaths, gracz.name});
+			endif
+			if(fragiIG > bestkillereverIG[1])
+				SetGlobalProperty("bestkillereverIG", {fragiIG, gracz.name});
+			endif
+			if(flagsscored > bestctferever[1])
+				SetGlobalProperty("bestkillereverCTF", {flagsscored, gracz.name});
+			endif
+		endif
+	endforeach
+endfunction
+
+function PokazStat(who)
+	GFInitGump(100, 20);
+	GFNoDispose();
+	GFNoClose();
+	GFPage(0);
+	GFResizePic(0,0, 2520,450,410);
+	GFResizePic(28,34, 3600,394,340);
+	var close := GFButtonID(50, 50, 1209, 1210, 1);
+	GFTextLine(70,50,550,"Opusc menu.");
+	var lp := 0;
+	var system := polcore();
+	var load := system.sysload;
+	var uptime := system.uptime;
+	var bytessent := system.bytes_sent;
+	var bytesreceived := system.bytes_received;
+	var uptime2 := GetGlobalProperty( "ilestoi" );
+	var struptime, struptime2;
+	if(uptime > uptime2)
+		SetGlobalProperty( "ilestoi", uptime);
+	endif
+	uptime := uptime / 60;
+	uptime2 := uptime2 / 60;
+	if (uptime > 60)
+		uptime := uptime /60;
+		struptime := CStr(uptime) + " godzin";
+	else
+		struptime := CStr(uptime) + " minut";
+	endif
+	if (uptime2 > 60)
+		uptime2 := uptime2 /60;
+		struptime2 := CStr(uptime2) + " godzin";
+	else
+		struptime2 := CStr(uptime2) + " minut";
+	endif
+	foreach liczonline in EnumerateOnlineCharacters()
+		if(!liczonline.cmdlevel)
+			lp := lp +1;
+		endif
+	endforeach
+	GFTextLine(150, 70, 550, "Emulator: POL"+ polcore().version);
+	GFTextLine(150, 90, 550, "Uptime: " + struptime);
+	GFTextLine(150, 110, 550, "Najdluzszy uptime: " + struptime2);
+	GFTextLine(150, 130, 550, "Obciazenie Servera: " + CStr(load) + "%");
+	
+	GFTextLine(150, 150, 550, "Obciazenie lacza od UPa: " + (bytessent + bytesreceived) / 1000000 + " mb");
+	
+	GFTextLine(150, 170, 550, "Liczba Kont: " +  len(ListAccounts()));
+	GFTextLine(150, 190, 550, "Liczba graczy: " + lp);
+	GFTextLine(150, 210, 550, "Liczba NPC: " + polcore().mobilecount);
+	GFTextLine(150, 230, 550, "Liczba Itemow: " + polcore().itemcount);
+	GFTextLine(150, 250, 550, "Kanal irc: #uo-pvp siec POLNET");
+	var gumpik := GfSendGump(who);
+	if(gumpik[close.keyid])
+		BuildGump(who);
+	endif
+endfunction
+
+function PokazStatPlayerow(who)
+	GFInitGump(100, 20);
+	GFNoDispose();
+	GFNoClose();
+	GFPage(0);
+	GFResizePic(0,0, 2520,450,510);
+	GFResizePic(28,34, 3600,394,440);
+	var close := GFButtonID(50, 50, 1209, 1210, 1);
+	GFTextLine(70,50,550,"Opusc menu.");
+	var odstepy_y := 0;
+	var l := 1;
+	var lp := 0;
+	var zabitych;
+	var klasa := "";
+	var dane;
+	GFPage(1);
+  foreach mPlayer in EnumerateOnlineCharacters() 
+		if(!mPlayer.cmdlevel)
+			zabitych := GetObjProperty(mPlayer,"Score");
+			if(!zabitych)
+				zabitych := {};
+			endif
+			lp := lp +1;
+			if(GetBaseSkill(mPlayer,SKILLID_ARCHERY) > 50)
+				klasa := "*lucznik*";
+			elseif(GetBaseSkill(mPlayer,SKILLID_MAGERY) > 50)
+				klasa := "*mag*";
+			elseif(GetBaseSkill(mPlayer,SKILLID_SWORDSMANSHIP) > 50)
+				klasa := "*wojownik*";
+			elseif(Cint(GetObjProperty(mPlayer,"druid")))
+				klasa := "*druid*";
+			else
+				klasa := "*noob*";
+			endif
+			dane := Cint(GetObjProperty(mPlayer,"lata"));
+			if( odstepy_y > 3)
+				l:=l+1; 
+				GFButtonPage(40, 70, 5540, 5542, l);
+				odstepy_y := 0;
+				GFPage(l);
+				GFButtonPage(60, 70, 5537, 5539, l-1);
+			endif
+			GFTextLine(150, 70+(odstepy_y*100), 37, lp + ". " + mPlayer.name);
+			GFTextLine(170, 90+(odstepy_y*100), 550, klasa);
+			GFTextLine(170, 110+(odstepy_y*100), 550, "F: " + zabitych[1] + " D: " + zabitych[2]);
+			GFTextLine(170, 130+(odstepy_y*100), 550, "wiek: " + dane);
+			odstepy_y := odstepy_y + 1;
+		endif
+	endforeach
+  var gumpik := GfSendGump(who);
+	if(gumpik[close.keyid])
+		BuildGump(who);
+	endif
+endfunction
+

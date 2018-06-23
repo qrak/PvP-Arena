@@ -1,0 +1,70 @@
+use vitals;
+use uo;
+
+include "include/attributes";
+include "include/frakcja";
+
+program freezuj(who)
+
+    var igrzyska := GetObjProperty(who, "IgTeam");
+    var CTF := GetObjProperty(who, "CtfTeam");
+    var KTM := GetObjProperty(who, "KTMTeam");
+    
+    if(igrzyska || CTF || KTM)
+        SendSysMessage(who, "Nie badz taki cwany.", 3, 40);
+        return 0;
+    endif
+    SendSysMessage(who, "Wybierz zwierze ktore chcesz zmienic w deeda.",3,63);
+
+    var cel := Target(who, TGTOPT_HELPFUL);
+
+    if(!cel)
+        SendSysMessage(who, "Anulowano.",3,40);
+        return 0;
+    endif
+
+    if(cel == who)
+        SendSysMessage(who, "To nie jest oswojone zwierze, tylko jakis zalosny lamer.",3,40);
+        return 0;
+    endif
+
+    if(cel.script != "tamed")
+        SendSysMessage(who, "To nie jest oswojone zwierze.",3,40);
+        return 0;
+    endif
+
+    if(Distance(who, cel) > 2)
+        SendSysMessage(who, "Za daleko.",3,40);
+        return 0;
+    endif
+
+
+    if(Cint(GetObjProperty(cel, "summoned")))
+        SendSysMessage(who, "Nie mozesz zamieniac przywolancow w bilet.",3,40);
+        return 0;
+    endif
+
+
+    var masterserial := GetObjProperty(cel, "master");
+
+    if((masterserial == who.serial))
+        var bilet := CreateItemInContainer(who.backpack, 0x14F1);
+        bilet.color := 1167;
+        bilet.name := "bilet na zwierza " + cel.name;
+        SetObjProperty(bilet, "template", cel.npctemplate);
+        SetObjProperty(bilet, "nazwa", cel.name);
+        SetObjProperty(cel, "template", cel.objtype);
+        SetObjProperty(cel, "stabled", 1);
+        SetObjProperty(bilet, "Hp", GetHp(cel));
+        SetObjProperty(bilet, "Mana", GetMana(cel));
+        SetObjProperty(bilet, "Stamina", GetStamina(cel));
+        SetObjProperty(bilet, "color", cel.color);
+        SetObjProperty(bilet, "truecolor", cel.truecolor);
+        SetObjProperty(bilet, "script", cel.script);
+        MoveObjectToLocation( cel, BARN_X, BARN_Y, BARN_Z, cel.realm, MOVEOBJECT_FORCELOCATION );
+        ApplyRawDamage(cel, GetMaxHp(cel) + 20);
+        bilet.usescript := ":bilety:makebilet";
+    endif
+
+endprogram
+

@@ -1,0 +1,179 @@
+use os;
+use attributes;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+include "../../foundations/gumps/gumps"; 
+
+program do_armslore( who )
+
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_ARMSLORE));
+	
+  var quality_descr, damage_descr;
+  SendSysMessage(who, "Wybierz przedmiot, ktory chcesz ocenic.", FONT_NORMAL, COLOR_GREEN );
+  var what :=  TargetCoordinates(who);
+  var the_item := what.item;
+  if(!the_item)
+    SendSysMessage(who, "Anulowano.", FONT_NORMAL, 40 );
+    return;
+  endif
+  var cfg := ReadConfigFile(":combat:itemdesc");
+  var entry := cfg[the_item.objtype];
+  if(!entry)
+    SendSysMessage(who, "Mozesz oceniac tylko bronie i zbroje!", FONT_NORMAL, 40 );
+    return;
+  endif
+
+    var item_max_hp := the_item.maxhp;
+    var max_hp := item_max_hp;
+    var hp := the_item.hp;
+    if(hp == 0)
+      hp := 1;
+    endif
+    if(max_hp == 0)
+       max_hp := 1;
+    endif
+    if(item_max_hp == 0)
+      item_max_hp := 1;
+    endif
+    var damage_real := (hp  * 100) / max_hp;
+    var damage_nbr := CInt(damage_real);
+    var quality_real :=  (the_item.quality  * 100);
+    var quality_nbr := CInt(quality_real);
+    if(damage_nbr > 90)
+      damage_descr := "dobrym";
+    elseif (damage_nbr >= 60)
+      damage_descr := "poczciwym";
+    elseif (damage_nbr >= 40)
+      damage_descr := "srednim";
+    else
+      damage_descr := "slabym";
+    endif
+    if(quality_nbr > 100)
+      quality_descr := "wyjatkowej";
+    elseif (quality_nbr >= 80)
+      quality_descr := "doskonalej";
+    elseif (quality_nbr >= 60)
+      quality_descr := "dobrej";
+    elseif (quality_nbr >= 40)
+      quality_descr := "zwyklej";
+    else
+      quality_descr := "slabej";
+    endif
+
+    var Weapon_Cfg := ReadConfigFile(":combat:itemdesc");
+    var Dice_Dmg := Weapon_Cfg[the_item.objtype].Damage;
+
+				var space	:= Find(Dice_Dmg, "d", 1);
+				var space2a	:= Find(Dice_Dmg, "+", space + 1);
+				var space2b	:= Find(Dice_Dmg, "-", space + 1);
+				var dice_a	:= CInt(Dice_Dmg[1, space - 1]);
+				var bonus	:= 0;
+				var dice_t;
+
+				if ( (!space2a) && (space2b) )
+					space2a := space2b;
+				endif
+
+				if ( !space )
+					return CInt(Dice_Dmg);
+				endif
+
+				if ( !space2a )
+					dice_t := CInt(Dice_Dmg[space+1, len(Dice_Dmg)-space]);
+				else
+					dice_t := CInt(Dice_Dmg[space+1, (space2a-space-1)]);
+					bonus  := CInt(Dice_Dmg[space2a+1, len(Dice_Dmg)-space2a]);
+				endif
+
+				if( space2b )
+				bonus := 0 - bonus;
+				endif
+
+			
+                                
+GFInitGump(80,80);
+  GFNoDispose();
+  GFPage(0);
+
+ GFResizePic(0,20, 2520,510,610);
+ GFResizePic(28,54, 3600,454,540);
+
+  GFTextLine(120,30,40, "Dane o przedmiocie: " + the_item.name);
+  GFTextLine(45,70,550, "Hp/Maxhp: "+the_item.hp+"/"+the_item.maxhp+"");
+  if(the_item.isa(POLCLASS_WEAPON))
+  GFTextLine(45,90,550, "Szybkosc: "+ Weapon_Cfg[the_item.objtype].Speed);
+  else
+  GFTextLine(45,90,550, "Szybkosc: 0");
+  endif
+  if ( dice_a ) 
+  GFTextLine(45,110,550, "Obrazenia: " + CInt( ( ( ( bonus + dice_a ) * the_item.hp ) / the_item.maxhp ) * the_item.quality ) + "-" + CInt( ( ( bonus + ( dice_t * dice_a ) * the_item.hp ) / the_item.maxhp ) * the_item.quality ));
+  GFTextLine(45,130,550, "Obrazenia dodatkowe: +" + the_item.dmg_mod); 
+  elseif(the_item.isa(POLCLASS_ARMOR))
+  GFTextLine(45,110,550, "Ar: " + the_item.ar );
+  GFTextLine(45,130,550, "Ar dodatkowe: +"+ the_item.ar_mod);
+  endif
+  GFTextLine(45,150,550,"Jakosc: +"+ ((the_item.quality - 1) * 100) + "%" );
+  
+  if(the_item.isa(POLCLASS_WEAPON))
+  GFTextLine(45,170,550,"Poziom: "+the_item.dmg_mod);
+  else
+  GFTextLine(45,170,550,"Poziom: "+the_item.ar_mod);
+  endif
+  
+  var ladunki := GetObjProperty(the_item, "ladunki");
+  var level := GetObjProperty(the_item, "level");
+   if ( GetObjProperty( the_item, "magik" ) )
+   GFTextLine(170,190,300, "PRZEDMIOT MAGICZNY:");
+   GFTextLine(45,210,550,"Poziom: "+level);
+   GFTextLine(45,230,550,"Ladunki: "+ladunki[1]);
+   GFTextLine(45,250,550,"Max Ladunki: "+ladunki[2]);   
+   endif
+
+
+  
+  if(GetObjProperty(the_item, "exceptional"))
+  GFTextLine(200,70,550,"Przedmiot wyjatkowej jakosci");
+  endif
+  
+  if(Cint(GetObjProperty(the_item, "ixodynix")))
+  GFTextLine(200,90,550,"20% szans na oslepienie");
+  endif
+  
+  if(Cint(GetObjProperty(the_item, "69exodus")))
+  GFTextLine(200,90,550,"5% szans na obrazenia od blyskawic");
+  endif
+  
+ 
+  var typ := GetObjProperty(the_item, "typ");
+  if ( typ == "fball" )
+  GFTextLine(230,90,550,"Obrazenia od ognia");
+  elseif( typ == "lightning" )
+  GFTextLine(230,90,550,"Obrazenia od blyskawic");
+  elseif( typ == "ice")
+  GFTextLine(230,90,550,"Obrazenia od lodu");
+  elseif( typ == "reactive")
+  GFTextLine(230,90,550,"Zbroja reaktywna");
+  elseif( typ == "resist")
+  GFTextLine(230,110,550,"Zbroja antymagiczna");
+  endif
+  if(Cint(GetObjProperty(the_item, "indes")))
+  GFTextLine(230,130,550,"Przedmiot niezniszczalny");
+  endif
+  if(GetObjProperty(the_item, "kupil"))
+  GFTextLine(200,270,550,"Wlasciciel: " + GetObjProperty(the_item, "kupil"));
+  endif
+
+  GFSendGump(who);
+ 
+endprogram
+
+
+
+

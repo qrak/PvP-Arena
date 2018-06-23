@@ -1,0 +1,63 @@
+use os;
+use uo;
+use basic;
+include "include/findCity";
+
+program stoisko(who, deed)
+
+SendSysMessage(who, "Zaczynasz rozkladac stoisko...",3,63);
+sleep(3);
+
+foreach mobile in ListMobilesNearLocation(who.x, who.y, who.z, 10)
+if(mobile.script == "banker")
+SendSysMessage(who, "Probujesz postawic stoisko za blisko banku",3,63);
+return;
+endif
+endforeach
+
+
+if(findcity(who) != "no city")
+SendSysMessage(who, "Nie mozesz stawiac stoisk w miastach.",3,40);
+return;
+endif
+
+  var nopvp := Cint(GetObjProperty(who, "#nocast"));
+  if(nopvp)
+    SendSysMessage(who, "Nie mozesz tutaj tego postawic");
+    return;
+  endif
+
+foreach inni in ListItemsNearLocation(who.x, who.y, who.z, 3)
+
+if(inni.objtype)
+SendSysMessage(who, "Probujesz postawic stoisko za blisko innych przedmiotow.",3,63);
+return;
+endif
+
+endforeach
+
+MakeStoisko(who, deed);
+
+endprogram
+
+function MakeStoisko(who, deed)
+
+var lawka := CreateItemAtLocation(who.x, who.y, who.z,  0xB7C, 1);
+
+lawka.movable := 0;
+SetName(lawka, "Stoisko kupieckie");
+lawka.color := 1154;
+
+var slup := CreateItemAtLocation(who.x, who.y+1, who.z,  0x19B, 1);
+slup.movable := 0;
+SetObjProperty(slup, "OK", 1);
+SetObjProperty(slup, "owner", who.name);
+SetObjProperty(slup, "ownerserial", who.serial);
+
+SetName(slup, "Wlasciciel : " + who.name);
+slup.color := 1154;
+
+
+DestroyItem(deed);
+endfunction
+

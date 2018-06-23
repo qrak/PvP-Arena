@@ -1,0 +1,13 @@
+use uo;
+use os;
+
+program uptime(who)
+	var up := polcore().uptime;
+	var msg;
+	var h := CInt(up/3600);
+	var m := CInt((up/60)-(h*60));
+	var s := CInt((up)-((m*60)+(h*3600)));
+	var time := h + "h:" + m + "m:" + s + "s";
+	SendSysMessage(who, "Serwer dziala juz: " + time + ".", 3, 63);
+	syslog(who.name + " konto: " + who.acct.name + " uzyl komendy uptime. IP:" + who.ip);
+endprogram

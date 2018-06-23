@@ -1,0 +1,66 @@
+use uo;
+use os;
+
+include "include/yesNo";
+include "include/kasa";
+
+program dskolor(who, nr)
+
+     if(!yesNo(who, "Komenda ta sluzy do nadawania koloru szacie Elity PvP. Kolor wybiera sie poprzez wpisanie jego numeru. Numery kolorow mozesz znalesc np. w programie INSIDEUO. Za pierwszym razem kolorowanie jest za darmo. Przy kolejnych razach tzreba placic 1mln gp"))
+         return;
+     endif
+
+  if( !GetObjProperty(who,"VET" ))
+      SendSysMessage(who, "Nie ukonczyles 30lat. Nie mozesz uzyc tej komendy",3,38);
+      return;
+  endif
+
+  if (GetObjProperty(who,"dskolor" ))
+     if(!yesNo(who, "Czy chcesz pokolorowac Szate Elity PvP? Kosztuje to 1000000 gp"))
+         SendSysMessage(who, "Anulowano.",3,40);
+         return;
+     endif
+
+      if(!SubtractCash(who, 1000000))
+         return;
+      endif
+   endif
+
+
+SendSysMessage(who, "Wskaz szate Elity PvP, ktorej chcesz nadac kolor",3,89);
+
+var szata := Target(who);
+
+
+
+  if (!szata)
+     return;
+  endif
+  
+  if (szata.objtype != 0x204E)
+     SendSysMessage(who, "To nie jest DS",3,38);
+     return;
+  endif
+
+    SendSysMessage(who, "Wpisz numer koloru jaki chcesz nadac szacie",3,89);
+    nr := RequestInput(who, who.backpack, "");
+
+    nr := CInt(nr);
+    
+   	if(!nr || nr < 0)
+		SendSysMessage(who, "Spadaj!", 3, 40);
+		return 0;
+        elseif (nr > 1300)
+               SendSysMessage(who, "Za duza liczbe wprowadziles. Max 1300",3,38);
+               return;
+        endif
+    
+    szata.color := nr;
+    
+    if (!GetObjProperty(who, "dskolor"))
+        SetObjProperty(who, "dskolor", 1);
+    endif
+    
+endprogram
+
+    

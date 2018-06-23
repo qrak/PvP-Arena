@@ -1,0 +1,39 @@
+use uo;
+use polsys;
+use basic;
+include "include/client";
+
+program textcmd_changeacctpassword( who )
+var accountname := who.acctname;
+var account := FindAccount( accountname );
+var newpassword := SendTextEntryGump( who, "Wpisz nowe haslo (4-32 znaki).", TE_CANCEL_ENABLE,TE_STYLE_NORMAL, COLOR_GREEN);
+
+If(newpassword)
+  var a := CAscZ ( newpassword );
+  var i;
+  For ( i := 1; i <= len(a); i := i + 1)
+    If (a[i] == 32)
+      SendSysMessage( who, "Haslo nie moze zawierac spacji.", FONT_NORMAL, COLOR_RED);
+      SendSysMessage( who, "Haslo NIE zostalo zmienione.", FONT_NORMAL, COLOR_RED);
+      exit;
+    Endif
+  Endfor
+
+  If ( (Len( newpassword ) < 4) || (Len( newpassword ) > 32) )
+      SendSysMessage( who, "Haslo musi miec od 4 do 32 znakow!", FONT_NORMAL, COLOR_RED);
+      SendSysMessage( who, "Haslo NIE zostalo zmienione.", FONT_NORMAL, COLOR_RED);
+  Else
+    account.SetPassword(newpassword);
+    SendSysMessage( who, "Nowe informacje dotyczace Twojego konta:", FONT_NORMAL, COLOR_GREEN);
+    SendSysMessage( who, "Nazwa konta: " + who.acctname, FONT_NORMAL, COLOR_GREEN);
+    SendSysMessage( who, "Nowe haslo: " + newpassword, FONT_NORMAL, COLOR_GREEN);
+    SendSysMessage( who, "Nie zapomnij swojego nowego hasla!", FONT_NORMAL, COLOR_GREEN );
+
+  EndIf
+
+Else
+SendSysMessage( who, "Anulowano.");
+EndIf
+
+endprogram
+

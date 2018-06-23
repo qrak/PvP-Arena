@@ -1,0 +1,7 @@
+use os;
+use basicio;
+
+print("Uruchamianie skryptow czasowych...");
+start_script("timedscripts");
+print("Uruchamianie kasowania licznikow smierci.");
+start_script("ddecay");

@@ -1,0 +1,71 @@
+use uo;
+use basic;
+use vitals;
+
+include "include/yesNo";
+include "include/attributes";
+include "include/staty";
+include ":gumps:gumps";
+include "include/yesNo";
+
+program staty(who)
+	BuildGump(who);
+endprogram
+
+function BuildGump(who)
+	var suma := 0;
+	GFInitGump(0,0);
+	GFNoClose();
+	GFNoMove();
+	GFNoDispose();
+	GFpage (0);
+	GFResizePic(200, 180, 3600, 370, 250);
+	GFCheckerTrans(200,180,370,250);
+	GFTextline(310, 280, 48, "str");
+	GFTilePic(300, 240, 0x208F);
+	var str := GFTextEntry(310, 300, 100, 30, 900, GetBaseStrength(who));
+	GFTextline(370, 280, 48, "dex");
+	GFTilePic(360, 240, 0x2088);
+	var dex := GFTextEntry(370, 300, 100, 30, 900, GetBaseDexterity(who));
+	GFTextline(430, 280, 48, "int");
+	GFTilePic(420, 240, 0x2089);
+	var int := GFTextEntry(430, 300, 100, 30, 900, GetBaseIntelligence(who));
+	var wolne := GetBaseStrength(who) + GetBaseDexterity(who) + GetBaseIntelligence(who);
+	GFTextline(130, 180, 40, "Twoj statcap sie nie zgadza. Ustaw nowe statystyki. Zadecyduj dobrze! Zmiany nieodwaracalne!");
+	GFTextline(310, 200, 50, "TWOJ STATCAP: " + CheckStatCap(who));
+	GFTextline(310, 220, 50, "WOLNYCH PUNKTOW: " + (Cint(CheckStatCap(who)) - wolne));
+	var okay := GFButtonID(310, 360, 2130, 2129, 1);
+	var accept := GFButtonID(380, 360, 238, 239, 1);
+	var sila, zrecz, intel;
+	var okno := GFSendGump(who);
+	sila := Cint(SplitWords(okno[str.keyid])[2]);
+	zrecz := Cint(SplitWords(okno[dex.keyid])[2]);
+	intel := Cint(SplitWords(okno[int.keyid])[2]);
+	if(okno[accept.keyid])
+		suma := sila + zrecz + intel;
+		if(suma > CheckStatcap(who))
+			SendSysMessage(who, "Zle.",3,40);
+		else
+			SetBaseStrength(who, sila);
+			SetBaseDexterity(who, zrecz);
+			SetBaseIntelligence(who, intel);
+		endif
+	elseif(okno[okay.keyid])
+		suma := sila + zrecz + intel;
+		if(suma > CheckStatcap(who))
+			SendSysMessage(who, "Zle.",3,40);
+		else
+			sila := Cint(SplitWords(okno[str.keyid])[2]);
+			zrecz := Cint(SplitWords(okno[dex.keyid])[2]);
+			intel := Cint(SplitWords(okno[int.keyid])[2]);
+			if(yesNo(who, "Czy jestes pewny?"))
+				SetBaseStrength(who, sila);
+				SetBaseDexterity(who, zrecz);
+				SetBaseIntelligence(who, intel);
+				who.frozen := 0;
+				return 0;
+			endif
+		endif
+	endif
+	BuildGump(who);
+endfunction

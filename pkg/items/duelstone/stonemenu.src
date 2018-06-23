@@ -1,0 +1,147 @@
+use uo;
+
+include ":gumps:gumps";
+include "include/yesNo"; 
+include "include/functions";
+include "include/frakcja";
+
+program duelstone(who, stone)
+    BuildDuelStoneGump(who, stone);
+endprogram
+
+function BuildDuelStoneGump(who, stone)
+    GFInitGump(80,80);
+    GFPage(0);
+    GFResizePic(0,20, 2520,510,410);
+    GFResizePic(28,54, 3600,454,340);
+    GFGumpPic(340, 70, 5547);
+    GFGumpPic(250, 100, 5551);
+    GFGumpPic(320, 150, 5569);
+    GFTextLine(170,30,40, "Kamien duela");
+    GFTextLine(45,70,550,"Walka 1 na 1.");
+    GFTextLine(45,90,550,"Opusc menu.");
+    var duel := GFButtonID(200, 70, 1209, 1210, 1);
+    var quit := GFButtonID(200, 90, 1209, 1210, 1);
+
+    var input := GFSendGump(who);
+        
+    if( input[0] == quit.keyid )
+        SendSysMessage(who, "Anulowano.", 3, 40);
+    elseif( input[0] == duel.keyid )
+        DuelChallenge(who, stone);
+    endif
+    
+endfunction
+
+function DuelChallenge(who, stone)
+    SendSysMessage(who, "Kogo chcesz wyzwac na duela?", 3, 63);
+    var cel := Target(who);
+    if(cel == who)
+        SendSysMessage(who, "Anulowano.", 3, 40);
+        return 0;
+    endif
+    if(!cel)
+        SendSysMessage(who, "Anulowano.", 3, 40);
+        return 0;
+    endif
+    if(!cel.ip)
+        SendSysMessage(who, "Debil.", 3, 40);
+        return 0;
+    endif
+    if(!cel.connected)
+        SendSysMessage(who, "Cel nie jest online.",3,40);
+        return 0;
+    endif
+    if(Cint(GetObjProperty(cel, "duelignore")))
+        SendSysMessage(who, "Cel ma wlaczone ignorowanie dueli.",3,40);
+        return 0;
+    endif
+    if(Cint(GetObjProperty(cel, "#duelOkno")))
+        SendSysMessage(who, "Ktos juz go chce duelowac, musisz odczekac.", 3, 40);
+        return 0;
+    endif
+    
+    SetObjProperty(cel, "#duelOkno", 1);
+    
+    if(yesNo(cel, "Przyjmujesz wyzwanie duela od " + who.name + "?" + " Rozjebal on juz " + Cint(GetObjProperty(who, "duelfrags")) + " osob na duelu, a przegral " + Cint(GetObjProperty(who, "dueldeaths")) + " razy." ))
+        SendSysMessage(who, cel.name + " przyjal wyzwanie.", 3, 63);
+        SendSysMessage(cel, "Przyjales wyzwanie na duel od " + who.name, 3, 63);        
+        StartDuel(who, cel, stone);
+    else
+        SendSysMessage(who, cel.name + " odrzucil wyzwanie.", 3, 40);
+        EraseGumpWindowProp(who, cel);
+        return 0;
+    endif
+endfunction
+
+function StartDuel(who, cel, stone)
+    if(!cel.connected || !who.connected)
+        SendSysMessage(who, "Cel/atakujacy nie sa online.",3,40);
+        return 0;
+    endif
+    if(GetObjProperty(cel, "#team") || GetObjProperty(cel, "IgTeam") || GetObjProperty(cel, "CtfTeam"))
+      SendSysMessage(cel, "Nie mozesz wyzwac tej osoby na duela w tym momencie.",3,40);        
+      return 0;
+    endif
+    if(GetObjProperty(who, "#team") || GetObjProperty(who, "IgTeam") || GetObjProperty(who, "CtfTeam"))
+      SendSysMessage(who, "Nie mozesz wyzwac tej osoby na duela w tym momencie.",3,40);        
+      return 0;
+    endif
+    SetObjProperty(who, "DuelCoords", {who.x, who.y, who.z}); // zapisuje gdzie osoba rozpoczela duela (wyzywajacy)
+    SetObjProperty(cel, "DuelCoords", {cel.x, cel.y, cel.z}); // zapisuje gdzie osoba rozpoczela duela (wyzywany)
+    var i := 20;
+    Detach();
+    repeat
+        i := i - 1;
+        PrintTextAbove(who, "*" + i + "*",3,40);
+        PrintTextAbove(cel, "*" + i + "*",3,40);
+        sleep(1);
+    until(i <= 0);
+    EraseGumpWindowProp(who, cel);
+    if(who.dead || cel.dead)
+        SendSysMessage(who, "Jeden z przeciwnikow nie zyje, anulowano duela", 3, 40);
+        SendSysMessage(cel, "Jeden z przeciwnikow nie zyje, anulowano duela", 3, 40);
+        return 0;
+    endif
+    if(!IsFreeArena())
+        SendSysMessage(who, "Arena jest w tej chwili zajeta", 3, 40);
+        EraseGumpWindowProp(who, cel);
+        return 0;
+    endif
+	SetObjProperty(who, "#Teleported", 1);
+	SetObjProperty(cel, "#Teleported", 1);
+    MoveObjectToLocation( who, LEFT_CORNER_X , LEFT_CORNER_Y, LEFT_CORNER_Z, who.realm, MOVEOBJECT_FORCELOCATION );
+    MoveObjectToLocation( cel, RIGHT_CORNER_X , RIGHT_CORNER_Y, RIGHT_CORNER_Z, cel.realm, MOVEOBJECT_FORCELOCATION );
+	EraseObjProperty(who, "#Teleported");
+		EraseObjProperty(cel, "#Teleported");
+    SetObjProperty(who, "#team", 1);
+    SetObjProperty(cel, "#team", 1);
+    SetGlobalProperty("#arena", 1);
+    SetObjProperty(who, "#DuelPid", GetPid());
+    SetObjProperty(cel, "#DuelPid", GetPid());
+    who.hidden := 0;
+    cel.hidden := 0;
+    MarkEquipped(cel);
+    MarkEquipped(who);
+    PrintTextAbove(stone, "Duel rozpoczety!", 3, 40);
+    PrintTextAbove(stone, who.name + " vs " + cel.name, 3, 40);    
+    var secs := 120;
+    while(1)
+        if(secs <= 0)
+            SendSysMessage(who, "Remis!", 3, 63);
+            SendSysMessage(cel, "Remis!", 3, 63);
+            var startwho := GetObjProperty(who, "DuelCoords");
+            var startcel := GetObjProperty(cel, "DuelCoords");
+            MoveObjectToLocation( who, startwho[1], startwho[2], startwho[3], who.realm, MOVEOBJECT_FORCELOCATION );
+            MoveObjectToLocation( cel, startcel[1], startcel[2], startcel[3], cel.realm, MOVEOBJECT_FORCELOCATION );
+            EraseDuelProps(who, cel);
+            break;
+        endif
+        PrintTextAbove(stone, "*" + secs + "*",3,40);
+        secs := secs - 1;
+        sleep(1);
+    endwhile
+    
+    
+endfunction
+

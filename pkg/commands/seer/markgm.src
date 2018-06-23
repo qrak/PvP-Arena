@@ -1,0 +1,38 @@
+use uo;
+
+include "include/objtype";
+include "include/spellRestrictions";
+
+
+program cast_mark( caster )
+       
+    SendSysMessage( caster, "Wybierz rune do zaznaczenia.",3,66 );
+    var cast_on := Target( caster, TGTOPT_CHECK_LOS );
+
+    if (!cast_on)
+            SendSysMessage(caster, "Anulowano.",3,33);
+            return;
+    endif
+
+    if (cast_on.objtype != UOBJ_RUNE)
+            SendSysMessage(caster, "Mozesz tylko zaznaczac runy.",3,33);
+            return;
+    endif
+
+  if(caster.multi)
+    SendSysMessage(caster,"Nie mozesz zaznaczac run w tym miejscu.");
+    return;
+  endif
+  if (!Accessible(caster, cast_on))
+	SendSysMessage(caster, "Nie mozesz tego dosiegnac!");
+  endif
+  PlayObjectCenteredEffect(  caster, FX_MARK_EFFECT, 10, 10);
+  PlaySoundEffect( caster, SFX_SPELL_MARK );
+    SetObjProperty(cast_on, "x", caster.x);
+    SetObjProperty(cast_on, "y", caster.y);
+    SetObjProperty(cast_on, "z", caster.z);
+
+    SetName(cast_on, "zaznaczona runa");
+    SetObjProperty(cast_on, "Created", caster.name);
+
+endprogram

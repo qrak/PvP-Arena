@@ -1,0 +1,51 @@
+// crash
+
+use polsys;
+use basic;
+use vitals;
+use util;
+use attributes;
+use math;
+use uo;
+
+include "include/eventID";
+include "include/attributes";
+include "include/spellRestrictions";
+include "include/resurrect";
+
+var npccfg := ReadConfigFile("::npcdesc");
+
+program spell_resurrect( parms )
+  var circle := 8;
+  var delivery := "direct";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 59);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  if(Distance(caster, cast_on) > 1)
+	SendSysMessage(caster,"Za daleko!");
+	return;
+  endif
+  PlaySoundEffect(caster, SFX_SPELL_RESSURECTION);
+  PlaySoundEffect(cast_on, SFX_SPELL_RESSURECTION);
+  if(cast_on.isA(POLCLASS_NPC))
+    var element := npccfg[cast_on.npctemplate].elemental;
+  else
+    if(!cast_on.dead)
+      return 0;
+    endif
+            
+    if(!ResurrectWithPenalty(cast_on))
+      SendSysMessage(caster, "Jego dusza jest za slaba.",3,40);
+      return 0;
+    endif
+        
+    if(!CheckLineOfSight( caster, cast_on ))
+        return;
+    endif
+    
+  endif
+endprogram

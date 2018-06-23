@@ -1,0 +1,36 @@
+use basic;
+use uo;
+
+include "include/staty";
+
+program CheckAge(who)
+  var kto := Target(who);
+  var wiek := Cint(GetObjProperty(kto, "lata"));
+  if(!kto)
+    SendSysMessage(who, "Anulowano.",3,40);
+    return 0;
+  endif
+  if(!kto.ip)
+    SendSysMessage(who, "Nie mozesz sprawdzic wieku tej osoby.",3,40);
+    return 0;
+  endif
+  if(kto.cmdlevel && who != kto )
+    SendSysMessage(who, "Ta osoba ma milion lat...",3,67);
+    SendSysMessage(who, "...i jest Twoim starym.",3,40);
+    return 0;
+  endif
+
+
+  var donator := Cint(GetObjProperty(kto, "donator"));
+  SendSysMessage(who, "Ta osoba ma: " + wiek + " lat.",3,67);
+  if(donator)
+    SendSysMessage(who, "...i jest zasluzonym graczem PvP.",3,40);  
+  endif
+
+  if(kto == who)
+    SendSysMessage(who, "Do urodzin pozostalo ci " + (1440 - Cint(GetObjProperty(who, "wiek")) ) +  " minut.",3,66);
+  endif
+
+
+
+endprogram

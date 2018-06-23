@@ -1,0 +1,376 @@
+use util;
+use os;
+use basic;
+use uo;
+use cfgfile;
+
+include ":gumps:gumps";
+include "include/attributes";
+include "util/repair";
+include "include/objtype";
+include "include/canAccess";
+include "include/toolWear";
+include "include/itemutil";
+include "include/gumpmenu";
+include "include/bfunctions";
+
+
+var itemcfg   := ReadConfigFile(":combat:itemdesc");
+var smith_cfg := ReadConfigFile("blacksmithy");
+
+program use_hammer(who, hammer)
+  if(!can_access(who, hammer))
+    return 0;
+  endif
+  if(!hammer.movable)
+    SendSysMessage(who, "Nie mozesz tego uzywac.", 3, 40);
+    return 0;
+  endif
+  if(!ReserveItem(hammer))
+    SendSysMessage(who, "Nie mozesz tego uzywac.", 3, 40);
+    return 0;
+  endif
+  if(!IsEquipped(who, hammer))
+     SendSysMessage( who, "Musisz miec mlotek w reku aby kuc!", 3, 40);
+     return 0;
+  endif
+  if(!CheckNearForAnvil(who))
+    SendSysMessage(who, "Musisz byc w poblizu kowadla by kuc.",3,40);
+    return 0;
+  endif
+  var mount := GetEquipmentByLayer(who, 25);
+  if(mount)
+    SendSysMessage(who,"Nie mozesz kuc siedzac na wierzchowcu.", 3, 40);
+    return 0;
+  endif
+  SendSysMessage(who, "Wybierz sztaby do kucia lub przedmiot do naprawy.",3 ,63);
+  var use_on := Target(who);
+  if(!use_on)
+    SendSysMessage(who, "Anulowano.", 3, 40);
+    return 0;
+  endif
+  if(!can_access(who, use_on))
+    SendSysMessage(who, "Nie mozesz tego dosiegnac.", 3, 40);
+    return 0;
+  endif
+  if(!Accessible(who, use_on) || (Distance(who, use_on) > 2))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return 0;
+  endif
+  if(!IsInContainer(who.backpack, use_on ))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+		return 0;
+	endif
+  var ingotvars := SetIngotProps(use_on);
+  var is_ingot := ingotvars[1];
+  var ptmod := ingotvars[2];
+  var armod := ingotvars[3];
+  var dmgmod := ingotvars[4];
+  if(is_ingot == 0)
+   if(use_on.movable == 0)
+     SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+     return 0;
+   else
+    repair_this(who, use_on);
+    return 0;
+   endif
+  endif
+  if(is_ingot == 0)
+    SendSysMessage(who, "To nie sa sztaby.",3,40);
+    return 0;
+  endif
+  if(!checkskillfordifferentmetals(who, use_on))
+    SendSysMessage(who, "Jeszcze nie mozesz kuc z tego metalu.", 3, 40);
+    return 0;
+  endif
+  GFInitGump(40, 0);
+  GFNoClose();
+  GFNoDispose();
+  GFPage(0);
+  GFResizePic(0, 60, 9270, 500, 400);
+  GFTextLine(180,  80, 900, "MENU KOWALSTWA");
+  GFTextLine( 30, 121, 1109, "Pierscieniowe");
+  GFTextLine(132, 121, 1109, "Kolcze");
+  GFTextLine(195, 121, 1109, "Plytowe");
+  GFTextLine(274, 121, 1109, "Helmy");
+  GFTextLine(340, 121, 1109, "Rozne");
+  GFTextLine(405, 121, 1109, "Rozne II");
+  GFTextLine( 45, 351, 1109, "Tarcze");
+  GFTextLine(130, 351, 1109, "Sieczne");
+  GFTextLine(210, 351, 1109, "Topory");
+  GFTextLine(290, 351, 1109, "Drzewce");
+  GFTextLine(390, 351, 1109, "Obuchy");
+  GFTextLine( 90, 380,  900, "To co ostatnio");
+  var lastitm := GFButtonID( 70, 384,   3, 4, 99);
+  var close   := GFButtonID(410, 380, 242, 241, 1);
+  GFButtonPage(110, 125, 1209, 1210,  2);
+  GFButtonPage(175, 125, 1209, 1210,  3);
+  GFButtonPage(245, 125, 1209, 1210,  4);
+  GFButtonPage(315, 125, 1209, 1210,  5);
+  GFButtonPage(380, 125, 1209, 1210, 11);
+  var strona := 13;
+	strona := 12;
+
+  GFButtonPage(457, 125, 1209, 1210, strona);
+  GFButtonPage( 90, 355, 1209, 1210,  6);
+  GFButtonPage(180, 355, 1209, 1210,  7);
+  GFButtonPage(255, 355, 1209, 1210,  8);
+  GFButtonPage(345, 355, 1209, 1210,  9);
+  GFButtonPage(440, 355, 1209, 1210, 10);
+  GFTextLine(  362, 420, 900, "Ilosc:");
+  var sa := GetObjProperty(who, "#SmithAmt");
+  if(!sa)
+    sa := 1;
+  endif
+  var ct := GFTextEntry(400, 420, 100, 30, 900, sa);
+  ComposeSubMenu(who);
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  var res := GFSendGump(who);
+  if((res[0] == 999) || (res[close.keyid]))
+    SendSysMessage(who, "Anulowano.");
+    return;
+  endif
+  var amt := Cint(SplitWords(res[ct.keyid])[2]);
+  if(!amt)
+    amt := 1;
+  elseif(amt > 50)
+    SendSysMessage(who, "Mozesz kuc nawyzej piecdziesiat przedmiotow naraz.", 3, 40);
+    return;
+  endif
+  SetObjProperty(who, "#SmithAmt", amt);
+  var cont := hammer.container;
+  if((!cont) || (cont.serial == who.serial))
+    cont := who.backpack;
+  endif
+  var the_objtype := res[0];
+  if(res[lastitm.keyid])
+    the_objtype := GetObjProperty(who, "LastBlacksmithItem");
+    if(!the_objtype)
+      SendSysMessage(who, "Niczego wczesniej nie kules.", 4, 40);
+      return;
+    endif
+  endif
+  SetObjProperty(who, "LastBlacksmithItem", the_objtype);
+  makeblacksmithitems(who, the_objtype, amt, cont, hammer, use_on, ptmod, armod, dmgmod);
+endprogram
+
+function makeblacksmithitems(who, what, amt, cont, hammer, use_on, ptmod, armod, dmgmod)
+  
+  if(!CheckNearForAnvil(who))
+    SendSysMessage(who, "Musisz byc w poblizu kowadla by kuc.",3,40);
+    return 0;
+  endif
+  
+  var tname, skil, material, pts, points, maxhp, itemname;
+  var nme, excmod, val, rint, theitem, holder;
+  if(!what)
+    SendSysMessage(who, "Anulowano.");
+    return;
+  endif
+  maxhp    := smith_cfg[what].maxhp;
+  itemname := smith_cfg[what].name;
+  var champbonus := 0;
+  if(Cint(GetObjProperty(hammer, "69exodus")))
+    champbonus := 200;
+  endif
+  var itembonus := Cint(hammer.dmg_mod) + champbonus;
+  if(!itembonus)
+    itembonus := 1;
+  endif
+  material := Cint(smith_cfg[what].material);
+  skil     := Cint(smith_cfg[what].skill);
+  points   := Cint(smith_cfg[what].points);
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  var skchk := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  pts := getpoints(who, skil, pts);
+  var str := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH) / 10);
+  var int := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY) / 10);
+  var statmody := str + int;
+  
+  excmod := Cint((GetEffectiveSkill(who, SKILLID_ARMSLORE) / 10) + 3) + statmody + itembonus + Cint((GetEffectiveSkill(who, SKILLID_BLACKSMITHY) / 10) + 3);
+  var modpts := 0;
+  if(skchk > (skil - 20))
+    modpts := (skchk - skil);
+  endif
+  while(counter < amt)
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Przestales kuc.",3, 40);
+      break;
+    endif
+    if(!hammer)
+      break;
+    endif
+    if(GetAmount(use_on) >= material)
+      if(!PlaySmithAnimation(who, hammer))
+        SendSysMessage(who, "Przestales kuc.", 3, 40);
+        return 0;
+      endif
+      pts := Cint(points + ptmod + itembonus )/2;
+      nme := "";
+      theitem := CreateItemInContainer(cont, what, 1);
+      if(theitem)
+        case(use_on.objtype)
+          0x6309: nme := itemname + "";                  theitem.color := 0;
+          0x630a: nme := itemname + " z matowej miedzi"; theitem.color := 1045;
+          0x630b: nme := itemname + " z kalcytu";        theitem.color := 1109;
+          0x630c: nme := itemname + " z miedzi";         theitem.color := 1118;
+          0x630d: nme := itemname + " z brazu";          theitem.color := 1714;
+          0x6314: nme := itemname + " ze srebra";        theitem.color := 1072;
+          0x630e: nme := itemname + " ze zlota";         theitem.color := 2214;
+          0x630f: nme := itemname + " z agapitu";        theitem.color := 1002;
+          0x6310: nme := itemname + " z veritu";         theitem.color := 2207;
+          0x6311: nme := itemname + " z valoritu";       theitem.color := 1337;
+          0x6312: nme := itemname + " z magnetytu";      theitem.color := 1102;
+          0x6313: nme := itemname + " z krwawnika";      theitem.color := 1654; SetObjProperty(theitem, "daemon", 1);
+          0x6315: nme := itemname + " z mithrilu";       theitem.color := 195;
+          0x6316: nme := itemname + " z namithu";        theitem.color := 251;
+          0x6317: nme := itemname + " z twardej wody";        theitem.color := 196; SetObjProperty(theitem, "wodna", 1);
+          0x631: nme := itemname + " z xilonu";          theitem.color := 1287; SetObjProperty(theitem, "xilon", 1); //oldxilon
+          0xA403: nme := itemname + " z IxodyniX-a"; theitem.color := 2; SetObjProperty(theitem, "ixodynix", 1);
+          0xA404: nme := itemname + " z 69 exodusa"; theitem.color := 1196; SetObjProperty(theitem, "69exodus", 1);
+          0xA405: nme := itemname + " z GorX-a"; theitem.color := 1192; SetObjProperty(theitem, "gorx", 1);
+        endcase
+        if(!SubtractAmount(use_on, material))
+          DestroyItem(theitem);
+          return 0;
+        endif
+        DamageTool(who, hammer);
+        rint := randomint(7000);
+        if((excmod + modpts) >= rint && skchk > 80)
+          theitem.quality := EXP_QUALITY;
+          theitem.hp      := theitem.maxhp;
+          theitem.ar_mod := armod + 10;
+          theitem.dmg_mod := dmgmod + 10;
+          SendSysMessage(who, "Wykules przedmiot wyjatkowej jakosci.", FONT_NORMAL, 88);
+          SetObjProperty(theitem, "exceptional", 1);
+
+          if(GetEffectiveSkill(who, SKILLID_BLACKSMITHY) >= 99)
+            tname := "wyjatkowej jakosci " + nme + " [wykul " + who.name + "]";
+          else
+            tname := "wyjatkowej jakosci " + nme;
+          endif
+        else
+          rint := randomint(100);
+          holder := GetBaseMod(skchk, skil, (excmod - 3));
+          if(rint < holder)
+            SendSysMessage( who, "Wykules przedmiot, aczkolwiek slabej jakosci.", FONT_NORMAL, COLOR_RED );
+            val := randomint(2) + 1;
+            case(val)
+              1: theitem.quality := 0.7;
+              2: theitem.quality := 0.8;
+              3: theitem.quality := 0.9;
+            endcase
+            theitem.hp := theitem.maxhp;
+          else
+            SendSysMessage( who, "Wykules przedmiot.", FONT_NORMAL, COLOR_GREEN );
+            theitem.quality := 1.0;
+            theitem.ar_mod := armod;
+            theitem.dmg_mod := dmgmod;
+            theitem.hp := theitem.maxhp;
+          endif
+            tname := nme;
+        endif
+        SetName(theitem, tname);
+        if(Cint(GetObjProperty(theitem, "exceptional")))
+          break;
+        endif
+      else
+        SendSysMessage(who, "Nie masz juz miejsca w plecaku.", 3, 40);
+        break;
+      endif
+    else
+      SendSysMessage(who, "Masz za malo sztabek!",3, 40);
+      return 0;
+    endif
+    counter := counter + 1;
+  endwhile
+endfunction
+
+function GetBaseMod(skill, diff, emod)
+  var holder := 0;
+  var maxi := diff + 20;
+  var mini := diff - 20;
+  if(skill > maxi)
+    holder := 20;
+  elseif((skill <= maxi) and (skill >= mini))
+    holder := 20 + Cint((maxi - skill) / 2);
+  else
+    holder :=  40;
+  endif
+  return Cint(holder - emod);
+endfunction
+
+function getpoints(who, diff, pts)
+  var skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  if(diff > 20)
+    diff := diff - 20;
+  else
+    diff := 1;
+  endif
+  if(skill > diff)
+    if((skill - diff) <= 5)
+      pts := pts;
+    elseif((skill - diff) <= 10)
+      pts := (pts * 3) / 4;
+    elseif((skill - diff) <= 15)
+      pts := pts / 2;
+    elseif((skill - diff) <= 20)
+      pts := pts / 4;
+    else
+      pts := 0;
+    endif
+  endif
+  return pts;
+endfunction
+
+function checkskillfordifferentmetals(who, ingot)
+  case( ingot.objtype )
+    0x6309:   return(checkhisskill(who,  0));
+    0x630a:   return(checkhisskill(who, 65));
+    0x630b:   return(checkhisskill(who, 70));
+    0x630c:   return(checkhisskill(who, 75));
+    0x630d:   return(checkhisskill(who, 80));
+    0x6314:   return(checkhisskill(who, 83));
+    0x630e:   return(checkhisskill(who, 85));
+    0x630f:   return(checkhisskill(who, 88));
+    0x6310:   return(checkhisskill(who, 90));
+    0x6311:   return(checkhisskill(who, 92));
+    0x6312:   return(checkhisskill(who, 93));
+    0x6313:   return(checkhisskill(who, 95));
+    0x6315:   return(checkhisskill(who, 99));
+    0x6316:   return(checkhisskill(who, 99));
+    0x6317:   return(checkhisskill(who, 99));
+    0x631E:    return(checkhisskill(who, 99));
+    0x631:    return(checkhisskill(who, 99));  //oldxilon
+    0xA403: return(checkhisskill(who, 99));
+    0xA404: return(checkhisskill(who, 99));
+    0xA405: return(checkhisskill(who, 99));
+    default: return 0;
+  endcase
+endfunction
+
+function checkhisskill(who, skill)
+  var his_skill := GetEffectiveSkill(who, SKILLID_BLACKSMITHY);
+  if(his_skill >= skill)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function IsEquipped(who ,hammer)
+  if((!Accessible(who,hammer)) || (Distance(who, hammer) > 1))
+    return 0;
+  endif
+  foreach item in ListEquippedItems(who)
+    if (hammer.serial == item.serial )
+      return 1;
+    endif
+  endforeach
+  return EquipItem(who, hammer );
+endfunction
+
+

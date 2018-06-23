@@ -1,0 +1,37 @@
+use os;
+use uo;
+
+include "drinkPotion";
+include "include/canAccess";
+include ":poisonwatcher:poisons";
+
+program drink_blue (who, potion)
+  EraseObjProperty(who, "IsMeditating");
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego wypic.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!checkifcandrink(who, "#orange"))
+    return;
+  endif
+  var potion_strength;
+  case(potion.objtype)
+    0xdc14: potion_strength := 1;
+    0xdc15: potion_strength := 2;
+    0xdc16: potion_strength := 3;
+  endcase
+  empty_bottle(who, potion);
+  Detach();
+  SendSysMessage(who, "Odtrutka zostala wprowadzona do krwi...", 3, 63);
+  sleep(7);
+   if(ListPoisonsByType(who, "DefaultPoison").size() > 0 )
+    SendSysMessage(who, "Odtrutka zaczela dzialac!", 3, 63);
+    PlaySoundEffect(who, SOUND_EFFECT_CURE);
+    PlayObjectCenteredEffect(who, EFFECT_SPARKLE, 10,10);
+
+    CurePoison(who, 120, "defaultPoison", potion_strength);
+  endif
+endprogram

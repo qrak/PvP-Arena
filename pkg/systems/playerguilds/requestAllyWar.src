@@ -1,0 +1,58 @@
+/*
+ * $Id: requestAllyWar.src 906 2006-11-09 02:33:55Z MontuZ $
+ *        Author: MontuZ
+ *        Created: Wednesday, Nov 08 2006
+ *        Version: 0.01
+ */
+ 
+use uo;
+use guilds;
+
+include ":newgumps:yesno";
+
+
+program RequestAllyWar(character)
+	// get master's guildref
+	var chr_guild := character.guild;
+
+	// get any cprops on the player guild. They would be guild nums
+	var ally := chr_guild.GetProp("PendingAllyReqs");
+	var enemy := chr_guild.GetProp("PendingWarReqs");
+
+	// if a request for alliance
+	if ( ally )
+		var ally_guild;
+		var i;
+
+		for ( i := 1; i <= ally.Size(); i += 1)
+			// find guild takes guild number as parm
+			ally_guild := FindGuild(ally[i]);
+			if ( ally_guild )
+				if ( YesNo(character, ally_guild.GetProp("Name") + " chce zawrzec przymierze z Twoja gildia. Zgadzasz sie?", "Tak", "Nie") )
+					// add our guild to their guild entry
+					ally_guild.AddAllyGuild(character.guild);
+				endif
+			endif
+			ally.Erase(i);
+			sleep(2);
+		endfor
+		chr_guild.EraseProp("PendingAllyReqs", ally);
+	endif
+
+	if ( enemy )
+		var enemy_guild;
+		var i;
+
+		for ( i := 1; i <= enemy.Size(); i += 1)
+			enemy_guild := FindGuild(enemy[i]);
+			if ( enemy_guild )
+				if ( YesNo(character, enemy_guild.GetProp("Name") + " chce wywolac wojne Twojej gildi. Zgadzasz sie?", "Tak", "Nie") )
+					enemy_guild.AddEnemyGuild(character.guild);
+				endif
+			endif
+			enemy.Erase(i);
+			sleep(2);
+		endfor
+		chr_guild.EraseProp("PendingWarReqs");
+	endif
+endprogram

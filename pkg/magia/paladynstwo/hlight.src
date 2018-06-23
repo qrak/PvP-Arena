@@ -1,0 +1,28 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_hlight( parms )
+  var circle := 2;
+  var delivery := "notarget";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 207);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+
+var pal := Cint(GetEffectiveSkill(caster, SKILLID_CHIVALRY));
+var dmg := pal/3;
+
+  foreach istota in ListMobilesInLineOfSight( caster, 8 );
+        ApplyRawDamage(istota, Resisted(circle, caster, istota, dmg));
+        dmg := dmg/2; // ponizej applyrawdamage poniewaz zmniejsza dmg o polowe dopiero po 1 mobie
+        PlayObjectCenteredEffect( istota, 0x37cc, 0x0A, 0x1e );
+  endforeach
+
+
+endprogram

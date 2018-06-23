@@ -1,0 +1,72 @@
+include "include/spellRestrictions";
+
+
+program chrcast_vbrace( parms )
+
+	var circle := 6;
+	var delivery := "notarget";
+	var noto := "neutral";
+	var result := maincast(parms, delivery, circle, noto, 116);
+	if(result == 0)
+		return 0;
+	endif
+	var caster := result[1];
+
+	if(Getobjproperty(caster, "wraith"))
+		PlayObjectCenteredEffect( caster, 0x373a, 20,15 );
+		caster.graphic := caster.trueobjtype;
+		caster.color := caster.truecolor;
+    SetName( caster, GetObjProperty (caster, "oldname") );
+		caster.title_prefix := GetObjProperty (caster, "oldprefix");
+		caster.title_suffix := GetObjProperty (caster, "oldsuffix");
+		caster.title_guild := GetObjProperty (caster, "oldguild");
+		caster.title_race := GetObjProperty (caster, "oldrace");
+		caster.murderer := GetObjProperty (caster, "oldmurderer");
+		EraseObjProperty (caster, "oldname");
+		EraseObjProperty (caster, "oldprefix");
+		EraseObjProperty (caster, "oldsuffix");
+		EraseObjProperty (caster, "oldguild");
+		EraseObjProperty (caster, "oldrace");
+		EraseObjProperty (caster, "oldmurderer");
+		EraseObjProperty (caster, "wraith");
+		EraseObjProperty (caster, "poly");
+
+		return 0;
+	endif
+	if (Getobjproperty(caster, "poly")  == 1)
+		SendSysMessage(caster,"Jestes juz pod dzialaniem czaru!");
+		return 0;
+	elseif(Getobjproperty(caster, "poly") != 2)
+		SetObjProperty (caster, "oldname", caster.name);
+		SetObjProperty (caster, "oldprefix", caster.title_prefix);
+		SetObjProperty (caster, "oldsuffix", caster.title_suffix);
+		SetObjProperty (caster, "oldguild", caster.title_guild);
+		SetObjProperty (caster, "oldrace", caster.title_race);
+		SetObjProperty (caster, "oldmurderer", caster.murderer);
+	elseif(Getobjproperty(caster, "poly") == 2)
+		EraseObjProperty (caster, "oldname");
+		eraseobjproperty(caster,"horrificbeast");
+		eraseobjproperty(caster,"vampire");
+		eraseobjproperty(caster,"lichform");
+		EraseObjProperty(caster,"oldname");
+		if(Cint(GetObjProperty(caster, "vampiric_resist")))
+			var vampresist := Cint(GetObjProperty(caster, "vampiric_resist"));
+			SetAttributeBaseValue(caster, ATTRIBUTEID_MAGICRESISTANCE, vampresist * 10);
+			EraseObjProperty(caster, "vampiric_resist");
+		endif
+        eraseobjproperty(caster,"NewRegenRateForLife");
+        eraseobjproperty(caster,"NewRegenRateForMana");
+        eraseobjproperty(caster,"NewRegenRateForStamina");
+		RecalcVitals(caster);
+	endif
+	PlayObjectCenteredEffect( caster, 0x373a, 20,15 );
+	caster.color :=0;
+	caster.title_prefix := "";
+	caster.title_suffix := "";
+	caster.title_guild := "";
+	caster.title_race:= "";
+	caster.murderer := 1;
+		setobjproperty(caster, "poly", 2);
+		SetObjProperty(caster, "wraith", 1);
+		PlaySoundEffect(caster, 528);
+endprogram

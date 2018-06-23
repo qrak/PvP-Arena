@@ -1,0 +1,110 @@
+use os;
+use vitals;
+use basic;
+use uo;
+
+include "include/attributes";
+include "include/staty";
+
+// 24 godziny = 1440 minut
+// 48 godzin = 2880 minut
+const DODAJ_WIEK_PO_CZASIE := 1440;
+
+
+program Wiek()
+
+    while(1)
+        foreach character in EnumerateOnlineCharacters()
+            if(character.cmdlevel) // jezeli gracz jest GMem to nie liczy wieku
+                continue;
+            endif
+            if(!GetObjProperty(character, "lata")) // jezeli nie ma propu wieku, nadaje nowy
+                SetObjProperty(character, "lata", 18);
+            endif
+            if(!GetObjProperty(character, "Staty")) // jezeli nie ma propa dodawania wieku, nadaje nowy
+                SendSysMessage(character, "Nie ustawiles statystyk przy pomocy komendy .staty", 3, 40);
+            endif
+	
+            if(!GetObjProperty(character, "wiek")) // jezeli nie ma propa dodawania wieku, nadaje nowy
+                SetObjProperty(character, "wiek", 1);
+            endif
+            if(Cint(!GetObjProperty(character, "jailed")) && !character.dead) // jezeli gracz nie jest w pace i nie jest trupem to dodaje wiek
+                SetObjProperty(character, "wiek", Cint(GetObjProperty(character, "wiek")) + 1);
+            endif
+            if( Cint(GetObjProperty(character, "wiek")) >= DODAJ_WIEK_PO_CZASIE) // jak prop wiek osiagnie DODAJ_WIEK_PO_CZASIE to dodaje lat
+                SetObjProperty(character, "lata", Cint(GetObjProperty(character, "lata")) + 1);
+                SendSysMessage(character, "Postarzales sie!",3,89);
+                SetObjProperty(character, "wiek", 0);
+            endif
+	if(Randomint(30) == 5 && !character.cmdlevel && !character.dead)
+		PrintTextAbove(character, "*sra*");
+		PlaySoundEffect(character, 0x319f);
+		var stolec := CreateItemAtLocation( character.x, character.y, character.z, 0xDC22, 1, character.realm );
+		SetObjProperty(stolec, "#Serial", character.serial);
+		stolec.name := "Stolec " + character.name;
+	endif
+            CheckClassess(character);
+            CheckVET(character);
+		var stolce := 0;
+       		foreach item in ListItemsNearLocation(character.x, character.y, character.z, 2)
+			if(item.objtype == 0xDC22 && Cint(GetObjProperty(item, "#Serial")) == character.serial )
+				stolce := stolce + 1;
+				if(stolce >= 3)
+					SendSysMessage(character, "Wokol Ciebie znajduje sie za duzo stolcow! Rozlaczam klienta!");
+					sleep(2);
+					DisconnectClient(character);
+				endif
+			endif	
+        	endforeach
+
+        endforeach
+	
+
+
+        if(Cint(GetGlobalProperty("#zakazwalk")))
+            BroadCast("INFORMACJA: ZAKAZ WALK JEST OBECNIE WLACZONY!",3,89);
+        endif
+
+    
+    sleep(60);
+    endwhile
+  
+endprogram
+
+function CheckClassess(gracz)
+    var sumastatow := GetBaseStrength(gracz) + GetBaseDexterity(gracz) + GetBaseIntelligence(gracz); // zlicza czy zgadza sie statcap
+    if(sumastatow > CheckStatcap(gracz))
+        foreach cwel in EnumerateOnlineCharacters() // for debuging only
+            if(cwel.cmdlevel)
+                SendSysMessage(cwel, "GM Message: " + gracz.name + " ma staty wieksze od statcapa. Prosze o sprawdzenie tego", 3, 40);
+            endif
+        endforeach
+    endif
+ endfunction
+
+function CheckVET(gracz)
+    if(Cint(GetObjProperty(gracz, "lata") == 30) && Cint(!GetObjProperty(gracz, "VET")))
+        SetObjProperty(gracz, "VET", 1);
+        var ds := CreateItemInBackpack(gracz, "0x204E");
+        SetName(ds, "szata smierci elity PvP Areny");
+        SetObjProperty(ds, "indes", 1);
+        ds.newbie := 1;
+        SendSysMessage(gracz, "Brawo! Skonczyles juz 30 lat i nalezysz do elity shardu PvP! Przyjmij drobna nagrode w postaci zblessowanego DSa.",3,89);
+        SetObjProperty(ds, "l33t", 1);
+    endif
+    if(Cint(GetObjProperty(gracz, "lata") == 40) && Cint(!GetObjProperty(gracz, "VET2")))
+        SetObjProperty(gracz, "VET2", 1);
+        SendSysMessage(gracz, "Brawo! Skonczyles juz 40 lat i stales sie legenda shardu PvP! Przyjmij drobna nagrode w postaci zblessowanego robe GMa.",3,89);
+        var ds := CreateItemInBackpack(gracz, "0x204F");
+        ds.newbie := 1;
+        SetObjProperty(ds, "indes", 1);
+        SetName(ds, "szata legendy PvP Areny");
+        SetObjProperty(ds, "l33t", 1);
+        var czek := CreateItemInBackpack(gracz, "0x6261");
+        czek.newbie := 1;
+        gracz.color := 0x4001;
+        gracz.truecolor := 0x4001;
+        SetObjProperty(czek, "Value", 2000000);
+        SetName(czek, "boski czek na 2000000 sztuk zlota");
+    endif
+endfunction

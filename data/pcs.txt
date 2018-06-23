@@ -1,0 +1,87 @@
+#
+#  PCS.TXT: Player-Character Data
+#
+#  In addition to PC data, this also contains hair, beards, death shrouds,
+#  and backpacks, but not the contents of each backpack.
+#
+
+Character
+{
+	Account	admin
+	CharIdx	0
+	Name	Qra'h
+	Serial	0x1c4bef
+	ObjType	0x190
+	Graphic	0x3db
+	Color	0x8421
+	X	5862
+	Y	1160
+	Z	0
+	Facing	2
+	Revision	69234
+	Realm	britannia
+	CProp	DuelCoords a3:i2044i2178i27
+	CProp	Guild_Invites sON
+	CProp	HearMsgs i1
+	CProp	Karma i-490
+	CProp	LastBlacksmithItem i3939
+	CProp	LastBowcraftItem i5117
+	CProp	LastCarpentryItem i7127
+	CProp	LastHit a3:S15:GorX - Championi2522028u
+	CProp	LastTailorItem i11012
+	CProp	LastTinkerItem i4112
+	CProp	OnCreate i12438352
+	CProp	Poisons d0:
+	CProp	Score a2:i5i26
+	CProp	SkLockArray a51:i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1i1
+	CProp	StatLockArray a3:i0i0i0
+	CProp	StatsState a3:i1061483i1061275i1048576
+	CProp	TamedPets a0:
+	CProp	VET i1
+	CProp	cap_pid i12608
+	CProp	dueldeaths i0
+	CProp	duelfrags i9
+	CProp	dziesiecina i470
+	CProp	green_potion i17002325
+	CProp	guardkill i1
+	CProp	igrzyskapunkt i1
+	CProp	lastskill_czas i13535900
+	CProp	lata i18
+	CProp	logontime i29712686
+	CProp	onehourTimer i13728521
+	CProp	onlinetimer i1834300
+	CProp	statcap i18000
+	CmdLevel	developer
+	TrueColor	0x8421
+	TrueObjtype	0x190
+	Gender	0
+	Race	0
+	Strength	100
+	Intelligence	100
+	Dexterity	100
+	Archery	100
+	Life	100
+	Mana	100
+	Stamina	100
+	Privs	all clotheany dblclickany dyeany firewhilemoving hearghosts ignoredoors losany moveany renameany seeghosts seehidden seeinvisitems showadv 
+	Settings	all clotheany dblclickany dyeany firewhilemoving hearghosts ignoredoors losany renameany seeghosts seehidden seeinvisitems showadv 
+	CreatedAt	12438352
+	TitleSuffix	" - F: 5 S: 26"
+	TitleRace	"30"
+}
+
+Item
+{
+	Serial	0x6d141631
+	ObjType	0xe75
+	Graphic	0xe75
+	X	0
+	Y	0
+	Z	0
+	Revision	1
+	Realm	britannia
+	CProp	Created sQra'h
+	Layer	21
+	Container	0x1c4bef
+}
+

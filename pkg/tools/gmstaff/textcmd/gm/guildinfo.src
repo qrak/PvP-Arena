@@ -1,0 +1,26 @@
+/////////////////////////////////////////////////////////
+// guildinfo.src
+//
+// author: dougall
+// email : dougalloogle@yahoo.com
+//
+/////////////////////////////////////////////////////////
+// Notes:
+//
+// - guilds as defined in 094 distro guildstones pkg
+//   (should work ok with the pol094 service pack 3 update!)
+//
+// - this textcommand is still in testing
+//   ( travel to guildstone will not work if the script
+//    can't locate the built deed for the house containing
+//    the guild stone in the guild masters bank box !)
+//
+
+use uo;
+
+program viewGuilds(who)
+
+    sendsysmessage(who,"Opcja wylaczona.");
+    return;
+
+endprogram

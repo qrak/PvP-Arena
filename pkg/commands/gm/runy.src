@@ -1,0 +1,14 @@
+use uo;
+
+program przenies(who)
+	var item := CreateItemAtLocation(who.x, who.y, who.z, 0xe5c, 1);
+	item.movable := 0;
+	item := CreateItemAtLocation(who.x+1, who.y, who.z, 0xe5f, 1);
+	item.movable := 0;
+	item := CreateItemAtLocation(who.x-1, who.y, who.z, 0xe62, 1);
+	item.movable := 0;
+	item := CreateItemAtLocation(who.x, who.y+1, who.z, 0xe65, 1);
+	item.movable := 0;
+	item := CreateItemAtLocation(who.x, who.y-1, who.z, 0xe68, 1);
+	item.movable := 0;
+endprogram

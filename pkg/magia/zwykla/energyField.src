@@ -1,0 +1,25 @@
+use os;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+
+
+program efield( parms )
+	var circle := 7;
+	var delivery := "indirect";
+	var noto := "harmful";
+	var result := maincast(parms, delivery, circle, noto, 50);
+	if(result == 0)
+		return;
+	endif
+	var caster := result[1];
+	var cast_on := result[2];
+	var magery := Cint(GetEffectiveSkill(caster, SKILLID_MAGERY));
+	var eval := Cint(GetEffectiveSkill(caster, SKILLID_EVALINT));
+	var duration := (magery+eval)/15;
+	if (duration < 0)
+		duration := 1;
+	endif 
+	CreateField(caster, cast_on.x,cast_on.y,cast_on.z, "energy", duration);
+endprogram

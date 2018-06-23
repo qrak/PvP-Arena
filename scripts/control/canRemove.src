@@ -1,0 +1,8 @@
+use uo;
+use os;
+use npc;
+use basic;
+
+program can_remove(who, backpack, item, movetype)
+  return 1;
+endprogram

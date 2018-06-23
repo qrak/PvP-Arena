@@ -1,0 +1,141 @@
+use basic;
+use util;
+use math;
+use uo;
+use polsys;
+
+include "include/attributes";
+include "include/others";
+include "include/client";
+include "include/itemutil";
+
+include "../../foundations/gumps/gumps";
+
+
+program do_itemid( who )
+
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_ITEMID));
+	
+	SendSysMessage( who, "Wskaz przedmiot, ktory chcesz zidentyfikowac.", FONT_NORMAL, 63 );
+	var the_item := Target(who, TGTOPT_CHECK_LOS);
+	if(!the_item)
+		SendSysMessage(who, "Anulowano.", FONT_NORMAL, 40);
+		return 0;
+	endif
+	if(Cint(GetObjProperty(the_item, "identified")))
+		SendSysMessage(who, "Ten przedmiot jest juz zidentyfikowany.", 3, 40);
+		return 0;
+	endif
+	if(the_item.isA(POLCLASS_MOBILE))
+		SendSysMessage(who, "To nie jest przedmiot!", FONT_NORMAL, 40);
+		return 0;
+	endif
+	if(the_item.amount > 1)
+		SendSysMessage(who, "Musisz rozdzielic zwoje zanim je zidentyfikujesz.", FONT_NORMAL, 40);
+		return 0;
+	endif
+	if(!IsInContainer(who.backpack, the_item ))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+		return 0;
+	endif
+	if((the_item.objtype >= 0xA411 && the_item.objtype <= 0xA415))
+		MagicStoneIdent(who, the_item);
+  	elseif(the_item.objtype == 0xA409) // power scroll
+		PowerScrollIdent(who, the_item);
+	else
+		SendSysMessage(who, "Nie mozesz tego zidentyfikowac.", FONT_NORMAL, 40);
+		return 0;
+	endif
+endprogram
+
+function PowerScrollIdent(who, the_item)
+	var randomfactor := RandomInt(13)+1;
+	var type := 0;
+	var crafting := 0;
+	var name := "";
+	case(randomfactor)
+		1: type := 25; name := " magii";
+		2: type := 17; name := " leczenia";
+		3: type := 27; name := " taktyki";
+		4: type := 50; name := " paladynstwa";
+		5: type := 49; name := " nekromancji";
+		6: type := 32; name := " mrocznej madrosci";
+		7: type := 19; name := " druidyzmu";
+		8: type := 2; name := " jasnej madrosci";
+		9: type := 16; name := " magicznej madrosci";
+		10: type := 26; name := " ochrony przed magia";
+		11: type := 7; name := " kowalstwa"; crafting := 1;
+		12: type := 8; name := " tworzenia lukow"; crafting := 1;
+		13: type := 34; name := " krawiectwa"; crafting := 1;
+		default: type := 27; name := " taktyki";
+	endcase
+	SetObjProperty(the_item, "skillid", type);
+	SetObjProperty(the_item, "crafting", crafting);
+	SetObjProperty(the_item, "identified", 1);
+	the_item.name := "power scroll" + name;
+	PlaySoundEffect(who, 0x3BE);
+	SendSysMessage(who, "Zidentyfikowales przedmiot.", 3, 63);
+endfunction
+
+function MagicStoneIdent(who, the_item)
+
+	var level := Cint(GetObjProperty(the_item, "level"));
+	var charges := 0;
+	var maxcharges := 0;
+	var Randomize := RandomInt(3);
+	if(Randomize == 0) // pancerze reaktywne
+		charges := level * 50 + RandomInt(20);
+		maxcharges := charges;
+		SetObjProperty(the_item, "typ", {"reactive", charges, maxcharges});
+		the_item.name := "zwoj reaktywny [lvl: " + level + "] uzywany na: zbroje";
+	elseif(Randomize == 1) // dodajace hp/mane
+		charges := level;
+		maxcharges := charges;
+		var rand := RandomInt(2);
+		if(rand == 0)
+			SetObjProperty(the_item, "typ", {"hp", charges, maxcharges});
+			the_item.name := "zwoj witalnosci [lvl: " + level + "] uzywany na: bizuteria";
+		else
+			SetObjProperty(the_item, "typ", {"mana", charges, maxcharges});
+			the_item.name := "zwoj many [lvl: " + level + "] uzywany na: bizuteria";     
+		endif
+	elseif(Randomize == 2) // statów
+		charges := level;
+		maxcharges := charges;
+		var rand := RandomInt(3);
+		if(rand == 0)
+			SetObjProperty(the_item, "typ", {"str", charges, maxcharges});
+			the_item.name := "zwoj sily [lvl: " + level + "] uzywany na: bizuteria";
+		elseif(rand == 1)
+			SetObjProperty(the_item, "typ", {"dex", charges, maxcharges});
+			the_item.name := "zwoj zrecznosci [lvl: " + level + "] uzywany na: bizuteria";     
+		elseif(rand == 2)
+			SetObjProperty(the_item, "typ", {"int", charges, maxcharges});
+			the_item.name := "zwoj inteligencji [lvl: " + level + "] uzywany na: bizuteria";     
+		endif
+	elseif(Randomize == 3) // ognia/lodu/blyskawic
+		charges := level * 20;
+		maxcharges := charges;
+		var rand := RandomInt(3);
+		if(rand == 0)
+			SetObjProperty(the_item, "typ", {"fball", charges, maxcharges});
+			the_item.name := "zwoj ognia [lvl: " + level + "] uzywany na: bron";
+			the_item.color := 40;
+		elseif(rand == 1)
+			SetObjProperty(the_item, "typ", {"lightning", charges, maxcharges});
+			the_item.name := "zwoj blyskawic [lvl: " + level + "] uzywany na: bron";
+			the_item.color := 95;
+		elseif(rand == 2)
+			SetObjProperty(the_item, "typ", {"ice", charges, maxcharges});
+			the_item.name := "zwoj lodu [lvl: " + level + "] uzywany na: bron";     
+			the_item.color := 97;
+		endif
+	endif
+	SetObjProperty(the_item, "identified", 1);
+	PlaySoundEffect(who, 0x3BE);
+	SendSysMessage(who, "Zidentyfikowales przedmiot.", 3, 63);
+endfunction

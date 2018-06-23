@@ -1,0 +1,105 @@
+use cfgfile;
+use math;
+use basic;
+use uo;
+use npc;
+
+program OnInsert(who, keg, movetype, inserttype, potion, existing_stack, amt_to_add);
+
+//program on_insert(who, keg, potion, amtadded, movetype);
+//  amtadded := amtadded; // stops ecompile "not used" warnings
+  if (movetype)
+    return 1;
+  endif
+  var vendorserial := GetObjProperty(keg,"Vendored");  if((vendorserial) && (who.cmdlevel < 3))
+    SendSysMessage(who, "Nie napelnisz kega znajdujacego sie u vendora.");
+    MoveItemToContainer(potion, who.backpack);
+    return;
+  endif
+  var type := GetObjProperty(keg, "PotionType");
+  var amt  := 0;
+  foreach thing in EnumerateItemsInContainer(keg)
+    if(thing.objtype == 0xf0e)
+      amt := amt + thing.amount;
+    endif
+  endforeach
+  if(is_potion(potion))
+    if(!amt)
+      SetObjProperty(keg, "PotionType", CInt(potion.objtype));
+      SetObjProperty(keg, "OwnerSerial", who.serial);
+    elseif(type != potion.objtype)
+      SendSysMessage(who, "To zly pomysl mieszac ze soba rozne mikstury.");
+      MoveItemToContainer(potion, who.backpack);
+      return 0;
+    elseif(amt >= 100)
+      SendSysMessage(who, "Ten keg jest calkowicie pelny.");
+      MoveItemToContainer(potion, who.backpack);
+      return 0;
+    endif
+    if(SubtractAmount(potion, 1))
+      amt := amt + 1;
+      CreateItemInBackpack(who, 0xf0e, 1);
+      CreateItemInContainer(keg, 0xf0e, 1);
+      PlaySoundEffect(who, 0x241);
+      SendSysMessage(who, potion.objtype);
+      rename_keg(keg, CInt(GetObjProperty(keg, "PotionType")));
+      SendSysMessage(who, "Przelales zawartosc butelki do kega.");
+    endif
+  else
+    SendSysMessage(who, "Nie mozesz wlozyc tego do kega.");
+    MoveItemToContainer(potion, who.backpack);
+    return 0;
+  endif
+endprogram
+
+function GetFullness( pkeg )
+  var amt := 0;
+  foreach thing in EnumerateItemsInContainer(pkeg)
+    if(thing.objtype == 0xf0e)
+      amt := amt + thing.amount;
+    endif
+  endforeach
+  var str;
+  if (amt == 0)
+    str := "pusty";
+  elseif ((amt >= 1) && (amt <= 4))
+    str := "prawie pusyt";
+  elseif ((amt >= 5) && (amt <= 19))
+    str := "troche zapelniony";
+  elseif ((amt >= 20) && (amt <= 29))
+    str := "w jednej czwartej pelny";
+  elseif ((amt >= 30) && (amt <= 39))
+    str := "w jednej trzeciej pelny";
+  elseif ((amt >= 40) && (amt <= 46))
+    str := "prawie w polowie pelny";
+  elseif ((amt >= 47) && (amt <= 53))
+    str := "w polowie pelny";
+  elseif ((amt >= 54) && (amt <= 69))
+    str := "w ponad polowie pelny";
+  elseif ((amt >= 70) && (amt <= 79))
+    str := "w trzech czwartych pelny";
+  elseif ((amt >= 80) && (amt <= 95))
+    str := "prawie pelny";
+  elseif ((amt >= 96) && (amt <= 99))
+    str := "pelny";
+  else
+    str := "calkowicie pelny";
+  endif
+  return str;
+endfunction
+
+function is_potion(obj)
+  if((obj.objtype >= 0xdc01) && (obj.objtype <= 0xdce6))
+    return 1;
+  endif
+  return 0;
+endfunction
+
+function rename_keg(keg, potion)
+  var itemdesc := ReadConfigFile(":alchemy:itemdesc");
+  var obj := FindConfigElem(itemdesc, potion);
+  var str := GetFullness(keg) + " keg z " + obj.desc;
+  SetName(keg, str);
+  SetObjProperty(keg, "PotionName", obj.desc);
+  return;
+endfunction

@@ -1,0 +1,65 @@
+use uo;
+
+include "include/yesNo";
+include "util/bank";
+include ":dm:deathmatch";
+
+program portaldm(who)
+
+    if(!yesNo(who, "Czy chcesz wejsc na turniej deathmatch?"))
+        return 0;
+    endif
+
+    if(GetEquipmentByLayer(who, 25));
+        SendSysMessage (who, "Nie mozesz wejsc na deathmatch na wierzchowcu.", 3, 40);
+        return 0;
+    endif
+
+    if(who.dead);
+        Resurrect(who);
+        sleep(1);
+    endif
+
+    var bank := FindBankBox(who);
+    var bag := CreateItemInContainer(bank, 0xE76, 1);
+    bag.color := 40; 
+    var i,x;
+    set_critical(1);
+
+    for (i := 1; i <= 24; i := i + 1)
+        if ( (i == 0x0b) || (i == 0x10) || (i == 0x15) )
+            x := { };	// Do nothing.
+        else
+            x := GetEquipmentByLayer(who, i);
+            MoveItemToContainer(x, who.backpack);
+        endif
+    endfor 
+    
+    foreach item in EnumerateItemsInContainer(who.backpack)
+        if(CanMoveItemToBag())
+            if(item.container == who.backpack)
+                MoveItemToContainer(item, bag);
+            endif
+        endif
+    endforeach
+    
+    SendSysMessage(who, "Wszystkie Twoje rzeczy zostaly przeniesione do czerwonego worka w banku.",3,63);
+
+
+    if(MoveObjectToDMHall(who))
+        if(!who.cmdlevel)
+            SetObjProperty(DMStone(), "DMContestants", Cint(GetObjProperty(DMStone(), "DMContestants")) + 1);
+            EraseObjProperty(who, "DMStuff");
+            EraseObjProperty(who, "#DeathmatchFrag");
+            SetObjProperty(who, "Deathmatch", 1);
+            PrintTextAbovePrivate(DMStone(), "Witaj " + who.name + " na deathmatchu!", who,3,63);
+            who.hidden := 0;
+        endif
+    endif
+
+endprogram
+
+function CanMoveItemToBag()
+    return 1;
+endfunction
+

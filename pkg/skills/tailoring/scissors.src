@@ -1,0 +1,159 @@
+use attributes;
+use os;
+use basicio;
+use basic;
+use math;
+use uo;
+use cfgfile;
+
+include "include/canAccess";
+include "include/attributes";
+include "include/client";
+include "include/itemutil";
+
+var tailor_cfg := ReadConfigFile(":tailoring:leather");
+var itemcfg   := ReadConfigFile(":tailoring:itemdesc");
+    
+program cut(who, cut_that)
+
+  SendSysMessage(who, "Wybierz przedmiot, ktory chcesz pociac.", 3, 63);
+  var use_on := Target(who, TGTOPT_CHECK_LOS);
+  if(!use_on)
+    SendSysMessage(who, "Anulowano.", 3, 40);
+    return;
+  endif
+  if(use_on == cut_that)
+    return 0;
+  endif
+  
+  if(!can_access(who, use_on))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  if(!Accessible(who, use_on) || !ReserveItem( use_on ))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  
+  if(!IsInContainer(who.backpack, use_on ))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+		return 0;
+	endif
+  
+if(use_on.isa(POLCLASS_CONTAINER)) // jezeli wybierzemy container
+    var contitems := EnumerateItemsInContainer(use_on, 0x2); // 0x2 - root container only
+    var skill, amt, elemcol, ingot, color;
+    var valid_hide := { 0x7020, 0x702c, 0xdc13, 0xdc0a, 0x702e, 0x7022, 0x7023, 0x7024, 0x7025, 0x7027, 0x7028, 0x7029, 0x702a, 0xfffA, 0x7026, 0x702f, 0x702b, 0xfffB, 0xfffc, 0xA402 };
+    var whox := who.x;
+    var whoy := who.y;
+    foreach thing in contitems
+      if(Cint(GetObjProperty(thing, "exceptional")) || thing.objtype == cut_that.objtype || thing.newbie)
+        continue;
+      endif
+        
+      if(whox != who.x || whoy != who.y)
+        break;
+      endif
+        
+      if(tailor_cfg[thing.objtype])
+        skill := Cint(tailor_cfg[thing.objtype]."skill");
+        amt := CInt(tailor_cfg[thing.objtype]."material");
+        Tnij(who, skill, thing, amt, elemcol, ingot, color, valid_hide);
+      endif
+    endforeach
+else
+
+    var skill := Cint(tailor_cfg[use_on.objtype]."skill");
+    var amt := CInt(tailor_cfg[use_on.objtype]."material");
+    if((!skill) || (!amt))
+      SendSysMessage(who, "Nie mozesz tego pociac.", 3, 40);
+      return;
+    endif
+    amt := CInt((amt * GetEffectiveSkill(who,SKILLID_TAILORING) * 55 ) / 10000);
+    if(amt < 1)
+      amt := 1;
+    endif
+    if(!itemcfg)
+      return 0;
+    endif
+
+ if(!use_on.isa(POLCLASS_WEAPON) && !use_on.isa(POLCLASS_ARMOR))
+	SendSysMessage(who, "Mozesz ciac tylko bronie/zbroje.", 3, 40);
+	return 0;
+
+  endif
+  
+    
+    var elemcol;
+    var ingot := -1;
+    var color := use_on.color;
+    var valid_hide := { 0x7020, 0x702c, 0xdc13, 0xdc0a, 0x702e, 0x7022, 0x7023, 0x7024, 0x7025, 0x7027, 0x7028, 0x7029, 0x702a, 0xfffA, 0x7026, 0x702f, 0x702b, 0xfffB, 0xfffc, 0xA402 };
+    foreach entry in valid_hide
+      elemcol := itemcfg[entry]."Color";
+      if(color == elemcol)
+        ingot := entry;
+        break;
+      endif
+    endforeach
+    if(ingot == -1)
+      PrintTextAbovePrivate(use_on, "Nie mozesz tego pociac.", who);
+      return;
+    endif
+    PlaySoundEffect(who, 0x0249);
+    sleep(1);
+    PlaySoundEffect(who, 0x0249);
+
+    if(SubtractAmount(use_on, use_on.amount))
+      if(CheckSkill(who, SKILLID_TAILORING, skill, 10))
+        SendSysMessage(who, "Uzyskales z tego troche materialu.", 3, COLOR_GREEN);
+        CreateItemInBackpack(who, ingot, amt);
+      else
+        SendSysMessage(who, "Nie udalo Ci sie i zniszczyles przedmiot.", 3, 40);
+      endif
+      return;
+    endif
+endif
+endprogram
+
+function Tnij(who, skill, thing, amt, elemcol, ingot, color, valid_ingot)
+ if(!thing.isa(POLCLASS_WEAPON) && !thing.isa(POLCLASS_ARMOR))
+	SendSysMessage(who, "Mozesz ciac tylko bronie/zbroje.", 3, 40);
+	return 0;
+
+  endif
+        if((!skill) || (!amt))
+          SendSysMessage(who, "Nie mozesz tego pociac.", 3, 40);
+          return;
+        endif
+        amt := CInt((amt * GetEffectiveSkill(who,SKILLID_TAILORING) * 55 ) / 10000);
+        if(amt < 1)
+          amt := 1;
+        endif
+        ingot := -1;
+        color := thing.color;
+        foreach entry in valid_ingot
+          elemcol := itemcfg[entry]."Color";
+          if(color == elemcol)
+            ingot := entry;
+            break;
+          endif
+        endforeach
+
+        if(ingot == -1)
+          PrintTextAbovePrivate(thing, "Nie mozesz tego pociac", who);
+          return;
+        endif
+        PlaySoundEffect(who, 0x0249);
+        sleep(1);
+        PlaySoundEffect(who, 0x0249);
+        if(SubtractAmount(thing, thing.amount))
+          if(CheckSkill(who, SKILLID_TAILORING, skill, 10))
+            SendSysMessage(who, "Uzyskales z tego troche materialu.", 3, COLOR_GREEN);
+            CreateItemInBackpack(who, ingot, amt);
+          else
+            SendSysMessage(who, "Nie udalo Ci sie i zniszczyles przedmiot.", 3, 40);
+          endif
+        endif
+        sleep(1);
+
+endfunction

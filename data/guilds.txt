@@ -1,0 +1,47 @@
+#
+#  GUILDS.TXT: Guild Data
+#
+
+General
+{
+	NextGuildId	17
+}
+
+Guild
+{
+	GuildId	9
+	AllyGuild	0xd
+	EnemyGuild	0xf
+	CProp	Abbr sL&B
+	CProp	Charter s Brak zasad :< nie reskilujemy bo to lamerskie :<
+	CProp	Faction sChaos
+	CProp	Master i2160725
+	CProp	Name sLife is Brutal
+	CProp	Website shttp://napalona.w.pl
+}
+
+Guild
+{
+	GuildId	13
+	AllyGuild	0x9
+	CProp	Abbr sPB
+	CProp	Charter sNONE
+	CProp	Faction sChaos
+	CProp	Master i2003396
+	CProp	Name sPolonia Bytom
+	CProp	Website sNONE
+}
+
+Guild
+{
+	GuildId	15
+	EnemyGuild	0x9
+	CProp	Abbr sWP
+	CProp	Charter sNONE
+	CProp	Faction sOrder
+	CProp	Master sIn Vote
+	CProp	Name sWhite Power
+	CProp	VotingBegan i29573630
+	CProp	Website sNONE
+}
+

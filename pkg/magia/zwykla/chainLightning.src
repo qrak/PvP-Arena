@@ -1,0 +1,64 @@
+use os;
+use vitals;
+use util;
+use math;
+use basicio;
+use cfgfile;
+use uo;
+use basic;
+
+include "include/spellRestrictions";
+include "include/magicore";
+
+program cast_chainlightning( parms )
+    var circle := 7;
+    var delivery := "indirect";
+    var noto := "harmful";
+    var result := maincast(parms, delivery, circle, noto, 49);
+    if(result == 0)
+        return 0;
+    endif
+    var caster := result[1];
+    var cast_on := result[2];
+    var range := 10;
+    var magery := Cint(GetEffectiveSkill(caster, SKILLID_MAGERY)/4);
+    var eval := Cint(GetEffectiveSkill(caster, SKILLID_EVALINT)/5);
+    var int := GetIntelligence(caster);
+    var bonus := 0;
+    if(caster.ip)
+        bonus := int/5;
+    endif
+    var dmg := magery + eval + bonus;
+    var cfg := ReadConfigFile("::npcdesc");
+    Detach();
+    foreach mobile in ListMobilesNearLocationEx( cast_on.x, cast_on.y, cast_on.z, range, 0x03);
+        if((CheckLineOfSight(mobile, caster)) and (mobile.cmdlevel < 2))
+            if(mobile == caster)
+                continue;
+            endif
+            if(GetObjProperty(mobile, "LastHit")[2] != caster.serial)
+                SetObjProperty(mobile, "LastHit", {caster.name, caster.serial, "chain lightning"});
+            endif
+            if(Reflected(mobile))
+                mobile := caster;
+            endif
+            PlayLightningBoltEffect( mobile );
+            PlaySoundEffect(mobile, SFX_SPELL_LIGHTNING);
+            var odbij := cfg[mobile.npctemplate].Resuje;
+            var miekki := cfg[mobile.npctemplate].Leszcz;
+            if(odbij == "elektr")
+                dmg := dmg / 2;
+                PrintTextAbove(mobile, "*absorbuje energie*");
+            elseif(miekki == "elektr")
+                dmg := dmg * 2;
+                PrintTextAbove(mobile, "*dostaje podwojny cios energii*");
+            endif
+            if(CheckIfXilon(mobile))
+                    mobile := caster;
+            endif
+            ApplyRawDamage( mobile, Resisted(circle,caster,mobile,dmg) );
+            dmg := dmg/2; // ponizej applyrawdamage poniewaz zmniejsza dmg o polowe dopiero po 1 mobie
+            sleepms(600);
+        endif
+    endforeach
+endprogram

@@ -1,0 +1,54 @@
+/////////////////////////////////////////////////
+//                 KTM by Fromasz              //
+// faza3 - rozdawanie nagrod i przenoszenie    //
+// graczy do mista                             //
+//                                             //
+/////////////////////////////////////////////////
+
+use uo;
+use os;
+
+program faza3(who,sciana)
+	BroadCast("Gratulacje dla uczestnikow Turnieju KTM za zabicie potwora!",3,89);
+	sleep(3);
+	foreach gracze in ListObjectsInBox(5723, 1141, 0, 5735, 1151, 0);
+		if (gracze.ip)
+			var sakwa := CreateItemInBackpack(gracze, 0xe76, 1);
+			sakwa.name := "Nagroda KTM";
+			sakwa.color := 1176;
+			CreateItemInContainer(sakwa, 0xeef, 5000);
+			CreateItemInContainer(sakwa, 0xeed, 60000);
+			CreateItemInContainer(sakwa, 0xA414, 1);
+			var kula := CreateItemInContainer(sakwa, 0xff13, 1);
+			SetObjProperty(kula, "Kulka z KTM", 1);
+			SendSysMessage(gracze, "W twoim plecaku zostal umieszczony woreczek z nagroda. Gratulacje!",3,63);
+			EraseObjProperty(gracze, "KTMTeam");
+			SetObjProperty( gracze, "#Teleported", 1);
+			MoveObjectToLocation(gracze, 2512, 605,0);
+			EraseObjProperty( gracze, "#Teleported" );
+
+			var mount := GetEquipmentByLayer(who, 25);
+			if(mount)
+				DestroyItem(mount);
+			endif
+		endif
+		gracze.Enable("invul"); // daje niesmiertelnosc gracza na zakazie
+		GrantPrivilege(gracze, "invul");
+	endforeach
+	EraseObjProperty(sciana,"wejscie"); // sciaganie propa bramie KTM
+	DestroyItem(sciana); // niszczenie bramy
+	BroadCast("Turniej KTM dobiegl konica. Gratulacje dla wszystkich uczestnikow. Zapraszamy ponownie.",3, 89);
+	sleep(1);
+	BroadCast("System KTM by Fromasz",3, 89);
+	BroadCast("version: 2.0");
+	BroadCast("");
+	BroadCast("ZAKAZ WALK BEDZIE TRWAL JESZCZE 2 MINUTY!", 3, 89);
+	sleep(120);
+	BroadCast("KONIEC ZAKAZU WALK!", 3, 89);
+	EraseGlobalProperty("#zakazwalk");
+	foreach gracz in EnumerateOnlineCharacters()
+		gracz.Disable("invul"); // wypierdala invula gracza
+		RevokePrivilege(gracz, "invul");
+	endforeach
+
+endprogram

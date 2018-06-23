@@ -1,0 +1,57 @@
+use math;
+use basic;
+use uo;
+include "include/yesNo";
+
+program cleanthee(me)
+var who := me;
+
+
+if(YesNo(who, "Czy napewno chcesz wypierdolic wszystkie rzeczy z plecaka? (Twoje ksiegi NIE beda usuwane)."))
+
+foreach item in EnumerateItemsInContainer(who.backpack)
+ 
+ mozeujebac(item);
+ 
+endforeach
+
+SendSysMessage(who, "Twoj plecak zostal wyczyszczony z syfu.",3,63);
+endif
+endprogram
+
+function mozeujebac(item)
+    
+    if(item.newbie)
+    return 0;
+    endif
+    
+    case(item.container.objtype)
+    0xEFA:
+    0xA200:
+    0xA100:
+    0xfff1:
+    0xfff2:
+    0x6099:
+    return 0;
+    endcase
+
+if(item.dmg_mod > 0 || item.ar_mod > 0)
+return 0;
+endif
+
+case(item.objtype)
+0xFF10:
+0xFF11:
+0xFF12:
+0xFF13:
+0xFF14:
+0xFF15:
+0x11ca:
+0x14F1:
+return 0;
+endcase
+
+DestroyItem(item);
+    
+endfunction
+

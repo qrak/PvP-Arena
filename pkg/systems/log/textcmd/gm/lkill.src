@@ -1,0 +1,25 @@
+use vitals;
+use file;
+use uo;
+
+include "include/client";
+include "include/attributes";
+program textcmd_kill( who )
+    var tgt := Target( who );
+   
+        var mob := tgt.mobile;
+       
+        PlayLightningBoltEffect( tgt);
+        PlaySoundEffect( tgt, SFX_SPELL_LIGHTNING  );
+
+ 
+            RevokePrivilege( tgt, "invul" );
+            SetObjProperty(tgt, "guardkill", 1);
+          
+if(tgt.npctemplate)
+   LogToFile("kills.txt", "[KILL] ktos z ekipy z konta: " +who.acctname+" zajebal "+tgt.name + " serial: " + tgt.serial + " x/y/z: " + tgt.x + " " + tgt.y + " " + tgt.z);             
+   else
+   LogToFile("kills.txt", "[KILL] ktos z ekipy z konta: " +who.acctname+" zajebal "+tgt.name + " na koncie " + tgt.acctname + " serial: " + tgt.serial + " x/y/z: " + tgt.x + " " + tgt.y + " " + tgt.z);             
+   endif
+  ApplyRawDamage( tgt, GetMaxHp(tgt) );
+endprogram

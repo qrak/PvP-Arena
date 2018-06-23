@@ -1,0 +1,21 @@
+use uo;
+
+include ":ctf:ctf";
+
+program fixflag(who)
+  var redserial := GetObjProperty(CtfStone(), "RedFlag");
+  var blueserial := GetObjProperty(CtfStone(), "BlueFlag");
+  LookForFlag(redserial, blueserial);
+endprogram
+
+function LookForFlag(redserial, blueserial)
+    var redflag2 := SystemFindObjectBySerial( redserial );
+    var blueflag2 := SystemFindObjectBySerial( blueserial );
+    if(!redflag2)
+        EraseObjProperty(CtfStone(), "RedFlag");
+    endif
+    if(!blueflag2)
+        EraseObjProperty(CtfStone(), "BlueFlag");
+    endif
+    CreateFlagsXYZ();
+endfunction

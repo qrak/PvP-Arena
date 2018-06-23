@@ -1,0 +1,39 @@
+use uo;
+use os;
+
+include "include/yesNo";
+
+
+program kolor(who)
+
+     if(!yesNo(who, "Komenda ta sluzy do blokowania koloru przedmiotu przy zmianie levelu kulkami ulepszen. Ponowne wybranie przedmiotu likwiduje blokade."))
+         return;
+     endif
+
+ 
+SendSysMessage(who, "Wskaz bron/zbroje.",3,89);
+
+var szata := Target(who);
+
+
+
+  if (!szata)
+     return;
+  endif
+  if(!szata.isA(POLCLASS_WEAPON) && !szata.isA(POLCLASS_ARMOR))
+	SendSysMessage(who, "To nie bron/zbroja!",3,40);
+	return 0;
+
+  endif
+
+
+	if (GetObjProperty(szata, "ZostawKolor"))
+		EraseObjProperty(szata, "ZostawKolor");
+		SendSysMessage(who, "Odblokowano.",3,63);
+	else
+        	SetObjProperty(szata, "ZostawKolor", 1);
+			SendSysMessage(who, "Zablokowano.",3,30);
+	endif
+    
+endprogram
+

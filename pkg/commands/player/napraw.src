@@ -1,0 +1,47 @@
+use uo;
+include "include/attributes";
+include "include/kasa";
+include "include/yesNo";
+
+program repair_item(who)
+
+SendSysMessage(who, "Wybierz bron lub zbroje.",3,66);
+var item := Target(who);
+
+if(!item.isa(POLCLASS_ARMOR) && !item.isa(POLCLASS_WEAPON))
+SendSysMessage(who, "Mozesz naprawiac jedynie zbroje i bronie.",3,40);
+return;
+endif
+
+if(!item)
+SendSysMessage(who, "To po chuj wpisujesz te komende.",3,40);
+return;
+endif
+
+ if(item.hp == item.maxhp)
+    SendSysMessage(who, "Ten przedmiot nie jest zniszczony.",3,40);
+    SendSysMessage(who, "Hp:" + item.hp + " MaxHp: " + item.maxhp,3,66);
+    return; 
+  endif
+
+if((item.hp <= 0) || (item.quality <= 0.1) || (!item.quality))
+    SendSysMessage(who, "Zniszczyles przedmiot podczas proby naprawienia go.",3,40);
+    DestroyItem(item);
+    return;
+  endif
+  
+  var ile := (item.maxhp - item.hp)*100;
+  
+if(yesNo(who, "Wyniesie cie to " + ile + " sztuk zlota.")) 
+
+  if(SubtractCash(who, ile))
+      item.quality := item.quality - 0.01;
+      item.hp := item.maxhp;
+      SendSysMessage(who, "Naprawiles przedmiot calkowicie.",3,66);
+      SendSysMessage(who, "Hp:" + item.hp + " MaxHp: " + item.maxhp,3,66);
+      SendSysMessage(who, "Jakosc przedmiotu zmalala o 0.01. Wynosi ona teraz " + item.quality + " jednostek.",3,40);
+  endif
+
+endif
+
+endprogram

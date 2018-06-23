@@ -1,0 +1,34 @@
+use util;
+use basic;
+use uo;
+use os;
+
+include "drinkPotion";
+include "include/tempMod";
+include "include/canAccess";
+
+program drink_blue (who, potion)
+
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, potion))
+    return;
+  endif
+  if(potion.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego wypic.", FONT_NORMAL, 40);
+    return;
+  endif
+  if(!CanMod(who, "dex"))
+    SendSysMessage(who,"Juz jestes pod wplywem innej mikstury!", FONT_NORMAL, 40);
+    return 0;
+  endif
+  if(!checkifcandrink(who, "#blue"))
+    return 0;
+  endif
+  case(potion.objtype)
+    0xdc0c:  empty_bottle(who, potion);
+              DoTempMod(who, "dex", 10+RandomInt(6),  260);
+    0xdc0d:  empty_bottle(who, potion);
+             DoTempMod(who, "dex", 20+RandomInt(5)+1,  960);
+  endcase
+endprogram

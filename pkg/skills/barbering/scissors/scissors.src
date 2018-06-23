@@ -1,0 +1,231 @@
+use basic;
+use math;
+use os;
+use uo;
+use cfgfile;
+
+include "include/tsse/uo_extend";
+//include "include/tsse/skillcheck";
+include "include/tsse/weardown";
+include "include/yesNo";
+include "include/tsse/layers";
+include "include/tsse/gumps";
+
+var hair_cfg := ReadConfigFile("configs/hairtypes");
+var trim_cfg := ReadConfigFile("configs/trim");
+
+const SCISSOR_SOUND	:= 0x249;
+
+const CANCEL_BUTTON	:= 0xA000;
+const HAIR_BALD		:= 0xA001;
+const FACE_BALD 	:= 0xA002;
+
+CONST HAIR_START 	:= 0xB000;
+CONST FACE_START 	:= 0xB00000;
+
+program BarberScissors(who, scissors)
+	if ( hair_cfg.errortext )
+		SendSysMessageEX(who, "Error - Could not open :barbering:configs/hairtypes.cfg ->"+hair_cfg.errortext, SSM_INFO_DEBUG);
+		return;
+	elseif ( trim_cfg.errortext )
+		SendSysMessageEX(who, "Error - Could not open :barbering:configs/trim.cfg ->"+trim_cfg.errortext, SSM_INFO_DEBUG);
+		return;
+	endif
+	
+	set_priority(1);
+	
+	if ( !ReserveItem(scissors) )
+		SendSysMessageEX(who, "Ktos juz tego uzywa.", SSM_INFO_OOC);
+		return;
+	endif
+	
+	SendSysMessageEX(who, "Czyja glowe chcesz obsluzyc?");
+	var targ := target(who);
+	if ( !CanBarber(who, targ) )
+		return;
+	elseif ( !YesNo(targ, "Czy chcesz aby "+who.name+" wymodelowal ci fryzure?") )
+		SendSysMessageEX(who, targ.name+" nie chce abys tykal jego glowe.", SSM_INFO_IC);
+		return 0;
+	endif
+	
+	GFInitGump(0, 0);
+	GFResizePic(0, 0, BKGND_BLUESLAB, 300, 420);
+	GFResizePic(15, 15, BKGND_STONESLAB, 270, 390);
+	GFTextMid(15, 25, 270, GF_STDCOLOR, "Fryzjerstwo");
+	GFButtonID(220, 370, 2119, 2120, 1, CANCEL_BUTTON);
+
+	GFPage(1);
+	GFButtonPage(25, 80, 2151, 2154, 2);
+	GFTextLine(60, 85, GF_STDCOLOR, "Stylowanie wlosow");
+	if ( !targ.gender )
+		GFButtonPage(25, 120, 2151, 2154, 3);
+	else
+		GFGumpPic(25, 120, 2151);
+	endif
+	GFTextLine(60, 125, GF_STDCOLOR, "Stylowanie brody");
+
+	GFPage(2);
+	HairGump(who, targ);
+	GFPage(3);
+	BeardGump(who, targ);
+
+	var input := GFSendGump(who);
+	input := input[0];
+
+	if ( !input || input == CANCEL_BUTTON )
+		SendSysMessageEX(who, "Anulowano");
+		return;
+	else
+		if ( !CanBarber(who, targ) )
+			return;
+		else
+			SetupHair(who, targ, input);
+		endif
+	endif
+endprogram
+
+function SetupHair(who, targ, input)
+	var style, color, hair;
+	if ( input >= FACE_START )
+		hair := GetEquipmentByLayer(targ, LAYER_BEARD);
+		color := hair.color;
+		if ( !hair )
+			color := GetEquipmentByLayer(targ, LAYER_HAIR).color;
+		endif
+		style := "facialhair";
+		input := input-FACE_START;
+	else
+		hair := GetEquipmentByLayer(targ, LAYER_HAIR);
+		color := hair.color;
+		if ( !hair )
+			color := GetEquipmentByLayer(targ, LAYER_BEARD).color;
+		endif
+		style := "head";
+		input := input-HAIR_START;
+	endif
+		
+	var i;
+	for ( i:=3; i>=0; i:=i-1 )
+		PlaySoundEffect(who, SCISSOR_SOUND);
+		sleep(2);
+	endfor
+	
+	DestroyItem(hair);
+	if ( input > 0 )
+		var difficulty := 5;
+		if ( difficulty < 5 )
+			difficulty := 5;
+		endif
+		
+
+			SendSysMessageEX(who, "Udalo ci sie wymodelowac wlosy osobie "+targ.name+".", SSM_INFO_IC);
+			set_critical(1);
+			hair := CreateItemAtLocation(targ.x, targ.y, targ.z, input, 1);
+			EquipItem(targ, hair);
+			hair.color := color;
+			set_critical(0);
+	endif
+		
+endfunction
+
+function HairGump(who, targ)
+	GFButtonPage(20, 373, 2117, 2118, 1);
+	GFTextLine(40, 370, GF_STDCOLOR, "Powrot");
+	
+	var cur_style := GetEquipmentByLayer(targ, LAYER_HAIR).graphic;
+	var num_styles:=0, length:=45;
+	var trim_styles := trim_cfg[cur_style];
+	if ( trim_styles )
+		trim_styles := GetConfigStringArray(trim_styles, "trim");
+		num_styles := trim_styles.size();
+		length := num_styles*30+40;
+	endif
+	GFResizePic(155, 55, 2620, 50, length);;
+	
+	var y_pos := 65;
+	foreach hair_name in trim_styles
+		var hairgraphic := GetStyleGraphic(hair_name, "head");
+		GFButtonID(20, y_pos, 2151, 2154, 1, hairgraphic+HAIR_START);
+		
+		var gump_pic := GetConfigString(hair_cfg["hairgump"], hair_name);
+		gump_pic := SplitWords(gump_pic);
+		gump_pic := gump_pic[targ.gender+1];
+		GFGumpPic(90, y_pos-50, gump_pic);
+		
+		while (hair_name["_"])
+			hair_name["_"] := " ";
+		endwhile
+		GFTextline(55, y_pos+5, GF_STDCOLOR, hair_name);
+
+		y_pos := y_pos + 30;
+	endforeach
+	if ( cur_style )
+		GFButtonID(20, y_pos, 2151, 2154, 1, HAIR_START);
+	endif
+	GFTextline(55, y_pos+5, GF_STDCOLOR, "Bald");
+endfunction
+
+function BeardGump(who, targ)
+	GFButtonPage(20, 373, 2117, 2118, 1);
+	GFTextLine(40, 370, GF_STDCOLOR, "Powrot");
+	
+	var cur_style := GetEquipmentByLayer(targ, LAYER_BEARD).graphic;
+	var num_styles:=0, length:=45;
+	var trim_styles := trim_cfg[cur_style];
+	if ( trim_styles )
+		trim_styles := GetConfigStringArray(trim_styles, "trim");
+		num_styles := trim_styles.size();
+		length := num_styles*30+40;
+	endif
+	GFResizePic(155, 55, 2620, 50, length);
+	
+	var y_pos := 65;
+	foreach hair_name in trim_styles
+		var hairgraphic := GetStyleGraphic(hair_name, "facialhair");
+		GFButtonID(20, y_pos, 2151, 2154, 1, hairgraphic+FACE_START);
+		
+		var gump_pic := GetConfigString(hair_cfg["hairgump"], hair_name);
+		GFGumpPic(90, y_pos-50, gump_pic);
+		
+		while (hair_name["_"])
+			hair_name["_"] := " ";
+		endwhile
+		GFTextline(55, y_pos+5, GF_STDCOLOR, hair_name);
+
+		y_pos := y_pos + 30;
+	endforeach
+	if ( cur_style )
+		GFButtonID(20, y_pos, 2151, 2154, 1, FACE_START);
+	endif
+	GFTextline(55, y_pos+5, GF_STDCOLOR, "Bald");
+endfunction
+
+function GetStyleGraphic(style_name, list)
+	foreach style in GetConfigStringArray(hair_cfg[list], "Style")
+		style := SplitWords(style);
+		
+		if ( style[1] == style_name )
+			return CInt(style[2]);
+		endif
+		sleepms(5);
+	endforeach
+endfunction
+
+function CanBarber(who, targ)
+	if ( who.cmdlevel )
+		return 1;
+	elseif ( !GetObjProperty(targ, "#Online") )
+		SendSysMessageEX(who, "Anulowano");
+		return 0;
+	elseif ( Distance(who, targ) > 1 )
+		SendSysMessageEX(who, targ.name+" za daleko.", SSM_INFO_OOC);
+		return 0;
+	elseif ( !IsFacing(who, targ.x, targ.y) )
+		SendSysMessageEX(who, "Musisz byc odwrocony do "+targ.name+".", SSM_INFO_OOC);
+	elseif ( !IsBehind(targ, who.x, who.y) )
+		SendSysMessageEX(who, "Musisz stanac za "+targ.name+".", SSM_INFO_OOC);
+		return 0;
+	endif
+	
+	return 1;
+endfunction

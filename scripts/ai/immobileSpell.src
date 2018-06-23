@@ -1,0 +1,137 @@
+use uo;
+use npc;
+use os;
+use util;
+use cfgfile;
+
+
+var me := Self();
+
+include "include/sysEvent";
+include "include/distance";
+include "include/eventy";
+include "include/attributes";
+include "include/spellsetup";
+include "main/loot";
+
+var ev;
+
+
+
+
+
+program spellkill_ai()
+
+    
+  
+    start_script("::NPCKeeper", me);
+    EnableEvents(SYSEVENT_ENGAGED);
+    EnableEvents(SYSEVENT_DAMAGED);
+    EnableEvents(SYSEVENT_ENTEREDAREA, ENTERED_AREA);
+    EnableEvents(SYSEVENT_LEFTAREA, LEFT_AREA);
+    while(me)
+        ev := wait_for_event(15);
+        if(ev)
+            case(ev.type)
+                SYSEVENT_ENGAGED: 
+                
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                    Walcz( ev.source );
+                endif
+                
+                SYSEVENT_DAMAGED: 
+
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                    Walcz( ev.source );
+                endif
+                
+                SYSEVENT_ENTEREDAREA:
+
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                    Walcz( ev.source );
+                endif
+                
+                SYSEVENT_LEFTAREA:
+                
+                if(!ev.source.concealed && !ev.source.hidden && !ev.source.npctemplate)
+                SzukajPrzeciwnikow();
+                endif
+                
+
+            endcase
+        
+        endif
+        
+                    if(ReadGameClock() > next_wander)
+                        next_wander := ReadGameClock() + 10;
+                        SzukajPrzeciwnikow();
+                        
+                        if(RandomInt(2) == 1)
+                            PlaySoundEffect(me, idlesnd1);
+                            else
+                            PlaySoundEffect(me, idlesnd2);
+                        endif
+                        
+
+                    endif
+        
+    endwhile
+endprogram
+
+function Walcz(przeciwnik)
+
+if ((przeciwnik.cmdlevel > 0) || (przeciwnik.serial == me.serial) || przeciwnik.npctemplate)
+    SetWarMode(0);
+    przeciwnik := 0;
+    return 0;
+endif
+
+    if(Cint(GetObjProperty(przeciwnik, "#journey")))
+        SetWarMode(0);
+        przeciwnik := 0;
+        return 0;
+    endif
+
+SetWarMode(1);
+SetOpponent(przeciwnik);
+
+if(!GetObjProperty(me, "mr"))
+CastSpell(me, me, 36);
+endif
+
+var loops := 0;
+var megaloops := 0;
+var waittime := 0;
+EraseObjProperty(me, "Enemies");
+
+while((przeciwnik) && (!przeciwnik.dead) && (!przeciwnik.hidden) && (!przeciwnik.concealed)  && (!przeciwnik.cmdlevel))
+
+    ev := wait_for_event(waittime);
+    waittime := 1;
+    
+    // casting
+
+    if(ReadGameClock() > next_cast)
+    next_cast := ReadGameClock() + 5;
+    if(!przeciwnik.hidden)    
+    Czaruj(me, przeciwnik);
+    endif
+    endif
+    
+    if(przeciwnik.hidden || przeciwnik.dead || Distance(me, przeciwnik) > LEFT_AREA)
+    SetWarMode(0);
+    SetOpponent(0);
+    endif
+    
+    if(przeciwnik.dead || Distance(me, przeciwnik) > 12)
+        SzukajPrzeciwnikow();
+    endif
+    
+endwhile
+
+SzukajPrzeciwnikow();
+
+
+endfunction
+
+

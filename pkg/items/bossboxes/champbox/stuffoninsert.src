@@ -1,0 +1,103 @@
+use basicio;
+use basic;
+use uo;
+use os;
+use npc;
+
+include ":bossboxes:functions";
+
+program on_insert(who, container, movetype, inserttype, adding_item, existing_stack, amount_to_add)
+
+    set_critical(1);
+  
+  
+    if(GetObjProperty(container, "Hold"))
+        SendSysMessage(who, "Mozesz dodawac tylko jeden przedmiot naraz.");
+            if(!MoveItemToContainer(adding_item, who.backpack))
+                MoveObjectToLocation(adding_item, who.x, who.y, who.z, who.realm, MOVEOBJECT_FORCELOCATION);
+            endif
+        return 0;
+    endif
+  
+    if(adding_item.objtype == 0x1BDD)
+
+        if(CheckAmount(who, container, adding_item))
+            SetObjProperty(container, "LogsAmount", Cint(GetObjProperty(container, "LogsAmount")) + LOGS_AMOUNT);
+            PrintTextAbovePrivate(container, "Do stworzenia kulki ushera pozostalo " + (LOGS_AMOUNT - Cint(GetObjProperty(container, "LogsAmount"))) + " klod.", who,3,63);
+            SubtractAmount(adding_item, 10000);
+            PlayObjectCenteredEffect(who, 0x376a, 0x0a, 0x1e);
+            PlaySoundEffect(who, 0x1F8);
+        endif
+    
+    elseif(adding_item.objtype == 0xFF13)
+    
+        if(CheckAmount(who, container, adding_item))
+            SetObjProperty(container, "BallAmount", Cint(GetObjProperty(container, "BallAmount")) + DMGBALL_AMOUNT);
+            PrintTextAbovePrivate(container, "Do stworzenia kulki ushera pozostalo " + (DMGBALL_AMOUNT - Cint(GetObjProperty(container, "BallAmount"))) + " kulek obrazen.", who,3,63);
+            SubtractAmount(adding_item, 100);
+            PlayObjectCenteredEffect(who, 0x376a, 0x0a, 0x1e);
+            PlaySoundEffect(who, 0x1F8);
+        endif
+        
+    elseif(adding_item.objtype == 0x631)
+    
+        if(CheckAmount(who, container, adding_item))
+            SetObjProperty(container, "XilonAmount", Cint(GetObjProperty(container, "XilonAmount")) + XILON_AMOUNT);
+            PrintTextAbovePrivate(container, "Do stworzenia kulki ushera pozostalo " + (XILON_AMOUNT - Cint(GetObjProperty(container, "XilonAmount"))) + " xilonu.", who,3,63);
+            SubtractAmount(adding_item, 10);
+            PlayObjectCenteredEffect(who, 0x376a, 0x0a, 0x1e);
+            PlaySoundEffect(who, 0x1F8);
+        endif
+        
+    endif
+        
+        var logsamount := Cint(GetObjProperty(container, "LogsAmount"));
+        var ballamount := Cint(GetObjProperty(container, "BallAmount"));
+        var xilonamount := Cint(GetObjProperty(container, "XilonAmount")); 
+        
+        if(logsamount >= LOGS_AMOUNT && ballamount >= DMGBALL_AMOUNT && xilonamount >= XILON_AMOUNT)
+            SendSysMessage(who, "Zapelniles skrzynie wymaganymi rzeczami. Teraz kliknij na nia dwa razy.",3,63);
+        endif
+        
+    return 1;
+  set_critical(0);
+endprogram
+
+function CheckAmount(who, container, adding_item)
+        
+    var itemname := "";
+    var ilosc := 0;
+    if(adding_item.objtype == 0x1BDD)
+        ilosc := LOGS_AMOUNT;
+        itemname := "klod";
+    elseif(adding_item.objtype == 0xFF13)
+        ilosc := DMGBALL_AMOUNT;
+        itemname := "kul obrazen";
+    elseif(adding_item.objtype == 0x631)
+        ilosc := XILON_AMOUNT;
+        itemname := "xilonu";
+    endif
+    
+    var logsamount := Cint(GetObjProperty(container, "LogsAmount"));
+    var ballamount := Cint(GetObjProperty(container, "BallAmount"));
+    var xilonamount := Cint(GetObjProperty(container, "XilonAmount")); 
+    
+    if(logsamount >= LOGS_AMOUNT && ballamount >= DMGBALL_AMOUNT && xilonamount >= XILON_AMOUNT)
+        SendSysMessage(who, "Nie musisz juz wkladac wiekszej ilosci tego przedmiotu.",3,40);
+        return 0;
+    endif
+    
+    if(adding_item.amount < ilosc)
+        PrintTextAbovePrivate(container, "Za malo " + itemname + ". Musisz wlozyc dokladnie " + ilosc + ".", who,3,40);
+        MoveItemToContainer(adding_item, who.backpack);
+        return 0;
+    endif
+    
+    if(adding_item.amount > ilosc)
+        PrintTextAbovePrivate(container, "Za duzo " + itemname + ". Musisz wlozyc dokladnie " + ilosc + ".", who,3,40);
+        MoveItemToContainer(adding_item, who.backpack);
+        return 0;
+    endif
+        
+    return 1;
+endfunction

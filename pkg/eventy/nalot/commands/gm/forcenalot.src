@@ -1,0 +1,7 @@
+use uo;
+use os;
+
+
+program nalot(who)
+  start_script(":nalot:faza1", who);
+endprogram

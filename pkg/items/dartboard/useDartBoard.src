@@ -1,0 +1,322 @@
+// crash
+
+use util;
+use attributes;
+use basicio;
+use basic;
+use os;
+use math;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include ":gumps:gumps";
+
+const TRUE := 1;
+const FALSE := 0;
+const CMDLEVEL_TEST := 5;
+const CMDLEVEL_ADMIN := 4;
+const CMDLEVEL_GM := 3;
+const CMDLEVEL_SEER := 2;
+const CMDLEVEL_COUN := 1;
+const CMDLEVEL_PLAYER := 0;
+const MSG_CANNOT_REACH := "Nie mozesz tego dosiegnac!";
+const MSG_CANT_USE := "Nie wiesz jak tego uzyc.";
+const MSG_CANCELLED := "Anulowano.";
+const MSG_PROBLEM_WITH_ITEM := "Nie mozna tego zrobic.";
+const MSG_ERROR_CREATE := "Blad tworzenia przedmiotu.";
+const MSG_NOT_IN_OWN_HOUSE := "Musisz byc w swoim domu aby tego uzywac.";
+const MAX_DISTANCE := 2;
+
+program useDartBoard(who, dartboard)
+  if (!ReserveItem(dartboard))
+    return FALSE;
+  endif
+  
+  if(who.cmdlevel)
+  punktacja(who, dartboard);
+  endif
+  
+  
+  case (dartboard.graphic)
+    0x1e2e:
+    0x1e2f:
+      if (CheckLineOfSight(who, dartboard))
+        var Weapon := GetEquipmentByLayer(who, LAYER_HAND1);
+        if (!Weapon)
+          Weapon := GetEquipmentByLayer(who, LAYER_HAND2);
+        endif        
+        if (Weapon)
+          if (Weapon.graphic in {0xf51, 0xf52, 0xf43, 0xf44, 0xf49, 0xf4a})
+            var dart1 := 0, dart2 := 0, dart3 := 0;
+            var dist := 9999;
+            
+            Sleep(1);
+            if (CheckLineOfSight(who, dartboard))
+              ThrowDart(who, dartboard, dart1, dist);
+              Sleep(3);
+              if (CheckLineOfSight(who, dartboard))
+                ThrowDart(who, dartboard, dart2, dist);
+                Sleep(3);
+                if (CheckLineOfSight(who, dartboard))
+                  ThrowDart(who, dartboard, dart3, dist);
+                endif
+              endif
+            endif
+            Sleep(1);
+            
+            SetObjProperty(dartboard, "oname", dartboard.desc);
+            var Score := (dart1 + dart2 + dart3);
+            if(!gracze(who, dartboard))
+                dodajpointy(who, dartboard, Score);
+                endif
+
+            SendSysMessage(who, "Twoj wynik to " + CStr(Score) +  " na 30 z odleglosci " + CStr(dist) + "m.");
+            SetName(dartboard, dartboard.desc + " [wynik " + CStr(Score) + " na 30 ustanowil " + who.name + " z odleglosci " + CStr(dist) + "m]");
+            PrintTextAbove(dartboard, "Wynik " + CStr(Score) + " na 30 punktow.");
+            ChangeBoardStatus(dartboard, Weapon);
+          EmptyBoard(dartboard);
+          else
+            SendSysMessage(who, "Nie mozesz tym rzucic.");
+            return FALSE;
+          endif
+        else
+          SendSysMessage(who, "Nie masz niczego czym moglbys rzucic!");
+          return FALSE;
+        endif
+      else
+        SendSysMessage(who, "Nie mozesz tego uzyc.");
+        return FALSE;
+      endif
+    0x1e30:
+    0x1e31:     
+    0x1e32:
+    0x1e33:
+      if ((Distance(who, dartboard) < 2) and CheckLineOfSight(who, dartboard))
+        if(!who.multi or dartboard.movable or AtOwnHouse(who))
+          EmptyBoard(dartboard);
+
+        else
+          SendSysMessage(who, "Nie mozesz wyczyscic nie swojego wyniku!");
+        endif
+      endif
+  endcase
+  return TRUE;
+endprogram
+
+function ThrowDart(who, dartboard, byref dart, byref dist)
+  PerformAction(who, 0x9);  
+  var result := 0;
+  var D := Distance(who, dartboard);
+  if (D < dist) dist := D; endif;
+  var DexBonus := (GetAttributeBaseValue(who, "dexterity") / 60);
+  var Dif1 := (D * 10) - DexBonus;
+  var Dif2 := (D * 9);
+  if (Dif1 < 0) Dif1 := 0; endif;
+  if (Dif2 < 0) Dif2 := 0; endif;
+
+  var UseSkillForChecks := SKILLID_ARCHERY;  
+  if(GetEffectiveSkill(who, SKILLID_ARCHERY) < GetEffectiveSkill(who, SKILLID_FENCING))
+    UseSkillForChecks := SKILLID_FENCING;
+  endif
+
+  if (CheckSkill(who, UseSkillForChecks, 110 - DexBonus, 0) and CheckSkill(who, SKILLID_TACTICS, 100 - DexBonus, 0))
+    SendSysMessage(who, "Swietny rzut!");
+    dart := 9 + RandomInt(2);
+  else
+    if (!RandomInt(50))
+      SendSysMessage(who, "Dobry rzut!");
+      dart := 10;
+    else     
+      if (CheckSkill(who, SKILLID_ARCHERY, Dif1, 0) or !RandomInt(Dif1 + 2))
+        if (!RandomInt(15))
+          result := result + 3;
+        else
+          result := result + RandomInt(3) + 1;
+        endif
+      endif
+      if (CheckSkill(who, UseSkillForChecks, Dif2, 0) or !RandomInt(Dif2 + 2))
+        if (!RandomInt(15))
+          result := result + 5;
+        else
+          result := result + RandomInt(5) + 1;
+        endif
+      endif
+      if (CheckSkill(who, SKILLID_TACTICS, Dif2, 0) or !RandomInt(Dif1 + 2))
+        if (!RandomInt(10))
+          result := result + 2;
+        else
+          result := result + RandomInt(2) + 1;
+        endif
+      endif
+      dart := result;
+    endif
+  endif
+  if (dart <= 0)
+    PlaySoundEffect(who, 0x224);
+    PrintTextAbove(dartboard, "Pudlo!");
+  else
+    PlaySoundEffect(who, 0x225);
+
+
+
+    if (dart >= 10)
+      PrintTextAbove(dartboard, "Trafiony, " + CStr(dart) + " punktow!");
+    else
+      PrintTextAbove(dartboard, "Trafione za " + CStr(dart) + " punktow.");
+    endif
+  endif
+endfunction
+
+function ChangeBoardStatus(dartboard, weapon)
+  if (weapon)
+    case (weapon.graphic)
+        0xf51: 0xf52:
+          case (dartboard.graphic)
+            0x1e2e:
+              dartboard.graphic := 0x1e32;
+            0x1e2f:
+              dartboard.graphic := 0x1e33;
+            default:
+              return FALSE;
+          endcase            
+        0xf43: 0xf44: 0xf49: 0xf4a:
+          case (dartboard.graphic)
+            0x1e2e:
+              dartboard.graphic := 0x1e30;
+            0x1e2f:
+              dartboard.graphic := 0x1e31;
+            default:
+              return FALSE;
+          endcase            
+      default:
+        return FALSE;
+    endcase
+  else
+    case (dartboard.graphic)
+      0x1e30: 0x1e32:
+        dartboard.graphic  := 0x1e2e;
+      0x1e31: 0x1e33:
+        dartboard.graphic  := 0x1e2f;
+      default:
+        return FALSE;
+    endcase
+  endif
+endfunction
+
+function EmptyBoard(dartboard)
+  var oname := GetObjProperty(dartboard, "oname");
+  if (oname)
+    SetName(dartboard, GetObjProperty(dartboard, "oname"));
+  endif
+  ChangeBoardStatus(dartboard, error);
+endfunction
+
+function AtOwnHouse(who)
+  if (who.cmdlevel >= CMDLEVEL_GM)
+    return TRUE;
+  endif
+  if (who.multi and (GetObjProperty(who.multi, "ownerserial") == who.serial))
+    return TRUE;
+  else
+    SendSysMessage(who, MSG_NOT_IN_OWN_HOUSE);
+    return FALSE;
+  endif
+endfunction
+
+function punktacja(who, dartboard)
+
+var ludzie := GetObjProperty(dartboard, "#graczedart");
+
+  if(!ludzie)
+    ludzie := {};
+  endif
+  
+GFInitGump(80, 80);
+GFNoDispose();
+GFNoClose();
+GFPage(0);
+ GFResizePic(0,20, 2520,450,370);
+ GFResizePic(28,54, 3600,394,300);
+
+
+var close := GFButtonID(50, 70, 1209, 1210, 1);
+GFTextLine(70,70,550,"Opusc menu.");
+  
+var i := 0, z := 0, l := 1;
+
+// l = ilosc stron
+
+GFPage(1);
+foreach serial in ludzie
+  i := i + 1;
+  var gracz := SystemFindObjectBySerial(serial, SYSFIND_SEARCH_OFFLINE_MOBILES);
+  if(gracz)
+   if(z > 8)
+     l:=l+1; 
+     GFButtonPage(380, 70, 5540, 5542, l);
+
+     z := 0;
+     GFPage(l);
+    GFButtonPage(350, 70, 5537, 5539, l-1);
+
+   endif
+ 
+   var fragi := Cint(GetObjProperty(gracz,"#punktydart"));
+   if(!fragi)
+   SetObjProperty(gracz, "#punktydart", 0);
+       endif
+
+
+
+   var quantity := 0;
+   foreach ilosc in ludzie
+   quantity := quantity +1;
+   endforeach
+   GFTextLine(35,355,550,"ilosc graczy: " + quantity);
+   GFTextLine(370,355,550,"strona: " + l);
+   GFTextLine(50, 100+(z*20), 300, gracz.name + " [punkty: " + fragi + "]");
+
+
+
+   z := z + 1;
+   endif
+   endforeach
+   GFSendGump(who); 
+endfunction
+
+function gracze(who, dartboard)
+
+var ludzie := GetObjProperty(dartboard, "#graczedart");
+
+  if(!ludzie)
+    ludzie := {};
+  endif
+
+
+
+
+        
+foreach serial in ludzie
+
+if(serial == who.serial)
+return 0;
+endif
+
+endforeach
+
+ludzie.append(who.serial); 
+SetObjProperty(dartboard, "#graczedart", ludzie);
+
+
+endfunction
+
+function dodajpointy(who, dartboard, Score)
+
+ var fragi := Cint(GetObjProperty(who,"#punktydart"));
+   if(!fragi)
+   SetObjProperty(who, "#punktydart", 0);
+       endif
+          SetObjProperty(who, "#punktydart", fragi + Score);
+       
+endfunction

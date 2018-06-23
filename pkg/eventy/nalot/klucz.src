@@ -1,0 +1,42 @@
+// fromasz
+// klucz do ksiezniczki
+
+use uo;
+use os;
+
+// 0x6f5 - drzwi
+program klucz(who, item)
+
+
+
+SendSysMessage(who, "Uzyj klucz na drzwiach prowadzacych do ksiezniczki",3,63);
+
+
+var cel := Target(who);
+
+  if (!cel)
+    SendSysMessage(who, "Anulowano.",3,63);
+  endif
+  
+  if (cel.objtype == 0x6f5 )
+	PlayLightningBoltEffect(who);
+	PlaySoundEffect( who, 0x0207 );
+        sleepms(500);
+       	PlayLightningBoltEffect(who);
+	PlaySoundEffect( cel, 0x0207 );
+        sleepms(500);
+      	PlayLightningBoltEffect(who);
+	PlaySoundEffect( who, 0x0207 );
+        sleepms(500);
+
+ DestroyItem(cel);
+ DestroyItem(item);
+ start_script("faza3");
+
+   else SendSysMessage(who, "Tego nie mozesz otworzyc tym kluczem",3,63);
+     return 0;
+   endif
+
+endprogram
+
+

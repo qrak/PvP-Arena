@@ -1,0 +1,33 @@
+use uo;
+use cfgfile;
+
+CONST MIN_LEVEL	:= 1;
+CONST MAX_LEVEL	:= 5;
+
+var color_cfg := ReadConfigFile(":zagadki:config/kolory");
+
+program useScript(mobile, tile)
+	if(!mobile.cmdlevel)
+		SendSysMessage(mobile, "Tego sie nie klika.", 3, 40);
+		return 0;
+	endif
+	SendSysMessage(mobile, "Jaki poziom trudnosci kafelka mam ustawic? (od " + MIN_LEVEL + " do " + MAX_LEVEL + ")", 3, 63);
+	var text := RequestInput(mobile, mobile.backpack, "Poziom:");
+	text := cint(text);
+	if(!text)
+		SendSysMessage(mobile, "Zle wprowadzone dane.", 3, 40);
+		return 0;
+	endif
+	if(text > MAX_LEVEL)
+		SendSysMessage(mobile, "Za wysoki level.", 3, 40);
+		return 0;
+	elseif(text < MIN_LEVEL)
+		SendSysMessage(mobile, "Za niski level.", 3, 40);
+		return 0;
+	endif
+	
+	SetObjProperty(tile, "TileLevel", text);
+	var tile_color := color_cfg[GetObjProperty(tile, "TileLevel")].Color;
+	tile.color := Cint(tile_color);
+	SendSysMessage(mobile, "Ustawiono poziom trudnosci kafelka na " + text, 3, 63);
+endprogram

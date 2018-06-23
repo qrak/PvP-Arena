@@ -1,0 +1,50 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_mroot( parms )
+  var circle := 3;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 108);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+var int := GetIntelligence(caster);
+
+var bonus := 0;
+
+if(caster.ip)
+bonus := int/5;
+endif
+
+if(!cast_on.isa(POLCLASS_MOBILE))
+SendSysMessage(caster, "Nie mozesz uzyc tego czaru na tym.",3,40);
+return 0;
+endif
+
+  if(Reflected(cast_on))
+	cast_on := caster;
+  endif
+
+
+var duration :=  (sspeak  - GetEffectiveSkill(cast_on, SKILLID_MAGICRESISTANCE)) / 5 + 20;
+detach();
+PlayObjectCenteredEffect( cast_on, 0x373a, 20,15 );
+playsoundeffect(cast_on, 508);
+
+Setobjproperty(cast_on, "mindrot", 1);
+EraseObjProperty (caster, "casting");
+sleep(duration);
+Eraseobjproperty(cast_on, "mindrot");
+
+
+
+endprogram

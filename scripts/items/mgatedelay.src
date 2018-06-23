@@ -1,0 +1,78 @@
+use npc;
+use os;
+use basic;
+use math;
+use uo;
+
+include "include/client";
+include "include/attributes";
+
+program walk_on_moongate(mobile, gate)
+  if(!mobile.ip)
+    return;
+  endif
+
+  if(GetObjProperty(mobile,"#justgated") )
+	return;
+  endif
+  
+    	var bystanders := ListHostiles( mobile, 8 );
+	if( len(bystanders) > 0 )
+		SendSysMessage ( mobile, "Wrogowie sa zbyt blisko!",3,40);
+		return;
+	endif
+
+
+
+  var x, y, z;
+  x := GetObjProperty( gate, "DestX" );
+  y := GetObjProperty( gate, "DestY" );
+  z := GetObjProperty( gate, "DestZ" );
+  
+  var igrzyska := GetObjProperty(mobile, "IgTeam");
+  var ctf := GetObjProperty(mobile, "CtfTeam");
+  
+if(!mobile.cmdlevel && !igrzyska && !ctf)
+
+var czas := 0;
+
+var oldx := mobile.x;
+var oldy := mobile.y;
+while(1)
+sleep(1);
+czas := czas+1;
+PlayObjectCenteredEffect( mobile, 14186, 7, 0x10 );
+    if(czas > 10)
+    czas := 0;
+    break;
+    endif
+
+if(oldx != mobile.x || oldy != mobile.y)
+SendSysMessage(mobile, "Anulowano.",3,40);
+return;
+endif
+endwhile
+
+endif
+
+   SetObjProperty(mobile,"#justgated",1);
+		SetObjProperty(mobile, "#Teleported", 1);
+  MoveObjectToLocation( mobile, x, y, z, mobile.realm, MOVEOBJECT_FORCELOCATION );
+		EraseObjProperty(mobile, "#Teleported");
+  sleep(1);
+  EraseObjProperty(mobile,"#justgated");
+
+  
+  
+  foreach critter in ListMobilesNearLocation(gate.x, gate.y, gate.z, 8);
+    if(((critter.script == "employed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)) || ((critter.script == "escortee") && (CInt(GetObjProperty(critter, "Escortee")) == mobile.serial)) || ((critter.script == "tamed") && (CInt(GetObjProperty(critter, "master")) == mobile.serial)))
+      SetObjProperty(critter, "Pause", 1);
+      MoveObjectToLocation( critter, gate.x, gate.y, gate.z, critter.realm, MOVEOBJECT_FORCELOCATION );
+      EraseObjProperty(critter, "Pause");;
+    endif
+  endforeach
+  
+endprogram
+
+
+

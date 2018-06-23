@@ -1,0 +1,13 @@
+// crash
+
+use os;
+use uo;
+
+include "include/poisons";
+
+program Reconnect(who)
+	SetObjProperty(who, "#Online", 1);
+	if(!GetScript(who))
+		start_script("poisonwatcher", {who});
+	endif
+endprogram

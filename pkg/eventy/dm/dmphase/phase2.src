@@ -1,0 +1,58 @@
+/////////////////////////////////////////////////////////////////////////
+//     DM faza 2 - omowienie zasad                                      //
+/////////////////////////////////////////////////////////////////////////
+
+use os;
+use uo;
+
+include ":dm:deathmatch";
+include ":dm:startequipment";
+
+program Phase2()
+    DMStoneSay("Jestem sobie zwyklym kamieniem deathmatch. Witam Wszystkich na zawodach deathmatch!");
+    sleep(10);
+    DMStoneSay("Oto zasady na ARENIE:");
+    sleep(6);
+    DMStoneSay("1) Nakaz rozpierdalania kazdego kogo spotkamy.");
+    sleep(6);
+    DMStoneSay("2) Zakaz wychodzenia z deathmatchu podczas walk na arenie.");
+    sleep(6);
+    DMStoneSay("3) Za niezastosowanie sie do tych punktow grozi wiezienie na 24h!");
+    sleep(10);
+    DMStoneSay("WSKAZOWKI:");
+    sleep(6);
+    DMStoneSay("- Wasze ksiegi sa w bankach, na DMie dostajecie nowe - puste.");
+    sleep(6);
+    DMStoneSay("- Nowe przedmioty znajdziecie w skrzyniach respawnujacych sie co sekunde na calej arenie.");
+    sleep(6);
+    DMStoneSay("- Rzeczy juz zdobytych nie tracicie po smierci na arenie w trakcie trwania Deathmatcha.");
+    sleep(6);
+    DMStoneSay("Jedziemy z koxem za 30 sekund!");
+    sleep(30);
+    EquipAllPlayers();
+    sleep(1);
+    start_script(":dm:dmphase/phase3");
+endprogram
+
+function EquipAllPlayers()
+    foreach who in EnumerateOnlineCharacters()
+        if(Cint(GetObjProperty(who, "Deathmatch")) && !who.cmdlevel)
+            var worek := CreateItemInBackpack(who, 0xE76, 1);
+            CommonStuff(who);
+            if(CheckClass(who) == "warrior")
+                WarriorStuff(who, worek);
+            elseif(CheckClass(who) == "archer")
+                ArcherStuff(who, worek);
+            elseif(CheckClass(who) == "mage")
+                MageStuff(who, worek);
+            endif
+            SetDMStuff(worek);    
+            foreach item in EnumerateItemsInContainer(who.backpack)
+                if( item.isa(POLCLASS_WEAPON) || item.isa(POLCLASS_ARMOR) ) 
+                    EquipItem(who, item);
+                endif
+            endforeach
+            RandomPlayerSpawnOnDMArena(who);
+        endif
+    endforeach
+endfunction

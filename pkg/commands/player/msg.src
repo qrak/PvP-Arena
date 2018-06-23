@@ -1,0 +1,166 @@
+use basic;
+use uo;
+
+include "include/client";
+include "include/attributes";
+
+// For: EnumerateOnlineCharactersABC()
+//
+CONST SORT_ASCENDING	:= 0x0; // Default
+CONST SORT_DESCENDING	:= 0x1;
+
+// For: GetIsAType()
+CONST ISA_GET_MAIN	:= 0x0; // Default
+CONST ISA_GET_ALL	:= 0x1;
+
+var playercount := 0;
+var pagecount := 1;
+
+var layout := array(
+
+"page 0",
+"nodispose",
+"resizepic 0 35 9270 330 480",
+"gumppic 30 80 9504",
+"gumppic 45 80 9504",
+"gumppic 60 80 9504",
+"gumppic 75 80 9504",
+"gumppic 90 80 9504",
+"gumppic 105 80 9504", // do konika(gump 5549)
+"gumppic 200 80 9504", // od konika(gump 5549)
+"gumppic 215 80 9504",
+"gumppic 230 80 9504",
+"gumppic 245 80 9504",
+"gumppic 260 80 9504",
+"gumppic 275 80 9504",
+"gumppic 285 80 9504",
+"gumppic 130 30 5557",
+
+"text 50 59 85 0",
+"text 220 59 85 1"
+);
+
+var data := array(
+       "Imie:",         //0
+       "Wiadomosc"
+);
+
+program textcmd_goto( character, whom )
+  if(!whom)
+    FillInArrays();
+    var result := SendDialogGump( character, layout, data );
+    var name := data[result[0]+2];
+    foreach onlinechr in EnumerateOnlineCharactersABC()
+        if (onlinechr.name == name)
+            SendTheMessage(character, onlinechr);
+            break;
+        endif
+    endforeach
+  else
+    whom := upper(whom);
+    foreach onlinechr in EnumerateOnlineCharactersABC()
+        if (upper(onlinechr.name) == whom)
+             SendTheMessage(character, onlinechr);
+            break;
+        endif
+    endforeach
+  endif
+endprogram
+
+function FillInArrays()
+    var players := EnumerateOnlineCharactersABC();
+    var datalen;
+    var layoutlen;
+    var prev_y := CInt(80);
+    var datindx;
+    var buttonret := 1;
+    layout[GetLayoutLength()+1] := "page " + pagecount;
+    if( len(EnumerateOnlineCharactersABC()) > 19)
+        layout[GetLayoutLength()+1] := "button 285 465 2648 2647 0 " + (pagecount + 1);
+    endif
+    foreach player in players
+        if (!player.cmdlevel)
+        playercount := playercount + 1;
+        datalen := GetDataLength();
+        layoutlen := GetLayoutLength();
+        datindx := datalen+1;
+        data[datindx] := player.name;
+        if( playercount == 20 || playercount == 39 || playercount == 58 || playercount == 77 || playercount == 96)
+            pagecount := pagecount + 1;
+            layout[GetLayoutLength()+1] := "page " + pagecount;
+            prev_y := 80;
+            layout[GetLayoutLength()+1] := "button 285 85 2650 2651 0 " + (pagecount - 1);
+            if( len(EnumerateOnlineCharactersABC()) > playercount + 19)
+                layout[GetLayoutLength()+1] := "button 285 465 2648 2647 0 " + (pagecount + 1);
+            endif
+        endif
+        layout[GetLayoutLength()+1] := ("text 33 " + CStr(prev_y + 10) + " 100 " + datalen);
+        layout[GetLayoutLength()+1] := ("button 240 " + CStr(prev_y + 10) + " 2708 2709 1 0 " + buttonret); // Przycisk .msg
+        prev_y := prev_y + 20;
+        buttonret := buttonret + 1;
+        endif
+    endforeach
+endfunction
+
+function GetLayoutLength();
+    return (len(layout));
+endfunction
+
+function GetDataLength();
+    return (len(data));
+endfunction
+
+function SendTheMessage(who, whom)
+
+if(whom.cmdlevel)
+return;
+endif
+
+var themessage := RequestInput(who, who.backpack, "Jaka wiadomosc chcesz wyslac " + whom.name + "?");
+if (!themessage)
+        return;
+endif
+
+
+SendSysMessage(whom, who.name + " przesyla wiadomosc: " + themessage, FONT_NORMAL, 90);
+	foreach char in EnumerateOnlineCharactersABC()
+		if(char.cmdlevel)
+			SendSysMessage( char, "Wiadomosc od " + who.name + " do " + whom.name + ": " + themessage, FONT_NORMAL, COLOR_GREEN);
+		endif
+	endforeach
+  print("Wiadomosc od " + who.name + " do " + whom.name + ": " + themessage);
+endfunction
+
+function EnumerateOnlineCharactersABC(dir:=SORT_ASCENDING, cmdlevel:=-1)
+	var dict := dictionary;
+	foreach player in ( EnumerateOnlineCharacters() )
+		if ( cmdlevel != -1 )
+			if ( player.cmdlevel > cmdlevel )
+				continue;
+			endif
+		endif
+
+		var key := Upper(player.name);
+		if ( !dict.Exists(key) )
+			dict[key] := array{};
+		endif
+		dict[key].Append(player);
+		SleepMS(2);
+	endforeach
+
+	var z_list := array{};
+	foreach list in ( dict )
+		foreach player in ( list )
+			if ( dir == SORT_ASCENDING )
+				z_list.Append(player);
+			else
+				z_list.Insert(1, player);
+			endif
+			SleepMS(2);
+		endforeach
+		SleepMS(2);
+	endforeach
+
+	return z_list;
+endfunction
+

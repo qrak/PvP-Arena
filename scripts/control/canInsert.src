@@ -1,0 +1,36 @@
+use basicio;
+use uo;
+use os;
+use basic;
+
+program can_insert(who, backpack, movetype, inserttype, 
+                                   item, existing_stack, amount_to_add)
+  set_critical(1);
+  var vendorserial := GetObjProperty(backpack,"Vendor");
+  if(item.objtype == 0x2257)
+    PrintTextAbove(who, "Probowal wlozyc pilke bagballa do plecaka!",3,40);
+    return 0;
+  endif
+
+  if(!vendorserial)
+    var ownerserial := CInt(GetObjProperty(backpack, "Owner"));
+    if(ownerserial)
+      if((who.serial != ownerserial) && (who.cmdlevel < 3))
+        SendSysMessage(who, "Nie mozesz tego ruszyc.");
+        return 0;
+      else
+        return 1;
+      endif
+    else
+      return 1;
+    endif
+  endif
+  var vendor := SystemFindObjectBySerial(vendorserial);
+  if(GetObjProperty(backpack, "Master") == who.serial)
+    return 1;
+  else
+    PrintTextAbovePrivate(vendor, "Nie mozesz tego tu polozyc.", who);
+    return 0;
+  endif
+  set_critical(0);
+endprogram

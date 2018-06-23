@@ -1,0 +1,70 @@
+/* Projekt stworzony przy wspolpracy qraka i fromasza */
+
+/////////////////////////////////////////////////////////
+//             Event Zlap qraka                        //
+//                version 1.0                          //
+//             by fromasz & qrak                       //
+/////////////////////////////////////////////////////////
+
+use uo;
+use os;
+use cfgfile;
+use vitals;
+use util;
+
+
+include "include/zlapqraka";
+include ":zlapqraka:initializer";
+
+var ile := CInt(arena_cfg["arena"].QrakAmount);  //ile qrakow ruchac (pobiera z configa)
+
+program zlapqraka1()
+	SetGlobalProperty("#QrakActive", 1);
+	sleep(1);
+	var i := 5;
+	Detach();
+	SetGlobalProperty("#zakazwalk", 1); //wlaczanie zakazu zabijania
+	CreateGates();
+	BroadCast("Portale do Trinsic zostaly otwarte w miastach glownych.",3, 89);
+	repeat
+		BroadCast("Za " + i + " minut rozpocznie sie event ''zlap qraka''. Qraki zjawia sie w Trinsic.",3,89);
+		i := i - 1;
+		sleep(60);
+	until(i <= 0);
+	RemoveGates();
+	sleep(8);
+	MsgToQrakPlayers("Witamy wszystkich chetnych, ktorzy zechcieli przybyc na event Zlap qraka",89);
+	sleep(7);
+	MsgToQrakPlayers("Waszym zadaniem jest zabijanie qrakow, ktore zaraz przybeda. ",63);
+	sleep(9);
+	MsgToQrakPlayers("Qraki beda znajdowac sie na obszarze calego Trinsic.",63);
+	sleep(8);
+	MsgToQrakPlayers("Przez 5 minut macie zabijac te stworzenia. Kto zabije najwiecej qrakow wygrywa!",63);
+	sleep(9);
+	MsgToQrakPlayers("Zyczymy wszystkim powodzenia. Qraki nadejda za 30sekund!",40);
+	sleep(30);
+	MsgToQrakPlayers("QRAKI NADESZLY. DO DZIELA!!!",40);
+	repeat
+		if(qrakSpawn())
+			ile := ile - 1;
+		endif
+	until(ile <= 0);
+	var j := 5;
+	Detach();
+	repeat
+		BroadCast("Zostalo " +j+ " minut do konca eventu ''zlap qraka''", 3 ,89);
+		j := j - 1;
+		sleep(60);
+	until(j <= 0);
+	MsgToQrakPlayers("Koniec czasu!!",40);
+	foreach qrwaki in ListObjectsInBox(1800,2660, -10, 2068,2891, 40);
+		if (GetObjProperty(qrwaki, "qrak_npc"))
+			ApplyRawDamage(qrwaki,6000);
+		endif
+	endforeach
+	//SendSysMessage(who, "GM message: Wszystkie qraki zostaly zabite",3,63);
+	sleep(5);
+	sprawdz_qrakkillera();
+endprogram
+
+

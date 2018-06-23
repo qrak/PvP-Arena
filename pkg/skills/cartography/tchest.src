@@ -1,0 +1,41 @@
+use uo;
+use cfgfile;
+use util;
+
+program tchest(who, chest)
+	SpawnGuardians(who, chest);
+	chest.usescript := ":cartography:canopen";
+endprogram
+
+function SpawnGuardians(who, chest)
+	var cfgfile := ReadConfigFile(":cartography:guardians");
+	var lvl := GetObjProperty( chest, "level" );
+	var elem := FindConfigElem( cfgfile, lvl );
+	var total := GetConfigString( elem, "total" );
+	var num := GetConfigInt( elem, "num" );
+	var limit := RandomDiceRoll( total );
+	var rand;
+	var template;
+	var i := 0;
+	var straznicy := {};
+	
+	for( i := 0; i <= limit; i := i + 1 )
+		rand := RandomInt( num ) + 1;
+		template := GetConfigString( elem, ("creature" + rand) );
+		straznicy.insert(i+1, CreateGuardian( chest, template ).serial);
+	endfor
+	SetObjProperty(chest, "Straznicy", straznicy);
+	UnloadConfigFile(":treasuremap:guardians");
+	SendSysMessage( who, "Zostales otoczony przez straznikow skarbu!", 3, 40 );
+endfunction
+
+function CreateGuardian( chest, template )
+	var dx := RandomInt( 20 ) - 4;
+	var dy := RandomInt( 20 ) - 4;
+ 	var nasty := CreateNpcFromTemplate( template, chest.x+dx, chest.y+dy, chest.z, 0 );
+	if(nasty == "<error>")
+		CreateGuardian( chest, template);
+	endif
+	
+	return nasty;
+endfunction

@@ -1,0 +1,684 @@
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+20.2.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+20.2.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [10000] Nazwa: [10000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [56320] Nazwa: [zdalny nalot atomowy] Postac: [Qra'h] Konto: [admin].
+21.2.2014 [CREATESTACK] Created: [3821] Ilosc: [1] Nazwa: [zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [scissors] Ilosc: [1] Nazwa: [nozyczki] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [backpack] Ilosc: [1] Nazwa: [plecak] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [robe] Ilosc: [1] Nazwa: [toga] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dyetub] Ilosc: [1] Nazwa: [pojemnik z woda] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [backpack] Ilosc: [1] Nazwa: [plecak] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [backpack] Ilosc: [1] Nazwa: [plecak] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [smithhammer] Ilosc: [1] Nazwa: [mlotek kowalski] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [namithingot] Ilosc: [6000] Nazwa: [6000 namith] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [log] Ilosc: [2000] Nazwa: [2000 klody  drewna] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+22.2.2014 [CREATESTACK] Created: [bankstone] Ilosc: [1] Nazwa: [kamien bankowy] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [namithingot] Ilosc: [2000] Nazwa: [2000 namith] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [smithhammer] Ilosc: [1] Nazwa: [mlotek kowalski] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [log] Ilosc: [2000] Nazwa: [2000 klody  drewna] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [cypresslog] Ilosc: [2000] Nazwa: [2000 klody cyprysu] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [bankstone] Ilosc: [1] Nazwa: [kamien bankowy] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [deathreducer] Ilosc: [1] Nazwa: [krysztalowa kula statsiarza] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [wateringot] Ilosc: [2000] Nazwa: [2000 twarda woda] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [4555] Ilosc: [1] Nazwa: [flowerpot] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [4557] Ilosc: [1] Nazwa: [MissingName] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [89] Ilosc: [1] Nazwa: [stone wall] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [5000] Nazwa: [5000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [65531] Ilosc: [1] Nazwa: [skora demona] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [daemonhide] Ilosc: [1] Nazwa: [skora demona] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [KrwawnikIngot] Ilosc: [1] Nazwa: [krwawnik] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [KrwawnikIngot] Ilosc: [2000] Nazwa: [2000 krwawnik] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [25353] Ilosc: [1] Nazwa: [zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [25353] Ilosc: [1] Nazwa: [zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [6326] Ilosc: [1] Nazwa: [klody wisniowe] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [7133] Ilosc: [1] Nazwa: [kloda drewna] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [inshave] Ilosc: [1] Nazwa: [inshave] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [log] Ilosc: [2000] Nazwa: [2000 klody  drewna] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [pickaxe] Ilosc: [1] Nazwa: [kilof] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [226] Ilosc: [1] Nazwa: [stone arch] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [1354] Ilosc: [1] Nazwa: [cave floor] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [222] Ilosc: [1] Nazwa: [stone wall] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [223] Ilosc: [1] Nazwa: [stone post] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [1339] Ilosc: [1] Nazwa: [cave floor] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [1363] Ilosc: [1] Nazwa: [cave floor] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [1359] Ilosc: [1] Nazwa: [cave floor] Postac: [Qra'h] backpack. Konto: [admin].
+23.2.2014 [CREATESTACK] Created: [576] Ilosc: [1] Nazwa: [MissingName] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [56320] Nazwa: [zdalny nalot atomowy] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [56320] Nazwa: [zdalny nalot atomowy] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [56320] Nazwa: [zdalny nalot atomowy] Postac: [Qra'h] Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [umarihuana3] Ilosc: [1] Nazwa: [ususzona marihuana [jamajski gniot]] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [wiadro] Ilosc: [1] Nazwa: [wiadro] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [lufka] Ilosc: [1] Nazwa: [lufka] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [61470] Nazwa: [ususzona marihuana [jamajski gniot]] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [49065] Nazwa: [lufka] Postac: [Qra'h] Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [umarihuana3] Ilosc: [1] Nazwa: [ususzona marihuana [jamajski gniot]] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [41233] Nazwa: [faja wodna] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [28679] Nazwa: [smietnik] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [5000] Nazwa: [5000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [3] Ilosc: [1] Nazwa: [ankh] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [886] Ilosc: [1] Nazwa: [patch] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [dyetub] Ilosc: [1] Nazwa: [pojemnik z woda] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [3105] Nazwa: [Kamien Loterii] Postac: [Qra'h] Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [3823] Ilosc: [1] Nazwa: [zloto krolewskie] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [25713] Nazwa: [kamien losowania] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [3916] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [3916] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+24.2.2014 [CREATESTACK] Created: [dyetub] Ilosc: [1] Nazwa: [pojemnik z woda] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [WaterOre] Ilosc: [10000] Nazwa: [10000 ruda twardej wody] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [smithhammer] Ilosc: [1] Nazwa: [mlotek kowalski] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [smallboatdeed] Ilosc: [1] Nazwa: [zwoj na mala lodz] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [pickaxe] Ilosc: [1] Nazwa: [kilof] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [namithingot] Ilosc: [1000] Nazwa: [1000 namith] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [hatchet] Ilosc: [1] Nazwa: [siekiera] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [log] Ilosc: [1] Nazwa: [kloda drewna] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [25505] Nazwa: [glina] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [25505] Nazwa: [glina] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [25537] Nazwa: [glina] Postac: [Qra'h] Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [13616] Ilosc: [1] Nazwa: [splash] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [1221] Nazwa: [wooden logs] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [12211] Nazwa: [cave drawings] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [111] Nazwa: [stone arch] Postac: [Makalele] Konto: [kan].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+25.2.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [3916] Nazwa: [stolec] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [3916] Nazwa: [stolec] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4967] Nazwa: [rocks] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [6006] Nazwa: [rock] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [2274] Nazwa: [flowstone] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [3679] Nazwa: [runa] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [3679] Nazwa: [runa] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [3683] Nazwa: [glowing rune] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [14089] Nazwa: [slup ognia] Postac: [Fromasz] Konto: [fromasz].
+[CREATE] Created: [3683] Nazwa: [glowing rune] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [3916] Nazwa: [stolec] Postac: [Qra'h] Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [elflegs] Ilosc: [1] Nazwa: [lekka zbroja [nogawice]] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [VultureHelm] Ilosc: [1] Nazwa: [sepi helm plytowy] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [elfarmorchest] Ilosc: [1] Nazwa: [lekka zbroja [napiersnik]] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [11126] Ilosc: [1] Nazwa: [skorzany elfi karczek] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [11125] Ilosc: [1] Nazwa: [skorzane elfie rekawice] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [11124] Ilosc: [1] Nazwa: [skorzana elfia tunika] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [21] Nazwa: [wooden wall] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [211] Nazwa: [stone buttress] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [211] Nazwa: [stone buttress] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [211] Nazwa: [stone buttress] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [2111] Nazwa: [wooden gate] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5277] Nazwa: [MissingName] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5211] Nazwa: [telescope] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4321] Nazwa: [barrel hoops] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4329] Nazwa: [large wooden spoon] Postac: [Makalele] Konto: [kan].
+27.2.2014 [CREATESTACK] Created: [daemonhide] Ilosc: [2000] Nazwa: [2000 skory  demona] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [sewingkit] Ilosc: [1] Nazwa: [przybory do szycia] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [ironingot] Ilosc: [2000] Nazwa: [2000 zelazo] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [smithhammer] Ilosc: [1] Nazwa: [mlotek kowalski] Postac: [Chujew] backpack. Konto: [admin].
+[CREATE] Created: [2475] Nazwa: [metal chest] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4354] Nazwa: [fire trap] Postac: [Makalele] Konto: [kan].
+27.2.2014 [CREATESTACK] Created: [11126] Ilosc: [1] Nazwa: [skorzany elfi karczek] Postac: [Chujew] backpack. Konto: [admin].
+[CREATE] Created: [6582] Nazwa: [fire] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8689] Nazwa: [fire steed] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+27.2.2014 [CREATESTACK] Created: [11122] Ilosc: [1] Nazwa: [skorzany elfi czepiec] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [11122] Ilosc: [1] Nazwa: [skorzany elfi czepiec] Postac: [Chujew] backpack. Konto: [admin].
+[CREATE] Created: [6578] Nazwa: [fire] Postac: [Makalele] Konto: [kan].
+27.2.2014 [CREATESTACK] Created: [platemailbreastplate] Ilosc: [1] Nazwa: [napiersnik plytowy] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [bolt] Ilosc: [200] Nazwa: [200 belty ] Postac: [Chujew] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [12217] Ilosc: [1] Nazwa: [elfia toga] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [8198] Nazwa: [zwloki] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [11017] Nazwa: [Breastplate of Jus] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11014] Nazwa: [nogawice honoru] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11015] Nazwa: [Legs of Honor] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11016] Nazwa: [napiersnik prawa] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11017] Nazwa: [Breastplate of Jus] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11018] Nazwa: [naramienniki wspolczucia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11019] Nazwa: [Arms of Compassion] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11020] Nazwa: [rekawice odwagi] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11021] Nazwa: [Gauntlets of Valor] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11022] Nazwa: [karczek prawdy] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11024] Nazwa: [helm duchowienstwa] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11011] Nazwa: [Quiver of Infinity] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11671] Nazwa: [Squirrel] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11571] Nazwa: [Radiant Scimitar] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9862] Nazwa: [death shroud] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11015] Nazwa: [Legs of Honor] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11021] Nazwa: [Gauntlets of Valor] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11022] Nazwa: [karczek prawdy] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11023] Nazwa: [Gorget of Truth] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11024] Nazwa: [helm duchowienstwa] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11025] Nazwa: [Helm of Spirituali] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1656] Nazwa: [metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1663] Nazwa: [metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1669] Nazwa: [barred metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1681] Nazwa: [barred metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1674] Nazwa: [barred metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1675] Nazwa: [barred metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1678] Nazwa: [barred metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [2205] Nazwa: [wooden ladder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4074] Nazwa: [pentagram] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [658] Nazwa: [marble wall] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [658] Nazwa: [marble wall] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [658] Nazwa: [marble wall] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [658] Nazwa: [marble wall] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [ironingot] Ilosc: [2000] Nazwa: [2000 zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [saw] Ilosc: [1] Nazwa: [pila] Postac: [Qra'h] backpack. Konto: [admin].
+27.2.2014 [CREATESTACK] Created: [log] Ilosc: [2000] Nazwa: [2000 klody  drewna] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [547] Nazwa: [palisade] Postac: [Makalele] Konto: [kan].
+1.3.2014 [CREATESTACK] Created: [dyetub] Ilosc: [1] Nazwa: [pojemnik z woda] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [pickaxe] Ilosc: [1] Nazwa: [kilof] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [leathertunic] Ilosc: [1] Nazwa: [skorzana tunika] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [leatherleggings] Ilosc: [1] Nazwa: [skorzane nogawice] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [studdedgorget] Ilosc: [1] Nazwa: [skorzany utwardzany karczek] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [leathergloves] Ilosc: [1] Nazwa: [skorzane rekawiczki] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [56322] Ilosc: [1] Nazwa: [mikstura leczenia] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [56345] Ilosc: [1] Nazwa: [mikstura many] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [dmgball] Ilosc: [20] Nazwa: [20 kula ulepszenias] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [56353] Ilosc: [1] Nazwa: [atak mozdzierzowy] Postac: [Qra'h] backpack. Konto: [admin].
+1.3.2014 [CREATESTACK] Created: [56354] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [1665] Nazwa: [metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1741] Nazwa: [metal door] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1742] Nazwa: [metal door] Postac: [Makalele] Konto: [kan].
+2.3.2014 [CREATESTACK] Created: [scissors] Ilosc: [1] Nazwa: [nozyczki] Postac: [Qra'h] backpack. Konto: [admin].
+2.3.2014 [CREATESTACK] Created: [sewingkit] Ilosc: [1] Nazwa: [przybory do szycia] Postac: [Qra'h] backpack. Konto: [admin].
+2.3.2014 [CREATESTACK] Created: [daemonhide] Ilosc: [300] Nazwa: [300 skory  demona] Postac: [Qra'h] backpack. Konto: [admin].
+2.3.2014 [CREATESTACK] Created: [backpack] Ilosc: [1] Nazwa: [plecak] Postac: [Qra'h] backpack. Konto: [admin].
+3.3.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Qra'h] backpack. Konto: [admin].
+3.3.2014 [CREATESTACK] Created: [pickaxe] Ilosc: [1] Nazwa: [kilof] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Makalele] Konto: [kan].
+11.3.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+12.3.2014 [CREATESTACK] Created: [dmgball] Ilosc: [1] Nazwa: [kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+12.3.2014 [CREATESTACK] Created: [8270] Ilosc: [1] Nazwa: [szata smierci] Postac: [Qra'h] backpack. Konto: [admin].
+12.3.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+13.3.2014 [CREATESTACK] Created: [127008] Ilosc: [1] Nazwa: [pizza] Postac: [Qra'h] backpack. Konto: [admin].
+13.3.2014 [CREATESTACK] Created: [szatasmierci] Ilosc: [1] Nazwa: [szata smierci] Postac: [Qra'h] backpack. Konto: [admin].
+15.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [200] Nazwa: [200 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+15.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+15.3.2014 [CREATESTACK] Created: [stolec] Ilosc: [1] Nazwa: [stolec] Postac: [Qra'h] backpack. Konto: [admin].
+15.3.2014 [CREATESTACK] Created: [7174] Ilosc: [1] Nazwa: [damska skorzana tunika] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6252] Nazwa: [virtue stone] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6525] Nazwa: [miech] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6526] Nazwa: [piec kowalski] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4017] Nazwa: [maly piec kowalski] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4016] Nazwa: [anvil] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+18.3.2014 [CREATESTACK] Created: [127008] Ilosc: [1] Nazwa: [pizza] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [4160] Ilosc: [1] Nazwa: [pizza] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [Wrestling] Ilosc: [1] Nazwa: [pizza] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [robe] Ilosc: [1] Nazwa: [toga] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [bolt] Ilosc: [500] Nazwa: [500 belty ] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [halberd] Ilosc: [1] Nazwa: [halabarda] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [7172] Ilosc: [1] Nazwa: [damski plytowy napiersnik] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [5128] Ilosc: [1] Nazwa: [zamkniety helm] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [5136] Ilosc: [1] Nazwa: [naramienniki plytowe] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [65532] Ilosc: [1] Nazwa: [skora championa] Postac: [Qra'h] backpack. Konto: [admin].
+18.3.2014 [CREATESTACK] Created: [65531] Ilosc: [1] Nazwa: [skora demona] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [577] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [578] Nazwa: [dungeon wall] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+19.3.2014 [CREATESTACK] Created: [10152] Ilosc: [1] Nazwa: [Bokuto] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10153] Ilosc: [1] Nazwa: [Daisho] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10147] Ilosc: [1] Nazwa: [Tessen] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10157] Ilosc: [1] Nazwa: [Kama] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10158] Ilosc: [1] Nazwa: [Nunchaku] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10158] Ilosc: [1] Nazwa: [Nunchaku] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10159] Ilosc: [1] Nazwa: [Sai] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10128] Ilosc: [1] Nazwa: [Leather Ninja Belt] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11564] Ilosc: [1] Nazwa: [Elven Spellblade] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11565] Ilosc: [1] Nazwa: [Assassin Spike] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11566] Ilosc: [1] Nazwa: [Leafblade] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11568] Ilosc: [1] Nazwa: [Diamond Mace] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11570] Ilosc: [1] Nazwa: [Rune Blade] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11571] Ilosc: [1] Nazwa: [Radiant Scimitar] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11572] Ilosc: [1] Nazwa: [Ornate Axe] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11573] Ilosc: [1] Nazwa: [Elven Machete] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11562] Ilosc: [1] Nazwa: [Elven Composite Lo] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [16490] Ilosc: [1] Nazwa: [armored man] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+19.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [kosa] Ilosc: [1] Nazwa: [kosa] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [halberd] Ilosc: [1] Nazwa: [halabarda] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [smithhammer] Ilosc: [1] Nazwa: [mlotek kowalski] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [ironingot] Ilosc: [20] Nazwa: [20 zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [9921] Ilosc: [1] Nazwa: [ostrze ksiezycowe] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11563] Ilosc: [1] Nazwa: [Magical Shortbow] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11562] Ilosc: [1] Nazwa: [Elven Composite Lo] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11568] Ilosc: [1] Nazwa: [Diamond Mace] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10157] Ilosc: [1] Nazwa: [Kama] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [10159] Ilosc: [1] Nazwa: [Sai] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [11569] Ilosc: [1] Nazwa: [Wild Staff] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [namechanger] Ilosc: [1] Nazwa: [zwoj zmiany nazwy przedmiotow] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [namechanger] Ilosc: [1] Nazwa: [zwoj zmiany nazwy przedmiotow] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [namechanger] Ilosc: [1] Nazwa: [zwoj zmiany nazwy przedmiotow] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [namechanger] Ilosc: [1] Nazwa: [zwoj zmiany nazwy przedmiotow] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [namechanger] Ilosc: [1] Nazwa: [zwoj zmiany nazwy przedmiotow] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [dmgball] Ilosc: [200] Nazwa: [200 kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [25185] Ilosc: [1] Nazwa: [bezwartosciowy czek] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [2967] Nazwa: [wooden signpost] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [3025] Nazwa: [brass sign] Postac: [Qra'h] Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+19.3.2014 [CREATESTACK] Created: [namithingot] Ilosc: [200] Nazwa: [200 namith] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [4948] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4948] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4951] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4946] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4962] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4962] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14009] Nazwa: [explosion] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14009] Nazwa: [explosion] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14018] Nazwa: [explosion] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14005] Nazwa: [explosion] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14112] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14112] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14112] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14006] Nazwa: [explosion] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [14106] Nazwa: [fire column] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [12492] Nazwa: [leaves] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [12935] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [13406] Nazwa: [lava] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5022] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5022] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4824] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4825] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5023] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5023] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5024] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5024] Nazwa: [statue] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [5396] Nazwa: [Serpent Crest] Postac: [Makalele] Konto: [kan].
+20.3.2014 [CREATESTACK] Created: [robe] Ilosc: [1] Nazwa: [toga] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+22.3.2014 [CREATESTACK] Created: [pickaxe] Ilosc: [1] Nazwa: [kilof] Postac: [Qra'h] backpack. Konto: [admin].
+22.3.2014 [CREATESTACK] Created: [log] Ilosc: [2000] Nazwa: [2000 klody  drewna] Postac: [Qra'h] backpack. Konto: [admin].
+22.3.2014 [CREATESTACK] Created: [dagger] Ilosc: [1] Nazwa: [sztylet] Postac: [Qra'h] backpack. Konto: [admin].
+22.3.2014 [CREATESTACK] Created: [dmgball] Ilosc: [2000] Nazwa: [2000 kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [36863] Nazwa: [kamien areny] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [7774] Nazwa: [bulletin board] Postac: [Qra'h] Konto: [admin].
+27.3.2014 [CREATESTACK] Created: [41984] Ilosc: [1] Nazwa: [farba do przedmiotow] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3648] Nazwa: [metalowa skrzynia] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [2724] Nazwa: [Skrzynia z Kluczem] Postac: [From] Konto: [fromasz].
+-2.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [16980] Ilosc: [1] Nazwa: [armored man] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [lavahide] Ilosc: [200] Nazwa: [200 skory  wulkaniczne ] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [sewingkit] Ilosc: [1] Nazwa: [przybory do szycia] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [sewingkit] Ilosc: [1] Nazwa: [przybory do szycia] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [dmgball] Ilosc: [200] Nazwa: [200 kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+-2.3.2014 [CREATESTACK] Created: [ironingot] Ilosc: [200] Nazwa: [200 zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [6477] Nazwa: [dragon brazier n] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6477] Nazwa: [dragon brazier n] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6477] Nazwa: [dragon brazier n] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6477] Nazwa: [dragon brazier n] Postac: [Makalele] Konto: [kan].
+1.4.2014 [CREATESTACK] Created: [zlotokrolewskie] Ilosc: [200] Nazwa: [200 zloto krolewskies] Postac: [Qra'h] backpack. Konto: [admin].
+1.4.2014 [CREATESTACK] Created: [robe] Ilosc: [1] Nazwa: [toga] Postac: [Qra'h] backpack. Konto: [admin].
+1.4.2014 [CREATESTACK] Created: [bow] Ilosc: [1] Nazwa: [luk] Postac: [Qra'h] backpack. Konto: [admin].
+1.4.2014 [CREATESTACK] Created: [dmgball] Ilosc: [100] Nazwa: [100 kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+1.4.2014 [CREATESTACK] Created: [3636] Ilosc: [1] Nazwa: [czysty zwoj] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+2.4.2014 [CREATESTACK] Created: [pickaxe] Ilosc: [1] Nazwa: [kilof] Postac: [Qra'h] backpack. Konto: [admin].
+2.4.2014 [CREATESTACK] Created: [dmgball] Ilosc: [200] Nazwa: [200 kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+2.4.2014 [CREATESTACK] Created: [longsword] Ilosc: [1] Nazwa: [dlugi miecz] Postac: [Qra'h] backpack. Konto: [admin].
+2.4.2014 [CREATESTACK] Created: [10195] Ilosc: [1] Nazwa: [powered legs] Postac: [Qra'h] backpack. Konto: [admin].
+2.4.2014 [CREATESTACK] Created: [statball] Ilosc: [1] Nazwa: [kula statow] Postac: [Qra'h] backpack. Konto: [admin].
+3.4.2014 [CREATESTACK] Created: [kosa] Ilosc: [1] Nazwa: [kosa] Postac: [Qra'h] backpack. Konto: [admin].
+3.4.2014 [CREATESTACK] Created: [6326] Ilosc: [200] Nazwa: [200 klody wisniowe] Postac: [Qra'h] backpack. Konto: [admin].
+3.4.2014 [CREATESTACK] Created: [saw] Ilosc: [1] Nazwa: [pila] Postac: [Qra'h] backpack. Konto: [admin].
+3.4.2014 [CREATESTACK] Created: [sextant] Ilosc: [1] Nazwa: [sekstans] Postac: [Qra'h] backpack. Konto: [admin].
+3.4.2014 [CREATESTACK] Created: [8256] Ilosc: [1] Nazwa: [goatee] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Makalele] Konto: [kan].
+5.4.2014 [CREATESTACK] Created: [robe] Ilosc: [1] Nazwa: [toga] Postac: [Qra'h] backpack. Konto: [admin].
+5.4.2014 [CREATESTACK] Created: [quiver] Ilosc: [1] Nazwa: [kolczan] Postac: [Qra'h] backpack. Konto: [admin].
+5.4.2014 [CREATESTACK] Created: [manapotion] Ilosc: [1] Nazwa: [mikstura many] Postac: [Qra'h] backpack. Konto: [admin].
+5.4.2014 [CREATESTACK] Created: [strengthpotion] Ilosc: [1] Nazwa: [mikstura sily] Postac: [Qra'h] backpack. Konto: [admin].
+5.4.2014 [CREATESTACK] Created: [strengthpotion] Ilosc: [1] Nazwa: [mikstura sily] Postac: [Qra'h] backpack. Konto: [admin].
+5.4.2014 [CREATESTACK] Created: [strengthpotion] Ilosc: [1] Nazwa: [mikstura sily] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+5.4.2014 [CREATESTACK] Created: [3823] Ilosc: [60000] Nazwa: [60000 zloto krolewskies] Postac: [Qra'h] backpack. Konto: [admin].
+5.4.2014 [CREATESTACK] Created: [3823] Ilosc: [40000] Nazwa: [40000 zloto krolewskies] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [14164] Nazwa: [sparkle] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8752] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8754] Nazwa: [ant hill] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8753] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [8781] Nazwa: [oak tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8781] Nazwa: [oak tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [9036] Nazwa: [rose of trinsic] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [14089] Nazwa: [slup ognia] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [6907] Nazwa: [summon moongate] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3161] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [3163] Nazwa: [wheat] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7412] Nazwa: [blood] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7412] Nazwa: [blood] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7412] Nazwa: [blood] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7412] Nazwa: [blood] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7398] Nazwa: [body] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7398] Nazwa: [body] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7575] Nazwa: [ankh] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7576] Nazwa: [ankh] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7576] Nazwa: [ankh] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7575] Nazwa: [ankh] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8730] Nazwa: [crystal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8730] Nazwa: [crystal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8730] Nazwa: [crystal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8730] Nazwa: [crystal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9330] Nazwa: [cherry blossoms] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9328] Nazwa: [bamboo] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9328] Nazwa: [bamboo] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9328] Nazwa: [bamboo] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11516] Nazwa: [decorative vines] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11516] Nazwa: [decorative vines] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [11516] Nazwa: [decorative vines] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [1444] Nazwa: [thatch roof] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [12584] Nazwa: [apple trunk] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8752] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8751] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8778] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8785] Nazwa: [demon skull] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8748] Nazwa: [crystal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6811] Nazwa: [flax] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [9006] Nazwa: [snowflake] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9006] Nazwa: [snowflake] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9006] Nazwa: [snowflake] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9006] Nazwa: [snowflake] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9006] Nazwa: [snowflake] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8779] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8779] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8779] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8779] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8778] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8778] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8778] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8778] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8779] Nazwa: [willow tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8780] Nazwa: [oak tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7978] Nazwa: [pedestal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7978] Nazwa: [pedestal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7978] Nazwa: [pedestal] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7825] Nazwa: [skinned deer] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [7825] Nazwa: [skinned deer] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9412] Nazwa: [paper lantern] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9966] Nazwa: [plum tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9966] Nazwa: [plum tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9966] Nazwa: [plum tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [9966] Nazwa: [plum tree] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [6814] Nazwa: [hops] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8750] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8751] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8752] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [8753] Nazwa: [mushroom] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [41985] Nazwa: [Spawn Point] Postac: [From] Konto: [fromasz].
+[CREATE] Created: [4943] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4944] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4945] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4946] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4947] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4947] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+[CREATE] Created: [4948] Nazwa: [boulder] Postac: [Makalele] Konto: [kan].
+7.4.2014 [CREATESTACK] Created: [recallrune] Ilosc: [1] Nazwa: [runa przywolania] Postac: [Qra'h] backpack. Konto: [admin].
+8.4.2014 [CREATESTACK] Created: [daemonhide] Ilosc: [2000] Nazwa: [2000 skory  demona] Postac: [Qra'h] backpack. Konto: [admin].
+8.4.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [64170] Nazwa: [wrota zycia] Postac: [Kan] Konto: [kan].
+16.4.2014 [CREATESTACK] Created: [ironingot] Ilosc: [200] Nazwa: [200 zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [tinkertools] Ilosc: [1] Nazwa: [narzedzia majstra] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [20000] Nazwa: [20000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [talizman5] Ilosc: [1] Nazwa: [zwoj umagicznienia [lvl: 5]] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [talizman5] Ilosc: [1] Nazwa: [zwoj umagicznienia [lvl: 5]] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [ironingot] Ilosc: [200] Nazwa: [200 zelazo] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [talizman5] Ilosc: [100] Nazwa: [100 zwoj umagicznienia [lvl: 5]s] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [smithhammer] Ilosc: [1] Nazwa: [mlotek kowalski] Postac: [Qra'h] backpack. Konto: [admin].
+16.4.2014 [CREATESTACK] Created: [anvildeed] Ilosc: [1] Nazwa: [zwoj na kowadlo] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [41993] Nazwa: [power scroll] Postac: [Qra'h] Konto: [admin].
+[CREATE] Created: [9000] Nazwa: [bauwan] Postac: [Qra'h] Konto: [admin].
+17.4.2014 [CREATESTACK] Created: [nuksfig] Ilosc: [1] Nazwa: [figurka nuksa] Postac: [Qra'h] backpack. Konto: [admin].
+17.4.2014 [CREATESTACK] Created: [qrahtotem] Ilosc: [1] Nazwa: [totem Qra'ha] Postac: [Qra'h] backpack. Konto: [admin].
+21.4.2014 [CREATESTACK] Created: [10201] Ilosc: [1] Nazwa: [kaptur ninja] Postac: [Qra'h] backpack. Konto: [admin].
+21.4.2014 [CREATESTACK] Created: [11009] Ilosc: [1] Nazwa: [tarcza elfia] Postac: [Qra'h] backpack. Konto: [admin].
+22.4.2014 [CREATESTACK] Created: [goldcoin] Ilosc: [60000] Nazwa: [60000 zlote monety] Postac: [Qra'h] backpack. Konto: [admin].
+22.4.2014 [CREATESTACK] Created: [28659] Ilosc: [1] Nazwa: [zwoj na stoisko kupieckie] Postac: [Qra'h] backpack. Konto: [admin].
+22.4.2014 [CREATESTACK] Created: [28659] Ilosc: [1] Nazwa: [zwoj na stoisko kupieckie] Postac: [Qra'h] backpack. Konto: [admin].
+22.4.2014 [CREATESTACK] Created: [28680] Ilosc: [1] Nazwa: [akt najmu kupca] Postac: [Qra'h] backpack. Konto: [admin].
+22.4.2014 [CREATESTACK] Created: [playervendordeed] Ilosc: [1] Nazwa: [akt najmu kupca] Postac: [Qra'h] backpack. Konto: [admin].
+22.4.2014 [CREATESTACK] Created: [playervendordeed] Ilosc: [1] Nazwa: [akt najmu kupca] Postac: [Qra'h] backpack. Konto: [admin].
+25.4.2014 [CREATESTACK] Created: [smalltowerdeed] Ilosc: [1] Nazwa: [deed to a small tower] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].
+27.4.2014 [CREATESTACK] Created: [smalltowerdeed] Ilosc: [1] Nazwa: [deed to a small tower] Postac: [Qra'h] backpack. Konto: [admin].
+27.4.2014 [CREATESTACK] Created: [25186] Ilosc: [1] Nazwa: [deed] Postac: [Qra'h] backpack. Konto: [admin].
+2.5.2014 [CREATESTACK] Created: [pscroll] Ilosc: [1] Nazwa: [power scroll] Postac: [Qra'h] backpack. Konto: [admin].
+2.5.2014 [CREATESTACK] Created: [pscroll] Ilosc: [50] Nazwa: [50 power scroll] Postac: [Qra'h] backpack. Konto: [admin].
+4.5.2014 [CREATESTACK] Created: [pscroll] Ilosc: [20] Nazwa: [20 power scroll] Postac: [Qra'h] backpack. Konto: [admin].
+4.5.2014 [CREATESTACK] Created: [5357] Ilosc: [1] Nazwa: [zwinieta mapa] Postac: [Qra'h] backpack. Konto: [admin].
+6.5.2014 [CREATESTACK] Created: [pscroll] Ilosc: [1] Nazwa: [21 power scroll] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [41993] Nazwa: [power scroll] Postac: [Qra'h] Konto: [admin].
+7.5.2014 [CREATESTACK] Created: [3823] Ilosc: [1] Nazwa: [zloto krolewskie] Postac: [Qra'h] backpack. Konto: [admin].
+8.5.2014 [CREATESTACK] Created: [pscroll] Ilosc: [20] Nazwa: [20 power scroll] Postac: [Qra'h] backpack. Konto: [admin].
+8.5.2014 [CREATESTACK] Created: [dmgball] Ilosc: [200] Nazwa: [200 kula ulepszenia] Postac: [Qra'h] backpack. Konto: [admin].
+[CREATE] Created: [3701] Nazwa: [plecak] Postac: [Qra'h] Konto: [admin].

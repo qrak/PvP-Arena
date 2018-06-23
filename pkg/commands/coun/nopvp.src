@@ -1,0 +1,48 @@
+use uo;
+use basic;
+
+include "include/client";
+
+program odban(who, param)
+
+   var suck := SplitWords(param);
+   var nopvp := suck[1];
+
+if(!nopvp)
+	SendSysMessage(who, "Uzycie: .nopvp tak/nie/status");
+	return;
+endif
+
+      
+    case(nopvp)
+	"nie":  
+                if(Cint(!GetGlobalProperty("#zakazwalk")))
+                SendSysMessage(who, "Zakaz PvP juz jest wylaczony.",3,40);
+                return;
+                endif
+                
+                EraseGlobalProperty("#zakazwalk");
+                SendSysMessage(who, "Wylaczyles zakaz PvP.",3,66);
+                BroadCast("!!! ZAKAZ WALK PVP ZOSTAL WYLACZONY PRZEZ " + who.name + " !!!",3,89);
+                
+	"tak":  if(Cint(GetGlobalProperty("#zakazwalk")))
+                SendSysMessage(who, "Zakaz PvP juz jest wlaczony.",3,40);
+                return;
+                endif
+                
+                SetGlobalProperty("#zakazwalk", 1);
+		SendSysMessage(who, "Wlaczyles zakaz PvP. NIE ZAPOMNIJ WYLACZYC!",3,40);
+                BroadCast("!!! ZAKAZ WALK PVP ZOSTAL WLACZONY PRZEZ " + who.name + " !!!",3,40);
+                
+        "status": if(Cint(GetGlobalProperty("#zakazwalk")))
+                  SendSysMessage(who, "Zakaz PvP: tak",3,40);
+                  return;
+                  else
+                  SendSysMessage(who, "Zakaz PvP: nie",3,40);
+                  endif
+        default:
+                SendSysMessage(who, "Uzycie: .nopvp tak/nie/status");
+    endcase
+
+
+endprogram

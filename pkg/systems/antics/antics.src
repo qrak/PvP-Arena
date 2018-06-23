@@ -1,0 +1,82 @@
+/*
+        Maintened by *Edwards
+        For FantasiaShard.com
+
+        Edwards@FantasiaShard.com
+
+        2008-10-14
+*/
+use uo;
+use os;
+use math;
+use file;
+
+include "include/client";
+include "include/security";
+include ":timeutils:time";
+
+program antics( parms )
+
+       var mobile := parms[1];
+	
+       while( mobile.connected && GetObjProperty( mobile, "Antics" ))
+       
+              GetXY( mobile );
+              
+              var expired := GetObjProperty( mobile, "Antics" );
+              if( expired < ReadGameClock() )
+                       EraseObjProperty( mobile, "Antics" );
+              endif
+       endwhile
+       
+       return 1;
+endprogram
+
+function GetXY( mobile )
+
+       var x := mobile.x,
+           y := mobile.y,
+           x2, y2, maximum, total;
+           
+       SleepMS( 500 );
+
+       x2 := Abs( x - mobile.x );
+       y2 := Abs( y - mobile.y );
+
+       if( x2 && !y2 )
+              total := x2;
+       elseif( y2 && !x2 )
+              total := y2;
+       else
+              total := ( x2 + y2 ) / 2;
+       endif
+
+       if( GetEquipmentByLayer( mobile, LAYER_MOUNT ))
+              maximum := 6;
+       else
+              maximum := 3;
+       endif
+
+       if( total > maximum && total < 15 )
+              var antic := GetObjProperty( mobile, "#WhileAntics" );
+              if( antic )
+                       SetObjProperty( mobile, "#WhileAntics", antic + 1 );
+              else
+                       SetObjProperty( mobile, "#WhileAntics", 1 );
+              endif
+
+              if( GetObjProperty( mobile, "#WhileAntics" ) >= 2 && !mobile.multi && (!GetObjProperty( mobile, "#Teleported" ) || !GetObjProperty( mobile, "#justgated" )))
+                       EraseObjProperty( mobile, "#WhileAntics" );
+                       SetObjProperty( mobile, "Antics", ReadGameClock() + SEC_WEEK );
+                       SendSysMessage( mobile, "Zostales rozlaczony za speedhack!", 3, 33);
+                       SendSysMessage( mobile, "Informacja zostala wyslana do ekipy!", 3, 33);
+                                
+                       NotifyStaffOnline( mobile, "zostal rozlaczony za speedhack." );
+		       LogToFile(":log:sh.txt", "[SPEEDHACK] osoba z konta: " +mobile.acctname+" uzywala speedhacka!", 1);
+                       SleepMS( 200 );
+                       DisconnectClient( mobile );
+              endif
+        endif
+        
+        return 1;
+endfunction

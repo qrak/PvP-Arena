@@ -1,0 +1,157 @@
+use os;
+use uo;
+use cfgfile;
+use npc;
+use util;
+use guilds;
+
+include "include/eventID";
+include "include/sysEvent";
+include "include/client";
+include "include/dist";
+include "include/anchors";
+include "include/attributes";
+include "include/dawaj";
+
+
+var bank;
+var me := Self();
+var npccfg := ReadConfigFile("npcdesc");
+
+program banker();
+var bankbox, contents, amt;
+  me.frozen := 1;
+  GrantPrivilege( me, "invul" );
+
+start_script("NPCKeeper", me);
+  var next_wander := ReadGameClock() + 30;
+  var myanchor := GetObjProperty(me, "Anchor");
+  if(myanchor)
+    MoveObjectToLocation(me, myanchor[1], myanchor[2], myanchor[3], me.realm, MOVEOBJECT_FORCELOCATION);
+  endif
+  drop_anchor();
+  myanchor := GetObjProperty(me, "Anchor");
+  EnableEvents(SYSEVENT_SPEECH,4);
+  var text;
+  while(1)
+    var ev;
+    ev := os::wait_for_event(120);
+    if(ev.type == SYSEVENT_ENGAGED)
+    if(CheckLineOfSight(me, ev.source))
+                                  PerformAction(me, 17);
+  
+
+  PlaySoundEffect(ev.source, 0x2a);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  PlayLightningBoltEffect(ev.source);
+  sleepms(100);
+  ApplyRawDamage(ev.source, GetMaxHp(ev.source) + 50);
+  sleep(1);
+  PerformAction(me, 17);
+endif
+    elseif(ev.type == EVID_SPEECH)
+      text := lower(ev.text);
+      if(text["kup"])
+      var who := ev.source;
+        bambaklat(who, me);
+        
+      endif
+
+      endif
+	if(ReadGameClock() >= next_wander)
+
+           if(RandomInt(3) == 0)
+      PrintTextAbove(me, "*kreci blanta*");
+      elseif(RandomInt(3) == 1)
+      PrintTextAbove(me, "*przypala*");
+      elseif(RandomInt(3) == 2)
+      PrintTextAbove(me, "*wypuszcza dym*");
+      else
+      PrintTextAbove(me, "bambaklat!");
+      endif
+      if(coordist(me.x, me.y, myanchor[1], myanchor[2]) > 5)
+        MoveObjectToLocation(me, myanchor[1], myanchor[2], myanchor[3], me.realm, MOVEOBJECT_FORCELOCATION);
+      endif
+      next_wander := ReadGameClock() + 10;
+    endif
+  endwhile
+endprogram
+
+function bambaklat(who, me)
+
+
+
+// DAWAJ --------------------------------
+
+var ile, template;
+
+
+GFInitGump(0,0);
+GFNoClose();
+GFpage (0);
+GFResizePic(50, 50, 3600, 500, 500);
+GFCheckerTrans(50,50,500,500);
+
+
+GFPage(1);
+GFTextline(100, 90, 48, "  lufka (5 gp)");
+GFTilePic(500, 90, 0x0F7E);
+var lufa := GFButtonID(85, 90, 1209, 1210, 1);
+
+GFTextline(100, 130, 48, "  faja wodna (10 gp)");
+GFTilePic(500, 130, 0x1836);
+var fajawodna := GFButtonID(85, 130, 1209, 1210, 1);
+
+GFTextline(100, 170, 48, "  wiadro (20 gp)");
+GFTilePic(500, 170, 0xFFA);
+var wiadro := GFButtonID(85, 170, 1209, 1210, 1);
+
+
+GFTextLine(100, 210, 48, "  nasiona marihuany (5 gp)");
+GFtilePic(500, 210, 0x0D2B);
+
+var weed := GFButtonID(85, 210, 1209, 1210, 1);
+
+
+    // przycisk anulowania
+    GFTextLine(445, 500, 48, "Anuluj.");
+    var idzstad := GFButtonID(490, 500, 1209, 1210, 1);
+    // autor
+    GFTextLine(60, 515, 66, "Jamaican menu created by qrak");
+
+	var keys := GFSendGump(who);
+    //
+    
+	if(keys[0] == lufa.keyid)
+		BuyItem(who, 0xbfA9, 5, 0, 0);
+	elseif(keys[0] == fajawodna.keyid)
+		BuyItem(who, 0xa111, 10, 0, 0);
+	elseif(keys[0] == wiadro.keyid)
+		BuyItem(who, 0xa112, 20, 0, 0);
+	elseif(keys[0] == weed.keyid)
+		BuyItem(who, 0xf015, 5, 0, 0);
+	elseif(keys[0] == idzstad.keyid)
+		SendSysMessage(who, "To spierdalaj.", 3,40);
+		return 0;
+	endif
+
+
+endfunction
+
+function makeme(who, ile, template)
+
+if(!SubtractCash(who, ile))
+SendSysMessage(me, "Uaguan pussy klat?!? You ain't got no money white boy, come back if ya get some!", 3,40);
+return;
+endif
+
+CreateItemInBackPack(who, template, 1);
+
+
+
+endfunction

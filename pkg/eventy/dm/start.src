@@ -1,0 +1,10 @@
+use uo;
+use os;
+
+
+program startigrzyska()
+
+print("Uruchamianie Deathmatch...");
+start_script("stonecontrol");
+
+endprogram

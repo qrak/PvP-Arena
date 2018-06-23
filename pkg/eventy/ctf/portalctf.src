@@ -1,0 +1,96 @@
+use uo;
+
+include "include/yesNo";
+include "util/bank";
+include ":ctf:ctf";
+
+program portalctf(who)
+
+    if(!yesNo(who, "Czy chcesz wejsc na turniej Capture The Flag?"))
+        return 0;
+    endif
+
+    if(GetEquipmentByLayer(who, 25));
+        SendSysMessage (who, "Nie mozesz wejsc na Capture The Flag na wierzchowcu.", 3, 40);
+        return 0;
+    endif
+
+    if(who.dead);
+        Resurrect(who);
+        sleep(1);
+    endif
+
+    var bank := FindBankBox(who);
+    var bag := CreateItemInContainer(bank, 0xE76, 1);
+    bag.color := 40; 
+    var i,x;
+    set_critical(1);
+
+    for (i := 1; i <= 24; i := i + 1)
+        if ( (i == 0x0b) || (i == 0x10) || (i == 0x15) || (i.objtype == 0xEFA) || (i.objtype == 0x2253) || (i.objtype == 0x2D50) || (i.objtype == 0x2252)  )
+            x := { };	// Do nothing.
+	else
+            x := GetEquipmentByLayer(who, i);
+            MoveItemToContainer(x, who.backpack);
+	endif
+    endfor 
+
+    
+
+    
+    foreach item in EnumerateItemsInContainer(who.backpack)
+        if(CanMoveItemToBag(item))
+            if(item.container == who.backpack)
+                MoveItemToContainer(item, bag);
+            endif
+        endif
+    endforeach
+    
+    
+    
+    SendSysMessage(who, "Twoje rzeczy zostaly przeniesione do czerwonego worka w banku.",3,63);
+
+
+    if(MoveObjectToCtfHall(who))
+        if(!who.cmdlevel)
+            SetObjProperty(CtfStone(), "CtfContestants", Cint(GetObjProperty(CtfStone(), "CtfContestants")) + 1);
+            EraseObjProperty(who, "CtfStuff");
+            PrintTextAbovePrivate(CtfStone(), "Witaj " + who.name + " na turnieju CTF! Ustaw sie w szeregu i czekaj na rozpoczecie. :(", who.name,3,63);
+            who.hidden := 0;
+        endif
+    endif
+
+endprogram
+
+function CanMoveItemToBag(rzecz)
+    case(rzecz.objtype)
+        // zbroja donate dla woja
+        0x2B06:
+        0x2B08:
+        0x2B08:
+        0x2B0E:
+        0x2B10:
+        0x2B12:
+        0x2B0C:
+        0x2B0A:
+        // zbroja donate dla maga/lucznika
+        0x2FC5:
+        0x2FC6:
+        0x2FC8:
+        0x2FC9:
+        0x2B6F: return 1;
+    endcase
+    
+    if(Cint(GetObjProperty(rzecz, "DonatedItem")))
+        return 1; // rzeczy donate
+    endif
+    
+    if(rzecz.newbie)
+        return 0;
+    endif
+    
+    return 1;
+endfunction
+
+
+

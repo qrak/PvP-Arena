@@ -1,0 +1,12 @@
+use uo;
+
+
+program duelignore(who)
+  if(Cint(!GetObjProperty(who, "duelignore")))
+    SetObjProperty(who, "duelignore", 1);
+    SendSysMessage(who, "Ignorowanie dueli WLACZONE.",3,63);
+  else
+    EraseObjProperty(who, "duelignore");
+    SendSysMessage(who, "Ignorowanie dueli WYLACZONE.",3,40);
+  endif
+endprogram

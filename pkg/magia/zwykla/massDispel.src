@@ -1,0 +1,54 @@
+// crash
+
+use vitals;
+use npc;
+use util;
+use math;
+use uo;
+use basic;
+
+include "include/eventID";
+include "include/attributes";
+include "include/spellRestrictions";
+
+var npccfg := ReadConfigFile("::npcdesc");
+
+program mass_dispel ( parms )
+  var circle := 7;
+  var delivery := "indirect";
+  var noto := "neutral";
+  var result := maincast(parms, delivery, circle, noto, 54);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var range := CInt(magery / 20);
+  var targets := ListMobilesNearLocation( cast_on.x, cast_on.y, cast_on.z, range );
+  PlaySoundEffect( caster, 0x202 );
+  var ei := GetEffectiveSkill(caster, SKILLID_EVALINT)/10;
+  foreach mobile in targets
+	SetObjProperty(mobile, "LastHit", {caster.name, caster.serial, "mass dispel"});
+    if(Reflected(mobile))
+	  mobile := caster;
+    endif
+    var summoned := GetObjProperty( mobile, "summoned");
+	if (summoned == 1)
+      PlaySoundEffect(caster, 0x202 );
+      PlayStationaryEffect( mobile.x, mobile.y, mobile.z, FX_HEAL_EFFECT, 0xa, 0xa );
+      var master := SystemFindObjectBySerial(CInt(GetObjProperty(mobile, "master")));
+      if(master)
+        var resist := GetEffectiveSkill(master, SKILLID_MAGICRESISTANCE);
+        if((RandomInt(99) + 1) < resist)
+          MoveObjectToLocation(mobile,0,0,0, mobile.realm,MOVEOBJECT_FORCELOCATION);
+          ApplyRawDamage(mobile, GetMaxHp(mobile) + 3);
+        endif
+    endif
+    else
+      if(mobile.isA(POLCLASS_NPC))
+        var element := npccfg[mobile.npctemplate].elemental;
+      endif
+    endif
+  endforeach
+endprogram

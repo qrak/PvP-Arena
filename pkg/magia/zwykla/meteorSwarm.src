@@ -1,0 +1,58 @@
+use os;
+use vitals;
+use basicio;
+use cfgfile;
+use math;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_meteor( parms )
+    var circle := 7;
+    var delivery := "indirect";
+    var noto := "harmful";
+    var result := maincast(parms, delivery, circle, noto, 55);
+    if(result == 0)
+        return 0;
+    endif
+    var caster := result[1];
+    var cast_on := result[2];
+    Detach();
+    var magery := Cint(GetEffectiveSkill(caster, SKILLID_MAGERY)/4);
+    var eval := Cint(GetEffectiveSkill(caster, SKILLID_EVALINT)/5);
+    var int := GetIntelligence(caster);
+    var bonus := 0;
+    if(caster.ip)
+        bonus := int/5;
+    endif
+    var dmg := magery + eval + bonus;
+    var cfg := ReadConfigFile("::npcdesc");
+    foreach mobile in ListMobilesNearLocationEx( cast_on.x, cast_on.y, cast_on.z, 10, 0x01);
+        PlaySoundEffect( mobile, SFX_SPELL_FIREBALL );
+        PlayMovingEffect( caster, mobile, FX_FIREBALL, 5, 1 );
+        if(GetObjProperty(mobile, "LastHit")[2] != caster.serial)
+            SetObjProperty(mobile, "LastHit", {caster.name, caster.serial, "meteor swarm"});
+        endif
+        if(Reflected(mobile))
+            mobile := caster;
+            PlaySoundEffect( mobile, SFX_SPELL_FIREBALL );
+            PlayMovingEffect( caster, mobile, FX_FIREBALL, 5, 1 );
+        endif
+        var odbij := cfg[mobile.npctemplate].Resuje;
+        var miekki := cfg[mobile.npctemplate].Leszcz;
+        if(odbij == "ogien" && mobile.npctemplate)
+            dmg := dmg / 2;
+            PrintTextAbove(mobile, "*absorbuje energie*");
+        elseif(miekki == "ogien")
+            dmg := dmg * 2;
+            PrintTextAbove(cast_on, "*dostaje podwojny cios energii*");
+        endif
+        if(mobile != caster)
+            ApplyRawDamage(mobile, Resisted(circle,caster,mobile,dmg));
+            dmg := dmg/2; // ponizej applyrawdamage poniewaz zmniejsza dmg o polowe dopiero po 1 mobie
+        endif
+        sleep(1);
+    endforeach
+endprogram

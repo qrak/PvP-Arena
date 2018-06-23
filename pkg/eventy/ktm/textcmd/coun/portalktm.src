@@ -1,0 +1,34 @@
+use os;
+use uo;
+
+program textcmd_portalktm(who)
+
+SendSysMessage(who, "Skrypt wystartowal proces otwierania portalu. Przygotujsie do prowadzenia ktm.",3,1174);
+var i := 5;
+
+Detach();
+repeat
+BroadCast("Portal na Turniej KTM otworzy sie za " + i + " minut w Cove i Minoc.",3,63);
+i := i - 1;
+sleep(60);
+until(i <= 0);
+MoveObjectToLocation(who, 5729, 1148, 0 );
+SendSysMessage(who, "Znalazles sie na arenie do KTM");
+SetObjProperty(who, "KTMTeam", 1);
+    var portal := CreateItemAtLocation( 2519, 558, 0, 0xAA8F, 1);
+    var portal2 := CreateItemAtLocation( 2245, 1214, 0, 0xAA8F, 1);
+
+
+
+    if(portal && portal2)
+
+        BroadCast("Portal na Turniej KTM otwarty! Zamknie sie samoczynnie za trzy minuty i nie bedzie mozliwosci uczestnictwa.",3,63);
+        sleep(180);
+        BroadCast("Portal na Turniej KTM zamkniety!",3,63);
+        DestroyItem(portal);
+        DestroyItem(portal2);
+            sleep(5);
+SendSysMessage(who, who.name + " zaczynaj turniej",3,1174);
+    endif
+
+endprogram

@@ -1,0 +1,24 @@
+
+
+use os;
+use math;
+use uo;
+
+program textcmd_showspawnpoints( who )
+
+	var counter :=0;
+
+	SendSysMessage( who,"Showing all spawnpoints in the world." );
+	SendSysMessage( who,"This may take a moment." );
+
+	foreach spawnpoint in ListObjectsInBox( 0, 0, -110, 5119, 4095, 110 )
+		if( spawnpoint.graphic == 0x1EA7 )
+			spawnpoint.invisible := 0;
+			counter	:= counter + 1;
+		endif
+        SleepMS( 2 );
+	endforeach
+
+	SendSysMessage( who,"A total of " + counter + " spawnpoints have been shown." );
+
+endprogram

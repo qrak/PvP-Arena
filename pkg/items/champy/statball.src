@@ -1,0 +1,125 @@
+use cfgfile;
+use uo;
+use basic;
+use vitals;
+
+include "include/canAccess";
+include "include/yesNo";
+include ":gumps:gumps";
+include "include/staty";
+include "include/attributes";
+
+program championball(who, item)
+    if(!can_access(who, item))
+        return 0;
+    endif 
+    if(item.container != who.backpack)
+        SendSysMessage(who, "Musisz miec kulke w plecaku.", 3, 40);
+        return 0;
+    endif
+    
+    
+    var str, dex, int;
+    GFInitGump(0,0);
+    GFpage (0);
+    GFResizePic(200, 180, 3600, 370, 250);
+    GFCheckerTrans(200,180,370,250);
+    GFTextline(310, 280, 48, "str");
+    GFTilePic(300, 240, 0x208F);
+    str := GFButtonID(320, 300, 1209, 1210, 1);
+    
+    GFTextline(370, 280, 48, "dex");
+    GFTilePic(360, 240, 0x2088);
+    dex := GFButtonID(380, 300, 1209, 1210, 1);
+    
+    GFTextline(430, 280, 48, "int");
+    GFTilePic(420, 240, 0x2089);
+    int := GFButtonID(440, 300, 1209, 1210, 1);
+    
+    var wolne := GetBaseStrength(who) + GetBaseDexterity(who) + GetBaseIntelligence(who);
+    GFTextline(310, 200, 50, "TWOJ STATCAP: " + CheckStatCap(who));
+    GFTextline(310, 220, 50, "WOLNYCH PUNKTOW: " + (Cint(CheckStatCap(who)) - wolne));
+    var anuluj := GFButtonID(346, 380, 242, 241, 1);
+    var okno := GFSendGump(who);
+
+    if((okno[0] == 1)  || okno[anuluj.keyid])
+        SendSysMessage(who, "Anulowano.",3,40);
+        RecalcVitals(who);
+        return 0;
+    endif
+
+    var statsum := GetBaseStrength(who) + GetBaseDexterity(who) + GetBaseIntelligence(who);
+    if(statsum >= Cint(CheckStatCap(who)))
+        SendSysMessage(who, "Brak wolnego statcapa.", 3, 40);
+        return 0;
+    endif
+    
+    if(okno[0] == str.keyid) 
+        StrUp(who, item);
+    elseif(okno[0] == dex.keyid)
+        DexUp(who, item);
+    elseif(okno[0] == int.keyid)
+        IntUp(who, item);
+    endif
+
+endprogram
+
+function StrUp(who, item)
+    if(!CheckStatGain(who))
+        SendSysMessage(who, "Brak wolnego statcapa.");
+        return 0;
+    endif
+    
+    if(!yesNo(who, "Przykoxac str o 1?"));
+        return 0;
+    endif
+    
+    if(SubtractAmount(item, 1))
+        SetBaseStrength(who, GetBaseStrength(who) + 1);
+        PlaySoundEffect( who, 0x202 );
+        PlayObjectCenteredEffect( who, 0x1153, 10,45 );
+    endif
+endfunction
+
+function DexUp(who, item)
+    if(!CheckStatGain(who))
+        SendSysMessage(who, "Brak wolnego statcapa.");
+        return 0;
+    endif
+    
+    if(!yesNo(who, "Przykoxac dex o 1?"));
+        return 0;
+    endif
+    
+    if(SubtractAmount(item, 1))
+        SetBaseDexterity(who, GetBaseDexterity(who) + 1);
+        PlaySoundEffect( who, 0x202 );
+        PlayObjectCenteredEffect( who, 0x1153, 10,45 );
+    endif
+endfunction
+
+function IntUp(who, item)
+    if(!CheckStatGain(who))
+        SendSysMessage(who, "Brak wolnego statcapa.");
+        return 0;
+    endif
+    
+    if(!yesNo(who, "Przykoxac int o 1?"));
+        return 0;
+    endif
+    
+    if(SubtractAmount(item, 1))
+        SetBaseIntelligence(who, GetBaseIntelligence(who) + 1);
+        PlaySoundEffect( who, 0x202 );
+        PlayObjectCenteredEffect( who, 0x1153, 10,45 );
+    endif
+endfunction
+
+function CheckStatGain(who)
+    var statsum := GetBaseStrength(who) + GetBaseDexterity(who) + GetBaseIntelligence(who);
+    if(statsum >= Cint(CheckStatCap(who)))
+        return 0;
+    endif
+    
+    return 1;
+endfunction

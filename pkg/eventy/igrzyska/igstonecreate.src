@@ -1,0 +1,6 @@
+use uo;
+
+program StoneCreate(stone)
+    SetGlobalProperty("IgStoneSerial", stone.serial);
+    return 1;
+endprogram

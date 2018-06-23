@@ -1,0 +1,31 @@
+use vitals;
+use npc;
+use basic;
+use uo;
+
+include "include/attributes";
+
+
+program zabij_serial(who)
+
+SendSysMessage(who, "Wpisz serial do zabicia/zniszczenia.",3,66);
+var amount := RequestInput(who, who.backpack, "");
+
+var npcek := SystemFindObjectBySerial(CInt(amount));
+
+if (!npcek)
+        SendSysMessage(who, "Zly numer.",3,33);
+        return 0;
+    endif
+
+if(npcek.isa(POLCLASS_MOBILE))
+RevokePrivilege( npcek, "invul" );
+MoveObjectToLocation(npcek, who.x, who.y, who.z, npcek.realm);
+ApplyRawDamage( npcek, GetMaxHp(npcek)+20 );
+SendSysMessage(who, "Padl jak cwel!",3,66);
+else
+DestroyItem(npcek);
+SendSysMessage(who, "Zniszczono przedmiot!",3,66);
+endif
+
+endprogram

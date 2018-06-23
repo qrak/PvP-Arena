@@ -1,0 +1,7 @@
+use uo;
+use npc;
+use basic;
+
+program on_remove(who, backpack, item, movetype)
+  EraseObjProperty(item, "#DestroyAt");
+endprogram

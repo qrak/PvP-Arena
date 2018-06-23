@@ -1,0 +1,17 @@
+use os;
+use basicio;
+use uo;
+use util;
+
+include "include/client";
+
+program walkon_spiderweb(who, web)
+       	if(RandomInt(5) <= 3)
+	  if(!who.dead)
+		PrintTextAbovePrivate(who, "Zaplatales sie w pajeczynie!", who);
+	        who.paralyzed := 1;
+		sleep(RandomInt(4)+4);
+	        who.paralyzed := 0;
+	  endif
+        endif
+endprogram

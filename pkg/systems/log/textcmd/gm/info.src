@@ -1,0 +1,794 @@
+/////////////////////////////////////////////////////
+// NOWE see
+// info.src -- Organized info UI for mobiles
+//
+// Usage: Target a mobile to view its stats, skills,
+//        etc. Also can change values
+//        and perform special actions (kick, etc.).
+//
+// Author(s): Racalac
+// Revisions: 1.0, 7/6/99: View Stats and Skills ONLY
+//                         No value changing yet.
+//            1.1, 7/7/99: Stat and Skill editing, Kick player
+//            1.2, 7/8/99: Player options and weapon info
+//                         added.
+//
+// Notes: (rev1.0) - Values do NOT update if they change
+//                   while the gump is open.
+//        (rev1.1) - Cannot add any more data to the gump
+//                   dialog: causes server shutdown. Also,
+//                   this version may cause a non-fatal script
+//                   crash that can be ignored for now.
+//        (rev1.2) - Crash, shutdown fixed. (using core
+//                   POL077X1)
+//
+/////////////////////////////////////////////////////
+
+
+use cfgfile;
+use file;
+use basicio;
+use basic;
+use uo;
+use npc;
+
+include "util/bank";
+include "include/attributes";
+
+include "../pkg/foundations/gumps/gumps";
+
+
+var layout := array(
+
+"page 0",
+"resizepic  0 40 9270 400 470", // background
+
+"gumppic 175 20 10450",
+
+"text 20 59 5 0",
+"text 20 84 281 1",
+"text 114 84 281 2",
+"text 208 84 281 3",
+"text 290 84 281 154",               //CProps
+"text 300 60 900 155", //zmien imie:
+"button 68 84 2708 2709 0 1",
+"button 168 84 2708 2709 0 2",
+"button 256 84 2708 2709 0 5",
+"button 350 84 2708 2709 0 6",      //zmienne:
+"button 370 63 2118 2117 1 1 24", // zmiana imienia
+
+"page 1",
+"text 14 120 400 6",
+"text 120 120 995 7",
+"text 14 140 400 8",
+"text 120 140 995 9",
+"text 14 160 400 10",
+"text 120 160 995 11",
+"text 14 180 400 12",
+"text 120 180 995 13",
+"text 14 200 400 14",
+"text 120 200 995 15",
+"text 14 220 400 16",
+"text 120 220 995 17",
+"text 14 240 400 18",
+"text 120 240 995 19",
+"text 14 260 400 20",
+"text 120 260 995 21",
+"text 14 280 400 22",
+"text 120 280 995 23",
+"text 14 300 400 24",
+"text 120 300 995 25",
+"text 14 320 400 26",
+"text 120 320 995 27",
+"text 14 340 400 28",
+"text 120 340 995 29",
+"text 14 360 400 142",
+"text 120 360 995 143",
+"text 14 380 400 144",
+"text 120 380 995 145",
+"text 14 400 400 146",
+"text 120 400 995 147",
+"text 14 420 400 148",
+"text 120 420 995 149",
+"text 14 440 400 150",
+"text 120 440 995 151",
+"text 14 460 400 152",
+"text 120 460 995 153",
+"text 14 480 300 156", //ip:
+"text 120 480 995 157",
+
+
+
+"button 300 120 2708 2709 1 1 1", //return 1
+"button 300 140 2708 2709 1 1 2",
+"button 300 160 2708 2709 1 1 3",
+"button 300 180 2708 2709 1 1 4",
+"button 300 200 2708 2709 1 1 5",
+"button 300 220 2708 2709 1 1 6",
+"button 300 240 2708 2709 1 1 7",  // hp
+"button 300 260 2708 2709 1 1 9",  // xmana
+"button 300 280 2708 2709 1 1 11", // stam
+"button 300 300 2708 2709 1 1 13",
+"button 300 320 2708 2709 1 1 14",
+"button 300 340 2708 2709 1 1 15",
+
+"button 300 400 2708 2709 1 1 25",
+"button 300 420 2708 2709 1 1 26",
+"button 300 440 2708 2709 1 1 27",
+"button 300 460 2708 2709 1 1 28",
+
+"text 240 120 555 128",
+"text 240 140 555 128",
+"text 240 160 555 128",
+"text 240 180 555 128",
+"text 240 200 555 128",
+"text 240 220 555 128",
+"text 240 240 555 128",
+"text 240 260 555 128",
+"text 240 280 555 128",
+"text 200 300 555 4",//temp
+"text 240 300 555 128",
+"text 240 320 555 128",
+"text 240 340 555 128",
+"text 240 400 555 128", // pozostale
+"text 240 420 555 128",
+"text 240 440 555 128",
+"text 240 460 555 128",
+
+
+"page 2",
+"text 14 110 40 30",
+"text 175 110 40 31",
+"radio 280 115 2362 2361 0 1000",
+"text 14 125 40 32",
+"text 175 125 40 33",
+"radio 280 130 2362 2361 0 1001",
+"text 14 140 40 34",
+"text 175 140 40 35",
+"radio 280 145 2362 2361 0 1002",
+"text 14 155 40 36",
+"text 175 155 40 37",
+"radio 280 160 2362 2361 0 1003",
+"text 14 170 40 38",
+"text 175 170 40 39",
+"radio 280 175 2362 2361 0 1004",
+"text 14 185 40 40",
+"text 175 185 40 41",
+"radio 280 190 2362 2361 0 1005",
+"text 14 200 40 42",
+"text 175 200 40 43",
+"radio 280 205 2362 2361 0 1006",
+"text 14 215 40 44",
+"text 175 215 40 45",
+"radio 280 220 2362 2361 0 1007",
+"text 14 230 40 46",
+"text 175 230 40 47",
+"radio 280 235 2362 2361 0 1008",
+"text 14 245 40 48",
+"text 175 245 40 49",
+"radio 280 250 2362 2361 0 1009",
+"text 14 260 40 50",
+"text 175 260 40 51",
+"radio 280 265 2362 2361 0 1010",
+"text 14 275 40 52",
+"text 175 275 40 53",
+"radio 280 280 2362 2361 0 1011",
+"text 14 290 40 54",
+"text 175 290 40 55",
+"radio 280 295 2362 2361 0 1012",
+"text 14 305 40 56",
+"text 175 305 40 57",
+"radio 280 310 2362 2361 0 1013",
+"text 14 320 40 58",
+"text 175 320 40 59",
+"radio 280 325 2362 2361 0 1014",
+"text 14 335 40 60",
+"text 175 335 40 61",
+"radio 280 340 2362 2361 0 1015",
+"text 14 350 40 62",
+"text 175 350 40 63",
+"radio 280 355 2362 2361 0 1016",
+"text 14 365 40 64",
+"text 175 365 40 65",
+"radio 280 370 2362 2361 0 1017",
+"text 14 380 40 66",
+"text 175 380 40 67",
+"radio 280 385 2362 2361 0 1018",
+"text 14 395 40 68",
+"text 175 395 40 69",
+"radio 280 400 2362 2361 0 1019",
+"text 14 410 40 70",
+"text 175 410 40 71",
+"radio 280 415 2362 2361 0 1020",
+"text 14 425 40 72",
+"text 175 425 40 73",
+"radio 280 430 2362 2361 0 1021",
+"text 14 440 40 74",
+"text 175 440 40 75",
+"radio 280 445 2362 2361 0 1022",
+"button 285 465 2648 2647 0 3",
+"button 215 460 2130 2129 3 2 16", //okay
+"button 150 460 2121 2120 1 2 -1",  //cancel
+
+"page 3",
+"text 14 110 40 76",
+"text 175 110 40 77",
+"radio 280 115 2362 2361 0 1023",
+"text 14 125 40 78",
+"text 175 125 40 79",
+"radio 280 130 2362 2361 0 1024",
+"text 14 140 40 80",
+"text 175 140 40 81",
+"radio 280 145 2362 2361 0 1025",
+"text 14 155 40 82",
+"text 175 155 40 83",
+"radio 280 160 2362 2361 0 1026",
+"text 14 170 40 84",
+"text 175 170 40 85",
+"radio 280 175 2362 2361 0 1027",
+"text 14 185 40 86",
+"text 175 185 40 87",
+"radio 280 190 2362 2361 0 1028",
+"text 14 200 40 88",
+"text 175 200 40 89",
+"radio 280 205 2362 2361 0 1029",
+"text 14 215 40 90",
+"text 175 215 40 91",
+"radio 280 220 2362 2361 0 1030",
+"text 14 230 40 92",
+"text 175 230 40 93",
+"radio 280 235 2362 2361 0 1031",
+"text 14 245 40 94",
+"text 175 245 40 95",
+"radio 280 250 2362 2361 0 1032",
+"text 14 260 40 96",
+"text 175 260 40 97",
+"radio 280 265 2362 2361 0 1033",
+"text 14 275 40 98",
+"text 175 275 40 99",
+"radio 280 280 2362 2361 0 1034",
+"text 14 290 40 100",
+"text 175 290 40 101",
+"radio 280 295 2362 2361 0 1035",
+"text 14 305 40 102",
+"text 175 305 40 103",
+"radio 280 310 2362 2361 0 1036",
+"text 14 320 40 104",
+"text 175 320 40 105",
+"radio 280 325 2362 2361 0 1037",
+"text 14 335 40 106",
+"text 175 335 40 107",
+"radio 280 340 2362 2361 0 1038",
+"text 14 350 40 108",
+"text 175 350 40 109",
+"radio 280 355 2362 2361 0 1039",
+"text 14 365 40 110",
+"text 175 365 40 111",
+"radio 280 370 2362 2361 0 1040",
+"text 14 380 40 112",
+"text 175 380 40 113",
+"radio 280 385 2362 2361 0 1041",
+"text 14 395 40 114",
+"text 175 395 40 115",
+"radio 280 400 2362 2361 0 1042",
+"text 14 410 40 116",
+"text 175 410 40 117",
+"radio 280 415 2362 2361 0 1043",
+"text 14 425 40 118",
+"text 175 425 40 119",
+"radio 280 430 2362 2361 0 1044",
+"text 14 440 40 120",
+"text 175 440 40 121",
+"radio 280 445 2362 2361 0 1045",
+"button 310 465 2650 2651 0 2", //up
+"button 285 465 2648 2647 0 4", //down
+"button 215 460 2130 2129 3 2 16", //okay
+"button 150 460 2121 2120 1 2 -1",  //cancel
+
+"page 4",
+"text 14 110 40 122",
+"text 175 110 40 123",
+"radio 280 115 2362 2361 0 1046",
+"text 14 125 40 124",
+"text 175 125 40 125",
+"radio 280 130 2362 2361 0 1047",
+"text 14 140 40 126",
+"text 175 140 40 127",
+"radio 280 145 2362 2361 0 1048",
+"button 310 465 2650 2651 0 3",
+"button 215 460 2130 2129 3 2 16", //okay
+"button 150 460 2121 2120 1 2 -1",  //cancel
+
+
+"page 5",
+
+"text 14 120 40 129",
+"button 150 115 2708 2709 1 0 17",
+"text 14 150 40 130",
+"button 150 145 2708 2709 1 0 18",
+"text 14 180 40 131",
+"button 150 175 2708 2709 1 0 19",
+"text 14 210 40 132",
+"button 150 205 2708 2709 1 0 20",
+"text 14 240 40 133",
+"button 150 235 2708 2709 1 0 21",
+"text 14 270 40 134",
+"button 150 265 2708 2709 1 0 22",
+"text 14 300 40 135",
+"button 150 295 2708 2709 1 0 23",
+"gumppic 20 330 9751",
+"gumppic 110 330 9751",
+"text 14 345 40 136",
+"text 110 345 40 137",
+"text 14 375 40 138",
+"text 110 375 40 139",
+"text 14 405 40 140",
+"text 110 405 40 141",
+
+
+"page 6"
+
+);
+
+var data := array(
+       "",                     //0 Mobile name
+       "Stats:",                //1
+       "Skills:",               //2
+       "Inne:",                //3
+       "(temp)",               //4
+       "/",                    //5
+       "Str:",             //6
+       "",                     //7 mob str
+       "Int:",         //8
+       "",                     //9 mob int
+       "Dex:",            //10
+       "",                     //11 mob dex
+       "X:",                    //12
+       "",                     //13 mob x
+       "Y:",                    //14
+       "",                     //15 mob y
+       "Z:",                    //16
+       "",                     //17 mob z
+       "HP/MHP:",               //18
+       "",                     //19 mob hp/maxhp
+       "MP/MMP:",               //20
+       "",                     //21 mob mana/maxmana
+       "ST/MST:",               //22
+       "",                     //23 mob stam/maxstam
+       "AR:",                   //24
+       "",                     //25 mob ar
+       "Graphic:",              //26
+       "",                     //27 mob graphic
+       "Kolor:",                //28
+       "",                     //29 mob color
+       "ALCHEMY",              //30
+       "",
+       "ANATOMY",              //32
+       "",
+       "ANIMALLORE",           //34
+       "",
+       "ITEMID",               //36
+       "",
+       "ARMSLORE",             //38
+       "",
+       "PARRYING",             //40
+       "",
+       "BEGGING",              //42
+       "",
+       "BLACKSMITHY",          //44
+       "",
+       "BOWCRAFT",             //46
+       "",
+       "PEACEMAKING",          //48
+       "",
+       "CAMPING",              //50
+       "",
+       "CARPENTRY",            //52
+       "",
+       "CARTOGRAPHY",          //54
+       "",
+       "COOKING",              //56
+       "",
+       "DETECTHIDDEN",         //58
+       "",
+       "ENTICEMENT",           //60
+       "",
+       "EVALINT",              //62
+       "",
+       "HEALING",              //64
+       "",
+       "FISHING",              //66
+       "",
+       "FORENSICS",            //68
+       "",
+       "HERDING",              //70
+       "",
+       "HIDING",               //72
+       "",
+       "PROVOCATION",          //74
+       "",
+       "INSCRIPTION",          //76
+       "",
+       "LOCKPICKING",          //78
+       "",
+       "MAGERY",               //80
+       "",
+       "RESIST",               //82
+       "",
+       "TACTICS",              //84
+       "",
+       "SNOOPING",             //86
+       "",
+       "MUSICIANSHIP",         //88
+       "",
+       "POISONING",            //90
+       "",
+       "ARCHERY",              //92
+       "",
+       "SPIRITSPEAK",          //94
+       "",
+       "STEALING",             //96
+       "",
+       "TAILORING",            //98
+       "",
+       "TAMING",               //100
+       "",
+       "TASTEID",              //102
+       "",
+       "TINKERING",            //104
+       "",
+       "TRACKING",             //106
+       "",
+       "VETERINARY",           //108
+       "",
+       "SWORDS",               //110
+       "",
+       "MACES",                //112
+       "",
+       "FENCING",              //114
+       "",
+       "WRESTLING",            //116
+       "",
+       "LUMBERJACK",           //118
+       "",
+       "MINING",               //120
+       "",
+       "MEDITATION",           //122
+       "",
+       "STEALTH",              //124
+       "",
+       "REMOVETRAP",           //126
+       "",
+       "Edytuj",                 //127
+       "Zamroz",
+       "Odmroz",             //129 
+       "Wykop",
+       "Zapuszkuj",                 //131
+       "Otworz Bank",
+       "Otworz Plecak",            //133
+       "Przywolaj",
+       "Bron:",              //135
+       "",
+       "Obrazenia:",              //137
+       "",
+       "Zycie/MAX:",              //139
+       "",
+       "Poziom:",            //141
+       "",
+       "Konto:",            //143
+       "",
+       "Prefiks:",              //145
+       "",
+       "Sufiks:",              //147
+       "",
+       "Gildia:",               //149
+       "",
+       "Wiek:",                //151
+       "",
+       "Zmienne:",               //153
+       "Zmien imie:",             //154
+       "IP:",
+       ""  //156
+
+       
+
+
+);
+
+program textcmd_info( character, text )
+
+  var who;
+  if(!text)
+
+    SendSysMessage( character, "Wybierz stworzenie.", FONT_NORMAL, COLOR_GREEN );
+    who :=  Target( character, TGTOPT_NOCHECK_LOS );
+
+
+    if((who.graphic==966) || (who.acctname=="admin" && character.acctname!="admin") || !who || !GetStrength(who) || ((who!=character) && (who.acctname) && (character.cmdlevel<3)))
+       SendSysMessage( character, "Anulowano.", FONT_NORMAL, 40 );
+       return;
+    endif
+
+  else
+
+    foreach char in EnumerateOnlineCharacters()
+       if( lower(char.name) == lower(text) )
+          who := char;
+       endif
+    endforeach
+    if (!who)
+      SendSysMessage( character, "Nie ma takiej osoby!", FONT_NORMAL, 40 );
+      return;
+//      who := SystemFindObjectBySerial(text, SYSFIND_SEARCH_OFFLINE_MOBILES);
+    endif
+
+
+    if((who.graphic==966) || (who.acctname=="admin" && character.acctname!="admin") || !who || !GetStrength(who) || ((who!=character) && (who.acctname) && (character.cmdlevel<3)))
+       SendSysMessage( character, "Anulowano.", FONT_NORMAL, 40 );
+       return;
+    endif
+  endif
+
+    data[1] := "Info dla: " + who.name;
+    FillInStats( who );
+    FillInSkills( who );
+    FillInWeapon( who );
+    FillInProps( who );
+
+    var result := SendDialogGump( character, layout, data );  
+    var reskey;
+
+    foreach key in (result.keys)
+       if( key >= 1000 )
+          reskey := key;
+          //print( key );
+       endif
+    endforeach
+
+    case( result[0] )
+         1:   //fall through intentional
+         2:
+         3:
+         4:
+         5:
+         6:
+         7:
+         9:
+        11:
+        14:
+        13:
+        15: EditStat( who, character, result[0] );
+        16: EditSkill( who, character, reskey-1000 );
+        17: who.frozen := 1; SendSysMessage( character, who.name + " zostal ZAMRORZONY!", FONT_NORMAL, COLOR_GREEN);
+        18: who.frozen := 0; SendSysMessage( character, who.name + " zostal ODMRORZONY!", FONT_NORMAL, COLOR_GREEN);
+        19: if( !who.isA(POLCLASS_NPC) ) SendSysMessage( who, "Dostal kicka od " + character.name + ".", FONT_NORMAL, 90);
+            DisconnectClient( who ); endif
+        20:
+
+        21: if( !who.isA(POLCLASS_NPC) )
+        if(character.cmdlevel > 3)
+               var bankbox := FindBankBox( who );
+               SendOpenSpecialContainer( character, bankbox );
+               LogToFile("packbank.txt", "[INFO] Otwarto bank osobie: " +who.name+", zrobila to osoba na koncie: "+character.acctname );
+        else
+        SendSysMessage( character, "Nie masz uprawnien, jestes tylko GMem...", FONT_NORMAL, 40 );
+        endif
+               
+            else
+               SendSysMessage( character, "Dziala tylko na graczach...", FONT_NORMAL, 40 );
+            endif
+        22: if( !who.isA(POLCLASS_NPC) )
+    if(character.cmdlevel > 3)
+               SendOpenSpecialContainer( character, who.backpack );
+               LogToFile("packbank.txt", "[INFO] Otwarto bank osobie: " +who.name+", zrobila to osoba na koncie: "+character.acctname );
+    else
+    SendSysMessage( character, "Nie masz uprawnien, jestes tylko GMem...", FONT_NORMAL, 40 );
+    endif
+            else
+               SendSysMessage( character, "Dziala tylko na graczach...", FONT_NORMAL, 40 );
+            endif
+        23: MoveObjectToLocation( who, character.x, character.y, character.z, who.realm );
+        24: SetName( who, RequestInput( character, character.backpack, "Podaj nowe imie:") );
+            LogToFile("info.txt", "[INFO] Nowe imie: " +who.name+" na koncie: "+character.acctname );
+        25: who.title_prefix := RequestInput( character, character.backpack, "Podaj nowa nazwe prefix:");
+	    LogToFile("info.txt", "[INFO] "+character.name+" na koncie "+character.acctname+" zmienil(a) prefix osobie "+who.name+" na koncie "+who.acctname+" na "+who.title_prefix);
+        26: who.title_suffix := RequestInput( character, character.backpack, "Podaj nowa nazwe suffix.");
+            LogToFile("info.txt", "[INFO] "+character.name+" na koncie "+character.acctname+" zmienil(a) suffix osobie "+who.name+" na koncie "+who.acctname+" na "+who.title_suffix);
+        27: who.title_guild := RequestInput( character, character.backpack, "Podaj nowa nazwe guild:.");
+        
+    endcase
+ 
+endprogram
+
+function FillInProps( who )
+	var i:=0;
+	var tekst:="";
+
+
+ 	foreach propname in GetObjPropertyNames(who)
+ 		data.append(propname);
+ 		tekst := "text 15 " + CStr(120+i*20) + " 40 " + CStr(data.size());
+ 		layout.append(tekst);
+ 		tekst := propname + " " + GetObjProperty(who, propname);
+ 		data.append(tekst);
+ 		i:=i+1;
+ 	endforeach
+
+endfunction
+
+function FillInStats( who )
+
+   var levelname;
+   case( who.cmdlevel )
+      0: levelname := "gracz";
+      1: levelname := "noobek w ekipie";
+      2: levelname := "przydupas GMa";
+      3: levelname := "mistrz gry";
+      4: levelname := "administrator";
+      5: levelname := "bog bogow";
+   endcase
+
+   data[8] := GetBaseStrength(who) + " (" + GetStrength(who) + ")";
+   data[10] := GetBaseIntelligence(who) + " (" + GetIntelligence(who) + ")";
+   data[12] := GetBaseDexterity(who) + " (" + GetDexterity(who) + ")";
+   data[14] := who.x;
+   data[16] := who.y;
+   data[18] := who.z;
+   data[20] := "[" + GetHp(who) + "/" + GetMaxHp(who)+ "]";
+   data[22] := "[" + GetMana(who) + "/" + GetMaxMana(who)+ "]";
+   data[24] := "[" + GetStamina(who) + "/" + GetMaxStamina(who)+ "]";
+   data[26] := who.ar;
+   data[28] := who.graphic;
+   data[30] := who.color;
+   data[144] := levelname;
+   data[146] := who.acctname;
+   data[148] := who.title_prefix;
+   data[150] := who.title_suffix;
+   data[152] := who.title_guild;
+   data[154] := Cint(GetObjProperty(who, "lata"));
+   data[158] := who.ip;
+  
+endfunction
+
+function FillInSkills( who )
+
+   var datindx;
+   var skillindx := 0;
+
+   for( datindx := 32; datindx <= 128; datindx := datindx + 2 )
+       data[datindx] := GetEffectiveSkill( who, skillindx);
+       skillindx := skillindx + 1;
+   endfor
+
+endfunction
+
+function FillInWeapon( who )
+
+   var weapfile := ReadConfigFile( ":combat:itemdesc" );
+   var npcfile := ReadConfigFile( "::npcdesc" );
+
+   if(who.weapon)
+
+      var idx := find( who.weapon.name, "[", 1 ); //ignore maker's mark
+
+      if(idx!=0)
+          var tempn := who.weapon.desc;
+          tempn := tempn[1,idx-1];
+          data[138] := tempn;
+      else
+          if(who.weapon.desc == "nodraw")
+             data[138] := "Wrestling";
+          else
+             data[138] := who.weapon.desc;
+          endif
+      endif
+
+      var dam := weapfile[who.weapon.objtype].Damage;
+      if(!dam)
+          data[140] := "n/a";
+      else
+          data[140] := dam;
+      endif
+
+      data[142] := who.weapon.hp + " / " + who.weapon.maxhp;
+
+   else
+      data[138] := "n/a";
+      data[140] := "n/a";
+      data[142] := "n/a";
+
+      if(who.isA(POLCLASS_NPC)) //Hi, i'm an NPC
+           var dam := npcfile[who.npctemplate].AttackDamage;
+           var weap := npcfile[who.npctemplate].AttackSkillId;     
+           var ar := npcfile[who.npctemplate].AR;     
+
+           if( weap )
+              data[138] := weap;
+           endif
+
+           if( dam )
+              data[140] := dam;
+           endif
+
+           if( ar )
+              data[142] := "AR: " + ar;
+           endif
+
+      endif
+   endif
+
+endfunction
+
+
+function EditStat( who, character, result )
+
+    SendSysMessage( character, "UWAGA! Zmiany sa natychmiastowe, Tylko liczby naturalne!. Wcisnij ESC by anulowac.", FONT_NORMAL, 90 );
+
+    var val := CInt(RequestInput( character, character.backpack, "Podaj nowa wartosc:"));
+    if( !val )
+       SendSysMessage( character, "Anulowano.", FONT_NORMAL, 40 );
+       return;
+    endif
+
+    case( result )
+         1: 
+            if((who != character) && who.ip && !who.cmdlevel)
+             LogToFile("info.txt","[STATS] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil postaci "+who.name+" na koncie: "+who.acctname+" sile z "+GetBaseStrength(who)+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);
+            endif
+
+        if((who != character) && who.npctemplate)
+                LogToFile("info.txt","[STATS] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil NPCowi "+who.name+ " sile z "+GetBaseStrength(who)+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);
+                endif
+
+  	    SetBaseStrength(who,val);
+         2: 
+                     if((who != character) && who.ip && !who.cmdlevel)
+             LogToFile("info.txt","[STATS] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil postaci "+who.name+" na koncie "+who.acctname+" inteligencje z "+GetBaseIntelligence(who)+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);
+     endif
+     
+      if((who != character) && who.npctemplate)
+                LogToFile("info.txt","[STATS] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil NPCowi "+who.name+ " inteligencje z "+GetBaseStrength(who)+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);                
+                endif
+
+
+	    SetBaseIntelligence(who,val);
+         3: 
+                     if((who != character) && who.ip  && !who.cmdlevel)
+         LogToFile("info.txt","[STATS] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil postaci "+who.name+" na koncie "+who.acctname+" zrecznosc z "+GetDexterity(who)+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);
+             endif
+             
+              if((who != character) && who.npctemplate)
+                LogToFile("info.txt","[STATS] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil NPCowi "+who.name+ " zrecznosc z "+GetBaseStrength(who)+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);                
+                endif
+
+
+	    SetBaseDexterity(who,val);
+         4: MoveObjectToLocation( who, val, who.y, who.z, who.realm );
+         5: MoveObjectToLocation( who, who.x, val, who.z, who.realm );
+         6: MoveObjectToLocation( who, who.x, who.y, val, who.realm );
+         7: SetHp(who, val);
+         9: SetMana(who, val);
+        11: SetStamina(who, val);
+        13: who.ar_mod := 0;
+            who.ar_mod := val - who.ar;
+        14: who.graphic := val;
+        15: who.color := val;
+    endcase
+endfunction
+
+function EditSkill( who, character, skill );
+
+    SendSysMessage( character, "UWAGA! Zmiany sa natychmiastowe, Tylko liczby naturalne!. Wcisnij ESC by anulowac.", FONT_NORMAL, 90  );
+
+    var val := CInt(RequestInput( character, character.backpack, "Wpisz nowa wartosc.")) * 10;
+
+    if( ((!val) && (val != 0)) )
+       SendSysMessage( character, "Anulowano.", FONT_NORMAL, 40 );
+       return;
+    endif
+
+    SetBaseSkillBaseValue( who, skill,  val  );
+                if(who != character)
+    LogToFile("info.txt","[SKILL] Konto ekipy: " + "["+character.acctname+ "]" + " zmienil postaci "+who.name+" na koncie "+who.acctname+" ceche "+skill+" na wartosc "+val+"."  + " serial: " + who.serial + " x/y/z: " + who.x + " " + who.y + " " + who.z);
+    endif
+endfunction

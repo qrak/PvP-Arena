@@ -1,0 +1,76 @@
+#
+#  RESOURCE.TXT: Resource System Data
+#
+
+GlobalResourcePool clay
+{
+	Units	10000
+}
+
+RegionalResourcePool clay
+{
+	Name	The Whole World
+	Units	0
+#	(regions/clay.cfg: Capacity is 10000)
+}
+
+GlobalResourcePool fish
+{
+	Units	300000
+}
+
+RegionalResourcePool fish
+{
+	Name	The Whole World
+	Units	0
+#	(regions/fish.cfg: Capacity is 10000)
+}
+
+GlobalResourcePool ore
+{
+	Units	10000
+}
+
+RegionalResourcePool ore
+{
+	Name	Background
+	Units	0
+#	(regions/ore.cfg: Capacity is 10000)
+}
+
+GlobalResourcePool pitch
+{
+	Units	10000
+}
+
+RegionalResourcePool pitch
+{
+	Name	The Whole World
+	Units	0
+#	(regions/pitch.cfg: Capacity is 10000)
+}
+
+GlobalResourcePool sand
+{
+	Units	10000
+}
+
+RegionalResourcePool sand
+{
+	Name	The Whole World
+	Units	0
+#	(regions/sand.cfg: Capacity is 2000)
+}
+
+GlobalResourcePool wood
+{
+	Units	10000
+}
+
+RegionalResourcePool wood
+{
+	Name	The Whole World
+	Units	0
+#	(regions/wood.cfg: Capacity is 300)
+}
+

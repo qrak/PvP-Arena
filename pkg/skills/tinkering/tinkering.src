@@ -1,0 +1,739 @@
+//qrak
+
+use npc;
+use vitals;
+use util;
+use os;
+use math;
+use basic;
+use attributes;
+use uo;
+use polsys;
+use cfgfile;
+
+include "include/attributes";
+include "include/client";
+include "include/objtype";
+include "util/key";
+include "include/itemutil";
+include "include/tfunctions";
+include "include/canAccess";
+include "include/toolWear";
+include "include/gumpmenu";
+include "../../foundations/gumps/gumps";
+
+
+var keys := {0x100e, 0x100f, 0x100f, 0x1012, 0x1013};
+var tinker_cfg:= ReadConfigFile("tinker");
+var itemcfg := ReadConfigFile("itemdesc");
+
+program MakeTinkerItems(who, item)
+  if(!can_access(who, item))
+    return 0;
+  endif
+  if(item.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return 0;
+  endif
+  SendSysMessage( who, "Wybierz material.", 3, 63);
+  var trg := Target(who);
+  if(!trg)
+    SendSysMessage( who, "Anulowano.", 3, 40 );
+    return 0;
+  endif
+  if(!can_access(who, trg))
+    return 0;
+  endif
+  if(!Accessible( who, trg))
+    SendSysMessage( who, "Nie mozesz tego dosiegnac.", 3, 40 );
+    return 0;
+  endif
+  if(!ReserveItem(trg))
+    SendSysMessage(who,"Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  if(trg.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  if(!IsInContainer(who.backpack, trg ))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+		return 0;
+	endif
+
+  GFInitGump(0, 0);
+  GFNoDispose();
+  GFNoClose();
+  GFPage(0);
+  GFResizePic(0, 60, 9270, 500, 400);
+  GFTextLine( 90, 380, 900, "Rob ostatnie");
+  GFTextLine(300, 420, 900, "Ilosc:");
+  GFGumpPic(390, 417, 2443);
+  
+  var sa := GetObjProperty(who, "#TinkerAmt");
+  if(!sa)
+    sa := 1;
+  endif
+  var ct := GFTextEntry(400, 420, 100, 30, 0, sa);
+  var lastitm := GFButtonID( 70, 384,   3, 4, 99);
+  var close   := GFButtonID(410, 380, 242, 241, 1);
+  if((trg.objtype == 0x1bd7) || (trg.objtype == 0x1bdd))
+    GFTextLine(110,  80, 900, "MENU DREWNA");
+    var skill := (GetEffectiveSkill(who, SKILLID_TINKERING) + 20);
+    var color := 0;
+    if(skill >= Cint(tinker_cfg[4144]."skill"))
+      color := 900;
+      GFButtonIDC(120, 180, 210, 211, 1, 4144);
+    endif
+    GFTextLine( 70, 150, color, "strugarka");
+    GFTilePic( 80, 180, 4144);
+    color := 0;
+    if(skill >= Cint(tinker_cfg[4140]."skill"))
+      color := 900;
+      GFButtonIDC(260, 180, 210, 211, 1, 4140);
+    endif
+    GFTextLine(190, 150, color, "narzedzie ksztaltujace");
+    GFTilePic(210, 180, 4140);
+    color := 0;
+    if(skill >= Cint(tinker_cfg[4146]."skill"))
+      color := 900;
+      GFButtonIDC(390, 180, 210, 211, 1, 4146);
+    endif
+    GFTextLine(350, 150, color, "naredzie wygladzajace");
+    GFTilePic(350, 180, 4146);
+    color := 0;
+    if(skill >= Cint(tinker_cfg[4173]."skill"))
+      color := 900;
+      GFButtonIDC(120, 240, 210, 211, 1, 4173);
+    endif
+    GFTextLine( 70, 210, color, "obrecz zegara");
+    GFTilePic( 80, 240, 4173);
+    color := 0;
+    if(skill >= Cint(tinker_cfg[4187]."skill"))
+      color := 900;
+      GFButtonIDC(260, 240, 210, 211, 1, 4187);
+    endif
+    GFTextLine(220, 210, color, "os");
+    GFTilePic(210, 240, 4187);
+    color := 0;
+  elseif((trg.objtype >= 0x6309) and (trg.objtype <= 0x630f) || (trg.objtype >= 0x6310) and (trg.objtype <= 0x6316) || (trg.objtype == 0x631 ) || (trg.objtype >= 0xA403) and (trg.objtype <= 0xA405) )
+    GFTextLine(110,  80, 900, "MENU MAJSTRA");
+    GFTextLine( 30, 121,   1109, "Pulapki");
+    GFTextLine(150, 121,   1109, "Narzedzia");
+    GFTextLine(260, 121,   1109, "Czesci");
+    GFTextLine(370, 121,   1109, "Naczynia");
+    GFTextLine( 30, 351,   1109, "Bizuteria");
+    GFTextLine(160, 351,   1109, "Rozne");
+    GFTextLine(335, 351,   1109, "Narzedzia II");
+    GFButtonPage(110, 123, 1209, 1210, 2);
+    GFButtonPage(230, 123, 1209, 1210, 3);
+    GFButtonPage(340, 123, 1209, 1210, 4);
+    GFButtonPage(435, 123, 1209, 1210, 5);
+    GFButtonPage( 90, 353, 1209, 1210, 6);
+    GFButtonPage(260, 353, 1209, 1210, 7);
+    GFButtonPage(430, 353, 1209, 1210, 8);
+    ComposeSubMenu(who);
+  elseif(trg.objtype == 0xee20)
+    GFTextLine(110,  80, 900, "MENU SZKLARZA");
+    var skill := (GetEffectiveSkill(who, SKILLID_TINKERING) + 20);
+    var color := 0;
+    if(skill >= Cint(tinker_cfg[3854]."skill"))
+      color := 900;
+      GFButtonIDC(120, 180, 210, 211, 1, 3854);
+    endif
+    GFTextLine( 70, 150, color, "pusta butelka");
+    GFTilePic( 80, 180, 3854);
+    color := 0;
+  else
+    SendSysMessage(who, "Z tego nic nie mozesz zrobic", 3, 40);
+    return;
+  endif
+
+  if(!checkskillfordifferentmetals(who, trg))
+    SendSysMessage(who, "Jeszcze nie mozesz nic z tego wytwarzac.", 3, 40);
+    return;
+  endif
+  
+  var res := GFSendGump(who);
+  var split := SplitWords(res[ct.keyid]);
+  ct := split[2];
+  SetObjProperty(who, "#TinkerAmt", Cint(ct));
+  if((res[0] == 999) || (res[0] == 0) || (res[0] == close.keyid))
+    SendSysMessage(who, "Cancelled");
+    return;
+  endif
+  var objtype := CInt(res[0]);
+  var jarray := { 4234, 4233, 4239, 4231, 4232, 4230};
+  var tarray := { 4402, 4414, 4345};
+  var lstitm := GetObjProperty(who, "LastTinkerItem");
+  var cont := item.container;
+  if((!cont) || (cont.serial == who.serial))
+    cont := who.backpack;
+  endif
+
+  if(res[lastitm.keyid])
+    if(lstitm in jarray)
+      make_jewelry(who, item, trg, lstitm, ct);
+    elseif(lstitm in tarray)
+      make_trap(who, item, lstitm, trg, ct);
+    else
+      make_something(who, item, lstitm, trg, ct, cont);
+    endif
+  elseif((objtype == 0x10f9) || (objtype == 0x113e) || (objtype == 0x1132))
+    make_trap(who, item, objtype, trg, ct);
+  elseif(objtype in jarray)
+    make_jewelry(who, item, trg, objtype, ct);
+  else
+    make_something(who, item, objtype, trg, ct, cont);
+  endif
+endprogram
+
+function make_something( who, item, what, use_on, ct, cont)
+  ct := Cint(ct);
+  var counter := 0;
+    var x := who.x;
+  var y := who.y;
+  while(counter < ct)
+    if((who.x != x) || (who.y != y))
+     SendSysMessage(who, "Przestales pracowac.", 3, 40);
+      break;
+    endif
+    SetObjProperty(who, "LastTinkerItem", what);
+    var itembonus := item.dmg_mod;
+    if(!itembonus || itembonus.errortext)
+      itembonus := Cint(GetObjProperty(item, "exp"));
+
+    endif
+    var material  := CInt(tinker_cfg[what].material);
+    var skill     := CInt(tinker_cfg[what].skill);
+    var itemname  := tinker_cfg[what].Name;
+    var exchk := tinker_cfg[what].exchk;
+    var myskill := CInt(GetEffectiveSkill(who, SKILLID_TINKERING));
+    var champbonus := 0;
+    if(Cint(GetObjProperty(item, "69exodus")))
+      champbonus := 300;
+    endif
+    var int := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_INTELLIGENCE) / 10);
+    var dex := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY) / 10);
+    var excmod := int + dex + itembonus + champbonus;
+    if(!item)
+      break;
+    endif
+    var theitem, lockid, thekey;
+    var nme, color, moc;
+    case(use_on.objtype)
+      0x6309: nme := itemname + " z zelaza";         color := 0;
+      0x630a: nme := itemname + " z matowej miedzi"; color := 1045; moc := 1;
+      0x630b: nme := itemname + " z kalcytu";        color := 1109; moc := 2;
+      0x630c: nme := itemname + " z miedzi";         color := 1118; moc := 4;
+      0x630d: nme := itemname + " z brazu";          color := 1714;moc := 6;
+      0x6314: nme := itemname + " ze srebra";        color := 1072;moc := 8;
+      0x630e: nme := itemname + " ze zlota";         color := 2214;moc := 10;
+      0x630f: nme := itemname + " z agapitu";        color := 1002;moc := 12;
+      0x6310: nme := itemname + " z veritu";         color := 2207;moc := 13;
+      0x6311: nme := itemname + " z valoritu";       color := 1337;moc := 14;
+      0x6312: nme := itemname + " z magnetytu";      color := 1102;moc := 15;
+      0x6313: nme := itemname + " z krwawnika";      color := 1654;moc := 16;
+      0x6315: nme := itemname + " z mithrilu";       color := 195;moc := 18;
+      0x6316: nme := itemname + " z namithu";        color := 251;moc := 20;
+      0x631: nme := itemname + " z xilonu";          color := 1287; moc := 45;
+      0xA403: nme := itemname + " z IxodyniX-a"; color := 2; moc := 45;
+      0xA404: nme := itemname + " z 69 exodusa"; color := 1196;  moc := 45;
+      0xA405: nme := itemname + " z GorX-a"; color := 1192;  moc := 45;
+    endcase
+    if(use_on.amount < material)
+      SendSysMessage(who, "Masz za malo materialu aby to wykonac.", FONT_NORMAL, COLOR_RED);
+      break;
+    endif
+    if(!PlayTinkerAnimation(who))
+      SendSysMessage(who, "Przestales pracowac.", 3, 40);
+      return 0;
+    endif
+    if(!SubtractAmount(use_on, material))
+      sendsysmessage(who, "Anulowano.", 3, 40);
+      break;
+    endif
+    theitem := CreateItemInContainer(cont, CInt(what), 1);
+    case(use_on.objtype)
+      0xA403: SetObjProperty(theitem, "ixodynix", 1);
+      0xA404: SetObjProperty(theitem, "69exodus", 1);
+      0xA405: SetObjProperty(theitem, "gorx", 1);
+    endcase
+    if(theitem)
+      CheckToolWear (who, item, SKILLID_TINKERING);
+    endif
+    if(!moc or moc.errortext)
+      moc := 0;
+    endif
+    theitem.movable := 1;
+    var modpts := 0;
+    if(myskill >=  skill)
+      modpts := (myskill - skill);
+    endif
+    var rint := randomint(7000);
+    if((excmod + modpts) >= rint && myskill > 80 && exchk)
+        theitem.quality := EXP_QUALITY;
+        theitem.hp := theitem.maxhp;
+        theitem.color := color;
+        theitem.dmg_mod := moc + 10;
+        theitem.hp := theitem.maxhp;
+        if(GetEffectiveSkill(who, SKILLID_TINKERING) >= 99)
+          SetName(theitem, "wyjatkowej jakosci " + nme +  " [wykonany przez " + who.name + "]");
+        else
+          SetName(theitem, "wyjatkowej jakosci " + nme);
+        endif
+        SendSysMessage(who, "Wykonales przedmiot wyjatkowej jakosci.", FONT_NORMAL, COLOR_CYAN);
+        SetObjProperty(theitem, "exp", moc + 10);
+        SetObjProperty(theitem, "exceptional", 1);
+        break;
+    else
+      if(skill > 20)
+        skill := skill - 20;
+      else
+        skill := 3;
+      endif
+      if(myskill < skill)
+        SendSysMessage( who, "Zrobiles przedmiot sredniej jakosci.", FONT_NORMAL, COLOR_RED );
+        theitem.color := color;
+        SetObjProperty(theitem, "exp", moc-2);
+        theitem.dmg_mod := GetObjProperty(theitem, "exp");
+        var val := RandomInt(2) + 1;
+        case(val)
+          1: theitem.quality := 0.7;
+          2: theitem.quality := 0.8;
+          3: theitem.quality := 0.9;
+        endcase
+        theitem.maxhp_mod := moc;
+        theitem.hp := theitem.maxhp;
+        SetName(theitem, "sredniej jakosci " + nme);
+      else
+        SendSysMessage( who, "Zrobiles przedmiot i wlozyles go do plecaka.", FONT_NORMAL, COLOR_GREEN );
+        SetObjProperty(theitem, "exp", moc);
+        theitem.dmg_mod := moc;
+        theitem.color := color;
+        theitem.maxhp_mod := moc;
+        theitem.hp := theitem.maxhp;
+      endif
+        SetName(theitem, nme );
+    endif
+      if((theitem.graphic in array(0x9a8, 0x9a9, 0x9aa, 0x9ab, 0xa2c, 0xa30, 0xa34, 0xa38, 0xa4d, 0xa4f,
+        0xa51, 0xa53, 0xe3c, 0xe3d, 0xe3e, 0xe3f, 0xe40, 0xe41, 0xe42, 0xe43, 0xe7c, 0xe7d, 0xe7e, 0xe80)))
+        if(RandomInt(GetEffectiveSkill(who, SKILLID_TINKERING)) > 40)
+          SetObjProperty(theitem, "lockable", "1");
+          lockid := AllocLockId();
+          theitem.locked := 0;
+          thekey := CreateItemInBackpack(who, UOBJ_COPPER_KEY, 1);
+          SetObjProperty(thekey, "lockid", lockid);
+          SetObjProperty(theitem,"lockid", lockid);
+          SetObjProperty(theitem,"LockPickDiff", (GetEffectiveSkill(who, SKILLID_TINKERING) + 10));
+          SendSysMessage(who, "You will find the key in your backpack.");
+        endif
+      endif
+    counter := counter + 1;
+  endwhile
+endfunction
+
+function make_jewelry(who, item, stuff, what, ct)
+  ct := Cint(ct);
+  SetObjProperty(who, "LastTinkerItem", what);
+  var material  := tinker_cfg[what].material;
+  var skill     := tinker_cfg[what].skill;
+  var itemname  := tinker_cfg[what].Name;
+  var thepoints := CInt(skill);
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  var theitem;
+  SendSysMessage(who, "Wybierz zlote monety.",3,63);
+  var thegem := Target(who);
+  if(!thegem)
+    SendSysMessage(who, "Anulowano.",3,40);
+    return;
+  endif
+  if(!can_access(who, thegem))
+    return;
+  endif
+  if(thegem.objtype == 0xEED)
+    if(!ReserveItem(thegem))
+      SendSysMessage(who,"Nie mozesz tego uzyc.",3,40);
+      return;
+    endif
+  else
+    SendSysMessage(who, "To nie zloto.",3,40);
+    return;
+  endif
+  if(!Accessible(who, thegem))
+    SendSysMessage(who, "Nie mozesz tego uzyc.",3,40);
+    return;
+  endif
+  var myskill := CInt(GetEffectiveSkill(who, SKILLID_TINKERING));
+  while(counter < ct)
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Anulowano.",3,40);
+      break;
+    endif
+    if(stuff.amount < material)
+      SendSysMessage(who, "Nie masz odpowiedniej ilosci materialu.", 3, 40);
+      break;
+    endif
+    if(!PlayTinkerAnimation(who))
+      SendSysMessage(who, "Przestales pracowac.", 3, 40);
+      return 0;
+    endif
+    if(stuff.amount > material)
+      if(!SubtractAmount(thegem, 1))
+        break;
+      endif
+      if(CheckSkill(who, SKILLID_TINKERING, skill, thepoints))
+        if(!SubtractAmount(stuff, material))
+          break;
+        endif
+        theitem := CreateItemInBackpack(who, CInt(what), 1);
+        CheckToolWear (who, item, SKILLID_TINKERING);
+        var modpts := 0;
+        if(myskill >=  skill)
+          modpts := (myskill - skill);
+        endif
+        var rint := RandomInt(100);
+        if(modpts >= rint)
+          SetName(theitem, itemname);
+          SendSysMessage(who, "Stworzyles przedmiot i wlozyles go do plecaka.",3,63);
+        endif
+      else
+        SubtractAmount(stuff, CInt(material/2) );
+        SendSysMessage(who, "Zniszczyles troche materialu.",3,40);
+      endif
+    else
+      SendSysMessage(who, "Skonczyl ci sie material.",3,40);
+    endif
+    counter := counter + 1;
+  endwhile
+endfunction
+
+function make_trap(who, item, traptype, ingot, ct)
+  if(!resourcecheck(who, ingot, "metal"))
+    return;
+  endif
+  ct := Cint(ct);
+  case(traptype)
+    4345:  SetObjProperty(who, "LastTinkerItem", 4345);
+             explosion_trap(who, item, ingot);
+    4414:  SetObjProperty(who, "LastTinkerItem", 4414);
+             poison_trap(who, item, ingot);
+    4402:  SetObjProperty(who, "LastTinkerItem", 4402);
+             dart_trap(who, item, ingot);
+  endcase
+endfunction
+
+function dart_trap(who, item, ingot)
+  var counter := 0;
+  while(counter < 1)
+    SendSysMessage(who,"select the container you wish to place a trap on");
+    var chest := Target(who);
+    if(!chest)
+      SendSysMessage(who,"canceled");
+      break;
+    endif
+    if(!can_access(who, chest))
+      break;
+    endif
+    if(!Accessible(who, chest))
+      SendSysMessage(who, "You can't reach that!");
+      break;
+    endif
+    if(!ReserveItem(chest))
+      SendSysMessage(who,"you cant trap that");
+      break;
+    endif
+    if((chest.objtype != 0x09aa) && (chest.objtype != 0x09a9) && (chest.objtype != 0x0e3c) && (chest.objtype != 0x0e3f) && (chest.objtype != 0x0e42))
+      SendSysMessage(who, "You can only trap boxes.");
+      return;
+    endif
+    if(GetObjProperty(chest, "trap_type"))
+      SendSysMessage(who, "That chest is already trapped.");
+      break;
+    endif
+    var resource_check := 0;
+    foreach item in EnumerateItemsInContainer(who.backpack)
+      if(item.graphic == 0x1bfb)
+        if(ReserveItem(item))
+          SubtractAmount(item, 1);
+          resource_check := 1;
+          break;
+        endif
+      endif
+    endforeach
+    if(resource_check == 0)
+      SendSysMessage(who,"you dont have any bolts.");
+      break;
+    endif
+    if(!SubtractAmount(ingot, 1))
+      break;
+    endif
+    var myskill := GetEffectiveSkill(who, SKILLID_TINKERING);
+    sleep(2);
+    if(CheckSkill(who, SKILLID_TINKERING, -1, Cint(myskill / 2)))
+      var modpts := 10;
+      var rint := RandomInt(100);
+      if(modpts >= rint)
+
+        SetObjProperty(chest, "trap_strength", Cint((myskill / 3) + 10));
+      else
+        SetObjProperty(chest, "trap_strength", Cint(myskill / 3));
+      endif
+      SetObjProperty(chest, "trap_type", "1");
+      SetObjProperty(chest, "oldscript", chest.usescript);
+      SendSysMessage(who, "The carefully place the trap on the container");
+      chest.usescript := ":tinkering:tinkerTraps";
+      SetObjProperty(chest, "trapper", who.serial);
+      CheckToolWear (who, item, SKILLID_TINKERING);
+    else
+      var results := RandomInt(9) + 1;
+      if(results == 1)
+        var the_damage := (RandomInt(19) + 1) + RandomInt(myskill + 10);
+        SendSysMessage(who, "You fail, and set off the trap!");
+        PlaySoundEffect(who, SFX_225);
+        ApplyRawDamage(who, the_damage);
+      else
+        SendSysMessage(who, "You failed to properly place the trap");
+      endif
+    endif
+    counter := counter + 1;
+  endwhile
+endfunction
+
+function poison_trap(who, item, ingot)
+  var counter := 0;
+  var chest, resource_check, strength, results;
+  while(counter < 1)
+    SendSysMessage(who,"select the container you wish to place a trap on");
+    chest := Target(who);
+    if(!chest)
+      SendSysMessage(who,"canceled");
+      break;
+    endif
+    if(!can_access(who, chest))
+      break;
+    endif
+    if(!Accessible(who, chest))
+      SendSysMessage(who, "You can't reach that!");
+      break;
+    endif
+    if(!ReserveItem(chest))
+      SendSysMessage(who,"you cant trap that");
+      break;
+    endif
+    if((chest.objtype != 0x09aa) && (chest.objtype != 0x09a9) && (chest.objtype != 0x0e3c) && (chest.objtype != 0x0e3f) && (chest.objtype != 0x0e42))
+      SendSysMessage(who, "You can only trap boxes.");
+      return;
+    endif
+    if(GetObjProperty(chest, "trap_type"))
+      SendSysMessage(who, "That chest is already trapped.");
+      break;
+    endif
+    resource_check := 0;
+    foreach item in EnumerateItemsInContainer(who.backpack)
+      if(item.graphic == 0xf0a)
+        if(ReserveItem(item))
+          SubtractAmount(item, 1);
+          resource_check := 1;
+          break;
+        endif
+      endif
+    endforeach
+    if(resource_check == 0)
+      SendSysMessage(who,"you dont have a poison potion.");
+      break;
+    endif
+    if(!SubtractAmount(ingot, 1))
+      break;
+    endif
+    var myskill := CInt(GetEffectiveSkill(who, SKILLID_TINKERING));
+    if(myskill <= 20)
+      strength := 1;
+    elseif(myskill <= 40)
+      strength := 2;
+    elseif(myskill <= 60)
+      strength := 3;
+    elseif(myskill <= 60)
+      strength := 4;
+    else
+      strength := 5;
+    endif
+    if(CheckSkill(who, SKILLID_TINKERING, -1, myskill))
+      var modpts := 10;
+      var rint := RandomInt(100);
+      if(modpts >= rint)
+
+        if(strength < 5)
+          strength := strength + 1;
+        else
+          strength := 5;
+        endif
+        SetObjProperty(chest, "trap_strength", strength);
+      else
+        SetObjProperty(chest, "trap_strength", strength);
+      endif
+      SetObjProperty(chest, "trap_type", "2");
+      SetObjProperty(chest, "oldscript", chest.usescript);
+      SendSysMessage(who, "The carefully place the trap on the container");
+      chest.usescript := ":tinkering:tinkerTraps";
+      SetObjProperty(chest, "trapper", who.serial);
+      CheckToolWear (who, item, SKILLID_TINKERING);
+    else
+      results := RandomInt(9) + 1;
+      if (results == 1)
+        SendSysMessage(who, "You fail, and poison yourself!");
+        start_script(":spells:poisonDamage", {who, who, "poison trap", strength});
+        break;
+      else
+        SendSysMessage(who,"You fail to properly place the trap.");
+      endif
+    endif
+    counter := counter + 1;
+  endwhile
+endfunction
+
+function explosion_trap(who, item,  ingot)
+  var counter := 0;
+
+  var chest, resource_check, results, the_damage;
+  while(counter < 1)
+    SendSysMessage(who,"select the container you wish to place a trap on");
+    chest := Target(who);
+    if (!chest)
+      SendSysMessage(who,"canceled");
+      return;
+    endif
+    if(!can_access(who, chest))
+      return;
+    endif
+    if (!Accessible(who, chest))
+      SendSysMessage(who, "You can't reach that!");
+      return;
+    endif
+    if (!ReserveItem(chest))
+      SendSysMessage(who,"you cant trap that");
+      return;
+    endif
+    if((chest.objtype != 0x09aa) && (chest.objtype != 0x09a9) && (chest.objtype != 0x0e3c) && (chest.objtype != 0x0e3f) && (chest.objtype != 0x0e42))
+      SendSysMessage(who, "You can only trap boxes.");
+      return;
+    endif
+    if(GetObjProperty(chest, "trap_type"))
+      SendSysMessage(who, "That chest is already trapped.");
+      return;
+    endif
+    resource_check := 0;
+    foreach item in EnumerateItemsInContainer(who.backpack)
+      if (item.graphic == 0xf0d)
+        if (ReserveItem(item))
+          SubtractAmount(item, 1);
+          resource_check := 1;
+          break;
+        endif
+      endif
+    endforeach
+    if (resource_check == 0)
+      SendSysMessage(who,"you dont have an explosion potion.");
+      return;
+    endif
+    SubtractAmount(ingot, 1);
+    var myskill := CInt(GetEffectiveSkill(who, SKILLID_TINKERING));
+    if (CheckSkill( who, SKILLID_TINKERING, -1, myskill*2 ))
+      var modpts := 10;
+      var rint := RandomInt(100);
+      if(modpts >= rint)
+
+        SetObjProperty(chest, "trap_strength", Cint(myskill + 20));
+      else
+        rint := RandomInt(100);
+        if(modpts >= rint)
+          SetObjProperty(chest, "trap_strength", Cint(myskill / 2));
+        else
+          SetObjProperty(chest, "trap_strength", Cint(myskill));
+        endif
+      endif
+      SetObjProperty(chest, "trap_type", "3");
+      SetObjProperty(chest, "oldscript", chest.usescript);
+      SendSysMessage(who, "The carefully place the trap on the container");
+      chest.usescript := ":tinkering:tinkerTraps";
+      SetObjProperty(chest, "trapper", who.serial);
+      CheckToolWear (who, item, SKILLID_TINKERING);
+    else
+      results := RandomInt(9) + 1;
+      if (results == 1)
+        the_damage := (RandomInt(19) + 1) + RandomInt(myskill + 10);
+        SendSysMessage(who, "You fail, and set off the explosion!");
+        PlayObjectCenteredEffect( who,  0x36b0,5,0 );
+        PlaySoundEffect( who, 0x0208);
+        ApplyRawDamage(who, the_damage);
+      else
+        SendSysMessage(who, "You failed to properly place the trap");
+      endif
+    endif
+    counter := counter + 1;
+  endwhile
+endfunction
+
+function resourcecheck(who, use_on, type)
+  var the_type;
+  case(use_on.objtype)
+    0x1bd7: the_type := "wood";
+    0x1bdd: the_type := "wood";
+    0x6309: the_type := "metal";
+    0x630a: the_type := "metal";
+    0x630b: the_type := "metal";
+    0x630c: the_type := "metal";
+    0x630d: the_type := "metal";
+    0x630e: the_type := "metal";
+    0x630f: the_type := "metal";
+    0x6310: the_type := "metal";
+    0x6311: the_type := "metal";
+  endcase
+  if(the_type == type)
+    return 1;
+  else
+    if(type == "wood")
+      SendSysMessage(who, "You cannot make wooden items out of metal.");
+    elseif(type == "metal")
+      SendSysMessage(who, "You cannot make metal items out of wood.");
+    endif
+    return 0;
+  endif
+endfunction
+
+function checkskillfordifferentmetals(who, ingot)
+  case( ingot.objtype )
+    0xee20:   return(checkhisskill(who, 50)); // szklo
+    0x6309:   return(checkhisskill(who,  0));
+    0x630a:   return(checkhisskill(who, 60));
+    0x630b:   return(checkhisskill(who, 63));
+    0x630c:   return(checkhisskill(who, 66));
+    0x630d:   return(checkhisskill(who, 69));
+    0x6314:   return(checkhisskill(who, 72));
+    0x630e:   return(checkhisskill(who, 75));
+    0x630f:   return(checkhisskill(who, 78));
+    0x6310:   return(checkhisskill(who, 81));
+    0x6311:   return(checkhisskill(who, 84));
+    0x6312:   return(checkhisskill(who, 87));
+    0x6313:   return(checkhisskill(who, 90));
+    0x6315:   return(checkhisskill(who, 95));
+    0x6316:   return(checkhisskill(who, 98));
+    0x631:    return(checkhisskill(who, 100));
+     0xA403: return(checkhisskill(who, 99));
+    0xA404: return(checkhisskill(who, 99));
+     0xA405: return(checkhisskill(who, 99));
+//    default:  SendSysMessage(who, "Jeszcze nie mozesz z tego kuc.");
+  endcase
+endfunction
+
+function checkhisskill(who, skill)
+  var his_skill := GetEffectiveSkill(who, SKILLID_TINKERING);
+  if(his_skill >= skill)
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+

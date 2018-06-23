@@ -1,0 +1,30 @@
+use basicio;
+use basic;
+use npc;
+use uo;
+use os;
+
+program talk( who )
+
+	SendSysMessage( who, "Say above what or whom?" );
+	syslog(who.name + " uzyl komendy .talk");
+	var what := Target( who, TGTOPT_NOCHECK_LOS );
+	if (!what)
+		SendSysMessage( who, "Canceled" );
+		return;
+	endif	
+
+	SendSysMessage( who, "Hit ESCAPE to stop" );
+
+	var text;
+	repeat
+		text := RequestInput(who, who.backpack, "");
+		if (text)
+			PrintTextAbove( what, text );
+			syslog(who.name + " wypisuje nad glowa gracza " + what.name + " tekst: " + text);
+		endif
+	until ( (!who) or (!what) or (!text) );
+
+	SendSysMessage(who,"Done!");
+
+endprogram

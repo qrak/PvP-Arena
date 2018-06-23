@@ -1,0 +1,38 @@
+use http;
+use basic;
+use uo;
+use polsys;
+
+program online()
+    var system := polcore();
+    var uptime := system.uptime;
+    var struptime;
+    var lp := 0;
+    var mostonline := Cint(GetGlobalProperty( "MostOnline" ));
+    
+    if(!mostonline)
+        SetGlobalProperty("MostOnline", 0);
+    endif
+
+    foreach liczonline in EnumerateOnlineCharacters()
+        if(!liczonline.cmdlevel)
+            lp := lp +1;
+        endif
+    endforeach
+    
+    if( lp >= mostonline )
+        SetGlobalProperty( "MostOnline", lp );
+    endif
+
+
+    uptime := uptime / 60;
+    if (uptime > 60)
+        uptime := uptime /60;
+        struptime := CStr(uptime) + " godzin";
+    else
+        struptime := CStr(uptime) + " minut";
+    endif
+    writehtml("<center>Uptime:<b> " + struptime + "</center></b><br>");
+    writehtml("<center>Online:<b>  " +  lp + "<center></b><br>");
+    writehtml("<center>Najwiecej Online:<b>  " +  Cint(GetGlobalProperty( "MostOnline" )) + "<center></b><br>");    
+endprogram

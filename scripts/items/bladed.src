@@ -1,0 +1,426 @@
+use npc;
+use math;
+use os;
+use basic;
+use uo;
+use cfgfile;
+
+include "include/client";
+include "include/attributes";
+include "include/string";
+include "include/objtype";
+include "include/canAccess";
+include "include/dist";
+include "util/repair";
+include "include/itemutil";
+include ":gumps:gumps";
+
+CONST BOWCRAFT_ANIM := 0x021;
+CONST BOWCRAFT_SND := 0x5a;
+ 
+var bowcraftconfigfile := ReadConfigFile("bowcraft");
+
+program use_blade(who, blade)
+  if(!can_access(who, blade))
+    return;
+  endif
+  if(!ReserveItem(blade))
+    return;
+  endif
+  SendSysMessage(who, "Na czym chcesz tego uzyc, " + SplitWords(who.name)[1] + "?", 3, 63);
+  var use_on := TargetCoordinates(who);
+  if(!use_on)
+    return;
+  endif
+  if(use_on.item)
+    if(!can_access(who, use_on.item))
+      return;
+    endif
+  endif
+  var checkme := use_on.item.objtype;
+  if((checkme == UOBJ_LOGS) || (checkme == 0x1bd7) || ((checkme >= 0x1c15) && (checkme <= 0x1c1a)) || checkme ==  0x18B6 )
+    CarveLogs( who, blade, use_on.item, checkme, use_on);
+  elseif(use_on.item.objtype == UOBJ_CORPSE)
+    ReleaseItem(blade);
+  elseif (is_tree(use_on.objtype ))
+    CarveTree(who, use_on.item);
+  else
+    SendSysMessage(who, "Nie wiem jak uzyc te dwa przedmioty razem.", 3, 40);
+  endif
+endprogram
+
+function is_tree(theobj)
+  if((theobj == 0x0c9e) || (theobj == 0x0ca8) || (theobj == 0x0caa))
+    return 1;
+  elseif (theobj == 0x0cab)
+    return 1;
+  elseif (theobj == 0x18B6)
+    return 1;
+  elseif ((theobj >= 0x0c99) && (theobj <= 0x0cea))
+    return 1;
+  elseif ((theobj >= 0x0cf3) && (theobj <= 0x0d03))
+    return 1;
+  elseif ((theobj >= 0x0d41) && (theobj <= 0x0dab))
+    return 1;
+  else
+    return 0;
+  endif
+endfunction
+
+function PlayBCraftAnimation(who, tool)
+  var petla := 0;
+  var loops := 4;
+  var fastwork := Cint(GetObjProperty(tool,"FasterWork"));
+  if(fastwork)
+    loops := 2;
+  endif
+  var startx := who.x;
+  var starty := who.y;    
+  for(petla := 1; petla < loops; petla := petla + 1);
+    PerformAction(who, BOWCRAFT_ANIM);
+    PlaySoundEffect(who, BOWCRAFT_SND);
+    who.hidden := 0;
+    sleep(2);
+    if(startx != who.x || starty != who.y)
+      return 0;
+    endif
+  endfor
+  return 1;
+endfunction
+
+function CarveTree(who, use_on)
+  if(dist(who, use_on) > 2)
+    SendSysMessage(who, "Nie mozesz tego uzyc.");
+    return;
+  endif
+  CreateItemInBackpack(who, UOBJ_KINDLING, 1);
+  DestroyItem(use_on);
+  SendSysMessage(who, "Zebrales troche chrustu i wlozyles go do plecaka", FONT_NORMAL, COLOR_GREEN);
+endfunction
+
+function CreatableObjects( who, blade, logs )
+  var objtypes := GetMenuObjTypes( "BowcraftCarving" );
+  objtypes := ApplyConstraint( objtypes, bowcraftconfigfile, "material", GetAmount(logs) );
+  return objtypes;
+endfunction
+
+function GFButtonIDC(x, y, release, press, close, retval)
+    close := close;
+    var line := "button " + CStr(gfref.x + Cint(x)) + " " + CStr(gfref.y + Cint(y));
+    line := line + " " + CStr(Cint(release)) + " " + CStr(Cint(press)) + " ";
+    line := line + "1 0 ";
+    line := line + CStr(retval);
+    gflayout.append( line );
+endfunction
+
+function CarveLogs(who, blade, logs, checkme, use_on)
+  var woodtype;
+  if(logs.movable == 0)
+    SendSysMessage(who, "Nie mozesz uzyc tych klod.", FONT_NORMAL, COLOR_RED);
+    return;
+  endif
+  if((!Accessible(who, logs)) or (!CheckLineOfSight(who, logs)) or (dist(who, logs) > 2))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, COLOR_RED);
+    return;
+  endif
+  if(!logs.container)
+    if(Distance(who, logs) > 2)
+      SendSysMessage(who, "To jest za daleko.", FONT_NORMAL, COLOR_RED);
+      return;
+    endif
+  endif
+  if(!IsInContainer(who.backpack, logs ))
+		SendSysmessage(who, "Ten przedmiot musi byc w twoim plecaku.", 3, 40 );
+		return 0;
+	endif
+  GFInitGump(90, 0);
+  GFNoDispose();
+  GFNoClose();
+  GFPage(0);
+  GFResizePic(0, 80, 9270, 510, 240);
+  GFResizePic(10, 90, 3500, 490, 220);
+  GFTextLine( 60, 270, 900, "Rob ostatnie");
+  GFTextLine(160, 270, 900, "Napraw");
+  var lastitm := GFButtonID( 40, 274,   3, 4, 99);
+  var close   := GFButtonID(410, 270, 242, 241, 1);
+  var napraw := GFButtonID( 140, 274, 3, 4, 1 );
+  GFTextLine(200, 110, 1645, "Menu Lucznictwa");
+  var skill := GetEffectiveSkill(who, SKILLID_BOWCRAFT);
+  var color := 0;
+  if(skill >= Cint(bowcraftconfigfile[0x13B2]."SkillRequired"))
+    color := 900;
+    GFButtonIDC(120, 180, 1209, 1210, 1, 0x13B2);
+  endif
+  GFTextLine(85, 150, color, "luk");
+  GFTilePic(70, 180, 0x13B2);
+  color := 0;
+  if(skill >= Cint(bowcraftconfigfile[0x0f4f]."SkillRequired"))
+    color := 900;
+    GFButtonIDC(390, 180, 1209, 1210, 1, 0x0f4f);
+  endif
+  GFTextLine(360, 150, color, "kusza");
+  GFTilePic(350, 180, 0x0f4f);
+  color := 0;
+  
+  if(skill >= Cint(bowcraftconfigfile[0x13fd]."SkillRequired"))
+    color := 900;
+    GFButtonIDC(260, 240, 1209, 1210, 1, 0x13fd);
+  endif
+  GFTextLine(210, 210, color, "ciezka kusza");
+  GFTilePic(210, 240, 0x13fd);
+  color := 0;
+  
+  if(skill >= Cint(bowcraftconfigfile[0x26c3]."SkillRequired"))
+    color := 900;
+    GFButtonIDC(120, 240, 1209, 1210, 1, 0x26c3);
+  endif
+  GFTextLine(85, 210, color, "powtarzalna kusza");
+  GFTilePic(80, 240, 0x26c3);
+  color := 0;
+  
+  if(skill >= Cint(bowcraftconfigfile[0x26c2]."SkillRequired"))
+    color := 900;
+    GFButtonIDC(390, 240, 1209, 1210, 1, 0x26c2);
+  endif
+  GFTextLine(360, 210, color, "luk kompozytowy");
+  GFTilePic(350, 240, 0x26c2);
+  color := 0;
+  
+  if(skill >= Cint(bowcraftconfigfile[0x27F0]."SkillRequired"))
+    color := 900;
+    GFButtonIDC(260, 180, 1209, 1210, 1, 0x27F0);
+  endif
+  GFTextLine(210, 150, color, "yumi");
+  GFTilePic(180, 165, 0x27F0);
+  color := 0;
+  
+  GFTextLine(  220, 270, 900, "Ilosc:");
+    var sa := GetObjProperty(who, "#BowAmt");
+  if(!sa)
+    sa := 1;
+  endif
+  var ct := GFTextEntry(250, 270, 100, 30, 900, sa);
+  
+  var res := GFSendGump(who);
+  var amt := CInt(SplitWords(res[ct.keyid])[2]);
+  if(!amt)
+    amt := 1;
+  elseif(amt > 50)
+    SendSysMessage(who, "Mozesz tworzyc naraz nawyzej piecdziesiat rzeczy.", FONT_NORMAL, 40);
+    return;
+  endif
+  SetObjProperty(who, "#BowAmt", amt);
+  
+  var lstitm := GetObjProperty(who, "LastBowcraftItem");
+  if((res[0] == 999) || (res[0] == 0) || (res[0] == close.keyid))
+    SendSysMessage(who, "Anulowano.", 3, 40);
+    return 0;
+  endif
+  var selection := CInt(res[0]);
+  if(res[lastitm.keyid])
+    if(lstitm)
+      selection := lstitm;
+    else
+      SendSysMessage(who, "Niczego wczesniej nie robiles.", 3, 40);
+      return 0;
+    endif
+  endif
+  if(res[napraw.keyid])
+    SendSysMessage(who, "Wybierz przedmiot do naprawy.", 3, 63);
+    var wybierz := Target(who);
+    if(!wybierz)
+      SendSysMessage(who, "Anulowano.", 3, 40);
+      return 0;
+    endif
+    var itemcfg   := ReadConfigFile(":combat:itemdesc");
+    var skid := itemcfg[wybierz.objtype].Attribute;
+    if (skid == "Archery")
+      if(logs.amount < 4)
+        SendSysMessage(who, "Masz za malo materialu.", 3, 40);
+        return 0;
+      endif
+      SubtractAmount(logs, 4);
+      repair_item( who, wybierz, SKILLID_BOWCRAFT );
+    else
+      SendSysMessage(who, "Nie mozesz tego naprawic.", 3, 40);
+    endif
+  endif
+  
+  SetObjProperty(who, "LastBowcraftItem", selection);
+  var what := selection;
+  var objectconfig := FindConfigElem(bowcraftconfigfile, what);
+  if(!Accessible(who, logs))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return 0;
+  endif
+  if(!objectconfig)
+    return 0;
+  endif
+  var counter := 0;
+  var x := who.x;
+  var y := who.y;
+  while(counter < amt)
+    if((who.x != x) || (who.y != y))
+      SendSysMessage(who, "Przestales strugac.", 3, 40);
+      break;
+    endif
+    
+  var material := CInt(GetElemProperty(objectconfig, "Material"));
+  if(material > logs.amount)
+    SendSysMessage(who, "Nie masz odpowiedniej ilosci klod aby to wykonac.", 3, 40);
+    counter := 100;
+    return;
+  endif
+  var difficulty := GetConfigInt(objectconfig, "Difficulty");
+  var pointvalue := GetConfigInt(objectconfig, "PointValue");
+  var bow := 0;
+  Detach();
+  if(!PlayBCraftAnimation(who, blade))
+    SendSysMessage(who, "Przestales pracowac.", 3, 40);
+    return 0;
+  endif
+  var dmgmod, trod;
+  case (checkme)
+    0x1bdd    : woodtype := ""; 		dmgmod := 0; trod := 0;
+    0x1bd7    : woodtype := ""; 		dmgmod := 0; trod := 5;
+    0x1c15    : woodtype := "yew "; 	dmgmod := 3; trod := 18;
+    0x1c16    : woodtype := "walnut "; 	dmgmod := 6; trod := 20;
+    0x1c17    : woodtype := "ashen "; 	dmgmod := 9; trod := 22;
+    0x1c18    : woodtype := "oaken "; 	dmgmod := 12; trod := 24;
+    0x1c19    : woodtype := "cedar "; 	dmgmod := 14; trod := 26;
+    0x1c1a    : woodtype := "cypress "; 	dmgmod := 20; trod := 28;
+    0x18B6    : woodtype := "wisnia "; 	dmgmod := 35; trod := 45;
+  endcase;
+  if(logs.objtype == 0x1BD7)
+		var rodzaj := Cint(GetObjProperty(logs, "rodzaj"));
+		case(rodzaj)
+			0x1bdd    : woodtype := ""; 		dmgmod := 0; trod := 0;
+			0x1bd7    : woodtype := ""; 		dmgmod := 0; trod := 5;
+			0x1c15    : woodtype := "yew "; 	dmgmod := 3; trod := 18;
+			0x1c16    : woodtype := "walnut "; 	dmgmod := 6; trod := 20;
+			0x1c17    : woodtype := "ashen "; 	dmgmod := 9; trod := 22;
+			0x1c18    : woodtype := "oaken "; 	dmgmod := 12; trod := 24;
+			0x1c19    : woodtype := "cedar "; 	dmgmod := 14; trod := 26;
+			0x1c1a    : woodtype := "cypress "; 	dmgmod := 20; trod := 28;
+			0x18B6    : woodtype := "wisnia "; 	dmgmod := 35; trod := 45;
+		endcase
+  endif
+ var cont := blade.container;
+  if((!cont) || (cont.serial == who.serial))
+    cont := who.backpack;
+  endif
+
+  if(CheckSkill(who, SKILLID_BOWCRAFT, difficulty+trod, pointvalue))
+    if(what == UOBJ_SHAFTS)
+      var amt := logs.amount;
+      if(DestroyItem(logs))
+	 CreateItemInContainer(cont, what, amt);
+
+        SendSysMessage(who, "Wystrugales troche strzal i wlozyles je do plecaka.", 3, 63 );
+      endif
+    elseif (what == UOBJ_BOW)
+      if(SubtractAmount(logs, material))
+        bow := 	CreateItemInContainer(cont, what, 1);
+        SendSysMessage(who, "Wystrugales luk i wlozyles go do plecaka.", 3, 63);
+        SetName(bow, woodtype + "luk ");
+        bow.color:= use_on.item.color;
+        bow.dmg_mod:=dmgmod;
+
+      endif
+    elseif (what == UOBJ_XBOW)
+      if(SubtractAmount(logs, material))
+        bow := 	 CreateItemInContainer(cont, what, 1);
+
+        SendSysMessage(who, "Wystrugales kusze i wlozyles ja do plecaka.", 3, 63);
+        SetName(bow, woodtype + "kusza");
+        bow.color:= use_on.item.color;
+        bow.dmg_mod:=dmgmod;
+        
+      endif
+    elseif (what == UOBJ_HEAVY_XBOW)
+      if(SubtractAmount(logs, material))
+        bow := 	 CreateItemInContainer(cont, what, 1);
+
+        SendSysMessage(who, "Wystrugales ciezka kusze i wlozyles ja do plecaka.", 3, 63);
+        SetName(bow, woodtype + "ciezka kusza");
+        bow.color:= use_on.item.color;
+        bow.dmg_mod:=dmgmod;
+      endif
+   
+    elseif (what == 0x26c2)
+      if(SubtractAmount(logs, material))
+        bow := 	 CreateItemInContainer(cont, what, 1);
+
+        SendSysMessage(who, "Wystrugales luk kompozytowy i wlozyles go do plecaka.", 3, 63);
+        SetName(bow, woodtype + "luk kompozytowy");
+        bow.color:= use_on.item.color;
+        bow.dmg_mod:=dmgmod;
+      endif
+ 
+
+      elseif (what == 0x26c3)
+      if(SubtractAmount(logs, material))
+        bow := 	 CreateItemInContainer(cont, what, 1);
+
+        SendSysMessage(who, "Wystrugales powtarzalna kusze i wlozyles ja do plecaka.", 3, 63);
+        SetName(bow, woodtype + "powtarzalna kusza");
+        bow.color:= use_on.item.color;
+        bow.dmg_mod:=dmgmod;
+      endif
+      
+      elseif (what == 0x27F0)
+      if(SubtractAmount(logs, material))
+        bow := 	 CreateItemInContainer(cont, what, 1);
+
+        SendSysMessage(who, "Wystrugales yumi i wlozyles ja do plecaka.", 3, 63);
+        SetName(bow, woodtype + "yumi");
+        bow.color:= use_on.item.color;
+        bow.dmg_mod:=dmgmod;
+      endif
+      
+    else
+      SendSysMessage(who, "Nie wiesz jak to zrobic.", 3, 40);
+      return 0;
+    endif
+    var skchk := GetEffectiveSkill(who, SKILLID_BOWCRAFT);
+    var str := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_STRENGTH) / 10);
+    var int := Cint(GetAttributeBaseValue(who, ATTRIBUTEID_DEXTERITY) / 10);
+    var champbonus := 0;
+    if(Cint(GetObjProperty(blade, "69exodus")))
+      champbonus := 200;
+    endif
+    DamageTool(who, blade);
+    var statmody := str + int + blade.dmg_mod + champbonus;
+    var excmod := Cint((GetEffectiveSkill(who, SKILLID_BOWCRAFT) / 20) + 3) + statmody;
+    var modpts := 0;
+    if(skchk > (difficulty - 20))
+      modpts := (skchk - difficulty);
+    endif
+    var rint := randomint(7000);
+    if((excmod + modpts) >= rint && skchk > 80)
+      setquality(who, bow);
+      bow.dmg_mod := dmgmod + 10;
+      counter := 100;
+    endif
+    counter := counter + 1;
+  else
+    SubtractAmount(logs, (RandomInt(8) + 1));
+    SendSysMessage(who, "Zniszczyles troche klod.", 3, 40);
+    counter := counter + 1;
+  endif
+  endwhile
+endfunction
+
+function setquality(who, bow)
+  var tname := TruncateArticle(bow.name);
+  if(CInt(GetEffectiveSkill(who, SKILLID_BOWCRAFT)) >= 99)
+    bow.name := "wyjatkowej jakosci " + tname + " [wykonal " + who.name + "]";
+  else
+    bow.name := "wyjatkowej jakosci " + tname;
+  endif
+  bow.quality := EXP_QUALITY;
+  bow.hp := bow.maxhp;
+  SendSysMessage(who, "Zrobiles przedmiot wyjatkowej jakosci!", 3, 89);
+  SetObjProperty(bow, "exceptional", 1);
+endfunction
+

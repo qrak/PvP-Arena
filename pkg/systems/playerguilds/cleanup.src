@@ -1,0 +1,161 @@
+// A small program to clean up the inboxes of all mail over xx days
+// Also remmoves old guilds from the old Zulu Hotel guild system by Bishop
+
+use os;
+use guilds;
+
+include ":playerguilds:settings";
+include ":playerguilds:ranks";
+include ":playerguilds:playerguilds";
+
+
+var settings := Guild_GetSettingsCfgElem("Settings");
+var max_days := CInt(settings.MaxDaysBeforeRemoval); // max days nologon before player is removed
+var votehours := CInt(settings.InVoteTime);
+var title_options;		// required by guilds.inc
+
+program cleanup_guilds()
+	Sleep(500);
+
+	while ( 1 )
+		syslog("Running player guilds cleanup");
+		runcleanup();
+		syslog("Completed player guilds cleanup");
+		Sleep(86400);	//every day
+	endwhile;
+endprogram
+
+
+function runcleanup()
+	// start searching in the guilds
+	var guilds := ListGuilds();	// array of guildrefs
+	foreach guild in guilds
+		// first find and delete any old distro guilds and memberships
+		if ( guild.GetProp("guildname") )
+			// need to remove member, alliances and rivals first
+			foreach player in (guild.members)
+				RemoveOldGuildMembers(guild, player);
+				SleepMS(2);
+			endforeach
+
+			foreach ally in (guild.allyguilds)
+				guild.RemoveAllyGuild(ally);
+				SleepMS(2);
+			endforeach
+
+			foreach enemy in (guild.enemyguilds)
+				guild.RemoveEnemyGuild(enemy);
+				SleepMS(2);
+			endforeach
+
+			var oldname := guild.GetProp("guildname");
+			if ( DestroyGuild(guild) )
+			else
+			endif
+
+		// now process new guilds
+		else
+			foreach player in (guild.members)	// array of charrefs
+				var lastlogon := GetPlayerLastLogon(player);	// in days
+				if ( lastlogon >= max_days )
+					// test to see if a vote is needed
+					if ( CInt(guild.GetProp("Master")) == CInt(player.serial) )
+						guild.SetProp("Master", "In Vote");
+						guild.SetProp("VotingBegan", ReadGameClock());
+						guild.EraseProp("Votes");
+						guild.EraseProp("Voted");
+						foreach xmember in (guild.members)
+							if ( xmember.ip )
+								SendSysMessage(xmember, "Twoj lider opuscil " + guild.GetProp("Name") + ".", 3, 40);
+							endif
+						endforeach
+					endif
+					RemoveMember(guild, player);
+					SleepMS(2);
+				endif
+			endforeach
+
+			// now do a check to see if there are any members in the guild at all. Disband if none
+
+			if ( !(guild.members).Size() )
+				foreach ally in (guild.allyguilds)
+					guild.RemoveAllyGuild(ally);
+					SleepMS(2);
+				endforeach
+
+				foreach enemy in (guild.enemyguilds)
+					guild.RemoveEnemyGuild(enemy);
+					SleepMS(2);
+				endforeach
+
+				var thename := guild.GetProp("Name");
+				if ( DestroyGuild(guild) )
+
+				else
+
+				endif
+			endif
+		endif
+	endforeach
+	return 1;
+endfunction
+
+
+///////////////////
+//  Figured out how long its been since an account has logged on, in days
+///////////////////
+
+function GetPlayerLastLogon(player)
+	var logontime := 0;
+	if ( player )
+		logontime := GetObjProperty(player, "logontime");	//cprop set at player logon with readgameclock
+	else
+		return 0;
+	endif
+
+	var seconds := ReadGameClock () - logontime;
+	var days := CInt(seconds / 86400);
+	return days;
+endfunction
+
+
+///////////////////
+//  Remove character from the guild and send mail messages
+///////////////////
+
+function RemoveMember(guild, character)
+	var guild_name := guild.GetProp("Name");
+	var guild_master := SystemFindObjectBySerial(guild.GetProp("Master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+
+	guild.RemoveMember(character);
+	EraseObjProperty(character, "Guild_ID");
+	EraseObjProperty(character, "Guild_Rank");
+	EraseObjProperty(character, "Fealty");
+	EraseObjProperty(character, "Guild_Title");
+	EraseObjProperty(character, "player_guild");
+	GuildTitle(character);
+
+	if ( guild.SetProp("Master") != "In Vote" )
+
+	endif
+	return 1;
+endfunction
+
+
+///////////////////
+//  Remove character from bishop's old guild system and send mail messages
+///////////////////
+
+function RemoveOldGuildMembers(guild, character)
+	var guild_name := guild.GetProp("guildname");
+
+	guild.RemoveMember(character);
+	EraseObjProperty(character, "fealty");
+	EraseObjProperty(character, "guild_id");
+	EraseObjProperty(character, "guildtitle");
+	EraseObjProperty(character, "player_guild");
+	GuildTitle(character);
+
+
+	return 1;
+endfunction

@@ -1,0 +1,44 @@
+/////////////////////////////////////////////////////////////////////////
+//     IGRZYSKA v2.0 faza 2 - omowienie zasad                          //
+/////////////////////////////////////////////////////////////////////////
+
+use os;
+use uo;
+
+include ":igrzyska:igrzyska";
+
+program Phase2()
+
+    StoneSay("Jestem sobie wesolym kamieniem igrzysk. Witam Wszystkich na igrzyskach! :D");
+    sleep(10);
+    StoneSay("Oto zasady na ARENIE:");
+    sleep(6);
+    StoneSay("1) Zakaz zabijania czlonkow swojej druzyny. ;)");
+    sleep(6);
+    StoneSay("2) Zakaz wychodzenia z igrzysk podczas walk na arenie. :]");
+    sleep(6);
+    StoneSay("3) Za niezastosowanie sie do tych punktow grozi wiezienie na 24h! hyhyhy :D");
+    sleep(6);
+    
+
+    var team := "red";
+    
+        set_critical(1);
+        foreach mobile in ListMobilesNearLocation(IgStone().x, IgStone().y, IgStone().z, 10, IgStone().realm)
+            if(!mobile.cmdlevel && mobile.ip)
+                if(team == "red")
+                    team := "blue";
+                    SetIgTeam(mobile, team);
+                elseif(team == "blue")
+                    team := "red";
+                    SetIgTeam(mobile, team);
+                endif
+            endif
+            sleepms(500);
+        endforeach
+        set_critical(0);
+        
+
+sleep(10);
+start_script(":igrzyska:igphase/phase3");
+endprogram

@@ -1,0 +1,22 @@
+/* $Id: guildButton.src 903 2006-11-04 06:42:35Z MontuZ $
+ *        Author: MontuZ
+ *        Created: Sunday, May 21 2006
+ *        Version: 0.01
+ */
+
+use os;
+use uo;
+use polsys;
+use guilds;
+
+program CMLD_guild(character)
+	var guild_id := character.guildid;
+	var guild := FindGuild(guild_id);
+	if ( !guild )
+		Start_Script(":playerguilds:guildCreate", character);
+		return 1;
+	elseif ( guild )
+		Start_Script(":playerguilds:guildMenu", character);
+		return 1;
+	endif
+endprogram

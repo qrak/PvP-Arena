@@ -1,0 +1,50 @@
+use uo;
+use os;
+
+include ":jail:jail";
+
+var InJail,i,who,JailProps,JailCoords;
+
+program Jail_Control()
+
+  SetGlobalProperty("JailPid",GetPid());
+
+  while(GetGlobalProperty("JailPid") == GetPid())
+  
+    InJail := GetInJailPersons();
+
+    for(i:=1;i<=len(coords);i:=i+1)
+      JailCoords := SplitWords(Coords[i]);
+      if(InJail[i])
+        who := FindPlayerBySerial(InJail[i]);
+        if(!who)
+          print("Nie mozna znalezc osoby w celi "+i+"! Usuwanie nieistniejacej postaci z celi.");
+          EraseFromCell(i);
+        else
+          if(GetObjProperty(who, "jailed" ))
+            if(!who.frozen)
+              who.frozen := 1;
+            endif
+            
+            JailProps  := GetJailProps(who);
+            if(CInt(JailCoords[1]) != who.x or CInt(JailCoords[2]) != who.y)
+		SetObjProperty(who, "#Teleported", 1);
+              MoveObjectToLocation(who,CInt(JailCoords[1]),CInt(JailCoords[2]),CInt(JailCoords[3]), _DEFAULT_REALM,MOVEOBJECT_FORCELOCATION);
+		EraseObjProperty(who, "#Teleported");
+            endif
+            
+            if(JailProps[2] + JailProps[3] < ReadGameclock())
+              SendSysMessage(who, "Koniec kary, wypad!", 3, 63);
+              sleep(5);
+              FreeFromJail(who);
+            endif
+          else
+            EraseFromCell(i);
+          endif
+        endif
+      endif
+    endfor
+    sleep(30);
+  endwhile
+
+endprogram

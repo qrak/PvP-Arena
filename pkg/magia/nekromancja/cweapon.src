@@ -1,0 +1,45 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_cweapon( parms )
+  var circle := 2;
+  var delivery := "notarget";
+  var noto := "heplful";
+  var result := maincast(parms, delivery, circle, noto, 104);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+
+
+var nek := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
+var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+var int := GetIntelligence(caster);
+
+var bonus := 0;
+
+if(caster.ip)
+bonus := int/5;
+endif
+
+
+detach();
+PlaySoundEffect(caster, 528);
+PlayObjectCenteredEffect( caster, 0x373a, 20,15 );
+if(GetObjProperty(caster.weapon, "przekleta"))
+SendSysMessage(caster, "Ta bron juz zostala przekleta!");
+return 0;
+endif
+
+SetObjProperty(caster.weapon , "przekleta", 1);
+sleep((nek + sspeak + bonus)/ 3 +20);
+Eraseobjproperty(caster.weapon, "przekleta");
+PlayObjectCenteredEffect( caster, 0x373a, 20,15 );
+playsoundeffect(caster, 491);
+
+
+endprogram

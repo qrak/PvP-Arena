@@ -1,0 +1,100 @@
+// crash
+
+use math;
+use util;
+use basic;
+use cfgfile;
+use uo;
+use os;
+
+include "include/canAccess";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+const POISON_SOUND      := 0x247;
+const EFFECT_SPARKLE    := 0x374a;
+
+program eat_food(who, food)
+  EraseObjProperty(who, "IsMeditating");
+  EraseObjProperty(who, "HealTimer");
+  if(!can_access(who, food))
+    return;
+  endif
+  if(food.movable == 0)
+    SendSysMessage(who, "Nie mozesz tego uzyc.");
+    return;
+  endif
+  var foodcfg := ReadConfigFile(":*:itemdesc");
+  var retval, themsg;
+  var poison := CInt(GetObjProperty(food, "poison_level"));
+  var foodvalue := foodcfg[food.objtype].foodvalue;
+  var hunger := CInt(GetObjProperty(who, "HungerLevel")) - 1;
+  if(!foodvalue)
+    foodvalue := 1;
+  endif
+  if(hunger <= 0)
+    SendSysMessage(who, "Nie dasz rady zjesc juz niczego wiecej.");
+    return;
+  endif
+  var bOk := 0;
+  if(GetObjProperty(food,"exceptional"))
+  	EraseObjProperty(food,"exceptional");
+  	bOk := 1;
+  elseif(hunger > 0)
+    bOk := 1;
+  endif
+  if(bOk)
+    SubtractAmount(food, 1);
+    case(RandomInt(3) + 1)
+      1: PlaySoundEffect(who, 0x3b);
+      2: PlaySoundEffect(who, 0x3c);
+      3: PlaySoundEffect(who, 0x3d);
+    endcase
+    PerformAction(who, 0x22);
+    SetStamina(who, GetStamina(who) +(RandomInt(5)+foodvalue));
+    if(GetStamina(who) > GetDexterity(who))
+      SetStamina(who, who.dexterity);
+    endif
+    if(hunger <= 0)
+      themsg := "Nie dasz rady zjesc juz niczego wiecej.";
+    else
+      hunger := hunger - foodvalue;
+      case(hunger)
+        1: themsg := "Probujesz zjesc cos jeszcze, ale jestes juz pelny.";
+        2: themsg := "Jestes calkiem syty po zjedzeniu tego.";
+        3: themsg := "Jestes calkiem syty po zjedzeniu tego.";
+        4: themsg := "Po zjedzeniu tego jestes juz prawie najedzony.";
+        5: themsg := "Po zjedzeniu tego jestes juz prawie najedzony.";
+        6: themsg := "Po zjedzeniu tego jestes juz prawie najedzony.";
+        7: themsg := "Po zjedzeniu tego jestes juz prawie najedzony.";
+        8: themsg := "Zjadles cos, ale ciagle jestes niezywkle glodny.";
+        9: themsg := "Zjadles cos, ale ciagle jestes niezywkle glodny.";
+       10: themsg := "Zjadles cos, ale ciagle jestes niezywkle glodny.";
+      endcase
+      if(hunger < 0)
+        hunger := 0;
+      endif
+      SetObjProperty(who, "HungerLevel", hunger);
+    case (hunger)
+	  0 : SetStaminaRegenRate(who, 1000);
+	  1 : SetStaminaRegenRate(who, 1300);
+	  2 : SetStaminaRegenRate(who, 1200);
+	  3 : SetStaminaRegenRate(who, 1200);
+	  4 : SetStaminaRegenRate(who, 1200);
+	  5 : SetStaminaRegenRate(who, 1200);
+	  6 : SetStaminaRegenRate(who, 1200);
+	  7 : SetStaminaRegenRate(who, 1000);
+	  8 : SetStaminaRegenRate(who, 800);
+	  9 : SetStaminaRegenRate(who, 600);
+	  10: SetStaminaRegenRate(who, 400);
+    endcase
+    endif
+    if(hunger <= 0)
+      themsg := "Probujesz zjesc cos jeszcze, ale jestes juz pelny.";
+    endif
+    SendSysMessage(who, themsg);
+	if(poison > 0)
+		AddPoison(who, "defaultPoison", 120, who, poison);
+	endif
+  endif
+endprogram

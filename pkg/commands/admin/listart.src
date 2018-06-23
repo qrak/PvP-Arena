@@ -1,0 +1,85 @@
+use uo;
+
+include ":gumps:gumps";
+include "util/bank";
+
+program listart(who)
+
+SendSysMessage(who, "Wybierz pojemnik lub gracza.");
+
+var cel := Target(who);
+var the_item := cel;
+
+if(!the_item)
+return 0;
+endif
+
+
+GFInitGump(100, 20);
+GFNoDispose();
+GFNoClose();
+GFPage(0);
+ GFResizePic(0,0, 2520,450,510);
+ GFResizePic(28,34, 3600,394,440);
+
+GFButtonID(50, 50, 1209, 1210, 1);
+
+GFTextLine(70,50,550,"Opusc menu.");
+
+if(FindBankBox(the_item))
+GFTextLine(100,20,40,"BANK: " + cel.name);
+the_item := FindBankBox(the_item);
+else
+GFTextLine(100,20,40,"PRZEDMIOT: " + cel.name);
+the_item := cel.item;
+endif
+
+
+var odstepy_y := 0;
+var l := 1;
+var lp := 0;
+
+GFPage(1);
+
+var i := 0;
+
+  foreach duped in EnumerateItemsInContainer(the_item) 
+  
+
+
+
+if(GetObjProperty(duped, "indes"))   
+
+lp := lp +1;
+
+
+if( odstepy_y > 20)
+     l:=l+1; 
+     GFButtonPage(120, 50, 5540, 5542, l);
+
+      odstepy_y := 0;
+     GFPage(l);
+    GFButtonPage(140, 50, 5537, 5539, l-1);
+
+   endif
+
+
+ GFTextLine(60, 70+(odstepy_y*20), 37, lp + ". " + duped.desc );
+
+
+ odstepy_y := odstepy_y + 1;
+    
+endif
+   
+   
+
+
+
+   
+endforeach
+
+
+GFSendGump(who);
+
+
+endprogram

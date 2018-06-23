@@ -1,0 +1,188 @@
+use attributes;
+use os;
+use basicio;
+use basic;
+use math;
+use uo;
+use cfgfile;
+
+include "include/canAccess";
+include "include/attributes";
+include "include/client";
+
+  var smith_cfg := ReadConfigFile(":blacksmithy:blacksmithy");
+  var tinker_cfg := ReadConfigFile(":tinkering:tinker");
+    var itemcfg   := ReadConfigFile(":mining:itemdesc");
+    
+program resmelt(who, przetapiacz)
+
+
+  
+
+var forge_near := 0;
+
+    foreach item in ListStaticsNearLocation(who.x, who.y, who.z, 1)
+  if((item.objtype == 0xfb1) || ((item.objtype >= 0x197a) && (item.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+
+  
+    foreach item in ListItemsNearLocation(who.x, who.y, who.z, 1)
+    if((item.objtype == 0xfb1) || ((item.objtype >= 0x197a) && (item.objtype <= 0x19a9)))
+      forge_near := 1;
+      break;
+    endif
+  endforeach
+  
+  if(forge_near == 0)
+    SendSysMessage(who, "Musisz byc w poblizu pieca.",3,40);
+    return;
+  endif
+  
+  SendSysMessage(who, "Wybierz przedmiot, ktory chcesz przetopic.", 3, COLOR_GREEN);
+  var use_on := Target(who, TGTOPT_CHECK_LOS);
+  if(!use_on)
+    SendSysMessage(who, "Anulowano.", 3, 40);
+    return;
+  endif
+  if(use_on == przetapiacz)
+  return 0;
+  endif
+  if(!can_access(who, use_on))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+  if(!Accessible(who, use_on) || !ReserveItem( use_on ))
+    SendSysMessage(who, "Nie mozesz tego uzyc.", 3, 40);
+    return;
+  endif
+if(use_on.isa(POLCLASS_CONTAINER)) // jezeli wybierzemy container
+    var contitems := EnumerateItemsInContainer(use_on, 0x2); // 0x2 - root container only
+    var skill, amt, elemcol, ingot, color;
+    var valid_ingot := { 0x6309, 0x630a, 0x630b, 0x630c, 0x630d, 0x6314, 0x630e, 0x630f, 0x6310, 0x6311, 0x6312, 0x6313, 0x6315, 0x6316, 0x6317, 0x631, 0xA403, 0xA404, 0xA405 };
+    var whox := who.x;
+    var whoy := who.y;
+    
+    foreach thing in contitems
+
+        if(Cint(GetObjProperty(thing, "exceptional")) || thing.objtype == przetapiacz.objtype || thing.newbie)
+        continue;
+        endif
+        
+        if(whox != who.x || whoy != who.y)
+        break;
+        endif
+        
+    if(smith_cfg[thing.objtype])
+            skill := Cint(smith_cfg[thing.objtype]."skill");
+            amt := CInt(smith_cfg[thing.objtype]."material");
+            Przetop(who, skill, przetapiacz, thing, amt, elemcol, ingot, color, valid_ingot);
+	
+    elseif(tinker_cfg[thing.objtype])
+	    var skill := Cint(smith_cfg[thing.objtype]."skill");
+            var type := tinker_cfg[thing.objtype]."type";
+            if(type == "metal")
+            	skill := CInt(tinker_cfg[thing.objtype]."skill");
+            	amt := CInt(tinker_cfg[thing.objtype]."material");
+            endif
+            Przetop(who, skill, przetapiacz, thing, amt, elemcol, ingot, color, valid_ingot);
+        
+    endif
+    
+    endforeach
+    
+else // jezeli wybierzemy przedmiot
+    var skill := Cint(smith_cfg[use_on.objtype]."skill");
+    var amt := CInt(smith_cfg[use_on.objtype]."material");
+    var type := tinker_cfg[use_on.objtype]."type";
+        if(type == "metal")
+            amt := CInt(tinker_cfg[use_on.objtype]."material");
+            skill := CInt(tinker_cfg[use_on.objtype]."skill");            
+        endif
+    if((!skill) || (!amt))
+      SendSysMessage(who, "Nie mozesz tego przetopic.", 3, 40);
+      return;
+    endif
+    amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 55 ) / 10000);
+    if(amt < 1)
+      amt := 1;
+    endif
+    var itemcfg := ReadConfigFile(":mining:itemdesc");
+    if(!itemcfg)
+      return;
+    endif
+    
+    var elemcol;
+    var ingot := -1;
+    var color := use_on.color;
+    var valid_ingot := { 0x6309, 0x630a, 0x630b, 0x630c, 0x630d, 0x6314, 0x630e, 0x630f, 0x6310, 0x6311, 0x6312, 0x6313, 0x6315, 0x6316, 0x6317, 0x631, 0xA403, 0xA404, 0xA405 };
+    foreach entry in valid_ingot
+      elemcol := itemcfg[entry]."Color";
+      if(color == elemcol)
+        ingot := entry;
+          break;
+      endif
+      endforeach
+      
+
+    if(ingot == -1)
+      PrintTextAbovePrivate(use_on, "Nie mozesz stopic tego metalu!", who);
+      return;
+    endif
+    PlaySoundEffect(who, 0x2c);
+    sleep(1);
+    PlaySoundEffect(who, 0x22);
+    if(SubtractAmount(use_on, use_on.amount))
+      if(CheckSkill(who, SKILLID_BLACKSMITHY, skill, 10))
+        SendSysMessage(who, "Uzyskales z tego troche materialu.", 3, COLOR_GREEN);
+        CreateItemInBackpack(who, ingot, amt);
+      else
+        SendSysMessage(who, "Nie udalo Ci sie i zniszczyles przedmiot.", 3, 40);
+      endif
+      return;
+    endif
+endif
+endprogram
+
+function Przetop(who, skill, przetapiacz, thing, amt, elemcol, ingot, color, valid_ingot)
+
+
+        if((!skill) || (!amt))
+          SendSysMessage(who, "Nie mozesz tego przetopic.", 3, 40);
+          return;
+        endif
+        amt := CInt((amt * GetEffectiveSkill(who,SKILLID_BLACKSMITHY) * 55 ) / 10000);
+        if(amt < 1)
+          amt := 1;
+        endif
+        ingot := -1;
+        color := thing.color;
+        foreach entry in valid_ingot
+          elemcol := itemcfg[entry]."Color";
+          if(color == elemcol)
+            ingot := entry;
+            break;
+          endif
+        endforeach
+
+        if(ingot == -1)
+          PrintTextAbovePrivate(thing, "Nie mozesz stopic tego metalu!", who);
+          return;
+        endif
+        PlaySoundEffect(who, 0x2c);
+        sleep(1);
+        PlaySoundEffect(who, 0x22);
+        if(SubtractAmount(thing, thing.amount))
+          if(CheckSkill(who, SKILLID_BLACKSMITHY, skill, 10))
+            SendSysMessage(who, "Uzyskales z tego troche materialu.", 3, COLOR_GREEN);
+            CreateItemInBackpack(who, ingot, amt);
+          else
+            SendSysMessage(who, "Nie udalo Ci sie i zniszczyles przedmiot.", 3, 40);
+          endif
+        endif
+        sleep(1);
+	return 1;
+
+endfunction

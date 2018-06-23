@@ -1,0 +1,82 @@
+// crash
+
+use vitals;
+use basicio;
+use cfgfile;
+use math;
+use uo;
+use basic;
+
+include "include/spellRestrictions";
+
+
+
+program cast_flamestrike( parms )
+  var circle := 7;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 51);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+    var magery := Cint(GetEffectiveSkill(caster, SKILLID_MAGERY)/3)+14;
+      var eval := Cint(GetEffectiveSkill(caster, SKILLID_EVALINT)/3);
+      var int := GetIntelligence(caster);
+
+var wodna := Cint(GetObjProperty(cast_on, "#Wodna"));
+	var wodnaqual := wodna * 0.01;
+
+var bonus := 0;
+
+if(caster.ip)
+bonus := int/5;
+endif
+
+
+var dmg := magery + eval + bonus;
+if(wodna == 0)
+		EraseObjProperty(cast_on, "#Wodna");
+	endif
+	if(wodna)
+		dmg := dmg - (wodnaqual*100);
+	endif
+
+
+        if(GetObjProperty(cast_on, "LastHit")[2] != caster.serial)
+  SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "flame strike" });
+  endif
+  if (Reflected(cast_on))
+	PlaySoundEffect( cast_on, SFX_SPELL_FLAME_STRIKE );
+	cast_on := caster;
+	if (GetObjProperty( caster, "mr") == "1")
+	  EraseObjProperty(caster, "mr");
+	  SendSysMessage(caster, "Magiczne lustro ocalilo Cie!");
+	  return;
+	endif
+  endif
+  PlayObjectCenteredEffect(cast_on, 0x3709, 0x0a, 0x1e );
+  PlaySoundEffect( caster, SFX_SPELL_FLAME_STRIKE );
+
+// absorbcja
+var cfg := ReadConfigFile("::npcdesc");
+var odbij := cfg[cast_on.npctemplate].Resuje;
+var miekki := cfg[cast_on.npctemplate].Leszcz;
+
+     if(odbij == "ogien")
+
+     dmg := dmg / 2;
+
+     PrintTextAbove(cast_on, "*absorbuje energie*");
+     elseif(miekki == "ogien")
+     dmg := dmg * 2;
+     PrintTextAbove(cast_on, "*dostaje podwojny cios energii*");
+
+endif
+// koniec absorbcji
+
+    ApplyRawDamage(cast_on, Resisted(circle,caster,cast_on,dmg));
+
+// DoTempMod(cast_on, "p", 0, 0);
+endprogram

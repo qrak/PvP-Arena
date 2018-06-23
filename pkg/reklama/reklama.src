@@ -1,0 +1,16 @@
+use uo;
+use os;
+
+include "include/yesNo"; 
+
+program petla()
+	while(1)
+		foreach gracz in EnumerateOnlineCharacters()
+			if(yesno(gracz, "Chcesz 10000 sztuk zlota? Wcisnij OKAY a zaglosujesz na nasza strone na topliscie i dostaniesz zloto!"))  
+				OpenUrl(gracz, "uo.toplista.pl/?we=fromasz123");
+				CreateItemInContainer(gracz.backpack, 0xeed, 10000);
+			endif 
+		endforeach
+		sleep(21600);
+	endwhile
+endprogram

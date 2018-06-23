@@ -1,0 +1,24 @@
+use uo;
+use os;
+
+program koniec(who)
+var mount := GetEquipmentByLayer(who, 25);
+//var friends := GetObjProperty(who, "friends");
+ 	
+        foreach gracze in ListObjectsInBox(5843, 1098, 0, 5873, 1131, 0);
+SendSysMessage(gracze,"ZA MINUTE WAS WYJEBIE DO MIASTA",3,89);
+sleep(60);
+		if (gracze.ip)
+	MoveObjectToLocation(gracze, 2512, 605,0);
+		EraseObjProperty(gracze, "friends");
+	BroadCast("ZAKAZ WALK BEDZIE TRWAL JESZCZE 2 MINUTY!", 3, 89);
+	sleep(60);
+BroadCast("ZAKAZ WALK BEDZIE TRWAL JESZCZE 1 MINUTE!", 3, 89);
+        sleep(60);
+	BroadCast("KONIEC ZAKAZU WALK!", 3, 89);
+	EraseGlobalProperty("#zakazwalk");
+elseif(mount)
+				DestroyItem(mount);
+endif
+		endforeach
+endprogram

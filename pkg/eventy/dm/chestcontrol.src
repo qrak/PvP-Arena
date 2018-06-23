@@ -1,0 +1,9 @@
+use uo;
+use os;
+
+program ControlScript(chest)
+	sleep(30);
+  PlayStationaryEffect( chest.x, chest.y, chest.z, 0x3728, speed:=0xa, loop:=0xa );
+  PlaySoundEffect( chest, 0x01ff );
+	DestroyItem(chest);
+endprogram

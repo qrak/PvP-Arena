@@ -1,0 +1,21 @@
+/////////////////////////////////////////////////
+//                 KTM by Fromasz              //
+// faza2 - Po zabiciu potowra                  //
+//                                             //
+//                                             //
+/////////////////////////////////////////////////
+
+use uo;
+use os;
+
+
+program faza2(who)
+	BroadCast("Potwor KTM zostal zabity. Gracze proszeni sa o przejscie do poczekalni!", 3,89);
+	sleep(3);
+	BroadCast("Za 2 minuty nastapi rozdanie nagrod. Nagrode dostana wylacznie osoby znajdujace sie w poczekalni!",3,89);
+	sleep(60);
+	BroadCast("Zostala jeszcze minuta!",3,89);
+	sleep(60);
+	start_script("faza3");
+endprogram
+

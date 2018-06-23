@@ -1,0 +1,61 @@
+use vitals;
+use os;
+use util;
+use basic;
+use uo;
+use cfgfile;
+include "include/attributes";
+include "include/spellRestrictions";
+include "include/client";
+include "include/spellAttack";
+include "include/nopvp";
+
+program field_control( item )
+  var npccfg := ReadConfigFile("::npcdesc");
+  var element;
+  var creater := CInt(GetObjProperty(item, "creater"));
+  var fieldstrength;
+  var online := EnumerateOnlineCharacters();
+  var boss;
+  foreach char in online
+    if(creater == char.serial)
+      boss := char;
+      break;
+    endif
+  endforeach
+  if(!boss)
+    boss := SystemFindObjectBySerial(creater, SYSFIND_SEARCH_OFFLINE_MOBILES);
+  endif
+  SetScriptController(boss);
+  
+
+  var dmg := CInt(GetEffectiveSkill(boss, 25)/10);
+  if((!dmg) || (dmg == 0))
+    dmg := 5;
+  endif
+  fieldstrength := RandomInt(dmg);
+  foreach character in ListMobilesNearLocation(item.x,item.y, item.z, 0)
+    if(!CheckAttack(boss, character))
+    return 0;
+    endif
+    
+    if(!character.cmdlevel)
+    set_priority(1);
+    PlaySoundEffect(character, 0x209);
+    ApplyRawDamage(character, Resisted(2, boss, character, fieldstrength) );
+    endif
+  endforeach
+  sleepms(1500);
+  while(item)
+    foreach character in ListMobilesNearLocation(item.x,item.y, item.z, 0)
+    if(!character.cmdlevel)
+      if(GetHp(character) > 1)
+        fieldstrength := RandomInt(dmg);
+        PlaySoundEffect(character, 0x209);
+        ApplyRawDamage(character, Resisted( 2, boss, character, fieldstrength) );
+      endif
+    endif
+    endforeach
+    sleepms(1500);
+  endwhile
+endprogram

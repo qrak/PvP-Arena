@@ -1,0 +1,24 @@
+use uo;
+use os;
+
+const TRES_D_TIME  := 900;
+
+program TreasureChestControl(Chest)
+
+    var i := 1;
+    while(i < 100)
+        Sleep(1);
+        i := i + 1;
+    endwhile
+
+    var lvl  := 5;
+
+    var Time := TRES_D_TIME;
+    for(i:=1; i<=lvl; i:=i+1)
+        Time := Time * 2;
+    endfor
+
+    Sleep(Time);
+    DestroyItem(Chest);
+
+endprogram

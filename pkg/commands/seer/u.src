@@ -1,0 +1,37 @@
+// crash
+
+use npc;
+use os;
+use uo;
+
+include "include/client";
+
+program textcmd_u(who)
+		PlayStationaryEffect( who.x, who.y, who.z, FX_EXPLODE_2, 0x0a, 0x1e );
+		PlaySoundEffect(who, 0x161);
+		sleepms(400);
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x-2, who.y-2, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x+2, who.y+2, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x+2, who.y, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x, who.y+2, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x-2, who.y+2, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x+2, who.y-2, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x-2, who.y, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+		PlayMovingEffectXYZ( who.x, who.y, who.z+10, who.x, who.y-2, who.z+10, FX_FIREBALL, 0x3, 0x2 );
+//		PlaySoundEffect(who, 0x161);
+		sleepms(300);
+		PlayStationaryEffect( who.x-2, who.y-2, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x+2, who.y+2, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x+2, who.y, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x, who.y+2, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x-2, who.y+2, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x+2, who.y-2, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x-2, who.y, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		PlayStationaryEffect( who.x, who.y-2, who.z+10, FX_FLAMESTRIKE, 0x0a, 0x1e );
+		sleepms(1500);
+	case(who.concealed)
+		0: who.concealed := 1;
+		1: who.concealed := 0;
+	endcase
+        MoveObjectToLocation(who, who.x, who.y, who.z, who.realm, 4);
+endprogram

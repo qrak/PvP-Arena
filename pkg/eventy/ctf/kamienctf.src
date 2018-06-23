@@ -1,0 +1,228 @@
+use uo;
+
+include ":gumps:gumps";
+include "include/attributes";
+include ":ctf:ctf";
+
+program kamien(who, kamien)
+    if(Distance(who, kamien) > 2)
+        SendSysMessage(who, "Za daleko.",3,40);
+        return 0;
+    endif
+    BuildGump(who);
+endprogram
+
+function BuildGump(who)
+    GFInitGump(80,80);
+    GFNoDispose();
+    GFPage(0);
+    GFResizePic(0,20, 2520,510,410);
+    GFResizePic(28,54, 3600,454,340);
+    GFGumpPic(340, 70, 5547);
+    GFGumpPic(250, 100, 5551);
+    GFGumpPic(320, 150, 5569);
+    GFTextLine(170,30,40, "Kamien capture the flag");
+    GFTextLine(45,70,550,"Pokaz czerwonych.");
+    GFTextLine(45,90,550,"Pokaz niebieskich.");
+    GFTextLine(45,110,550,"Najlepsi.");
+   
+    GFTextLine(45,190,550,"Opusc menu.");
+    var redy := GFButtonID(200, 70, 1209, 1210, 1);
+    var blu := GFButtonID(200, 90, 1209, 1210, 1);
+    var thebest := GFButtonID(200, 110, 1209, 1210, 1);
+    var quit := GFButtonID(200, 190, 1209, 1210, 1);
+    var keys := GFSendGump(who);
+    if(keys[0] == redy.keyid)
+        PokazRedow(who);
+    endif
+    if(keys[0] == blu.keyid)
+        PokazBlue(who);
+    endif
+    if(keys[0] == thebest.keyid)
+        TheBestPlayers(who);
+    endif
+    if(keys[0] == quit.keyid)
+        SendSysMessage(who, "Nara.",3,40);
+    endif
+endfunction
+
+function PokazRedow(who)
+    GFInitGump(100, 20);
+    GFNoDispose();
+    GFNoClose();
+    GFPage(0);
+    GFResizePic(0,0, 2520,450,510);
+    GFResizePic(28,34, 3600,394,440);
+    GFTextLine(70,50,550,"Opusc menu.");
+    var close := GFButtonID(50, 50, 1209, 1210, 1);
+    var odstepy_y := 0;
+    var l := 1;
+    var lp := 0;
+    var flagsscored;
+    var klasa := "";
+    var dane;
+    var tytul := "";
+    GFPage(1);
+    foreach mPlayer in EnumerateOnlineCharacters() 
+        if(!mPlayer.cmdlevel)
+            if(GetCtfTeam(mPlayer) == "red") 
+                flagsscored := Cint(GetObjProperty(mPlayer, "FlagsScored"));
+                if(!flagsscored)
+                    flagsscored := 0;
+                endif
+                lp := lp +1;
+                klasa := GetClassName(mPlayer);
+                tytul := GetTitleName(mPlayer);
+                dane := Cint(GetObjProperty(mPlayer, "lata"));
+                if( odstepy_y > 3)
+                    l:=l+1; 
+                    GFButtonPage(40, 70, 5540, 5542, l);
+                    odstepy_y := 0;
+                    GFPage(l);
+                    GFButtonPage(60, 70, 5537, 5539, l-1);
+                endif
+                GFTextLine(150, 70+(odstepy_y*100), 37, lp + ". " + mPlayer.name);
+                GFTextLine(170, 90+(odstepy_y*100), 550, klasa);
+                GFTextLine(170, 110+(odstepy_y*100), 550, "zdobytych flag: " + flagsscored);
+                GFTextLine(170, 130+(odstepy_y*100), 550, "wiek: " + dane);
+                GFTextLine(170, 150+(odstepy_y*100), 66, tytul);
+                odstepy_y := odstepy_y + 1;
+            endif
+        endif
+    endforeach
+    var gumpik := GfSendGump(who);
+    if(gumpik[close.keyid])
+        BuildGump(who);
+    endif
+endfunction
+
+function PokazBlue(who)
+    GFInitGump(100, 20);
+    GFNoDispose();
+    GFNoClose();
+    GFPage(0);
+    GFResizePic(0,0, 2520,450,510);
+    GFResizePic(28,34, 3600,394,440);
+    GFTextLine(70,50,550,"Opusc menu.");
+    var close := GFButtonID(50, 50, 1209, 1210, 1);
+    var odstepy_y := 0;
+    var l := 1;
+    var lp := 0;
+    var flagsscored;
+    var klasa := "";
+    var dane;
+    var tytul := "";
+    GFPage(1);
+    foreach mPlayer in EnumerateOnlineCharacters() 
+        if(!mPlayer.cmdlevel)
+            if(GetCtfTeam(mPlayer) == "blue") 
+                flagsscored := Cint(GetObjProperty(mPlayer, "FlagsScored"));
+                if(!flagsscored)
+                    flagsscored := 0;
+                endif
+                lp := lp +1;
+                klasa := GetClassName(mPlayer);
+                tytul := GetTitleName(mPlayer);
+                dane := Cint(GetObjProperty(mPlayer, "lata"));
+                if( odstepy_y > 3)
+                    l:=l+1; 
+                    GFButtonPage(40, 70, 5540, 5542, l);
+                    odstepy_y := 0;
+                    GFPage(l);
+                    GFButtonPage(60, 70, 5537, 5539, l-1);
+                endif
+                GFTextLine(150, 70+(odstepy_y*100), 37, lp + ". " + mPlayer.name);
+                GFTextLine(170, 90+(odstepy_y*100), 550, klasa);
+                GFTextLine(170, 110+(odstepy_y*100), 550, "zdobytych flag: " + flagsscored);
+                GFTextLine(170, 130+(odstepy_y*100), 550, "wiek: " + dane);
+                GFTextLine(170, 150+(odstepy_y*100), 66, tytul);
+                odstepy_y := odstepy_y + 1;
+            endif
+        endif
+    endforeach
+    var gumpik := GfSendGump(who);
+    if(gumpik[close.keyid])
+        BuildGump(who);
+    endif
+endfunction
+
+function TheBestPlayers(who)
+    GFInitGump(100, 20);
+    GFNoDispose();
+    GFNoClose();
+    GFPage(0);
+    GFResizePic(0,0, 2520,450,410);
+    GFResizePic(28,34, 3600,394,340);
+    GFTextLine(70,50,550,"Opusc menu.");
+    var close := GFButtonID(50, 50, 1209, 1210, 1);
+    var flagsscored;
+    var bestkiller := {};
+    var bestkillerever := GetGlobalProperty("bestkillereverCTF");
+    foreach mPlayer in EnumerateOnlineCharacters() 
+        if(!mPlayer.cmdlevel)
+            flagsscored := Cint(GetObjProperty(mPlayer,"FlagsScored"));
+            if(!flagsscored)
+                flagsscored := 0;
+            endif
+            bestkiller.append({flagsscored, mPlayer.name});
+            SetObjProperty(mPlayer, "sort", sortuj(bestkiller)); 
+            bestkiller := GetObjProperty(mPlayer, "sort"); 
+            EraseObjProperty(mPlayer, "sort");
+        endif
+    endforeach
+    if(bestkiller[1][1] > bestkillerever[1])
+        SetGlobalProperty("bestkillereverCTF", {bestkiller[1][1], bestkiller[1][2]});
+    endif
+    GFTextLine(100, 70, 560, "Najlepszy zdobywacz flag: " + bestkillerever[2]);
+    GFTextLine(120, 90, 560, "Zdobytych flag: " + bestkillerever[1]);
+    var gumpik := GfSendGump(who);
+    if(gumpik[close.keyid])
+        BuildGump(who);
+        bestkiller.erase();
+    endif
+endfunction
+
+function GetClassName(who)
+    var classname := "";
+    if(GetBaseSkill(who,SKILLID_ARCHERY) > 50)
+        classname := "*lucznik*";
+    elseif(GetBaseSkill(who,SKILLID_MAGERY) > 50)
+        classname := "*mag*";
+    elseif(GetBaseSkill(who,SKILLID_SWORDSMANSHIP) > 50)
+        classname := "*wojownik*";
+    else
+        classname := "*noob*";
+    endif
+    return classname;
+endfunction
+
+function GetTitleName(who)
+    var howold := Cint(GetObjProperty(who,"lata"));
+    var title := "";
+    if(howold >= 30 && howold <= 39)
+        title := "-elita-";
+    elseif(howold >= 40 && howold <= 49)
+        title := "-legenda-";
+    elseif(howold > 49)
+        title := "-legendarny bohater-";
+    else
+        title := "";
+    endif
+    return title;
+endfunction
+
+function sortuj(tab)  // sortowanie babelkowe
+    var i,j; 
+    var buf := {}; 
+    var rozmiar := tab.size(); 
+    for(i := 1; i<=rozmiar; i:=i+1) 
+        for(j:=1; j<=rozmiar; j:=j+1) 
+            if(tab[j][1] < tab[j+1][1]) 
+                buf := tab[j]; 
+                tab[j] := tab[j+1]; 
+                tab[j+1] := buf; 
+            endif 
+        endfor 
+    endfor 
+    return tab; 
+endfunction

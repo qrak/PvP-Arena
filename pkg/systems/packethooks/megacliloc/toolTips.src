@@ -1,0 +1,155 @@
+
+const OFFSET_OBJECT_SERIAL := 0x05;
+const OFFSET_CLILOC_ID     := 0x0F;
+const OFFSET_LENGTH_ID     := 0x13;
+const OFFSET_UNICODE_TEXT  := 0x14;
+
+use basic;
+use uo;
+use cfgfile;
+use polsys;
+
+var Weapon_Cfg := ReadConfigFile(":combat:itemdesc");
+
+
+program Install()
+
+	 Print("INSTALLING: Outgoing Tooltip PH...");
+	 return 1;
+
+endprogram
+
+exported function MegaCliloc( who, byref packet )
+        
+	var xObject := SystemFindObjectBySerial(packet.GetInt32(OFFSET_OBJECT_SERIAL));
+        who := who;
+        
+	if ( xObject )
+		packet.SetSize(15);
+
+		var Object_Name;
+		var Dice_Dmg := Weapon_Cfg[xObject.objtype].Damage;
+
+
+		if( xObject.IsA(POLCLASS_MOBILE) )
+			Object_Name := CAscZ(xObject.name);
+		elseif ( xObject.IsA(POLCLASS_ITEM) )
+			//Object_Name := CAscZ("<BASEFONT COLOR=#FFFFFF><C>" + xObject.desc);
+			Object_Name := CAscZ(xObject.desc);
+		endif
+
+		packet.SetInt32(OFFSET_CLILOC_ID, 1042971);
+		packet.SetUnicodeString(OFFSET_UNICODE_TEXT, Object_Name, 1);
+		packet.SetInt16(OFFSET_LENGTH_ID, Object_Name.Size() * 2);
+
+		var xDesc := "";
+
+                if( xObject.IsA(POLCLASS_MOBILE) )
+										if( xObject.title_guild )
+												xDesc := xDesc + "<BASEFONT COLOR=#ffcc33><C>[" + xObject.title_guild + "]" + "<BASEFONT COLOR=#FFFFFF><C><br>";
+										endif
+										if( !xObject.cmdlevel && !xObject.npctemplate)
+												xDesc := xDesc + Cint(GetObjProperty(xObject, "lata")) + " Lat<br>";
+										else
+												if(!xObject.npctemplate)
+														xDesc := xDesc + "<BASEFONT COLOR=#00FF00>Bog<br></BASEFONT>";
+												endif
+										endif
+								elseif( xObject.IsA(POLCLASS_ITEM))
+									var typ := GetObjProperty(xObject, "typ");
+									var israre := GetObjProperty(xObject, "IsRare");
+							
+										if(xObject.IsA(POLCLASS_WEAPON)) // dla broni
+												var splitdmg := SplitWords(Dice_Dmg, "d");
+												var splitmaxdam := SplitWords(splitdmg[2], "+");
+												if(!splitmaxdam)
+													splitmaxdam := 0;
+												endif
+												var mindam := (Cint(splitdmg[1]) * Cint(splitdmg[2])) * xObject.quality + xObject.dmg_mod;
+												var maxdam := (Cint(splitdmg[1]) * Cint(splitdmg[2]) + Cint(splitmaxdam[2])) * xObject.quality + xObject.dmg_mod;
+												
+										
+												xDesc := xDesc + "Max Dmg: " + mindam + "-" +  maxdam + "<br>";
+												xDesc := xDesc + "Lvl: " + xObject.dmg_mod + "<br>";
+												xDesc := xDesc + "Speed: "+ Weapon_Cfg[xObject.objtype].Speed +"<br>"; 
+												if(Cint(GetObjProperty(xObject, "69exodus")))
+														xDesc := xDesc + "5% szans na obrazenia od blyskawic<br>";
+												endif
+										elseif(xObject.IsA(POLCLASS_ARMOR))//dla zbroi
+												xDesc := xDesc + "Lvl: " + xObject.ar_mod + "<br>";
+												
+												if(Cint(GetObjProperty(xObject, "wodna")))
+														xDesc := xDesc + "5% mniej obrazen od ognia<br>";
+												endif	
+												if(Cint(GetObjProperty(xObject, "daemon")))
+														xDesc := xDesc + "3% mniej obrazen od czarow nekromanckich<br>";
+												endif	
+										endif
+										if(xObject.IsA(POLCLASS_WEAPON) || xObject.IsA(POLCLASS_ARMOR)) // dla zbroi i broni
+												if(xObject.newbie)
+														xDesc := xDesc + "Blogoslawiony<br>";
+												endif
+												xDesc := xDesc + "Hp: " + xObject.hp  + "/" +  xObject.maxhp  + "<br>";
+												var ladunki := GetObjProperty(xObject, "ladunki");
+												if(israre)
+													xDesc := xDesc + "Unikat<br>";
+													xDesc := xDesc + "Ladunki: "+ladunki[1] + "<br>";
+													xDesc := xDesc + "Max Ladunki: "+ladunki[2] + "<br>"; 
+												endif
+										endif
+										
+										if ( typ == "fball" )
+												xDesc := xDesc + "Obrazenia od ognia<br>";
+										elseif( typ == "lightning" )
+												xDesc := xDesc + "Obrazenia od blyskawic<br>";
+										elseif( typ == "ice")
+												xDesc := xDesc + "Obrazenia od lodu<br>";
+										elseif( typ == "reactive")
+												xDesc := xDesc + "Reaktywny<br>";
+										elseif( typ == "resist")
+												xDesc := xDesc + "Antymagiczny<br>";
+										elseif( typ == "str")
+												xDesc := xDesc + "Sily<br>";
+										elseif( typ == "dex")
+												xDesc := xDesc + "Zrecznosci<br>";
+										elseif( typ == "int")
+												xDesc := xDesc + "Inteligencji<br>";
+										elseif( typ == "hp")
+												xDesc := xDesc + "Witalnosci<br>";
+										elseif( typ == "mana")
+												xDesc := xDesc + "Many<br>";
+										endif
+
+										if(Cint(GetObjProperty(xObject, "indes")))
+												xDesc := xDesc + "Przedmiot niezniszczalny<br>";
+										endif
+
+										var ladunki := GetObjProperty(xObject, "ladunki");
+										var level := GetObjProperty(xObject, "level");
+										if ( GetObjProperty( xObject, "magik" ) )
+												xDesc := xDesc + "Poziom: "+level + "<br>";
+												xDesc := xDesc + "Ladunki: "+ladunki[1] + "<br>";
+												xDesc := xDesc + "Max Ladunki: "+ladunki[2] + "<br>";   
+										endif
+
+								endif
+
+		xDesc := CAscZ(xDesc);
+		if ( xDesc.Size() > 0 )
+			packet.SetInt32(packet.GetSize() - 1, 1070722);
+			var Length_ID := packet.GetSize();
+			packet.SetUnicodeString(packet.GetSize() + 1, xDesc, 1);
+			packet.SetInt16(Length_ID, xDesc.Size() * 2);
+		endif
+
+		packet.SetInt32(packet.GetSize(), 0);
+	endif
+
+		if( xObject.IsA(POLCLASS_MOBILE) )
+						IncRevision(xObject);
+		endif
+
+	return 0;
+
+endfunction
+

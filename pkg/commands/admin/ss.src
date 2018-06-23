@@ -1,0 +1,15 @@
+use uo;
+
+program test(gracz)
+	foreach eqitem in ListEquippedItems(gracz)
+		if(Cint(GetObjProperty(eqitem, "IgStuff")))
+			DestroyItem(eqitem);
+		endif
+	endforeach
+	foreach item in EnumerateItemsInContainer(gracz.backpack)
+		if(Cint(GetObjProperty(item, "IgStuff")))
+			DestroyItem(item);
+		endif
+	endforeach
+endprogram
+

@@ -1,0 +1,113 @@
+use uo;
+use os;
+use cfgfile;
+use util;
+use vitals;
+
+const DIR_N             :=  0x00;   // North.
+const DIR_NE            :=  0x01;   // Northeast.
+const DIR_E             :=  0x02;   // East.
+const DIR_SE            :=  0x03;   // Southeast.
+const DIR_S             :=  0x04;   // South.
+const DIR_SW            :=  0x05;   // Southwest.
+const DIR_W             :=  0x06;   // West.
+const DIR_NW            :=  0x07;   // Northwest.
+
+Const POCZATEK_X := 5545;
+Const POCZATEK_Y := 1135;
+Const POCZATEK_Z := 0;
+
+include "include/sysEvent";
+var cfg := ReadConfigFile(":zagadka:config/zagadki");
+	
+program walkOnScript(mobile, tile)
+	if(mobile.concealed || mobile.npctemplate)
+		return 0;
+	endif
+	if(mobile.dead)
+		Resurrect(mobile);
+	endif
+	var tile_level := Cint(GetObjProperty(tile, "TileLevel"));
+	if(!tile_level)
+		SendSysMessage(mobile, "Mistrz gry nie przygotowal jeszcze tego kafelka zagadek.", 3, 40);
+		return 0;
+	endif
+	var persons_count := 0;
+	foreach player in ListMobilesNearLocation( tile.x, tile.y, tile.z, 0);
+		if(player.ip)
+			persons_count += 1;
+		endif
+	endforeach
+	if(persons_count > 1)
+		PrintTextAbove(tile, "Za duzo tu was! Pojedynczo prosze! Wypad!", 3, 40);
+		var direction := mobile.facing;
+		StepBack(mobile, direction);
+		return 0;
+	endif
+	var element := FindConfigElem( cfg, "Poziom" + tile_level);
+	if(!element)
+		element := FindConfigElem( cfg, "Poziom1");
+	endif
+	var tablica :=  GetConfigStringArray( element, "Pytanie" );
+	if(!tablica)
+		PrintTextAbove(tile, "Ten kafelek nie moze wymyslic zadnego pytania. Zglos sie do GMa.", 3, 40);
+		return 0;
+	endif
+	var chestserial := GetGlobalProperty("MysteryChestSerial");
+	var skrzynia := SystemFindObjectBySerial(chestserial[2]);
+	if(!skrzynia[2])
+		var direction := mobile.facing;
+		SendSysMEssage(mobile, "Skrzynia z glowna nagroda jeszcze sie nie zrespawnowala.",3,63);
+		SendSysMessage(mobile, "Nastapi to za " + (chestserial[1] - ReadGameClock()) + " sekund.",3,63);
+		StepBack(mobile, direction);
+		return 0;
+	endif
+	var zadane_pytanie := tablica[RandomInt(tablica.size()) + 1];
+	var split := SplitWords(zadane_pytanie, "%");
+	PrintTextAbove(tile, split[1], 3, 89);
+	mobile.frozen := 1;
+	RegisterForSpeechEvents( tile, 0 );
+	var ev := wait_for_event(180);
+		case(ev.type) 
+			SYSEVENT_SPEECH:
+			var txt := lower(ev.text);
+			if(txt[Lower(split[2])])
+				PrintTextAbove(tile, "Dobra odpowiedz.", 3, 63);
+				mobile.frozen := 0;
+				return 0;
+			else
+				PrintTextAbove(tile, "Zla odpowiedz!", 3, 40);
+				sleep(2);
+				SetObjProperty( mobile, "#Teleported", 1);
+				MoveObjectToLocation(mobile,POCZATEK_X, POCZATEK_Y, POCZATEK_Z, mobile.realm, 4);
+				EraseObjProperty( mobile, "#Teleported");
+				mobile.frozen := 0;
+				return 0;
+			endif
+		endcase
+		PrintTextAbove(tile, "Cos za dlugo ci to zajelo, pal gume frajerze!", 3, 40);
+		sleep(2);
+		mobile.frozen := 0;
+		MoveObjectToLocation(mobile,POCZATEK_X, POCZATEK_Y, POCZATEK_Z, mobile.realm, 4);
+endprogram
+
+function StepBack(mobile, direction)
+	if(direction == DIR_N)
+		MoveObjectToLocation(mobile, mobile.x, mobile.y+1, mobile.z, mobile.realm, 4);
+	elseif(direction == DIR_NE)
+		MoveObjectToLocation(mobile, mobile.x-1, mobile.y+1, mobile.z, mobile.realm, 4);
+	elseif(direction == DIR_E)
+		MoveObjectToLocation(mobile, mobile.x-1, mobile.y, mobile.z, mobile.realm, 4);
+	elseif(direction == DIR_SE)
+		MoveObjectToLocation(mobile, mobile.x-1, mobile.y-1, mobile.z, mobile.realm, 4);
+	elseif(direction == DIR_S)
+		MoveObjectToLocation(mobile, mobile.x, mobile.y-1, mobile.z, mobile.realm, 4);
+	elseif(direction == DIR_SW)
+		MoveObjectToLocation(mobile, mobile.x+1, mobile.y-1, mobile.z, mobile.realm, 4);
+	elseif(direction == DIR_W)
+		MoveObjectToLocation(mobile, mobile.x+1, mobile.y, mobile.z, mobile.realm, 4);		
+	elseif(direction == DIR_NW)
+		MoveObjectToLocation(mobile, mobile.x+1, mobile.y+1, mobile.z, mobile.realm, 4);				
+	endif
+	mobile.frozen := 0;
+endfunction

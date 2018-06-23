@@ -1,0 +1,157 @@
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Sthyss serial: 2531394 x/y/z: 2697 614 -5
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Wrukaog serial: 2531514 x/y/z: 2698 618 -15
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Yugug serial: 2531533 x/y/z: 2718 612 -10
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Hyisass serial: 2531424 x/y/z: 2671 604 -5
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Zupgugh serial: 2531508 x/y/z: 2676 613 -5
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Viguka serial: 2531517 x/y/z: 2668 622 -15
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5855 1163 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5856 1162 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5856 1161 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5836 1166 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5836 1166 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5836 1166 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Potwor KTM serial: 2539104 x/y/z: 5695 1128 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Hagu - lord ogrow serial: 2530221 x/y/z: 5875 1185 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Gunag - lord ogrow serial: 2530225 x/y/z: 5859 1158 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal wielki chrzaszcz osoby: Qra'h serial: 2542151 x/y/z: 2499 561 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Terra Patrick - Kurwa serial: 2542621 x/y/z: 2514 543 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal lama osoby: Pepe serial: 2541908 x/y/z: 2507 560 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal lama osoby: Qhaz serial: 2542434 x/y/z: 2501 558 0
+[KILL_GRACZA] ktos z ekipy z konta: bosor zajebal Maly Zjeb na koncie dekiel serial: 2539802 x/y/z: 273 765 0
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal zywiol wody serial: 2543480 x/y/z: 2505 560 0
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal zywiol wody serial: 2543509 x/y/z: 2505 562 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Lord Otchlani serial: 2542498 x/y/z: 2990 3448 16
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Exodus Niszczyciel serial: 2510455 x/y/z: 4596 3575 75
+[KILL_NPC] ktos z ekipy z konta: kan zajebal wampirzy zabojca serial: 2536917 x/y/z: 2977 665 0
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Wladca Cienia serial: 2532076 x/y/z: 1624 3518 3
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Irian Wielki serial: 2487627 x/y/z: 5156 822 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Exodus Niszczyciel serial: 2545514 x/y/z: 5862 1166 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal gargulec ruchacz serial: 2545674 x/y/z: 5862 1155 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Olog serial: 2545508 x/y/z: 5850 1163 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal skurwol serial: 2545507 x/y/z: 5851 1168 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal pustynny dinozaur serial: 2545701 x/y/z: 5863 1158 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal pederastozaur serial: 2545739 x/y/z: 2505 4022 3
+[KILL_NPC] ktos z ekipy z konta: kan zajebal mroczny elf - mag serial: 2530668 x/y/z: 2260 703 -5
+[KILL_NPC] ktos z ekipy z konta: kan zajebal mroczny elf - wojownik serial: 2530659 x/y/z: 2247 700 -5
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Aegnor Wielki serial: 2545710 x/y/z: 5860 1162 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Sunnero-is de Va serial: 2545712 x/y/z: 5861 1162 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Exodus Niszczyciel serial: 2545596 x/y/z: 5863 1165 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Straznik Zaglady serial: 2547773 x/y/z: 5729 973 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Ayperos serial: 2549253 x/y/z: 5845 1162 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Sergutthy serial: 2549285 x/y/z: 5863 1185 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Rofocale serial: 2549241 x/y/z: 5835 1164 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Khil serial: 2549320 x/y/z: 5464 1854 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Brulefer serial: 2549319 x/y/z: 5463 1854 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Straznik Smierci serial: 2544479 x/y/z: 5214 1729 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Terra Patrick - Kurwa serial: 2542627 x/y/z: 2509 560 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Exodus Niszczyciel serial: 2552858 x/y/z: 2505 609 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Pehrakgu - lord ogrow serial: 2552134 x/y/z: 5845 1146 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiol krwi serial: 2554214 x/y/z: 5853 1152 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Kraugug - lord ogrow serial: 2522548 x/y/z: 5856 1137 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Pehrakgu - lord ogrow serial: 2552134 x/y/z: 5851 1140 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2532424 x/y/z: 5855 1163 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal widmowy kon serial: 2557156 x/y/z: 2503 554 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Grung serial: 2557556 x/y/z: 5854 1164 0
+[KILL] ktos z ekipy z konta: admin zajebal Straznik Zla serial: 2558489 x/y/z: 5851 1162 0
+[KILL] ktos z ekipy z konta: admin zajebal Straznik Zaglady serial: 2558495 x/y/z: 5854 1157 0
+[KILL] ktos z ekipy z konta: admin zajebal Xago - lord ogrow serial: 2558496 x/y/z: 5848 1157 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Wladca Umyslu serial: 2551456 x/y/z: 1877 3126 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal ognista szkapa serial: 2560325 x/y/z: 5854 1164 0
+[KILL] ktos z ekipy z konta: admin zajebal lama osoby: Qra'h serial: 2560684 x/y/z: 2554 628 0
+[KILL_NPC] ktos z ekipy z konta: bosor zajebal Nuks serial: 2561883 x/y/z: 5577 1858 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Be'elzebubba serial: 2562617 x/y/z: 5860 1160 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Exodus Niszczyciel serial: 2562619 x/y/z: 5858 1118 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Exodus Niszczyciel serial: 2562618 x/y/z: 5892 1171 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal 69 Exodus - Champion serial: 2562621 x/y/z: 5896 1179 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal ognik pozytywnej energii serial: 2562572 x/y/z: 2501 556 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiolak krysztalu serial: 2562689 x/y/z: 5858 1162 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiolak krysztalu serial: 2562696 x/y/z: 2563 482 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiolak krysztalu serial: 2562704 x/y/z: 2563 482 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal piekielny Ogar serial: 2562754 x/y/z: 5855 1165 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiolak krysztalu serial: 2562802 x/y/z: 2563 482 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Gerry - Pirat serial: 2531575 x/y/z: 2526 353 -5
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Jonah - Pirat serial: 2531584 x/y/z: 2525 353 -5
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Bront - Pirat serial: 2531561 x/y/z: 2513 349 -5
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Antonio - Obwolywacz serial: 2558496 x/y/z: 2691 656 0
+[KILL_GRACZA] ktos z ekipy z konta: kan zajebal Tristiandi Trinn na koncie terio serial: 2545234 x/y/z: 5143 2473 28
+[KILL_GRACZA] ktos z ekipy z konta: kan zajebal Buczus na koncie buczus21 serial: 2549161 x/y/z: 5141 2469 31
+[KILL_NPC] ktos z ekipy z konta: admin zajebal widmowy wielki zuk osoby: Qra'h serial: 2563620 x/y/z: 5857 1166 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal licz serial: 2563633 x/y/z: 1361 897 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal licz serial: 2563634 x/y/z: 1361 897 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Minax serial: 2564027 x/y/z: 5680 1412 69
+[KILL] ktos z ekipy z konta: admin zajebal Exodus Niszczyciel serial: 2564316 x/y/z: 3788 1224 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Straznik Piekla serial: 2566694 x/y/z: 5254 85 9
+[KILL_NPC] ktos z ekipy z konta: kan zajebal mag wampirow serial: 2561148 x/y/z: 5245 84 15
+[KILL_NPC] ktos z ekipy z konta: kan zajebal mag wampirow serial: 2566359 x/y/z: 5252 76 13
+[KILL_NPC] ktos z ekipy z konta: kan zajebal mag wampirow serial: 2566358 x/y/z: 5255 74 15
+[KILL_NPC] ktos z ekipy z konta: kan zajebal starozytny wampir serial: 2561152 x/y/z: 5266 94 16
+[KILL] ktos z ekipy z konta: fromasz zajebal Lord Brithish serial: 2494594 x/y/z: 1323 1624 55
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Builge - lord ogrow serial: 2568407 x/y/z: 5851 1166 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal sfinks serial: 2568431 x/y/z: 5855 1165 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal ognista szkapa serial: 2568434 x/y/z: 5861 1158 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Xugug - lord ogrow serial: 2568432 x/y/z: 5860 1159 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal sfinks serial: 2571070 x/y/z: 5872 1175 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal ognista szkapa serial: 2571075 x/y/z: 5866 1174 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal ognista szkapa serial: 2571076 x/y/z: 5865 1174 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal duzy smok serial: 2571080 x/y/z: 5862 1172 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal ssij serial: 2572493 x/y/z: 5859 1173 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Azmodaeus serial: 2572499 x/y/z: 5855 1177 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Bechard serial: 2572497 x/y/z: 5855 1176 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal widmowy wielki zuk osoby: Qra'h serial: 2572510 x/y/z: 5835 1166 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal opancerzony koszmar serial: 2572509 x/y/z: 5836 1166 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal widmowy wielki zuk serial: 2572512 x/y/z: 5835 1164 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal wielki chrzaszcz osoby: Qra'h serial: 2572527 x/y/z: 5219 165 5
+[KILL] ktos z ekipy z konta: admin zajebal IxodyniX - Champion serial: 2574329 x/y/z: 5852 1166 0
+[KILL] ktos z ekipy z konta: admin zajebal GorX - Champion serial: 2574346 x/y/z: 5852 1161 0
+[KILL] ktos z ekipy z konta: admin zajebal Exodus Niszczyciel serial: 2574360 x/y/z: 2047 807 0
+[KILL] ktos z ekipy z konta: admin zajebal 69 Exodus - Champion serial: 2575368 x/y/z: 5857 1167 0
+[KILL] ktos z ekipy z konta: admin zajebal 69 Exodus - Champion serial: 2575370 x/y/z: 5859 1163 0
+[KILL] ktos z ekipy z konta: admin zajebal 69 Exodus - Champion serial: 2575379 x/y/z: 5852 1167 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal lama osoby: Bandyta serial: 2576982 x/y/z: 2563 485 0
+[KILL_GRACZA] ktos z ekipy z konta: kan zajebal Qra'h na koncie admin serial: 2566678 x/y/z: 273 771 20
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Wielki zuk serial: 2576780 x/y/z: 2512 559 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Makalele na koncie kan serial: 2542659 x/y/z: 1324 1072 0
+[KILL] ktos z ekipy z konta: admin zajebal Makalele na koncie kan serial: 2542659 x/y/z: 1324 1072 0
+[KILL_GRACZA] ktos z ekipy z konta: kan zajebal Qra'h na koncie admin serial: 2566678 x/y/z: 2513 597 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Straznik Zla serial: 2583804 x/y/z: 5861 1163 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Straznik Zla serial: 2583844 x/y/z: 5921 1156 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal Straznik Zla serial: 2583870 x/y/z: 5835 1105 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal 69 Exodus - Champion serial: 2584680 x/y/z: 5858 1155 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal 69 Exodus - Champion serial: 2584684 x/y/z: 5857 1155 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal 69 Exodus - Champion serial: 2584678 x/y/z: 5858 1157 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Richelie serial: 2383060 x/y/z: 2047 852 0
+[KILL] ktos z ekipy z konta: admin zajebal IxodyniX - Champion serial: 2590432 x/y/z: 5859 1162 0
+[KILL] ktos z ekipy z konta: admin zajebal IxodyniX - Champion serial: 2590433 x/y/z: 5855 1164 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal koszmar serial: 2591166 x/y/z: 5856 1160 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal widmowy wielki zuk osoby: Qra'h serial: 2591178 x/y/z: 5809 1165 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2566678 x/y/z: 5861 1163 0
+[KILL] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2566678 x/y/z: 5859 1161 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2566678 x/y/z: 5859 1161 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal kon serial: 2591512 x/y/z: 5841 1159 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiolak krysztalu serial: 2593463 x/y/z: 2629 477 8
+[KILL] ktos z ekipy z konta: admin zajebal Rempero na koncie 12bartek21 serial: 2551487 x/y/z: 1929 2779 0
+[KILL] ktos z ekipy z konta: fromasz zajebal qrak serial: 2599559 x/y/z: 5854 1158 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Benson - Kupiec serial: 2601661 x/y/z: 5878 1164 0
+[KILL_NPC] ktos z ekipy z konta: kan zajebal trzy glowy potwor serial: 2604142 x/y/z: 6076 2975 32
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal Qra'h na koncie admin serial: 2566678 x/y/z: 5855 1163 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal DYNIAK na koncie dyniak serial: 2582183 x/y/z: 6109 3051 62
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal DYNIAK na koncie dyniak serial: 2582183 x/y/z: 6112 3052 62
+[KILL_NPC] ktos z ekipy z konta: admin zajebal lama serial: 2605203 x/y/z: 5855 1163 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal kon osoby: Kan serial: 2601566 x/y/z: 5852 1162 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal lama osoby: From serial: 2599556 x/y/z: 5850 1165 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Irian Wielki serial: 2611647 x/y/z: 2356 3485 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal duzy smok serial: 2611648 x/y/z: 2352 3493 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal koszmar serial: 2611652 x/y/z: 2352 3494 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal zywiol krwi serial: 2611645 x/y/z: 2355 3487 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal koszmar serial: 2611650 x/y/z: 2349 3492 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal duzy smok serial: 2611649 x/y/z: 2342 3491 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Gwareous Wielki serial: 2611651 x/y/z: 2340 3489 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal duzy smok serial: 2611646 x/y/z: 2344 3497 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal koszmar serial: 2611653 x/y/z: 2341 3490 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal mroczny elf - kaplan serial: 2611642 x/y/z: 2339 3492 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal koszmar serial: 2611643 x/y/z: 2356 3495 0
+[KILL_NPC] ktos z ekipy z konta: admin zajebal koszmar serial: 2611654 x/y/z: 2356 3481 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Aiwaz serial: 2611644 x/y/z: 2340 3479 3
+[KILL_NPC] ktos z ekipy z konta: admin zajebal Morail serial: 2613231 x/y/z: 5853 1167 0
+[KILL] ktos z ekipy z konta: admin zajebal Exodus Niszczyciel serial: 2613233 x/y/z: 5855 1167 0
+[KILL_GRACZA] ktos z ekipy z konta: admin zajebal UFO na koncie anlorxen serial: 2612580 x/y/z: 1812 2823 0

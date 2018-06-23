@@ -1,0 +1,112 @@
+use vitals;
+use uo;
+use cfgfile;
+use polsys;
+
+include "include/yesNo";
+include "include/clock";
+include "include/attributes";
+include "equip";
+include ":combat:rare/equip/seteq";
+
+var licz := 0;
+var licz2 := 0;
+var itemdesc := ReadConfigFile(":*:itemdesc");
+
+program HandleMods(who, item)
+
+
+  if(who.npctemplate)
+    return 1;
+  endif
+
+  if(!who.weapon.isa(POLCLASS_WEAPON)) //anti pol crash
+ 	var wrestl := CreateItemInBackPack(who, 0x1F020, 1);
+	EquipItem(who, wrestl);
+	return 0;
+  endif
+
+
+
+
+  if(item.isa(POLCLASS_WEAPON))
+    item.hitscript := ":combat:mainHitScript";
+  endif
+  
+
+  var tool := Cint(itemdesc[item.objtype].Tool); 
+  if(tool)
+	IncRevision(item);
+	return 1;
+  endif
+
+  
+  SetDonateStuff(item);
+  
+  if(!OrdinaryItemRestrictions(who, item))
+    return 0;
+  endif
+  
+  if(!ClassRestrictions(who, item))
+    return 0;
+  endif
+  if(IsMagicalItem(item) && !CountMagicItems(who, item))
+    SendSysMessage(who, "Nie mozesz zalozyc wiecej przedmiotow magicznych.",3,40);  
+    return 0;
+  endif
+
+  var count := 0;
+  foreach item in ListEquippedItems(who)
+  	if(GetObjProperty(item, "typ") == "FasterAttack")
+		count := count + 1;
+	endif
+  endforeach
+  if(count > 0)
+	who.weapon.speed_mod := 5;
+  else
+	who.weapon.speed_mod := 0;
+  endif
+
+
+  SetObjProperty( item, "EquippedAlready", 1 );
+  SetObjProperty(item, "#equippedby", who.serial);
+  MagicItems(who, item);
+  RareItems(who, item);
+	IncRevision(item);
+	return 1;
+endprogram
+
+
+
+
+function CheckForNewEraStuff(who, item)
+  var nazwa := itemdesc[item.objtype].Desc;
+	if(item.dmg_mod > 20)
+		item.dmg_mod := 20;
+    SendSysMessage(who, "Zmniejszam mody zalozonej broni do poziomu 20...", 3, 63);
+    if(Cint(GetObjProperty(item, "exceptional")))
+			item.name := nazwa + " [wyjatek]";
+		else
+			item.name := nazwa;
+    endif
+	endif
+	if(item.ar_mod > 20)
+		item.ar_mod := 20;
+    SendSysMessage(who, "Zmniejszam mody zalozonej broni do poziomu 20...", 3, 63);
+		if(Cint(GetObjProperty(item, "exceptional")))
+			item.name := nazwa + " [wyjatek]";
+		else
+			item.name := nazwa;;
+    endif
+	endif
+  if(item.quality == 1.6)
+    item.quality := EXP_QUALITY;
+    item.hp := item.maxhp;
+  elseif(item.quality > 1.6)
+    item.quality := IDEAL_QUALITY;
+    item.hp := item.maxhp;
+  endif
+  if(item.hp > item.maxhp)
+    item.hp := item.maxhp;
+  endif
+endfunction

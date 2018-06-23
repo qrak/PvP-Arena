@@ -1,0 +1,71 @@
+//////////////////////////////////////////////////////////
+// Client Version Checker
+// Version: 0.1
+// BY: Developer Link
+// link@zhparadyce.com
+//////////////////////////////////////////////////////////
+
+use uo;
+use os;
+use cfgfile;
+
+var flag:=0;
+
+exported function hookversion(who, byref pkt)
+  who := who; // prevents compile spam
+	if(who.cmdlevel)
+		return;
+	endif
+ sleep(5);
+ 
+var length := pkt.getint16(1);
+
+var versionstring := pkt.getstring(3, length-3);
+
+
+var converted := CAscZ( versionstring );		
+	  var newstring:={};
+
+		//remove nullterminator or any other funk
+		foreach thing in converted
+		  if(cint(thing)==0)
+		   continue;
+		  else
+		   newstring.append(thing);
+		  endif
+		endforeach
+		
+		var realstring := CChrZ( newstring );
+	
+
+var ClientsCfg := ReadConfigFile("clients");
+var AClients   := GetConfigStringArray(ClientsCfg["Avaiable"],"Client"); 
+var Pass := 0;
+
+print("Imie: "+who.name+"/"+who.acctname+" - Klient: ["+realstring+"]");
+
+    foreach Client in AClients
+        if(realstring[Client])
+            Pass := 1;
+            break;
+        endif
+    endforeach
+
+
+if(Pass == 1)
+ SendSysMessage(who, "Zaakceptowano wersje klienta.",3,63);
+else
+SendSysMessage(who, "Zla wersja klienta! Klient na www!",3,40);
+start_script("sleeper", who);
+
+endif
+return 1;
+
+endfunction
+
+program versionhook()
+  Print("Link's VERISON HOOK IS ENABLED.");
+  return 1;
+endprogram
+
+

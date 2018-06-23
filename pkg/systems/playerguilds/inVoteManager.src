@@ -1,0 +1,124 @@
+// A small program to make sure a new guild leader is elected
+
+use os;
+use guilds;
+
+include ":playerguilds:settings";
+include ":playerguilds:ranks";
+
+
+var settings := Guild_GetSettingsCfgElem("Settings");
+var votehours := CInt(settings.InVoteTime);
+var title_options;		// required by guilds.inc
+
+program inVoteManager()
+	Sleep(600);
+
+	while ( 1 )
+		syslog("Running Player Guilds InVote manager");
+		foreach guild in ( ListGuilds() )
+			if ( guild.GetProp("VotingBegan") );
+				var votingbegan := guild.GetProp("VotingBegan");
+				if ( (votingbegan + (votehours * 3600)) < ReadGameClock() )
+					processVotes(guild);
+				endif
+			endif
+		endforeach
+		syslog("Completed Player Guilds InVote manager");
+		Sleep(3600);	// check every hour
+	endwhile;
+endprogram
+
+
+function processVotes(byref guild)
+	// dictionary of voted for and number of votes
+	var thevotes := dictionary{};
+	if ( guild.GetProp("Votes") )
+		thevotes := guild.GetProp("Votes");
+	endif
+
+	// determine number of votes
+	var voted := array{};
+	if ( guild.GetProp("Voted") )
+		voted := len(guild.GetProp("Voted"));
+	endif
+
+	// is it more than the minimum more than 50% of members need to vote
+	var minvotes;
+	var nummembers := (guild.members).Size();
+	if ( !nummembers )
+		// nobody in the guild, so exit. Let cleanup remove it later
+		return 0;
+	else 
+		minvotes := CInt(nummembers / 2) + 1;	// ensure min is more than 50%
+	endif
+
+	// reset the in vote thing if minimum votes not received
+	if ( voted < minvotes )
+		restartElection(guild, "Niewystarczajaca ilosc glosow.");
+		return 0;
+	endif
+
+	var winner := 0;
+	var votes := thevotes.keys();
+	var tie := 0;
+	var count := 0;
+	var i;
+	var vote;
+
+	// vote counter lifted from Bishop's old guild package
+	for ( i := 1; i <= thevotes.Size(); i += 1 )
+		vote := thevotes[votes[i]];
+		if ( vote > count )
+			count := vote;
+			winner := votes[i];
+			tie := 0;
+		elseif ( vote == count )
+			tie := 1;
+		endif
+	endfor
+
+	if ( tie )
+		restartElection(guild, "Byl remis.");	
+	else
+		//winner is the serial number of the new gm
+		var guild_gm := SystemFindObjectBySerial(winner, SYSFIND_SEARCH_OFFLINE_MOBILES);
+		// cancel if the winner is not in the guild any more
+		if ( GetObjProperty(guild_gm, "Guild_ID") != guild.guildid )
+			restartElection(guild, "Zwyciezca opuscil gildie.");	
+		else
+			guild.EraseProp("VotingBegan");
+			guild.EraseProp("Votes");
+			guild.EraseProp("Voted");
+			guild.SetProp("Master", winner);
+
+			SetObjProperty(guild_gm, "Guild_ID", guild.guildid);
+			SetGuildRank(guild_gm, 5);
+			SetObjProperty(guild_gm, "Fealty", guild_gm.serial);
+			GuildTitle(guild_gm);
+
+			// log and send e-mails
+			foreach xmember in (guild.members)
+				if ( xmember.ip )
+					SendSysMessage(xmember, guild.GetProp("Name") + " ma nowego Mistrza - " + guild_gm.name + ".");
+				endif
+			endforeach
+		endif
+	endif
+
+	return 1;
+endfunction
+
+
+function restartElection(byref guild, reason)
+	guild.EraseProp("Votes");
+	guild.EraseProp("Voted");
+
+	guild.SetProp("Master", "In Vote");
+	guild.SetProp("VotingBegan", ReadGameClock());
+	foreach xmember in (guild.members)
+		if ( xmember.ip )
+			SendSysMessage(xmember, reason + " w trakcie glosowania na nowego Mistrza gildi " + guild.GetProp("Name"));
+		endif
+	endforeach
+endfunction

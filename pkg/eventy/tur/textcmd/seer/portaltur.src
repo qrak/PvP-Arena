@@ -1,0 +1,40 @@
+use os;
+use uo;
+
+program portaltur(who)
+
+SendSysMessage(who, "Skrypt wystartowal proces otwierania portalu. Przygotujsie do prowadzenia turnieju",3,1174);
+SetGlobalProperty("#zakazwalk", 1);
+BroadCast("ZAKAZ WALK ZOSTAL WLACZONY!",3,40);
+sleep(3);
+var i := 5;
+
+Detach();
+repeat
+BroadCast("Portal na Turniej PvP otworzy sie za " + i + " minut w Minoc.",3,89);
+i := i - 1;
+sleep(60);
+until(i <= 0);
+
+
+    var portal := CreateItemAtLocation( 2519, 558, 0, 0xaa7, 1);
+
+
+    if(portal)
+
+        BroadCast("Portal na Turniej PvP otwarty! Zamknie sie samoczynnie za trzy minuty i nie bedzie mozliwosci uczestnictwa.",3,89);
+        sleep(60);
+        BroadCast("Jeszcze 2 minuty do zamkniecia portalu",3,89);
+        sleep(60);
+        BroadCast("Jeszcze minuta pozostala do zamkniecia portalu!",3,40);
+        sleep(60);
+        BroadCast("Portal na Turniej PVP zamkniety!",3,89);
+        DestroyItem(portal);
+EraseGlobalProperty("#zakazwalk");
+BroadCast("Zakaz walk zostal wylaczony.",3,63);
+            sleep(5);
+SendSysMessage(who, who.name + " zaczynaj turniej",3,1174);
+
+    endif
+
+endprogram

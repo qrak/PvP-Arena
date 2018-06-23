@@ -1,0 +1,96 @@
+//16/12/2001 Humbool - pokazuj IP
+
+var layout := {
+	"nodispose",
+	"page 0",
+	"resizepic 0 20 2620 310 470",
+	"gumppic 15 50 2621",
+	"text 20 29 40 0"
+};
+
+var data := {
+	"Postacie i ich IP",
+	"Suma"
+};
+use polsys;
+use basic;
+use uo;
+
+program textcmd_online (character)
+	if (CInt(GetObjProperty(character, "#checkonline")) > ReadGameClock())
+		SendSysMessage(character, "Okno jest juz otwarte!");
+		return;
+	endif
+	SetObjProperty(character, "#checkonline", CInt(ReadGameClock() + 120));
+
+	FillInArrays(character);
+	var gump_return := SendDialogGump(character, layout, data);
+	if (!gump_return && gump_return[0] != 0)
+		SendSysMessage(character, "Zamknij inne okna nim bedzie mozna wywolac kolejne!");
+	endif
+	EraseObjProperty(character, "#checkonline");
+endprogram
+
+
+function FillInArrays(character)
+
+	var playercount := 0;
+	var pagecount := 1;
+	var ypos := 70;
+	var string_counter := 2;
+
+	layout.append ("page " + pagecount);
+	foreach player in EnumerateOnlineCharacters()
+		if (player.cmdlevel)
+			if (IsAGM(character))
+				playercount := playercount + 1;
+				data.append (playercount +". " + player.name + " [GM] IP:" + player.ip);
+				layout.append ("text 20 " + ypos + " 40 " + string_counter);
+				string_counter := string_counter + 1;
+				ypos:= ypos + 20;
+			endif
+		else
+			playercount := playercount + 1;
+			layout.append ("text 20 " + ypos + " 40 " + string_counter);
+			string_counter := string_counter + 1;
+			ypos:= ypos + 20;
+
+			data.append (playercount +". " + player.name + " IP:" + player.ip);
+
+		endif
+
+		if( playercount > 19 && playercount % 20 == 0)
+			layout.append ("button 285 30 2648 2647 0 " + (pagecount + 1));
+			pagecount := pagecount + 1;
+			layout.append ("page " + pagecount);
+			ypos := 70;
+			layout.append ("button 255 30 2650 2651 0 " + (pagecount - 1));
+		endif
+		/*case (playercount)
+			20:
+			40:
+			60:
+			80:
+			100:
+			120:
+			140:
+			160:
+			180:
+				layout.append ("button 285 30 2648 2647 0 " + (pagecount + 1));
+				pagecount := pagecount + 1;
+				layout.append ("page " + pagecount);
+				ypos := 70;
+				layout.append ("button 255 30 2650 2651 0 " + (pagecount - 1));
+		endcase*/
+	endforeach
+endfunction
+
+
+
+function IsAGM(character)
+	if (character.cmdlevel)
+		return 1;
+	endif
+
+	return 0;
+endfunction

@@ -1,0 +1,18 @@
+use uo;
+use os;
+use cfgfile;
+
+include "include/zlapqraka";
+include ":zlapqraka:initializer";
+
+program StoneControl()
+	while(1)
+		if(CheckQrakHour())
+			if(!CheckIfActiveQrak())
+				start_script(":zlapqraka:faza1");
+			endif
+		endif
+		sleep(60);
+	endwhile
+endprogram
+

@@ -1,0 +1,25 @@
+use uo;
+
+program testmenu(who)
+
+var menu := CreateMenu("Co chcesz wykonac:");
+AddMenuItem(menu, 0x181D, "alchemiczny symbol");
+AddMenuItem(menu, 0x181E, "alchemiczny symbol");
+AddMenuItem(menu, 0x181F, "alchemiczny symbol");
+AddMenuItem(menu, 0x1820, "alchemiczny symbol");
+AddMenuItem(menu, 0x1821, "alchemiczny symbol");
+AddMenuItem(menu, 0x1822, "alchemiczny symbol");
+AddMenuItem(menu, 0x1823, "alchemiczny symbol");
+AddMenuItem(menu, 0x1824, "alchemiczny symbol");
+AddMenuItem(menu, 0x1825, "alchemiczny symbol");
+AddMenuItem(menu, 0x1826, "alchemiczny symbol");
+AddMenuItem(menu, 0x1827, "alchemiczny symbol");
+AddMenuItem(menu, 0x1828, "alchemiczny symbol");
+
+var wybor := SelectMenuItem2(who, menu);
+if(!wybor.index)
+	SendSysMessage(who, "Anulowano.");
+	return 0;
+endif
+SendSysMessage(who, "Wybrano: " + wybor.objtype + ".");
+endprogram

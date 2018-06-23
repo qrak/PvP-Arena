@@ -1,0 +1,166 @@
+[05/07 00:45:21] Qra'h wlozyl do plecaka mapa skarbow poziom: 5 w ilosci: 1 stworzonego przez Qra'h
+[05/07 00:45:23] Qra'h wlozyl do plecaka mapa skarbow poziom: 5 w ilosci: 1 stworzonego przez Qra'h
+[05/10 13:43:10] DYNIAK wlozyl do plecaka toga w ilosci: 1 stworzonego przez DARK
+[05/10 14:54:19] DYNIAK wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK
+[05/10 14:54:21] DYNIAK wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK
+[05/10 14:54:57] DYNIAK wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK
+[05/10 15:21:11] DYNIAK wlozyl do plecaka bilet na zwierza lama osoby: DARK w ilosci: 1 stworzonego przez DARK
+[05/10 15:47:58] PrzeKozak wlozyl do plecaka 90 sztaby GorX-a w ilosci: 90 stworzonego przez DARK
+[05/10 15:48:22] PrzeKozak wlozyl do plecaka 3000 xilon w ilosci: 3000 stworzonego przez DARK
+[05/10 16:05:11] PrzeKozak wlozyl do plecaka 50000 zloto krolewskies w ilosci: 50000 stworzonego przez DARK
+[05/10 16:05:12] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:05:15] PrzeKozak wlozyl do plecaka 50000 zloto krolewskies w ilosci: 50000 stworzonego przez DARK
+[05/10 16:05:20] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:05:22] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:05:24] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:05:29] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:05:37] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:05:45] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:05:55] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:05:56] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:05:58] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:05:59] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:06:12] PrzeKozak wlozyl do plecaka elfi krotki luk idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:06:25] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:06:28] PrzeKozak wlozyl do plecaka 4 power scroll w ilosci: 4 stworzonego przez DARK
+[05/10 16:06:31] PrzeKozak wlozyl do plecaka skorzany utwardzany biustonosz zuzywania many w ilosci: 1 stworzonego przez DARK
+[05/10 16:06:35] PrzeKozak wlozyl do plecaka 400 sztaby GorX-a w ilosci: 400 stworzonego przez DARK
+[05/10 16:07:54] PrzeKozak wlozyl do plecaka 4 power scroll w ilosci: 4 stworzonego przez DARK
+[05/10 16:08:08] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:08:10] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:08:12] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:08:48] PrzeKozak wlozyl do plecaka power scroll magicznej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:09:28] PrzeKozak wlozyl do plecaka power scroll magicznej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:09:30] PrzeKozak wlozyl do plecaka power scroll magii w ilosci: 1 stworzonego przez DARK
+[05/10 16:09:58] PrzeKozak wlozyl do plecaka elfi krotki luk idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:09:59] PrzeKozak wlozyl do plecaka tarcza turniejowa szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/10 16:10:02] PrzeKozak wlozyl do plecaka damska utwardzana tunika szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/10 16:10:06] PrzeKozak wlozyl do plecaka kurtka ninja [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:10:10] PrzeKozak wlozyl do plecaka rekawice odwagi [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:10:27] PrzeKozak wlozyl do plecaka kurtka ninja [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:02] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:03] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:05] PrzeKozak wlozyl do plecaka halabarda idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:07] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:18] PrzeKozak wlozyl do plecaka halabarda idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:20] PrzeKozak wlozyl do plecaka 50000 zloto krolewskies w ilosci: 50000 stworzonego przez DARK
+[05/10 16:14:22] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:14:23] PrzeKozak wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:24] PrzeKozak wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:26] PrzeKozak wlozyl do plecaka 10000 zloto krolewskies w ilosci: 10000 stworzonego przez DARK
+[05/10 16:14:27] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:14:30] PrzeKozak wlozyl do plecaka topor wysysania energii w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:32] PrzeKozak wlozyl do plecaka yumi szansy na uderzenie w ilosci: 1 stworzonego przez DARK
+[05/10 16:14:33] PrzeKozak wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/10 16:15:00] PrzeKozak wlozyl do plecaka power scroll magicznej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:19:18] PrzeKozak wlozyl do plecaka kula bossow w ilosci: 1 stworzonego przez DARK
+[05/10 16:19:23] PrzeKozak wlozyl do plecaka kula bossow w ilosci: 1 stworzonego przez DARK
+[05/10 16:19:25] PrzeKozak wlozyl do plecaka kula bossow w ilosci: 1 stworzonego przez DARK
+[05/10 16:19:27] PrzeKozak wlozyl do plecaka kula bossow w ilosci: 1 stworzonego przez DARK
+[05/10 16:22:38] PrzeKozak wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:22:43] PrzeKozak wlozyl do plecaka 3 kula bossows w ilosci: 3 stworzonego przez DARK
+[05/10 16:22:48] PrzeKozak wlozyl do plecaka 6 kula bossows w ilosci: 6 stworzonego przez DARK
+[05/10 16:22:50] PrzeKozak wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:22:51] PrzeKozak wlozyl do plecaka skorzana sukienka obrony w ilosci: 1 stworzonego przez DARK
+[05/10 16:22:53] PrzeKozak wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/10 16:22:55] PrzeKozak wlozyl do plecaka 400 sztaby GorX-a w ilosci: 400 stworzonego przez DARK
+[05/10 16:22:57] PrzeKozak wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:23:00] PrzeKozak wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:05] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:25:07] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:25:09] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:25:10] PrzeKozak wlozyl do plecaka 60000 zloto krolewskies w ilosci: 60000 stworzonego przez DARK
+[05/10 16:25:12] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:25:14] PrzeKozak wlozyl do plecaka 40000 zloto krolewskies w ilosci: 40000 stworzonego przez DARK
+[05/10 16:25:18] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:25] PrzeKozak wlozyl do plecaka elfi krotki luk idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:27] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:28] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:30] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:32] PrzeKozak wlozyl do plecaka power scroll w ilosci: 1 stworzonego przez DARK
+[05/10 16:25:48] PrzeKozak wlozyl do plecaka power scroll kowalstwa w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:16] DYNIAK wlozyl do plecaka 2 power scroll magicznej madroscis w ilosci: 2 stworzonego przez DARK
+[05/10 16:26:18] DYNIAK wlozyl do plecaka 2 power scroll magiis w ilosci: 2 stworzonego przez DARK
+[05/10 16:26:26] DYNIAK wlozyl do plecaka elfi krotki luk idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:29] DYNIAK wlozyl do plecaka elfi krotki luk idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:32] PrzeKozak wlozyl do plecaka power scroll jasnej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:33] DYNIAK wlozyl do plecaka wlocznia idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:36] DYNIAK wlozyl do plecaka halabarda idealu w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:41] DYNIAK wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:42] DYNIAK wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:47] DYNIAK wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:51] PrzeKozak wlozyl do plecaka power scroll jasnej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:52] DYNIAK wlozyl do plecaka skorzana sukienka obrony w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:55] DYNIAK wlozyl do plecaka skorzana sukienka obrony w ilosci: 1 stworzonego przez DARK
+[05/10 16:26:58] DYNIAK wlozyl do plecaka skorzany utwardzany biustonosz zuzywania many w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:01] DYNIAK wlozyl do plecaka rekawice odwagi [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:05] DYNIAK wlozyl do plecaka naramienniki pierscieniowe szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:10] PrzeKozak wlozyl do plecaka yumi szansy na uderzenie w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:12] DYNIAK wlozyl do plecaka tarcza turniejowa szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:14] PrzeKozak wlozyl do plecaka yumi szansy na uderzenie w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:14] DYNIAK wlozyl do plecaka damska utwardzana tunika szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:17] DYNIAK wlozyl do plecaka luk kompozytowy obrazen w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:20] DYNIAK wlozyl do plecaka topor wysysania energii w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:23] PrzeKozak wlozyl do plecaka 400 sztaby GorX-a w ilosci: 400 stworzonego przez DARK
+[05/10 16:27:28] PrzeKozak wlozyl do plecaka 400 sztaby GorX-a w ilosci: 400 stworzonego przez DARK
+[05/10 16:27:39] DYNIAK wlozyl do plecaka power scroll magicznej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:43] DYNIAK wlozyl do plecaka power scroll jasnej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:56] DYNIAK wlozyl do plecaka power scroll magii w ilosci: 1 stworzonego przez DARK
+[05/10 16:27:58] PrzeKozak wlozyl do plecaka power scroll jasnej madrosci w ilosci: 1 stworzonego przez DARK
+[05/10 16:35:16] PrzeKozak wlozyl do plecaka 20 sztaby GorX-a w ilosci: 20 stworzonego przez DARK
+[05/10 16:35:20] PrzeKozak wlozyl do plecaka 20 sztaby GorX-a w ilosci: 20 stworzonego przez DARK
+[05/10 16:35:24] PrzeKozak wlozyl do plecaka 20 sztaby GorX-a w ilosci: 20 stworzonego przez DARK
+[05/10 16:35:28] PrzeKozak wlozyl do plecaka 20 sztaby GorX-a w ilosci: 20 stworzonego przez DARK
+[05/10 16:35:31] PrzeKozak wlozyl do plecaka 20 sztaby GorX-a w ilosci: 20 stworzonego przez DARK
+[05/10 16:37:16] PrzeKozak wlozyl do plecaka 80 sztaby GorX-a w ilosci: 80 stworzonego przez DARK
+[05/10 17:24:15] Miviel wlozyl do plecaka tarcza turniejowa szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/10 17:25:29] Miviel wlozyl do plecaka halabarda idealu w ilosci: 1 stworzonego przez DARK
+[05/10 17:26:18] Miviel wlozyl do plecaka rekawice odwagi [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 17:26:21] Miviel wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 17:27:13] Miviel wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 17:28:31] Miviel wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 17:28:37] Miviel wlozyl do plecaka rekawice odwagi [czesc setu] w ilosci: 1 stworzonego przez DARK
+[05/10 17:38:18] DYNIAK wlozyl do plecaka 300 sztaby GorX-a w ilosci: 300 stworzonego przez DARK
+[05/10 17:38:36] DYNIAK wlozyl do plecaka 300 sztaby GorX-a w ilosci: 300 stworzonego przez DARK
+[05/10 18:18:04] Kristin Xeriz wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/10 18:18:07] Kristin Xeriz wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/10 18:18:17] Kristin Xeriz wlozyl do plecaka toga w ilosci: 1 stworzonego przez DARK
+[05/10 18:18:22] Kristin Xeriz wlozyl do plecaka toga w ilosci: 1 stworzonego przez DARK
+[05/10 18:18:53] Kristin Xeriz wlozyl do plecaka toga w ilosci: 1 stworzonego przez DARK
+[05/10 18:19:55] Kristin Xeriz wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/10 18:19:58] Kristin Xeriz wlozyl do plecaka okragla tarcza szansy na obrone w ilosci: 1 stworzonego przez DARK
+[05/11 12:43:48] PrzeKozak wlozyl do plecaka 2 power scroll kowalstwas w ilosci: 2 stworzonego przez DARK
+[05/11 12:44:04] PrzeKozak wlozyl do plecaka elfi krotki luk idealu w ilosci: 1 stworzonego przez DARK
+[05/11 12:44:07] PrzeKozak wlozyl do plecaka luk kompozytowy obrazen w ilosci: 1 stworzonego przez DARK
+[05/11 12:44:12] PrzeKozak wlozyl do plecaka tarcza turniejowa szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/11 12:44:32] PrzeKozak wlozyl do plecaka damska utwardzana tunika szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/11 12:44:34] PrzeKozak wlozyl do plecaka naramienniki pierscieniowe szybszego ataku w ilosci: 1 stworzonego przez DARK
+[05/11 12:45:21] PrzeKozak wlozyl do plecaka wlocznia idealu w ilosci: 1 stworzonego przez DARK
+[05/11 12:45:23] PrzeKozak wlozyl do plecaka halabarda idealu w ilosci: 1 stworzonego przez DARK
+[05/11 12:45:44] PrzeKozak wlozyl do plecaka skorzana sukienka obrony w ilosci: 1 stworzonego przez DARK
+[05/11 12:46:28] PrzeKozak wlozyl do plecaka skorzany utwardzany biustonosz zuzywania many w ilosci: 1 stworzonego przez DARK
+[05/11 13:08:43] PrzeKozak wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK
+[05/11 14:22:46] DYNIAK wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK
+[05/12 13:10:44] PrzeKozak wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/12 13:11:26] PrzeKozak wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/12 18:55:29] Kristin Xeriz wlozyl do plecaka Domek UFO ZK w ilosci: 1 stworzonego przez Mariii serial: 1831241981
+[05/12 19:03:30] Kristin Xeriz wlozyl do plecaka Domek UFO ZK w ilosci: 1 stworzonego przez Mariii serial: 1831241981
+[05/12 19:03:35] Kristin Xeriz wlozyl do plecaka Domek UFO ZK w ilosci: 1 stworzonego przez Mariii serial: 1831241981
+[05/12 19:04:13] Kristin Xeriz wlozyl do plecaka Domek UFO ZK w ilosci: 1 stworzonego przez Mariii serial: 1831241981
+[05/12 19:04:17] Kristin Xeriz wlozyl do plecaka Domek UFO ZK w ilosci: 1 stworzonego przez Mariii serial: 1831241981
+[05/12 20:59:24] Miviel wlozyl do plecaka nogawice honoru [czesc setu] w ilosci: 1 stworzonego przez DARK serial: 1831223898
+[05/13 14:09:03] KaTaKriS wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870
+[05/13 14:21:24] KaTaKriS wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/13 14:21:24] KaTaKriS wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870
+[05/13 14:32:21] KaTaKriS wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/13 14:32:21] KaTaKriS wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870
+[05/13 14:47:35] KaTaKriS wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/13 14:47:35] KaTaKriS wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870
+[05/13 15:06:27] DYNIAK wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/13 15:06:39] DYNIAK wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870
+[05/13 15:54:55] DYNIAK wlozyl do plecaka elfi luk kompozytowy lodu w ilosci: 1 stworzonego przez DARK serial: 1831079859
+[05/13 16:47:55] Kristin Xeriz wlozyl do plecaka runebook [ladunki: 100] w ilosci: 1 stworzonego przez Mariii serial: 1831249514
+[05/13 16:54:10] Kristin Xeriz wlozyl do plecaka wyspa w ilosci: 1 stworzonego przez Mariii serial: 1831246204
+[05/13 18:30:02] Kristin Xeriz wlozyl do plecaka Luk Smierci [artefakt] [niezniszczalny] w ilosci: 1 stworzonego przez Mariii serial: 1831058873
+[05/13 20:41:51] DYNIAK wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870
+[05/13 20:42:06] DYNIAK wlozyl do plecaka srebrny naszyjnik szybszego ataku w ilosci: 1 stworzonego przez DARK serial: 1831223870

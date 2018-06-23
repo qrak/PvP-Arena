@@ -1,0 +1,52 @@
+use os;
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program earthquake( parms )
+    var circle := 8;
+    var delivery := "notarget";
+    var noto := "harmful";
+    var result := maincast(parms, delivery, circle, noto, 57);
+    if(result == 0)
+        return 0;
+    endif
+    var caster := result[1];
+    //var cast_on := result[2];
+    var range := 8;
+    var victims := ListMobilesNearLocation(caster.x, caster.y, caster.z, range);
+    PlaySoundEffect( caster, SFX_220 );
+    var magery := Cint(GetEffectiveSkill(caster, SKILLID_MAGERY));
+    var eval := Cint(GetEffectiveSkill(caster, SKILLID_EVALINT));
+    var int := GetIntelligence(caster);
+    var bonus := 0;
+    if(caster.ip)
+        bonus := int/5;
+    endif
+    var dmg := ((magery + eval)/3) + bonus;
+    var cfg := ReadConfigFile("::npcdesc");
+    foreach mobile in victims
+        mobile.hidden := 0;
+        if(CheckLineOfSight(caster, mobile))
+            if((mobile.serial != caster.serial) and (mobile.cmdlevel < 2))
+                SetObjProperty(mobile, "LastHit", {caster.name,caster.serial, "earthquake" });
+                PlaySoundEffect( mobile, SFX_SPELL_EARTHQUAKE );
+                PlayObjectCenteredEffect( mobile, FX_SMOKE, 7, 7);
+                var odbij := cfg[mobile.npctemplate].Resuje;
+                var miekki := cfg[mobile.npctemplate].Leszcz;
+                if(odbij == "ziemia")
+                    dmg := dmg / 2;
+                    PrintTextAbove(mobile, "*absorbuje energie*");
+                elseif(miekki == "ziemia")
+                    dmg := dmg * 2;
+                    PrintTextAbove(mobile, "*dostaje podwojny cios energii*");
+                endif
+                ApplyRawDamage( mobile, Resisted(circle,caster,mobile,dmg) );
+                dmg := dmg/2; // ponizej applyrawdamage poniewaz zmniejsza dmg o polowe dopiero po 1 mobie
+            endif
+        endif
+    endforeach
+    sleep(2);
+    PlaySoundEffect( caster, SFX_223 );
+endprogram

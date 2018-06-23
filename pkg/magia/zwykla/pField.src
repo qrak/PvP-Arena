@@ -1,0 +1,26 @@
+// crash
+
+use os;
+use uo;
+
+include "include/client";
+include "include/objtype";
+
+program parafield(parms)
+  var cast_on := parms[1];
+  var boss := parms[2];
+  SetScriptController(boss);
+  SetObjProperty(cast_on,"#pfield", 1);
+  if(Cint(GetObjProperty(cast_on, "#nocast")))
+    SendSysMessage(boss, "Nie mozesz rzucac czarow ofensywnych w ta osobe.",3,40);
+    return 0;
+  endif
+  PlayStationaryEffect( cast_on.x, cast_on.y, cast_on.z, FX_CURSE_EFFECT, 10, 0xa, 0 );
+  PlaySoundEffect( cast_on, SFX_SPELL_PARALYZE );
+  Detach();
+  cast_on.paralyzed := 1;
+  sleep(15);
+  cast_on.paralyzed := 0;
+  sleepms(500);
+  EraseObjProperty(cast_on,"#pfield");
+endprogram

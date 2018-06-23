@@ -1,0 +1,20 @@
+use uo;
+
+program gom(who)
+
+SendSysMessage(who, "Kogo chcesz wyslac do minoc?",3,63);
+
+var cel := Target(who);
+
+if (cel)
+
+MoveObjectToLocation(cel, 2504, 562, 0);
+
+else
+
+SendSysMessage(who, "Baranie naucz sie celowac!",3,38);
+
+endif
+
+endprogram
+

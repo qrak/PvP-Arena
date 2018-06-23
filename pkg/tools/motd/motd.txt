@@ -1,0 +1,7 @@
+<BASEFONT COLOR=\"#FFFFFF\" SIZE="0">
+<CENTER><B>** Prosze przeczytac **</B></CENTER>
+<BR>
+<U>Witamy na PvP Arena</U>
+<BR>
+<B>o</B> <A HREF="monar.no-ip.biz">PvP Arena - strona oficjalna</A><BR>
+<B>o</B> <A HREF="irc://arch.edu.pl/ultima-pvp">IRC</A>

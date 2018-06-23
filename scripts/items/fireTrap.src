@@ -1,0 +1,14 @@
+use vitals;
+use util;
+use uo;
+
+program flamestriketrap(who, item)
+  Detach();
+  if(who.dead)
+    return;
+  endif
+  PlayStationaryEffect(item.x, item.y, item.z, 0x3709, 0x0a, 0x1e);
+  PlaySoundEffect(item, 0x226);
+  var dmg := RandomInt(20) + 30;
+  ApplyRawDamage(who, dmg);
+endprogram

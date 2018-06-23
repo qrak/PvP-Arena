@@ -1,0 +1,14 @@
+use uo;
+use os;
+
+program checkskrznia(who)
+	var chestserial := GetGlobalProperty("MysteryChestSerial");
+	var skrzynia := SystemFindObjectBySerial(chestserial[2]);
+	if(!skrzynia[2])
+		SendSysMEssage(who, "Skrzynia z glowna nagroda jeszcze sie nie zrespawnowala",3,63);
+		sleep(2);
+		SendSysMessage(who, "Nastapi to za " + (chestserial[1] - ReadGameClock()) + " sekund.",3,63);
+	else
+		SendSysMessage(who, "Skrzynia z glowna nagroda jest na swoim miejscu.",3,63);
+	endif
+endprogram

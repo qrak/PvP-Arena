@@ -1,0 +1,50 @@
+
+use uo;
+use os;
+
+include "include/attributes";
+include ":poisonwatcher:poisons";
+
+program default_poison(params)
+
+	var who := params[1];
+	var attacker := params[2];
+	var level := CInt(params[3]);
+
+	if (!level)
+		level := 1;
+	endif
+
+	if (attacker)
+		SetScriptController(attacker);
+	endif
+
+	var dmg := GetPoisonDamagePerTick(who, level);
+	var time := ReadGameClock() + 10 + (level * 6);
+	RecalcVitals(who);
+	repeat
+		PrintTextAbove(who, "*zatruty*", 3, 66);
+		var lasthitparms := {attacker.name, attacker.serial, "poison"};
+		SetObjProperty(who, "LastHit", lasthitparms );
+		ApplyRawDamage(who, dmg);
+		sleep(7);
+	until(ReadGameClock() > time);
+	who.setpoisoned(0);
+	CurePoison(who, 120, "defaultPoison", 5);
+	RecalcVitals(who);
+endprogram
+
+function GetPoisonDamagePerTick(who, level)
+
+    if(level < 1)
+        level := 1;
+    elseif(level >= 10)
+        level := 10;
+    endif
+    if(!who.npctemplate)
+			return CInt(level * 3);
+		else
+			return CInt(level * 10);
+		endif
+
+endfunction

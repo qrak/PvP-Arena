@@ -1,0 +1,52 @@
+use vitals;
+use attributes;
+use basicio;
+use cfgfile;
+use uo;
+use basic;
+
+include "include/client";
+include "include/attributes";
+include ":poisonwatcher:poisons";
+include "include/spellRestrictions";
+
+program poisondamage (passparms)
+  var who      := passparms[1];
+  var attacker := passparms[2];
+  var weapon   := passparms[3];
+  var level    := passparms[4];
+  var pfield   := Cint(passparms[5]);
+
+    
+  if(getobjproperty(who, "evilomen"))
+  level := level  +  1;
+  Eraseobjproperty(who, "evilomen");
+  endif
+
+  if(who.npctemplate)
+    var npccfg := ReadConfigFile("::npcdesc");
+    if(who.npctemplate == "bladespirit")
+      return;
+    endif
+  endif
+  
+    if(!CheckAttack(attacker, who))
+        return 0;
+    endif
+  
+    if(IsNoob(who) || IsNoob(attacker))
+      return 0;
+    endif
+    
+  if(ListPoisonsByType(who, "defaultPoison").size() == 0)
+	  AddPoison(who, "defaultPoison", 120, attacker, level);
+  endif
+    SetScriptController( attacker );
+  if(pfield == 1)
+    send_attack(who, attacker, 159);
+    PrintTextAbovePrivate(who, "*yh*", who);
+    var dmg := Resisted(5, attacker, who, CInt(GetAttribute(attacker, "magery") / 50));
+    ApplyRawDamage(who, dmg);
+  endif
+endprogram
+

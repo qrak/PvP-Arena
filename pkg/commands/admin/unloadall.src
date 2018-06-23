@@ -1,0 +1,7 @@
+use os;
+use uo;
+
+program unload(who)
+Unload_Scripts();
+SendSysMessage(who, "Unloadowanie skryptow zakonczone skurwysynu!",3,40);
+endprogram

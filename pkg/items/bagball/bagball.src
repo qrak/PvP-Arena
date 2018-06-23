@@ -1,0 +1,6 @@
+use uo;
+
+program pilka(who)
+    SendSysMessage(who, "Kliknij na mnie jeszcze raz to cie zapierdole!",3,40);
+    return 0;
+endprogram

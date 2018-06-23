@@ -1,0 +1,112 @@
+use uo;
+
+include ":ctf:ctf";
+
+program walkontile(who, tile)
+
+    var tileteam := GetCtfTeam(tile);
+    var whoteam := GetCtfTeam(who); 
+    var flaga := 0;
+
+
+    if(!whoteam)
+        SendSysMessage(who, "Nie masz druzyny!",3,40);
+        return 0;
+    endif
+    
+    foreach flag in EnumerateItemsInContainer(who.backpack)
+        if(flag.objtype == 0x7034)
+            flaga := 1;
+        endif
+    endforeach
+    
+    if( (whoteam == tileteam) && flaga)
+        GetTeamPoint(who, tileteam);
+    endif
+
+endprogram
+
+function GetTeamPoint(who, tileteam)
+    var coords := {};
+    var checkbase := 0;
+    
+    if(tileteam == "red")
+        coords := BaseTileXYZ(RedFlag());
+        
+        foreach podloga in ListItemsAtLocation( RedFlag().x, RedFlag().y, RedFlag().z, _DEFAULT_REALM );
+            if(podloga.objtype == 0x35B7)
+                checkbase := 1;
+            endif
+        endforeach
+        
+        if((RedFlag().x != Cint(coords[1]) || RedFlag().y != Cint(coords[2]) || RedFlag().z != Cint(coords[3])) && checkbase == 0)
+            SendSysMessage(who, "Nie mozesz zdobyc punktu gdyz flaga Waszej druzyny nie jest na miejscu.",3,40);
+            return 0;
+        endif
+
+    elseif(tileteam == "blue")
+        coords := BaseTileXYZ(BlueFlag());
+        
+        foreach podloga in ListItemsAtLocation( BlueFlag().x, BlueFlag().y, BlueFlag().z, _DEFAULT_REALM );
+            if(podloga.objtype == 0x35B7)
+                checkbase := 1;
+            endif
+        endforeach
+        
+        if((BlueFlag().x != Cint(coords[1]) || BlueFlag().y != Cint(coords[2]) || BlueFlag().z != Cint(coords[3])) && checkbase == 0)
+            SendSysMessage(who, "Nie mozesz zdobyc punktu gdyz flaga Waszej druzyny nie jest na miejscu.",3,40);
+            return 0;
+        endif
+    endif
+    
+    var bluepoints := Cint(GetGlobalProperty("CtfBluePoints"));
+    var redpoints := Cint(GetGlobalProperty("CtfRedPoints"));
+
+    if(tileteam == "red") // jezeli gracz niebieski stanie u czerwonych w bazie - niebiescy otrzymuja punkt
+        MsgToCtfPlayers("Druzyna czerwonych zdobywa punkt! Gratulacje dla " + who.name, 89);
+        SetGlobalProperty("CtfRedPoints", redpoints + 1);
+        redpoints := Cint(GetGlobalProperty("CtfRedPoints"));
+        bluepoints := Cint(GetGlobalProperty("CtfBluePoints"));        
+        MsgToCtfPlayers("Druzyna czerwonych ma punktow: " + redpoints, 89);        
+        MsgToCtfPlayers("Druzyna niebieskich ma punktow: " + bluepoints, 89);        
+    elseif(tileteam == "blue") // jak wyzej tyle ze vice versa
+        MsgToCtfPlayers("Druzyna niebieskich zdobywa punkt! Gratulacje dla " + who.name, 89);
+        SetGlobalProperty("CtfBluePoints", bluepoints + 1);
+        bluepoints := Cint(GetGlobalProperty("CtfBluePoints"));
+        redpoints := Cint(GetGlobalProperty("CtfRedPoints"));
+        MsgToCtfPlayers("Druzyna czerwonych ma punktow: " + redpoints, 89);        
+        MsgToCtfPlayers("Druzyna niebieskich ma punktow: " + bluepoints, 89);   
+    endif
+    if(Cint(!GetObjProperty(who,"FlagsScored")))
+        SetObjProperty(who, "FlagsScored", 0);
+    endif
+    SetObjProperty(who, "FlagsScored", Cint(GetObjProperty(who,"FlagsScored") + 1));
+    RoundStuff();
+endfunction
+
+function RoundStuff()
+    
+    RedFlag().movable := 1;
+    BlueFlag().movable := 1;    
+    MoveObjectToBase(RedFlag());
+    MoveObjectToBase(BlueFlag());
+    RedFlag().movable := 0;
+    BlueFlag().movable := 0;
+    
+    foreach gracz in EnumerateOnlineCharacters()
+        if(GetCtfTeam(gracz))
+            MoveObjectToBase(gracz);
+        endif
+    endforeach
+    
+    PlayObjectCenteredEffect( RedFlag(), 0x3709, 0x0a, 0x1e );
+    PlayObjectCenteredEffect( BlueFlag(), 0x3709, 0x0a, 0x1e );
+    PlaySoundEffect( RedFlag(), 0x5B5 );
+    PlaySoundEffect( BlueFlag(), 0x5B5 );
+
+
+    start_script(":ctf:ctfphase/phase3");       
+
+
+endfunction
+

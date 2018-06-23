@@ -1,0 +1,354 @@
+use uo;
+use file;
+
+include ":gumps:gumps";
+include "include/attributes";
+include "include/client";
+include "include/yesNo";
+
+var ludzie, itemy;
+
+program textcmd_objmaster( who )
+  while(who)
+    if(!BuildGump(who))
+      break;
+    endif
+  endwhile
+endprogram
+
+function BuildGump(who)
+  GFInitGump(0, 0);
+  GFNoDispose();
+  GFPage(0);
+  GFResizePic(  10,   10, 5120, 310, 400); 
+  GFResizePic( 20,  20, 5054, 290, 380); 
+  var close   := GFButtonID(220, 370, 242, 241, 1);
+  GFTextLine( 80, 30, 55, "Menu zarzadzania questami");
+  var quest := GetGlobalProperty("Quest");
+  var nagroda := GetGlobalProperty("QuestNagroda");
+  ludzie := GetGlobalProperty("QuestLudzie");
+  itemy := GetGlobalProperty("QuestItemy");
+  if(!ludzie)
+    ludzie := {};
+  endif
+  if(!itemy)
+    itemy := {};
+  endif
+  if(!nagroda)
+    nagroda := 50; 
+    SetGlobalProperty("QuestNagroda", 50);
+  endif
+  var rozpocznij, zakoncz, dodaj, usun, loot, lootowanie, msg, zmiennagrode, dodaj_item, sprawdz_graczy, sprawdz_itemy;
+  if(!quest)
+     GFTextLine( 80, 70, 45, "Rozpocznij nowy quest");
+     rozpocznij  := GFButtonID(40, 70, 4005, 4007, 98);
+  else
+     GFTextLine( 80, 60, 45, "Dodaj uczestnika");
+     dodaj  := GFButtonID(40, 60, 4005, 4007, 98);
+     GFTextLine( 80, 90, 45, "Usun uczestnika");
+     usun  := GFButtonID(40, 90, 4005, 4007, 98);
+     var lootowanie := GetGlobalProperty("QuestLoot");
+     if(!lootowanie)
+        GFTextLine( 80, 120, 45, "Zabron lootowania");
+        loot  := GFButtonID(40, 120, 4005, 4007, 98);
+     else
+        GFTextLine( 80, 120, 45, "Zezwol na lootowanie");
+        loot  := GFButtonID(40, 120, 4005, 4007, 98);
+     endif
+     GFTextLine( 80, 150, 45, "Zmien wysokosc nagrody");
+     zmiennagrode  := GFButtonID(40, 150, 4005, 4007, 98);
+     GFTextLine( 80, 180, 45, "Dodaj item do questu");
+     dodaj_item  := GFButtonID(40, 180, 4005, 4007, 98);
+     GFTextLine( 80, 210, 45, "Sprawdz Uczestnikow");
+     sprawdz_graczy  := GFButtonID(40, 210, 4005, 4007, 98);
+     GFTextLine( 80, 240, 45, "Sprawdz Itemy");
+     sprawdz_itemy  := GFButtonID(40, 240, 4005, 4007, 98);
+     GFTextLine( 80, 270, 45, "Wyslij msg do wszystkich");
+     msg  := GFButtonID(40, 270, 4005, 4007, 98);
+     GFTextLine( 80, 300, 45, "Zakoncz Quest");
+     zakoncz  := GFButtonID(40, 300, 4005, 4007, 98);
+     GFTextLine( 40, 330, 0, "Aktywny quest: "+quest);
+     GFTextLine( 40, 350, 0, "Nagroda na jednego uczestnika: "+nagroda);
+     GFTextLine( 40, 370, 0, "Uczestnikow: "+len(ludzie));
+  endif
+  var res := GFSendGump(who);
+  if((res[0] <= 0) || (res[close.keyid]))
+    SendSysMessage(who, "Anulowano");
+    return 0;
+  elseif(res[rozpocznij.keyid])
+    var name := RequestInput(who,who.backpack,"Napisz nazwe questu.");
+    if(!name)
+      return;
+    endif
+    SetGlobalProperty("Quest", name);
+    SendSysMessage(who, "Rozpoczales quest ["+name+"]");
+  elseif(res[zmiennagrode.keyid])
+     nagroda := RequestInput(who,who.backpack,"Wpisz wysokosc nagrody dla pojedycznego uczestnika.");
+     nagroda := Cint(nagroda);
+     if(!nagroda || (nagroda <= 0)) 
+       SendSysMessage(who, "Anulowano");
+     else
+       SetGlobalProperty("QuestNagroda", nagroda);
+       SendSysMessage(who, "Ustanowiles nagrode");
+     endif
+  elseif(res[msg.keyid])
+     var wiadomosc := RequestInput(who,who.backpack,"Wpisz wiadomosc, ktora zostanie wyslana do wszystkich uczestnikow.");
+     if(!wiadomosc || (len(wiadomosc) <= 0)) 
+       SendSysMessage(who, "Anulowano");
+     else
+       foreach ppl in ludzie
+         SendSysMessage(ppl, wiadomosc);
+       endforeach
+     endif
+  elseif(res[loot.keyid])
+    if(GetGlobalProperty("QuestLoot"))
+       EraseGlobalProperty("QuestLoot");
+       SendSysMessage(who, "Zezwoliles na lootowanie czlonkow questu");
+    else
+       SetGlobalProperty("QuestLoot", 1);
+       SendSysMessage(who, "Zabroniles lootowania czlonkow questu");
+    endif
+  elseif(res[dodaj_item.keyid])
+    SendSysMessage(who, "Wskaz item questowy");
+    while(who)
+      var trg := Target(who);
+      if(!trg)
+        break;
+      elseif(!trg.isa(POLCLASS_ITEM))
+        SendSysMessage(who, "To nie jest przedmiot!");
+      elseif(trg.serial in itemy)
+        SendSysMessage(who, "Ten item juz jest oznaczony jako questowy!");
+      else
+        itemy.append(trg.serial);
+        SendSysMessage(who, "Dodales item: "+trg.desc);
+      endif
+    endwhile
+    SetGlobalProperty("QuestItemy", itemy);
+  elseif(res[sprawdz_itemy.keyid])
+    SprawdzItemy(who);
+  elseif(res[sprawdz_graczy.keyid])
+    SprawdzGraczy(who);
+  elseif(res[dodaj.keyid])
+    SendSysMessage(who, "Wskaz osoby uczestniczace w quescie");
+    while(who)
+      var trg := Target(who);
+      if(!trg)
+        break;
+      elseif(!trg.acct)
+        SendSysMessage(who, "To nie jest gracz!");
+      elseif(trg.serial in ludzie)
+        SendSysMessage(who, "Ten gracz juz jest uczestnikiem questu!");
+      else
+        ludzie.append(trg.serial);
+        SendSysMessage(who, "Dodales uczestnika: "+trg.name);
+        SetObjProperty(trg, "Quest", 1);
+      endif
+    endwhile
+    SetGlobalProperty("QuestLudzie", ludzie);
+  elseif(res[usun.keyid])
+    SendSysMessage(who, "Wskaz osoby ktore chcesz usunac z questu");
+    while(who)
+      var trg := Target(who);
+      if(!trg)
+        break;
+      elseif(!trg.acct)
+        SendSysMessage(who, "To nie jest gracz!");
+      elseif(!(trg.serial in ludzie))
+        SendSysMessage(who, "Ten gracz nie jest uczestnikiem questu");
+      else
+        var i := 0;
+        foreach gracz in ludzie
+          i := i + 1;
+          if(gracz == trg.serial)
+             ludzie.erase(i);
+          endif
+        endforeach
+        ludzie.append(trg.serial);
+        SendSysMessage(who, "Usunales uczestnika: "+trg.name);
+        EraseObjProperty(trg, "Quest");
+      endif
+    endwhile
+  elseif(res[zakoncz.keyid])
+    if(!YesNo(who, "Uwaga! Czy na pewno chcesz juz zakonczyc quest? Nagroda zostanie automatycznie rozdysponowana"));
+      return 1; 
+    endif
+    foreach item in itemy
+      DestroyItem(item);
+    endforeach
+    foreach serial in ludzie
+       var gracz := SystemFindObjectBySerial(serial, SYSFIND_SEARCH_OFFLINE_MOBILES);
+       CreateItemInContainer(gracz.backpack, 0xeef, nagroda);
+       LogToFile(":log:commands.txt", "[.QUEST] " + who.acctname + " dal nagrode " + gracz.name + " w wysokosci " + nagroda + " zlota krolewskiego.", 1);
+
+       EraseObjProperty(gracz, "Quest");
+       SendSysMessage(gracz, "Przygoda dobiegla konca...");
+    endforeach
+    EraseGlobalProperty("QuestNagroda");
+    EraseGlobalProperty("QuestItemy");
+    EraseGlobalProperty("Quest");
+    EraseGlobalProperty("QuestLudzie");
+    EraseGlobalProperty("QuestLoot");
+    SendSysMessage(who, "Quest zostal zakonczony");
+    return 0;
+  endif
+  return 1;
+endfunction
+
+function SprawdzItemy(who)
+GFInitGump(0, 0);
+GFNoDispose();
+GFNoClose();
+GFPage(0);
+GFResizePic(0, 30, 5100, 350, 455);
+GFResizePic(15, 38, 5120,  325, 435);
+GFCheckerTrans(15, 38, 325, 435);
+GFResizePic(25, 44, 5100, 307, 40);
+var close   := GFButtonID(75, 53, 0xfb1, 0xfb3, 1);
+var i := 0, z := 0, l := 1;
+GFPage(1);
+foreach serial in itemy
+  i := i + 1;
+  var item := SystemFindObjectBySerial(serial);
+  if(item)
+   if(z > 4)
+     l:=l+1; 
+     GFButtonPage(300, 53, 5540, 5542,  l);
+     z := 0;
+     GFPage(l);
+    GFButtonPage(35, 53, 5537, 5539,  l-1);
+   endif
+   GFResizePic(30, 95+(z*75), 5120, 300, 70);
+   //GFTextLine(50, 100+(z*75), 300, item.desc);
+   if(!item.container)
+       GFTextLine(160, 140+(z*75), 300, "X: "+item.x+" Y: "+item.y);
+   else
+       var gracz := SystemFindObjectBySerial(GetObjProperty(item.container, "Owner"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+       GFTextLine(160, 140+(z*75), 300, "Jest u: "+gracz.name);
+   endif
+   GFTextLine(255, 100+(z*75), 300, "Do plecaka");
+   GFButtonIDC(220, 100+(z*75), 4005, 4007, 1, i+200);
+   GFTextLine(255, 120+(z*75), 300, "Niech mowi");
+   GFButtonIDC(220, 120+(z*75), 4005, 4007, 1, i+100);
+       if(item.color == 0)
+          GFTilePic(50, 110+(z*75), item.graphic);
+       else
+          GFTileHuePic( 50, 110+(z*75), item.graphic, item.color-1 );
+       endif
+   z := z + 1;
+ endif
+endforeach
+var res := GFSendGump(who);
+var nmr := res[0];
+if((nmr <= 0) || (res[close.keyid]))
+  SendSysMessage(who, "Anulowano");
+  return 0;
+elseif(nmr > 200)
+  nmr := nmr - 200;
+  var item := SystemFindObjectBySerial(itemy[nmr]);
+  MoveItemToContainer( item, who.backpack);
+elseif(nmr > 100)
+  nmr := nmr - 100;
+  var item := SystemFindObjectBySerial(itemy[nmr]);
+  var msg := RequestInput(who,who.backpack,"Wpisz wiadomosc, ktora 'wypowie' item");
+  PrintTextAbove(item, msg);
+endif
+endfunction
+
+function SprawdzGraczy(who)
+GFInitGump(0, 0);
+GFNoDispose();
+GFNoClose();
+GFPage(0);
+GFResizePic(0, 30, 5100, 350, 455);
+GFResizePic(15, 38, 5120,  325, 435);
+GFCheckerTrans(15, 38, 325, 435);
+GFResizePic(25, 44, 5100, 307, 40);
+var close   := GFButtonID(75, 53, 0xfb1, 0xfb3, 1);
+var i := 0, z := 0, l := 1;
+GFPage(1);
+foreach serial in ludzie
+  i := i + 1;
+  var gracz := SystemFindObjectBySerial(serial, SYSFIND_SEARCH_OFFLINE_MOBILES);
+  if(gracz)
+   if(z > 4)
+     l:=l+1; 
+     GFButtonPage(300, 53, 5540, 5542,  l);
+     z := 0;
+     GFPage(l);
+    GFButtonPage(35, 53, 5537, 5539,  l-1);
+   endif
+   GFResizePic(30, 95+(z*75), 5120, 300, 70);
+   var dopisek := "";
+   if(!GetObjProperty(gracz,"LoggedIn"))
+     dopisek := " [wylogowany]";
+   elseif(gracz.dead)
+     dopisek := " [nie zyje]";
+   endif
+   GFTextLine(50, 100+(z*75), 300, gracz.name+dopisek);
+   if(GetObjProperty(gracz,"LoggedIn"))
+     GFTextLine(60, 120+(z*75), 300, "HP: "+GetHp(gracz)+"/"+GetMaxHp(gracz));
+     GFTextLine(60, 140+(z*75), 300, "X: "+gracz.x+" Y: "+gracz.y);
+     GFTextLine(205, 140+(z*75), 300, "Msg");
+     GFButtonIDC(170, 140+(z*75), 4005, 4007, 1, i+100);
+     if(!gracz.squelched)
+       GFTextLine(205, 120+(z*75), 300, "Ucisz");
+     else
+       GFTextLine(205, 120+(z*75), 300, "Odcisz");
+     endif
+     GFButtonIDC(170, 120+(z*75), 4005, 4007, 1, i+400);
+     GFTextLine(285, 120+(z*75), 300, "Idz do");
+     GFButtonIDC(250, 120+(z*75), 4005, 4007, 1, i+200);
+   endif
+   GFTextLine(285, 140+(z*75), 300, "Usun");
+   GFButtonIDC(250, 140+(z*75), 4005, 4007, 1, i+300);
+   z := z + 1;
+ endif
+endforeach
+var res := GFSendGump(who);
+var nmr := res[0];
+if((nmr <= 0) || (res[close.keyid]))
+  SendSysMessage(who, "Anulowano");
+  return 0;
+elseif(nmr > 400)
+  nmr := nmr - 400;
+  var gracz := SystemFindObjectBySerial(ludzie[nmr], SYSFIND_SEARCH_OFFLINE_MOBILES);
+  if(gracz.squelched)
+     gracz.squelch(0);
+     SendSysMessage(who, "Gracz znow moze mowic");
+  else
+     gracz.squelch(-1);
+     SendSysMessage(gracz, "Zostales uciszony!");
+  endif
+elseif(nmr > 300)
+  nmr := nmr - 300;
+  var gracz := SystemFindObjectBySerial(ludzie[nmr], SYSFIND_SEARCH_OFFLINE_MOBILES);
+  ludzie.erase(nmr);
+  SetGlobalProperty("QuestLudzie", ludzie);
+  EraseObjProperty(gracz, "Quest");
+  SendSysMessage(who, "Usunales uczestnika");
+elseif(nmr > 200)
+  nmr := nmr - 200;
+  var gracz := SystemFindObjectBySerial(ludzie[nmr], SYSFIND_SEARCH_OFFLINE_MOBILES);
+  MoveObjectToLocation(who, gracz.x, gracz.y, gracz.z, who.realm, MOVEOBJECT_FORCELOCATION);
+elseif(nmr > 100)
+  nmr := nmr - 100;
+  var gracz := SystemFindObjectBySerial(ludzie[nmr], SYSFIND_SEARCH_OFFLINE_MOBILES);
+  var msg := RequestInput(who,who.backpack,"Wpisz wiadomosc dla tego gracza");
+  SendSysMessage(gracz, msg);
+endif
+endfunction
+
+function GFTileHuePic( x, y, tileid, hue )
+	var line := "tilepichue " + CStr(GFref.x + CInt(x)) + " " + CStr(GFref.y + CInt(y));
+	line := line + " " + CStr(CInt(tileid)+" "+hue);
+	GFlayout.append( line );
+	return XGFRetVal( GFlayout.size() );
+endfunction
+
+function GFButtonIDC(x, y, release, press, close, retval)
+  var line := "button " + CStr(gfref.x + Cint(x)) + " " + CStr(gfref.y + Cint(y));
+  line := line + " " + CStr(Cint(release)) + " " + CStr(Cint(press)) + " ";
+  line := line + "1 0 ";
+  line := line + CStr(retval);
+  gflayout.append( line );
+endfunction

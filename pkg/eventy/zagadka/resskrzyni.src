@@ -1,0 +1,36 @@
+use uo;
+use os;
+
+Const RESPAWN_TIME := 10800; // 3 godziny
+Const CH_SPAWN_X := 5458;
+Const CH_SPAWN_Y := 1137;
+Const CH_SPAWN_Z := 0;
+
+program respawn_skrzyni()
+	while(1)
+		var chestserial := GetGlobalProperty("MysteryChestSerial");
+		var skrzynia := SystemFindObjectBySerial(chestserial[2]);
+		if(!skrzynia)
+			CreateChest();
+		endif
+		sleep(1);
+	endwhile
+endprogram
+
+function CreateChest()
+	var chestserial := GetGlobalProperty("MysteryChestSerial");
+	if(ReadGameClock() >= chestserial[1])
+		var chest := CreateItemAtLocation(CH_SPAWN_X, CH_SPAWN_Y, CH_SPAWN_Z, 0xa1);//tworzenie skrzyni
+		if(chest)
+			SetGlobalProperty("MysteryChestSerial", {ReadGameClock() + RESPAWN_TIME, chest.serial});
+		else
+			syslog("Blad! Nie mozna zrespawnowac skrzyni zagadek!");
+			return 0;
+		endif	
+	endif
+endfunction
+
+
+
+
+

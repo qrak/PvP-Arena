@@ -1,0 +1,27 @@
+Element britannia-britain-swamp-reagents
+{
+	Coordinates t4:S2:x1i1982S2:x2i2076S2:y1i962S2:y2i1072
+	Groups d1:S13:basicreagentst2:S7:enabledi1S7:max_amti100
+	LastSpawn i1190743472
+	Realm sbritannia
+	SpawnWait i1200
+}
+
+Element britannia-trinsic-swamp
+{
+	Coordinates t4:S2:x1i1802S2:x2i2122S2:y1i2256S2:y2i2461
+	Groups d1:S12:simple_swampt2:S7:enabledi1S7:max_amti15
+	LastSpawn i1190743472
+	Realm sbritannia
+	SpawnWait i1200
+}
+
+Element britannia-yew-forest-northeast
+{
+	Coordinates t4:S2:x1i748S2:x2i1107S2:y1i644S2:y2i983
+	Groups d2:S15:forestanimals_1t2:S7:enabledi1S7:max_amti150S15:forestanimals_2t2:S7:enabledi1S7:max_amti45
+	LastSpawn i1190743472
+	Realm sbritannia
+	SpawnWait i1200
+}
+

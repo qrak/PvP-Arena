@@ -1,0 +1,30 @@
+use basic;
+use uo;
+use uo; 
+include "include/client";
+
+program set_email(who)
+
+var em := RequestInput(who, who.backpack, "Podaj adres e-mail, na ktory bedzie wysylane zapomniane haslo:");
+if((em == "") || !em)
+	SendSysMessage( who, "Anulowano.", FONT_NORMAL, 40);
+	return; 
+endif 
+
+var account := who.acct; 
+
+if(!who.cmdlevel)
+    if(account.getprop("email"))
+    SendSysMessage(who, "E-mail na to konto jest juz ustawiony na " + account.getprop("email") + ". Nie mozesz go zmienic.",3,40);
+    return 0;
+    endif
+endif
+
+if(account.setprop("email", em))
+	SendSysMessage(who, "E-mail zostal ustawiony na: " + em + ".", FONT_NORMAL, COLOR_GREEN);
+	return;
+else
+	SendSysMessage(who, "Nie udalo sie ustawic adresu e-mail.", FONT_NORMAL, COLOR_GREEN);
+	return;
+endif
+endprogram

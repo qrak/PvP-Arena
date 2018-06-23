@@ -1,0 +1,31 @@
+/*
+ * $Id: logon.src 373 2006-06-17 18:27:33Z austinheilman $
+ *
+ */
+ 
+use uo;
+use os;
+
+include ":accounts:accounts";
+
+
+program Logon(who)
+	ACCT_SetLastLogin(who.acct);
+	var z := 0;
+	var account := who.acct; 
+
+	var valid_multi := account.getprop("MAcctAllow");
+	foreach character in EnumerateOnlineCharacters()
+			if(who.ip == character.ip && who != character)
+				z := z + 1;
+			endif
+	endforeach
+
+	if(z > 0 && !valid_multi)
+		SendSysMessage(who, "Posiadanie wiecej kont niz jedno jest zabronione! Prosze wyjasnic to z qrakiem.", 3, 40);
+		start_script(":versionhook:sleeper", who);
+	endif
+	
+
+	return 1;
+endprogram

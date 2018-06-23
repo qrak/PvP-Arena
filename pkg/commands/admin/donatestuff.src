@@ -1,0 +1,45 @@
+use uo;
+
+program donator(who)
+
+var bag := CreateItemInBackpack(who, 0xE76, 1);
+var bag2 := CreateItemInBackpack(who, 0xE76, 1);
+
+bag.name := "worek donatora";
+bag2.name := "worek donatora";
+
+// zbroja honoru
+
+CreateItemInContainer(bag, 0x2B06, 1);
+CreateItemInContainer(bag, 0x2B08, 1);
+CreateItemInContainer(bag, 0x2B0A, 1);
+CreateItemInContainer(bag, 0x2B0C, 1);
+CreateItemInContainer(bag, 0x2B0E, 1);
+CreateItemInContainer(bag, 0x2B10, 1);
+CreateItemInContainer(bag, 0x2B12, 1);
+
+
+// lekka zbroja
+
+CreateItemInContainer(bag2, 0x2B6F, 1);
+CreateItemInContainer(bag2, 0x2FC5, 1);
+CreateItemInContainer(bag2, 0x2FC6, 1);
+CreateItemInContainer(bag2, 0x2FC7, 1);
+CreateItemInContainer(bag2, 0x2FC8, 1);
+CreateItemInContainer(bag2, 0x2FC9, 1);
+
+// kolorowacz
+
+CreateItemInContainer(who.backpack, 0xA400, 1); //farba do rzeczy
+
+foreach rzecz in EnumerateItemsInContainer(bag)
+  rzecz.newbie := 1;
+  SetObjProperty(rzecz, "DonatedItem", 1);
+endforeach
+
+foreach rzecz in EnumerateItemsInContainer(bag2)
+  rzecz.newbie := 1;
+  SetObjProperty(rzecz, "DonatedItem", 1);  
+endforeach
+
+endprogram

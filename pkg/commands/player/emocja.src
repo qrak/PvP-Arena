@@ -1,0 +1,103 @@
+// crash
+use basicio;
+use uo;
+
+include "include/attributes";
+include "include/client";
+
+program emocja(who, co)
+	var dzwiek;
+        if(!co)
+           SendSysMessage(who, "Uzycie: .emocja", FONT_NORMAL, 90);
+           SendSysMessage(who, "aah, aha, oklaski, beknij, uhu,", FONT_NORMAL, COLOR_GREEN);
+           SendSysMessage(who, "kaszlnij, placz, uah, warcz, hej,", FONT_NORMAL, COLOR_GREEN);
+           SendSysMessage(who, "pierdnij, zdziwienie, smiech, yea,", FONT_NORMAL, COLOR_GREEN);
+           SendSysMessage(who, "czkawka, huh, calus, no, oh, uuu,", FONT_NORMAL, COLOR_GREEN);
+           SendSysMessage(who, "ups, krzyk, ssz, chrap, gwizdaj, ", FONT_NORMAL, COLOR_GREEN);
+           SendSysMessage(who, "westchnij, kichnij, pociagnij,", FONT_NORMAL, COLOR_GREEN);
+	else
+	case(who.gender)
+		0:
+		case(co)
+			"aah": 		dzwiek := 0x41A;
+			"aha": 		dzwiek := 0x41B; 
+			"oklaski": 	dzwiek := 0x41C;
+			"beknij": 	dzwiek := 0x41E;
+			"uhu": 		dzwiek := 0x41F;
+			"kaszlnij": 	dzwiek := 0x421;
+			"placz": 	dzwiek := 0x423;
+			"pierdnij": 	dzwiek := 0x429;
+			"zdziwienie": 	dzwiek := 0x42A;
+			"smiech": 	dzwiek := 0x432;
+			"uah": 		dzwiek := 0x42C;
+			"warcz": 	dzwiek := 0x42D;
+			"hej": 		dzwiek := 0x42E;
+			"czkawka": 	dzwiek := 0x42F;
+			"huh": 		dzwiek := 0x430;
+			"calus": 	dzwiek := 0x431;
+			"no": 		dzwiek := 0x433;
+			"oh": 		dzwiek := 0x434;
+			"uuu": 		dzwiek := 0x43E;
+			"ups": 		dzwiek := 0x43F;
+			"krzyk": 	dzwiek := 0x44B;
+			"ssz": 		dzwiek := 0x442;
+			"westchnij": 	dzwiek := 0x443;
+			"kichnij": 	dzwiek := 0x444;
+			"pociagnij": 	dzwiek := 0x445;
+			"chrap": 	dzwiek := 0x446;
+			"gwizdaj": 	dzwiek := 0x448;
+			"yea": 		dzwiek := 0x44A;
+			default:
+		           SendSysMessage(who, "Uzycie: .emocja");
+		           SendSysMessage(who, "aah, aha, oklaski, beknij, uhu,");
+		           SendSysMessage(who, "kaszlnij, placz, uah, warcz, hej,");
+		           SendSysMessage(who, "pierdnij, zdziwienie, smiech, yea,");
+		           SendSysMessage(who, "czkawka, huh, calus, no, oh, uuu,");
+		           SendSysMessage(who, "ups, krzyk, ssz, chrap, gwizdaj, ");
+		           SendSysMessage(who, "westchnij, kichnij, pociagnij,");
+		endcase
+		1:
+		case(co)
+			"aah": 		dzwiek := 0x30B;
+			"oklaski": 	dzwiek := 0x30D;
+			"beknij": 	dzwiek := 0x30F;
+			"uhu": 		dzwiek := 0x310;
+			"kaszlnij": 	dzwiek := 0x312;
+			"placz": 	dzwiek := 0x314;
+			"pierdnij": 	dzwiek := 0x319;
+			"zdziwienie": 	dzwiek := 0x31A;
+			"smiech": 	dzwiek := 0x31B;
+			"uah": 		dzwiek := 0x31C;
+			"warcz": 	dzwiek := 0x31D;
+			"hej": 		dzwiek := 0x31E;
+			"czkawka": 	dzwiek := 0x31F;
+			"huh": 		dzwiek := 0x320;
+			"calus": 	dzwiek := 0x321;
+			"no": 		dzwiek := 0x323;
+			"oh": 		dzwiek := 0x324;
+			"uuu": 		dzwiek := 0x32C;
+			"ups": 		dzwiek := 0x32D;
+			"krzyk": 	dzwiek := 0x32F;
+			"ssz": 		dzwiek := 0x330;
+			"westchnij": 	dzwiek := 0x331;
+			"kichnij": 	dzwiek := 0x332;
+			"pociagnij": 	dzwiek := 0x333;
+			"chrap": 	dzwiek := 0x334;
+			"gwizdaj": 	dzwiek := 0x336;
+			"yea": 		dzwiek := 0x338;
+			default:
+		           SendSysMessage(who, "Uzycie: .emocja");
+		           SendSysMessage(who, "aah, aha, oklaski, beknij, uhu,");
+		           SendSysMessage(who, "kaszlnij, placz, uah, warcz, hej,");
+		           SendSysMessage(who, "pierdnij, zdziwienie, smiech, yea,");
+		           SendSysMessage(who, "czkawka, huh, calus, no, oh, uuu,");
+		           SendSysMessage(who, "ups, krzyk, ssz, chrap, gwizdaj, ");
+		           SendSysMessage(who, "westchnij, kichnij, pociagnij,");
+		endcase
+	 endcase
+  	    PrintTextAbove(who, "*emocjonuje sie...*");
+	   PlaySoundEffect(who, dzwiek);
+	  return;
+        endif
+     return;
+endprogram

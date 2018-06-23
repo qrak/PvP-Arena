@@ -1,0 +1,20 @@
+// crash
+
+use math;
+use uo;
+use basicio;
+use polsys;
+
+program cmd_shutdown()
+
+   print("Saving World State");
+   Broadcast("Trwa zapisywanie stanu swiata...");
+   if(SaveWorldState())
+      print("Done saving");
+      Broadcast("Zapisano.");
+   else
+      print("Blad zapisu!");
+   	  print("Save error");
+   endif
+
+endprogram

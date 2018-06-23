@@ -1,0 +1,63 @@
+// crash
+
+use basicio;
+use cfgfile;
+use math;
+use basic;
+use uo;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_WEAKEN( parms )
+  var circle := 1;
+  var delivery := "direct";
+  var noto := "harmful";
+  var result := maincast(parms, delivery, circle, noto, 8);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  SetObjProperty(cast_on, "LastHit", {caster.name,caster.serial, "weaken" });
+  if(Reflected(cast_on))
+	cast_on := caster;
+  endif
+  PlaySoundEffect(cast_on, SFX_SPELL_WEAKEN);
+  PlayObjectCenteredEffect( cast_on, FX_CURSE_EFFECT, 7,7);
+  if(!CanMod(cast_on, "str"))
+	return;
+  endif
+  var magery := GetEffectiveSkill(caster, SKILLID_MAGERY);
+  var ilosc := CInt(magery / 4);
+  if(ilosc > 25)
+	ilosc := 25;
+  endif
+  var mod_amount := Resisted(circle,caster,cast_on,ilosc);
+  var eval := GetEffectiveSkill(caster, SKILLID_EVALINT);
+  var medit := GetEffectiveSkill(caster, SKILLID_MEDITATION);
+  var duration := CInt((eval + magery + medit) * 2.5);
+      // absorbcja
+
+var cfg := ReadConfigFile("::npcdesc");
+var odbij := cfg[cast_on.npctemplate].Resuje;
+
+     if(odbij == "umysl")
+
+     duration := duration / 2;
+     PrintTextAbove(cast_on, "*absorbuje energie*");
+
+endif
+// koniec absorbcji
+	if(!CheckAttack(caster, cast_on))
+		return 0;
+	endif
+	if(IsNoob(caster) || IsNoob(cast_on))
+		return 0;
+	endif
+
+    if(CanMod(cast_on, "str"))
+        DoTempMod(cast_on, "str", 0 - mod_amount, duration);
+    endif
+//DoTempMod(cast_on, "p", 0, 0);
+endprogram

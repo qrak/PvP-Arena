@@ -1,0 +1,22 @@
+use os;
+use uo;
+use polsys;
+use basicio;
+
+program view_script_profiles()
+	print("*** Zaczynam! ***");
+	polcore().log_profile(1);
+	Detach();
+	sleep(25);
+	polcore().log_profile(1);
+	print("*** Gotowe! ***");
+/*
+	syslog("Duze uzycia skryptow:");
+	var vscript_profiles := polcore().script_profiles;
+	foreach script in vscript_profiles
+		if (script.instr_percent > 5)
+			syslog(script.name + " uruchomiony " + script.instr + " (" + script.instr_percent + "%) instrukcji.");
+		endif
+	endforeach
+*/
+endprogram

@@ -1,0 +1,58 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// Igrzyska v2.0 faza 4 - czyszczenie nazwy druzyn, rzeczy turniejowych itp...        //
+////////////////////////////////////////////////////////////////////////////////////////
+
+use uo;
+use vitals;
+
+include "include/attributes";
+include ":igrzyska:igrzyska";
+include "::misc/chrdeath";
+include "include/frakcja";
+include "include/tempMod";
+
+program Phase4()
+	foreach gracz in EnumerateOnlineCharacters()
+		if(GetIgTeam(gracz))
+			foreach eqitem in ListEquippedItems(gracz)
+				if(Cint(GetObjProperty(eqitem, "IgStuff")))
+					DestroyItem(eqitem);
+				endif
+			endforeach
+			foreach item in EnumerateItemsInContainer(gracz.backpack)
+				if(Cint(GetObjProperty(item, "IgStuff")))
+					DestroyItem(item);
+				endif
+			endforeach
+			if(GetObjProperty(gracz, "player_guild"))
+				gracz.title_guild := GetObjProperty(gracz, "player_guild");
+			else
+				gracz.title_guild := "";
+			endif
+			SetHp(gracz, GetMaxHp(gracz));
+			SetMana(gracz, GetMaxMana(gracz));
+			SetStamina(gracz, GetMaxStamina(gracz));
+			EraseObjProperty(gracz, "IgTeam");
+			EraseObjProperty(gracz, "IgStuff");
+			WipeMods(gracz);
+			RecalcVitals( gracz );
+			SetObjProperty( gracz, "#Teleported", 1 );
+			if(gracz.criminal || gracz.murderer)
+				MoveObjectToLocation( gracz, FRAKCJA_2_X, FRAKCJA_2_Y, FRAKCJA_2_Z, gracz.realm, 4 );
+			else
+				MoveObjectToLocation( gracz, FRAKCJA_1_X, FRAKCJA_1_Y, FRAKCJA_1_Z, gracz.realm, 4 );
+			endif
+			EraseObjProperty( gracz, "#Teleported" );
+		endif
+	endforeach
+	EraseGlobalProperty("#IgActive");
+	EraseIgData();
+	BroadCast("Zakaz walk jest wlaczony przez 2 minuty od czasu zakonczenia zawodow. Za zabijanie grozi wiezienie!", 3, 80);
+	SetGlobalProperty("#zakazwalk", 1);
+	Detach();
+	sleep(120);
+	EraseGlobalProperty("#zakazwalk");
+	BroadCast("Koniec zakazu walk!", 3, 80);
+endprogram
+
+

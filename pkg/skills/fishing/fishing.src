@@ -1,0 +1,186 @@
+use cfgfile;
+use math;
+use util;
+use basic;
+use attributes;
+use os;
+use polsys;
+use uo;
+
+include "include/client";
+include "include/attributes";
+include "include/dist";
+include "include/math";
+include "include/objtype";
+include "include/startEqp";
+include "include/canAccess";
+include "include/toolWear";
+include "include/eventID";
+include "../../foundations/gumps/gumps"; 
+
+var startx;
+var starty;
+
+program use_fishpole(who, fishingpole)
+	if(!can_access(who, fishingpole))
+		return;
+	endif
+	var mount := GetEquipmentByLayer(who, 25);
+	if(mount)
+		SendSysMessage(who,"Nie mozesz lowic siedzac na zwierzeciu.", FONT_NORMAL, 40);
+		return 0;
+	endif
+	EraseObjProperty(who, "IsMeditating");
+	EraseObjProperty(who, "HealTimer");
+	if(fishingpole.movable == 0)
+		SendSysMessage(who, "Nie mozesz tego uzyc.", FONT_NORMAL, 40);
+		return 0;
+	endif
+	if(!ReserveItem(fishingpole))
+		return 0;
+	endif
+	if(! IsFishingPoleEquipped(who, fishingpole))
+		SendSysMessage(who, "Musisz miec wedke w dloni by moc lowic.", FONT_NORMAL, 40);
+		return 0;
+	endif
+	var targetsquare := TargetCoordinates(who);
+	if(!targetsquare)
+		return 0;
+	endif
+	startx := who.x;
+	starty := who.y;
+	var locinfo:= GetMapInfo( targetsquare.x, targetsquare.y );
+	if(IsValidTarget(who, targetsquare, locinfo))
+		repeat
+			PerformAction(who, 0x9);
+			var newsplash := CreateItemAtLocation(targetsquare.x, targetsquare.y, targetsquare.z,  0x352d, 1);
+			newsplash.movable := 0;
+			PlaySoundEffect(who, 0x240);
+			sleepms(400);
+			set_critical(1);
+			DestroyItem(newsplash);
+			set_critical(0);
+			newsplash := CreateItemAtLocation(targetsquare.x, targetsquare.y, targetsquare.z,  0x352e, 1);
+			newsplash.movable := 0;
+			sleepms(400);
+			set_critical(1);
+			DestroyItem(newsplash);
+			set_critical(0);
+			newsplash := CreateItemAtLocation(targetsquare.x, targetsquare.y, targetsquare.z,  0x352f, 1);
+			newsplash.movable := 0;
+			sleepms(400);
+			set_critical(1);
+			DestroyItem(newsplash);
+			set_critical(0);
+			newsplash := CreateItemAtLocation(targetsquare.x, targetsquare.y, targetsquare.z,  0x3530, 1);
+			newsplash.movable := 0;
+			sleepms(400);
+			set_critical(1);
+			DestroyItem(newsplash);
+			set_critical(0);
+			sleepms(1500);
+			var difficulty;
+			if(targetsquare.objtype)
+				difficulty := GetHarvestDifficulty("fish", targetsquare.x, targetsquare.y, targetsquare.objtype);
+			else
+				difficulty := GetHarvestDifficulty("fish", targetsquare.x, targetsquare.y, locinfo.landtile);
+			endif
+			if(difficulty == error)
+				SendSysMessage(who, "Nie ma w tym miejscu nic wiecej.");
+				return 0;
+			endif
+			var catchtype := GetTheCatch(who, fishingpole);
+			if(CreateItemInContainer(who.backpack, catchtype, 1))
+				CheckToolWear (who, fishingpole, SKILLID_FISHING);
+			endif
+			if(startx != who.x or starty != who.y)
+				SendSysMessage(who, "Przestales lowic.", FONT_NORMAL, 40);
+				return 0;
+			endif
+			if(who.dead)
+				return 0;
+			endif
+			sleep(RandomInt(3)+3);
+		until(startx != who.x or starty != who.y or who.hidden);
+	endif
+	return 1;
+endprogram
+
+function IsInRange(who, x, y, z)
+  var xd, yd, zd;
+  var retval := 1;
+  xd := Abs(who.x - x);
+  yd := Abs(who.y - y);
+  if((xd > 6)||(yd > 6))
+    retval := 0;
+  endif
+  return retval;
+endfunction
+
+function IsWater(thistile, locinfo)
+  if(thistile.objtype)
+    if((thistile.objtype >= 0x1797)&&(thistile.objtype <= 0x179c))
+      return 1;
+    elseif((thistile.objtype >= 0x346e)&&(thistile.objtype <= 0x3485))
+      return 1;
+    elseif((thistile.objtype >= 0x3490)&&(thistile.objtype <= 0x34ab))
+      return 1;
+    elseif((thistile.objtype >= 0x34b5)&&(thistile.objtype <= 0x34d5))
+      return 1;
+    endif
+  else
+    if((locinfo.landtile >= 0x00a8)&&(locinfo.landtile <= 0x00ab))
+      return 1;
+    elseif((locinfo.landtile >= 0x0136)&&(locinfo.landtile <= 0x0137))      return 1;    elseif((locinfo.landtile >= 0x3ff0)&&(locinfo.landtile <= 0x3ff3))
+      return 1;
+    endif
+  endif
+  return 0;
+endfunction
+
+function IsValidTarget(who, targetsquare, locinfo)
+  var retval := 1;
+  if(!IsWater(targetsquare, locinfo))
+    SendSysMessage(who, "Nie mozesz lowic w tym miejscu!", FONT_NORMAL, 40);
+    retval := 0;
+  elseif(!IsInRange(who, targetsquare.x, targetsquare.y, targetsquare.z))
+    SendSysMessage(who, "Za daleko.", FONT_NORMAL, 40);
+    retval := 0;
+  elseif(!CheckLosAt(who, targetsquare.x, targetsquare.y, targetsquare.z))
+    SendSysMessage(who, "Nie widzisz tego miejsca!", FONT_NORMAL, 40);
+    retval := 0;
+  endif
+  return retval;
+endfunction
+
+function GetTheCatch(who, fishingpole)
+	if(RandomInt(800) == 3)
+		CreateItemInBackpack(who, "ixodynixconnecter" , 1);
+		SendSysMessage(who, "Znalazles lacznik IxodyniXa!",3,89);
+	endif
+	var miningskill := Cint((GetEffectiveSkill(who, SKILLID_MINING)/20)+1);
+	var itambonus := Cint(GetObjProperty(fishingpole, "exp"));
+	var ile := miningskill + itambonus;
+	if (ile <= 0)
+		ile := 1;
+	endif
+	if(RandomInt(400) == 10)            
+		CreateNpcFromTemplate( "waterelemental", who.x, who.y, who.z); 
+		SendSysMessage(who, "Wylowiles zywiolaka wody!",3,40);
+	endif
+	CreateItemInBackpack(who, 0x63f9, ile);
+	SendSysMessage(who, "Wlozyles " + ile + " rudy wodnej do plecaka", 3, COLOR_GREEN);
+endfunction
+
+
+function IsFishingPoleEquipped(who, fishingpole)
+	if((!Accessible(who, fishingpole)) || (Distance(who, fishingpole)> 1))
+		return 0;
+	endif
+	foreach item in ListEquippedItems(who)
+		if(fishingpole.serial == item.serial)
+			return 1;
+		endif
+	endforeach
+	return EquipItem(who, fishingpole);
+endfunction

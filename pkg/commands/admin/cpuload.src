@@ -1,0 +1,96 @@
+
+use polsys;
+use basic;
+use uo;
+
+include "include/eventID";
+include "include/client";
+
+include "../pkg/foundations/gumps/gumps";
+
+
+const larghezzagump := 639;
+//const altezzagump := 479;
+const altezzagump := 484;
+
+const START_RIGA := 30;
+
+const TEXT_LINES   := 10;
+const MAX_PAGES      := 6;
+
+
+program vsp(who)
+   Detach();
+   // init
+   XGFReset( );
+   GFSetRef(0, 0);
+   // Main page.
+   GFPage(0);
+   GFNoDispose();
+   GFResizePic(0,  0, BKGND_GOLDTRIM, larghezzagump, altezzagump);
+   GFTextLine(140,  5, COLOR_YELLOW, "View all scripts with almost 1% load cpu");
+   //GFTextLine(60, 20, COLOR_BLUE, "- elenca gli script che occupano almeno l'1% di tempo CPU -");
+   //GFTextLine(60, 35, COLOR_BLUE, "  evidenziando in rosso chi ne occupa piu' del 30%");
+
+   var vscript_profiles := polcore().script_profiles;
+   var riga := START_RIGA;
+   var colonna := 10;
+   var incremento_riga := 20;
+
+  var color;
+  var pagina := 1;
+   GFPage(pagina);
+
+
+   foreach script in vscript_profiles
+
+    if (script.instr_percent > 0) // se non occupa CPU non mi interessa -Evo
+       if (script.instr_percent > 30) // percentuale da tenere sotto controllo -Evo
+        color := COLOR_RED;
+      else
+        color := COLOR_GREEN;
+      endif
+
+        GFTextLine(colonna, riga, COLOR_WHITE, script.name);
+        riga := riga + incremento_riga;
+         //GFTextLine(colonna+120, riga, color, " Cpu="+script.instr_percent+"  Calls="+script.invocations+"  Nun_instr="+script.instr+"  Instr_for_Call="+script.instr_per_invoc);
+      GFTextLine(colonna+40, riga, color, "Cpu: "+script.instr_percent+ "%");
+      GFTextLine(colonna+120, riga, color, "Calls: "+script.invocations);
+      GFTextLine(colonna+230, riga, color, "Nun_instr: "+script.instr);
+      if (script.invocations > 1)
+        GFTextLine(colonna+410, riga, color, "Instr_for_Call: "+script.instr_per_invoc);
+      endif
+
+         riga := riga + incremento_riga;
+    endif
+
+    if (riga > (altezzagump - 30))
+
+       if (pagina == 1)             // 1st page
+          GFButtonPage(600, 20, 0x0fc, 0x0fd, pagina + 1);
+       else
+          GFButtonPage(580, 20, 0x0fa , 0x0fb, pagina - 1);
+          GFButtonPage(600, 20, 0x0fc, 0x0fd, pagina + 1);
+      endif
+
+      pagina := pagina + 1;
+      GFPage(pagina);
+      riga := START_RIGA;
+      if ( pagina > MAX_PAGES)
+        SendSysmessage(who, "GUMP overflow...");
+        break;
+      endif
+    endif
+
+   endforeach
+
+  GFButtonPage(580, 20, 0x0fa , 0x0fb, pagina - 1);
+
+
+   // Invio il gump quando ho finito di crearlo
+  GFSendGump(who);
+
+endprogram
+
+
+

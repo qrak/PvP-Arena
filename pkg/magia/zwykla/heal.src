@@ -1,0 +1,39 @@
+// crash
+
+use basicio;
+use vitals;
+use uo;
+use basic;
+use cfgfile;
+
+include "include/spellRestrictions";
+include "include/attributes";
+
+program cast_heal(parms)
+  var circle := 2;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 4);
+  if(result == 0)
+    return;
+  endif
+  var caster := result[1];
+  var cast_on := result[2];
+  var healed := Cint(GetIntelligence(caster) / 10) + 2;
+  var cfg := ReadConfigFile("::npcdesc");
+  var miekki := cfg[cast_on.npctemplate].elemental;
+  Detach();
+  if(miekki == "undead")
+    ApplyRawDamage(cast_on, healed * 2);
+    PrintTextAbove(cast_on, "-" + healed,3,40);
+  else
+    if(cast_on.script == "tamed")
+      HealDamage(cast_on, healed * 2);
+    else
+      HealDamage(cast_on, healed);
+    endif
+    PrintTextAbove(cast_on, "+" + healed,3,90);
+  endif
+  PlayObjectCenteredEffect(cast_on, 14201, 7, 0x10);
+  PlaySoundEffect(cast_on, SFX_SPELL_HEAL);
+endprogram

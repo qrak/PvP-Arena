@@ -1,0 +1,69 @@
+use attributes;
+use math;
+use basicio;
+use polsys;
+use uo;
+use basic;
+
+include "include/client";
+include "include/attributes";
+include "include/others";
+include "include/findCity";
+include "../../foundations/gumps/gumps"; 
+
+program skill_hide(who)
+	
+	if(who.dead)
+		return 0;
+	endif
+	
+	if(IsBusy(who, 0, 0))
+		return;
+	endif
+
+	SetBusyTime(who, GetSkillDelay(SKILLID_HIDING));
+
+	if(GetObjProperty(who, "#team") || GetObjProperty(who, "IgTeam") || GetObjProperty(who, "CtfTeam"))
+		SendSysMessage(who, "Nie mozna sie tu chowac.",3,40);
+		return;
+	endif
+	if(findcity(who) == "Sala" || findcity(who) == "SalaCTF" || findcity(who) == "Arena" || findcity(who) == "SalaDM")
+		SendSysMessage(who, "Nie mozesz sie tu ukryc.", 3, 40);
+		return 0;
+	endif
+	var thepoints := CInt(GetEffectiveSkill(who, SKILLID_HIDING) + 2);
+	if(thepoints < 2)
+		thepoints := 2;
+	endif
+	var mount := GetEquipmentByLayer(who, 25);
+	var widmowy := Cint(GetObjProperty(who, "widmak"));
+	if(mount && !widmowy)
+		SendSysMessage (who, "Mozesz sie ukryc tylko na widmowych wierzchowcach.", FONT_NORMAL, 40);
+		return;
+	endif
+	var range := getwhoange(GetBaseDexterity(who));
+	var bystanders := ListHostiles(who, range, LH_FLAG_LOS);
+	if(len(bystanders) > 0)
+		SendSysMessage (who, "Ktos Cie juz zobaczyl!", FONT_NORMAL, 40);
+		return 0;
+	endif
+	
+	if(CheckSkill(who, SKILLID_HIDING, -1, thepoints))
+		who.hidden := 1;
+		SendSysMessage (who, "Teraz cie nikt nie widzi.", FONT_NORMAL, COLOR_GREEN);
+		if(bystanders.npctemplate)
+			RestartScript(bystanders);
+		endif
+	else
+		SendSysMessage (who, "Nie udalo Ci sie ukryc!", FONT_NORMAL, 40);
+		who.hidden := 0;
+	endif
+endprogram
+
+function getwhoange( skill )
+  if( skill >= 100 )
+    return 7;
+  else
+    return 10;
+  endif
+endfunction

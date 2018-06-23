@@ -1,0 +1,545 @@
+#
+#  MULTIS.TXT: Ship and House data
+#
+#  Deleting this file will not properly wipe houses and ships,
+#  because doors, planks, and tillermen will be left in the world.
+#
+
+MULTI
+{
+	Serial	0x6d16d78c
+	ObjType	0x6060
+	Graphic	0x4064
+	X	815
+	Y	688
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830213519i1830213520i1830213521
+	CProp	barrelserial i1830213566
+	CProp	builtdeed i1830213515
+	CProp	coownlist a1:i2307631
+	CProp	decay i30391775
+	CProp	footage a1:a6:i813i686i7i817i690i27
+	CProp	friendlist a0:
+	CProp	numlockdowns i24
+	CProp	numsecure i0
+	CProp	owneracct sElves
+	CProp	ownerserial i2105328
+	CProp	signserial i1830213518
+	DecayAt	29308019
+	Component	0x6d16d78d
+	Component	0x6d16d78e
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d11022a
+	ObjType	0x6065
+	Graphic	0x4074
+	X	992
+	Y	1885
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a4:i1829831216i1829831217i1829831218i1829831219
+	CProp	barrelserial i1829831245
+	CProp	builtdeed i1829831209
+	CProp	coownlist a1:i2298814
+	CProp	decay i30537044
+	CProp	footage a1:a6:i986i1879i7i998i1890i27
+	CProp	friendlist a0:
+	CProp	numlockdowns i57
+	CProp	numsecure i1
+	CProp	owneracct seloelo
+	CProp	ownerserial i2023493
+	CProp	signname sTORCIDA GORNIK
+	CProp	signserial i1829831213
+	DecayAt	27833157
+	Component	0x6d11022b
+	Component	0x6d11022c
+	Component	0x6d11022d
+	Component	0x6d11022e
+	Component	0x6d11022f
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d184ce8
+	ObjType	0x6060
+	Graphic	0x4064
+	X	1171
+	Y	995
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830309099i1830309100i1830309101
+	CProp	barrelserial i1830309456
+	CProp	builtdeed i1830309095
+	CProp	decay i30483559
+	CProp	footage a1:a6:i1169i993i7i1173i997i27
+	CProp	numlockdowns i25
+	CProp	numsecure i0
+	CProp	owneracct spepe3
+	CProp	ownerserial i2307631
+	CProp	signserial i1830309098
+	DecayAt	29620719
+	Component	0x6d184ce9
+	Component	0x6d184cea
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d182903
+	ObjType	0x6060
+	Graphic	0x4064
+	X	1321
+	Y	950
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830299910i1830299911i1830299912
+	CProp	barrelserial i1830301576
+	CProp	builtdeed i1830299906
+	CProp	decay i32190907
+	CProp	footage a1:a6:i1319i948i7i1323i952i27
+	CProp	numlockdowns i23
+	CProp	numsecure i0
+	CProp	owneracct smem0
+	CProp	ownerserial i2487992
+	CProp	signserial i1830299909
+	DecayAt	29600107
+	Component	0x6d182904
+	Component	0x6d182905
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d12fa68
+	ObjType	0x6060
+	Graphic	0x4064
+	X	1326
+	Y	971
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830084959i1830084960i1830084961
+	CProp	barrelserial i1830005100
+	CProp	builtdeed i1829960295
+	CProp	coownlist a1:i1881401
+	CProp	decay i30243988
+	CProp	footage a1:a6:i1324i969i7i1328i973i27
+	CProp	numlockdowns i25
+	CProp	numsecure i0
+	CProp	owneracct salvin
+	CProp	ownerserial i1881401
+	CProp	signserial i1829960298
+	DecayAt	28501758
+	Component	0x6d12fa69
+	Component	0x6d12fa6a
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d1868d9
+	ObjType	0x6065
+	Graphic	0x4074
+	X	1656
+	Y	259
+	Z	16
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a4:i1830316255i1830316256i1830316257i1830316258
+	CProp	builtdeed i1830316248
+	CProp	decay i32283704
+	CProp	footage a1:a6:i1650i253i23i1662i264i43
+	CProp	numlockdowns i86
+	CProp	numsecure i3
+	CProp	owneracct spatryk1121
+	CProp	ownerserial i2021218
+	CProp	signserial i1830316252
+	DecayAt	29692904
+	Component	0x6d1868da
+	Component	0x6d1868db
+	Component	0x6d1868dc
+	Component	0x6d1868dd
+	Component	0x6d1868de
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d08450d
+	ObjType	0x6065
+	Graphic	0x4074
+	X	1835
+	Y	1112
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a4:i1829258515i1829258516i1829258517i1829258518
+	CProp	barrelserial i1829258801
+	CProp	builtdeed i1829258508
+	CProp	decay i28130218
+	CProp	footage a1:a6:i1829i1106i7i1841i1117i27
+	CProp	numlockdowns i56
+	CProp	numsecure i0
+	CProp	owneracct spumba002
+	CProp	ownerserial i2387573
+	CProp	signserial i1829258512
+	DecayAt	25539418
+	Component	0x6d08450e
+	Component	0x6d08450f
+	Component	0x6d084510
+	Component	0x6d084511
+	Component	0x6d084512
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d139ad9
+	ObjType	0x6060
+	Graphic	0x4064
+	X	1804
+	Y	1554
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830001372i1830001373i1830001374
+	CProp	builtdeed i1830001368
+	CProp	coownlist a1:i2163843
+	CProp	decay i29848021
+	CProp	footage a1:a6:i1802i1552i7i1806i1556i27
+	CProp	numlockdowns i25
+	CProp	numsecure i0
+	CProp	owneracct sthc1
+	CProp	ownerserial i2003396
+	CProp	signserial i1830001371
+	DecayAt	28602301
+	Component	0x6d139ada
+	Component	0x6d139adb
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d16ac27
+	ObjType	0x6060
+	Graphic	0x4064
+	X	2079
+	Y	1159
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830202410i1830202411i1830202412
+	CProp	builtdeed i1830202406
+	CProp	coownlist a1:i2476261
+	CProp	decay i30156517
+	CProp	footage a1:a6:i2077i1157i7i2081i1161i27
+	CProp	numlockdowns i24
+	CProp	numsecure i0
+	CProp	owneracct shyhy2
+	CProp	ownerserial i2489684
+	CProp	signname s19PB20
+	CProp	signserial i1830202409
+	DecayAt	29278974
+	Component	0x6d16ac28
+	Component	0x6d16ac29
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d17f416
+	ObjType	0x6040
+	Graphic	0x4002
+	X	2114
+	Y	3267
+	Z	-5
+	Facing	4
+	Revision	0
+	Realm	britannia
+	DecayAt	29576598
+	Component	0x6d17f417
+	Component	0x6d17f418
+	Component	0x6d17f419
+	Component	0x6d17f41a
+}
+
+MULTI
+{
+	Serial	0x6d0c5d59
+	ObjType	0x6066
+	Graphic	0x4076
+	X	2197
+	Y	914
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a4:i1829526879i1829526880i1829526881i1829526882
+	CProp	builtdeed i1829526872
+	CProp	coownlist a0:
+	CProp	decay i30168147
+	CProp	footage a2:a6:i2191i908i7i2197i919i47a6:i2197i914i7i2202i919i47
+	CProp	friendlist a1:i1850434
+	CProp	numlockdowns i53
+	CProp	numsecure i5
+	CProp	owneracct srodi
+	CProp	ownerserial i2220054
+	CProp	signserial i1829526876
+	DecayAt	26902101
+	Component	0x6d0c5d5a
+	Component	0x6d0c5d5b
+	Component	0x6d0c5d5c
+	Component	0x6d0c5d5d
+	Component	0x6d0c5d5e
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d09559d
+	ObjType	0x6069
+	Graphic	0x407a
+	X	2243
+	Y	881
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a8:i1829328292i1829328293i1829328294i1829328295i1829328296i1829328297i1829328298i1829328299
+	CProp	barrelserial i1829329048
+	CProp	builtdeed i1829328284
+	CProp	coownlist a3:i2220054i2175171i2160725
+	CProp	decay i29578289
+	CProp	footage a2:a6:i2237i875i6i2250i886i65a6:i2233i875i66i2254i886i86
+	CProp	friendlist a0:
+	CProp	numlockdowns i16
+	CProp	numsecure i11
+	CProp	owneracct sjopa
+	CProp	ownerserial i1850434
+	CProp	signserial i1829328288
+	DecayAt	25867404
+	Component	0x6d09559e
+	Component	0x6d09559f
+	Component	0x6d0955a0
+	Component	0x6d0955a1
+	Component	0x6d0955a2
+	Component	0x6d0955a3
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d14a68b
+	ObjType	0x6069
+	Graphic	0x407a
+	X	2266
+	Y	1059
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a8:i1830069906i1830069907i1830069908i1830069909i1830069910i1830069911i1830069912i1830069913
+	CProp	builtdeed i1830069898
+	CProp	decay i31451764
+	CProp	footage a2:a6:i2260i1053i6i2273i1064i65a6:i2256i1053i66i2277i1064i86
+	CProp	numlockdowns i242
+	CProp	numsecure i9
+	CProp	owneracct solek
+	CProp	ownerserial i2462350
+	CProp	signserial i1830069902
+	DecayAt	28860964
+	Component	0x6d14a68c
+	Component	0x6d14a68d
+	Component	0x6d14a68e
+	Component	0x6d14a68f
+	Component	0x6d14a690
+	Component	0x6d14a691
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d1551f3
+	ObjType	0x6066
+	Graphic	0x4076
+	X	3554
+	Y	2443
+	Z	9
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a4:i1830113785i1830113786i1830113787i1830113788
+	CProp	barrelserial i1830113814
+	CProp	builtdeed i1830113778
+	CProp	decay i29930067
+	CProp	footage a2:a6:i3548i2437i16i3554i2448i56a6:i3554i2443i16i3559i2448i56
+	CProp	numlockdowns i103
+	CProp	numsecure i5
+	CProp	owneracct smrok
+	CProp	ownerserial i2161376
+	CProp	signserial i1830113782
+	DecayAt	29026633
+	Component	0x6d1551f4
+	Component	0x6d1551f5
+	Component	0x6d1551f6
+	Component	0x6d1551f7
+	Component	0x6d1551f8
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d158779
+	ObjType	0x6060
+	Graphic	0x4064
+	X	3715
+	Y	2811
+	Z	20
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830127484i1830127485i1830127486
+	CProp	builtdeed i1830127480
+	CProp	decay i31646672
+	CProp	footage a1:a6:i3713i2809i27i3717i2813i47
+	CProp	numlockdowns i25
+	CProp	numsecure i1
+	CProp	owneracct sDabin
+	CProp	ownerserial i2506912
+	CProp	signserial i1830127483
+	DecayAt	29055872
+	Component	0x6d15877a
+	Component	0x6d15877b
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d0a9f69
+	ObjType	0x6074
+	Graphic	0x4098
+	X	3896
+	Y	217
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1829412716i1829412717i1829412718
+	CProp	builtdeed i1829412712
+	CProp	coownlist a1:i1850183
+	CProp	decay i27241041
+	CProp	footage a1:a6:i3894i215i7i3899i219i65
+	CProp	numlockdowns i35
+	CProp	numsecure i2
+	CProp	owneracct skowal
+	CProp	ownerserial i2086773
+	CProp	signserial i1829412714
+	DecayAt	26199158
+	Component	0x6d0a9f6a
+	Component	0x6d0a9f6b
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d186838
+	ObjType	0x6040
+	Graphic	0x4000
+	X	4400
+	Y	3239
+	Z	-5
+	Revision	0
+	Realm	britannia
+	DecayAt	29687894
+	Component	0x6d186839
+	Component	0x6d18683a
+	Component	0x6d18683b
+	Component	0x6d18683c
+}
+
+MULTI
+{
+	Serial	0x6d16191e
+	ObjType	0x6060
+	Graphic	0x4064
+	X	5595
+	Y	3074
+	Z	3
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830164769i1830164770i1830164771
+	CProp	builtdeed i1830164765
+	CProp	decay i31718560
+	CProp	footage a1:a6:i5593i3072i10i5597i3076i30
+	CProp	numlockdowns i22
+	CProp	numsecure i1
+	CProp	owneracct slucasek
+	CProp	ownerserial i2502733
+	CProp	signserial i1830164768
+	DecayAt	29127760
+	Component	0x6d16191f
+	Component	0x6d161920
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d07d3a7
+	ObjType	0x6066
+	Graphic	0x4076
+	X	5969
+	Y	3266
+	Z	0
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a4:i1830032828i1830032829i1830032830i1830032831
+	CProp	barrelserial i1829239307
+	CProp	builtdeed i1829229478
+	CProp	coownlist a0:
+	CProp	decay i29988679
+	CProp	footage a2:a6:i5963i3260i7i5969i3271i47a6:i5969i3266i7i5974i3271i47
+	CProp	friendlist a0:
+	CProp	numlockdowns i38
+	CProp	numsecure i0
+	CProp	owneracct sgrowin
+	CProp	ownerserial i2445696
+	CProp	signname s19HKS20
+	CProp	signserial i1829229482
+	DecayAt	25443734
+	Component	0x6d07d3a8
+	Component	0x6d07d3a9
+	Component	0x6d07d3aa
+	Component	0x6d07d3ab
+	Component	0x6d07d3ac
+	Custom	0
+}
+
+MULTI
+{
+	Serial	0x6d14a731
+	ObjType	0x6074
+	Graphic	0x4098
+	X	5986
+	Y	3265
+	Z	-15
+	Revision	0
+	Realm	britannia
+	CProp	bantiles a3:i1830070068i1830070069i1830070070
+	CProp	builtdeed i1830070064
+	CProp	coownlist a1:i2489684
+	CProp	decay i30139731
+	CProp	footage a1:a6:i5984i3263i-8i5989i3267i50
+	CProp	numlockdowns i35
+	CProp	numsecure i2
+	CProp	owneracct sgrowin
+	CProp	ownerserial i2445696
+	CProp	signserial i1830070066
+	DecayAt	28861322
+	Component	0x6d14a732
+	Component	0x6d14a733
+	Custom	0
+}
+

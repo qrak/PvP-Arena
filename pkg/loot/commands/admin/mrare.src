@@ -1,0 +1,20 @@
+use uo;
+use cfgfile;
+use util;
+
+var itemdesc := ReadConfigFile(":*:itemdesc");
+var rarecfg := ReadConfigFile(":loot:rares");
+
+program makerare(who)
+	var element := FindConfigElem( rarecfg, "Weapons");
+	var item_table := GetConfigStringArray( element, "Item" );
+	var item_to_spawn := item_table[RandomInt(item_table.size()) + 1]; // losuje z tablicy item
+	var split := SplitWords(item_to_spawn);
+	var item := CreateItemInBackpack(who, "longsword");
+	var name := split[1];
+	var color := Cint(split[2]);
+	var typ := split[3];
+	var charges := RandomDiceRoll(split[4]);
+endprogram
+
+

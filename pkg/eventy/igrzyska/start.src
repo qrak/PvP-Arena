@@ -1,0 +1,10 @@
+use uo;
+use os;
+
+
+program startigrzyska()
+
+print("Uruchamianie Igrzysk...");
+start_script("stonecontrol");
+
+endprogram

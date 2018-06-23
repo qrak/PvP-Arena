@@ -1,0 +1,8 @@
+use uo;
+
+include "include/clock";
+include "include/attributes";
+
+program time(character)
+  SendSysMessage(character, "Jest dokladnie " + GetTimeofDay(), FONT_NORMAL, COLOR_GREEN);
+endprogram

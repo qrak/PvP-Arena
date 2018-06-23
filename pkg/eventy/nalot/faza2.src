@@ -1,0 +1,28 @@
+use uo;
+use os;
+use util;
+
+
+program nalot2(who)
+
+  BroadCast("Wszystkie potwory zostaly zabite!!",3,89);
+  sleep(2);
+  BroadCast("Szukajcie teraz skrzyni w ktorej znajduje sie klucz do zamknietej ksiezniczki",3,89);
+  sleep(7);
+  BroadCast("Ksiezniczka jest zamknieta na zamku!! Powodzenia",3,89);
+  
+ // var skrzynia := CreateItemAtLocation(RandomIntRange(1391, 1601), RandomIntRange(1547, 1771), 0xaa4,1);
+ // MoveObjectToLocation( who, skrzynia.x, skrzynia.y, skrzynia.z, _DEFAULT_REALM, MOVEOBJECT_FORCELOCATION );
+
+  CreateNpcFromTemplate("ksiezniczka", 1352, 1589, 72); //tworzenie npc ksiezniczka
+  CreateItemAtLocation(1351, 1593, 72, 0x6f5, 1); //twozrenie drzwi do ksiezniczki
+
+endprogram
+
+function RandomIntRange(Min, Max)
+  var RandomVal;
+  repeat
+    RandomVal := RandomInt(Max);
+  until (RandomVal > Min && RandomVal < Max);
+  return RandomVal;
+endfunction

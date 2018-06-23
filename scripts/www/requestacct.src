@@ -1,0 +1,67 @@
+use datafile;
+use polsys;
+use basic;
+use http;
+use http; 
+use util; 
+use uo; 
+use os; 
+use basic; 
+use datafile; 
+
+var player := QueryParam("acctName"); 
+var email := QueryParam("mailAddy"); 
+var password := QueryParam("passwd"); 
+var IP := QueryParam("IP"); 
+
+if (len(player) < 4) 
+   WriteHtml("ERR"); 
+   WriteHtml("Invalid account name: account name is too short."); 
+   return 0; 
+endif 
+
+if (len(player) > 12) 
+   WriteHtml("ERR"); 
+   WriteHtml("Invalid account name: account name is too long."); 
+   return 0; 
+endif 
+
+var success := FindAccount(player); 
+if (success) 
+   WriteHtml("ERR"); 
+   WriteHtml("Error: that account name is already in use."); 
+   return 0; 
+endif 
+
+var dsAccountReference := OpenDataFile("accountReference"); 
+if (!dsAccountReference) 
+   dsAccountReference := CreateDataFile("accountReference", DF_KEYTYPE_STRING); 
+endif 
+if (dsAccountReference.FindElement(email) ) 
+   WriteHtml("ERR"); 
+   WriteHtml("Error: an account is already registered to " + CStr(email) + "."); 
+   return 0; 
+endif 
+
+var acctElem := dsAccountReference.CreateElement(email); 
+if (!acctElem) 
+   WriteHtml("ERR"); 
+   WriteHtml("Error : could not assigne account to email '" + email + "'."); 
+   return 0; 
+endif 
+
+success := CreateAccount(player, password, 1); 
+if (!success) 
+   WriteHtml("ERR"); 
+   WriteHtml("Error : could not create account '" + player + "'."); 
+   dsAccountReference.DeleteElement(email); 
+   return 0; 
+endif 
+
+acctElem.SetProp("AccountName", player); 
+acctElem.SetProp("IP", IP); 
+
+WriteHtml("OK!"); 
+WriteHtml("Account '" + player + "' created.  Password mailed to '" + email + "'."); 
+
+return 1; 

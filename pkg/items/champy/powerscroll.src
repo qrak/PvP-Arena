@@ -1,0 +1,67 @@
+use uo;
+use file;
+
+include "include/attributes";
+include "include/canAccess";
+include "include/clock";
+
+program powerscrolls(who, item)
+
+    if(!can_access(who, item))
+        return 0;
+    endif
+  
+    if(Cint(!GetObjProperty(item, "skillid")))
+        SendSysMessage(who, "Musisz najpierw zidentyfikowac ten zwoj umiejetnoscia identyfikacja.", 3, 40);
+        return 0;
+    endif
+
+    if(item.container != who.backpack)
+        SendSysMessage(who, "Musisz miec power scrolla w plecaku.", 3, 40);
+        return 0;
+    endif
+
+	if(item.amount > 1)
+		SendSysMessage(who, "Musisz rozdzielic power scrolle.", 3, 40);
+		return 0;
+	endif
+
+    var typ := Cint(GetObjProperty(item, "skillid"));
+    var iscrafting := Cint(GetObjProperty(item, "crafting"));
+
+    if(iscrafting)
+	    if(GetBaseSkill(who, typ) >= 150)
+        	SendSysMessage(who, "Nie mozesz juz bardziej zwiekszyc tej umiejetnosci.", 3, 40);
+	        return 0;
+	    endif
+    else
+	    if(GetBaseSkill(who, typ) >= 110)
+        	SendSysMessage(who, "Nie mozesz juz bardziej zwiekszyc tej umiejetnosci.", 3, 40);
+	        return 0;
+	    endif
+    endif
+
+    if(GetBaseSkill(who, 25) > 0 && (typ == 17 || typ == 50 || typ == 40 || typ == 31 || typ == 1 || typ == 27 || typ == 2 || typ == 19) ) // jezeli masz magery(25) i chcesz boostowac healing(17), sworda(40) lub paladyna(50), anaotmi(1) i taktyki(27), alore(2), forensics(19)
+        SendSysMessage(who, "Nie mozesz zwiekszyc umiejetnosci tego typu gdyz twoja klasa na to nie pozwala.", 3, 40);
+        return 0;
+    endif
+
+    if(GetBaseSkill(who, 40) > 0 && (typ == 25 || typ == 2 || typ == 49 || typ == 32 || typ == 31 || typ == 19 || typ == 16) ) // jezeli masz sworda(40) i chcesz boostowac magery(25), (2) alore, nekro(49), archery(31), sspeak(32), forensics(19), evala(16)
+        SendSysMessage(who, "Nie mozesz zwiekszyc umiejetnosci tego typu gdyz twoja klasa na to nie pozwala.", 3, 40);
+    return 0;
+    endif
+
+    if(GetBaseSkill(who, 31) > 0 && (typ == 25 || typ == 49 || typ == 32 || typ == 16) ) // jezeli masz lucznika(skillid 31) to nie mozesz bostowac magery(25), nekro(49), sspeak(32), evala(16)
+        SendSysMessage(who, "Nie mozesz zwiekszyc umiejetnosci tego typu gdyz twoja klasa na to nie pozwala.", 3, 40);
+        return 0;
+    endif
+
+
+    LogToFile(":log:pscroll.txt",Systime_GetDate()+"."+ Systime_GetMonthNumber()+ "." + Systime_GetYear() + " H/M: " + Systime_GetHour() +"/"+ Systime_GetMinute()+ " [PSCROLL] Uzyl: [" + item.desc + "]" + "] Postac: [" + who.name + "]. Konto: [" + who.acctname + "].");
+
+    SubtractAmount(item, 1);
+    SetBaseSkill(who, typ, GetBaseSkill(who, typ) + 1);
+   PlayObjectCenteredEffect(who, 0x3709, 0x0a, 0x1e );
+    PlayObjectCenteredEffect(who, FX_SPARK_EFFECT, 7, 0x10 );
+    PlaySoundEffect(who, 0x5d0);
+endprogram

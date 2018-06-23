@@ -1,0 +1,32 @@
+use uo;
+
+program szaty(who)
+    
+    if(Cint(GetObjProperty(who, "VET")))
+        MakeEliteRobe(who);
+    endif
+    if(Cint(GetObjProperty(who, "VET2")))
+        MakeGMRobe(who);
+    endif
+    if(Cint(GetObjProperty(who, "lata")) < 30)
+        SendSysMessage(who, "Jestes za mlody na szaty.", 3, 40);
+        return 0;
+    endif
+    SendSysMessage(who, "Szaty znajduja sie w Twoim plecaku. Mozesz uzywac tej komendy bez ograniczen",3,63);
+endprogram
+  
+function MakeEliteRobe(who)
+    var ds := CreateItemInBackpack(who, "0x204E");
+    SetName(ds, "szata smierci elity PvP Areny");
+    SetObjProperty(ds, "indes", 1);
+    ds.newbie := 1;
+    SetObjProperty(ds, "l33t", 1);
+endfunction
+    
+function MakeGMRobe(who)
+    var ds := CreateItemInBackpack(who, "0x204F");
+    ds.newbie := 1;
+    SetObjProperty(ds, "indes", 1);
+    SetName(ds, "szata legendy PvP Areny");
+    SetObjProperty(ds, "l33t", 1);
+endfunction

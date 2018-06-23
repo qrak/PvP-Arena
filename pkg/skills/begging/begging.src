@@ -1,0 +1,4 @@
+use uo;
+
+program skill_begging( who )
+endprogram

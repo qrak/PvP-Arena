@@ -1,0 +1,72 @@
+use os;
+use util;
+use uo;
+use cfgfile;
+use vitals;
+use polsys;
+
+include "hitScriptInc";
+include "include/ladunki";
+include "include/nopvp";
+include "include/myUtil";
+
+var weaponcfgfile := ReadConfigFile (":combat:itemdesc");
+var npccfgfile := ReadConfigFile("::npcdesc");
+var ammo_objtype;
+
+
+program MainHitScript(param)
+    var attacker := param.attacker;
+    var defender := param.defender;
+    var weapon := param.weapon;
+    var armor := param.armor;
+    var basedamage := param.basedamage;
+    var rawdamage := param.rawdamage;
+    var weapon_att_cfgelem := weaponcfgfile[attacker.weapon.objtype]; 
+    var attrib := FindSkillIDByIdentifier( weapon_att_cfgelem.Attribute );
+    
+    SetObjProperty(defender, "LastHit", {attacker.name, attacker.serial, weapon });
+    if(defender.isA(POLCLASS_NPC))
+        rawdamage := rawdamage * 4;
+    endif
+    if(rawdamage < 1)
+        rawdamage := 0;
+    endif
+    if(!(attacker.isA(POLCLASS_NPC)))
+        if(attrib != "Archery")
+            CriticalHits(attacker, defender, weapon, rawdamage);
+        endif
+    endif
+    var poisonlevel := GetObjProperty(weapon, "poison_level");
+    var charges := CInt(GetObjProperty(defender, "ReactiveArmor") ); // reactive armor charges
+    var weaponhit := GetObjProperty(weapon, "OnHit");
+    if(weaponhit)
+        Detach();
+        start_script(CStr(weaponhit), { attacker, defender, weapon, armor, basedamage, rawdamage } );
+    endif
+    if(charges)
+        ReactiveArmorHit(attacker, defender, rawdamage); // RA hit
+    endif
+    if(poisonlevel)       // jezeli bron jest zatruta
+        PoisonHit(attacker, defender, weapon);
+    endif
+    if(getobjproperty(weapon, "przekleta"))
+        CurseWeapon(attacker, defender);
+    endif
+    if(getobjproperty(attacker, "vampire"))
+        HealDamage(attacker, rawdamage / 5);
+    endif
+    if(getobjproperty(defender, "evilomen"))
+        rawdamage := rawdamage * 2;
+        eraseobjproperty(defender, "evilomen");
+    endif
+    if(GetObjProperty(attacker, "wraith"))
+        WraithHit(attacker, defender);
+    endif
+    if(getobjproperty(attacker, "vampirebat"))
+        var master := systemfindobjectbyserial(getobjproperty(attacker, "master"));
+        HealDamage(master, rawdamage);
+    endif
+    DealDamage(defender, attacker, weapon, rawdamage, attrib);
+
+endprogram

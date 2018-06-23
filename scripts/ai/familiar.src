@@ -1,0 +1,215 @@
+use uo;
+
+
+include "include/eventID";
+include "include/attributes";
+include "include/sysEvent";
+include "include/NPCBackpacks";
+include "include/NPCCast";
+include "ai/setup/spellSetup";
+include "ai/combat/spellCombatEvent";
+include "include/randName";
+include "include/dist";
+include "include/snooping";
+include "ai/main/closeDistance";
+
+//const HAPPINESS_DECAY := 10*60;
+//const MAX_HAPPINESS := 100;
+//const DEF_AMOUNT := 10;
+//var zabijfoll := 0;
+//var next_wander := 5;
+//set_priority(5);
+
+//const  HALT_THRESHOLD := 15;
+//const  SYSEVENT_ALL_GUARD_CMD := 0x13;
+
+//Const me := Self();
+var npccfgfile     := ReadConfigFile("npcdesc");
+var dmgsound       := npccfgfile[me.npctemplate].attackmisssound;
+var hit            := npccfgfile[me.npctemplate].attackhitsound;
+var idlesnd1       := npccfgfile[me.npctemplate].idlesound1;
+var idlesnd2       := npccfgfile[me.npctemplate].idlesound2;
+var FLAME_STRENGTH := npccfgfile[me.npctemplate].flamestrength;
+var caster := 0;
+//var spells;
+var firebreather;
+var mypack := me.backpack;
+var orneriness := npccfgfile[me.npctemplate].orneriness;
+var masterserial := GetObjProperty(me, "master");
+//var saywords := 0;
+//var master;
+var chaseloop := 0;
+var guarding :=0;
+var following := 0;
+var nextwatch := ReadGameClock();
+var happiness := CInt(GetObjProperty(me,"happiness"));
+var waittime := 120;
+var LAST_BREATH := ReadGameClock();
+var mastaming;
+var maslore;
+
+
+///////////////////////////////////////////////////////////////////////////
+program TamedAI()
+	Detach();
+	GrantPrivilege(me, "seehidden");
+	me.set_member("run_speed", 400);
+	if (!GetObjProperty(me, "master"))
+		syslog("[UWAGA] Zwierze "+me.serial+" nie ma masterserial");
+		ApplyRawDamage(me, GetHP(me)+ 1);
+		return 0;
+	else
+		master := SystemFindObjectBySerial(GetObjProperty(me, "master"), SYSFIND_SEARCH_OFFLINE_MOBILES);
+	endif
+	me.setmaster(master);
+  MainAILoop();
+endprogram
+
+///////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+
+function MainAILoop()
+	var ev;
+	var mana;
+	nextwatch := ReadGameClock();
+	var mhp;
+	var nexteventcheck := readgameclock()+60;
+	EnableMainEvents();
+	while(GetHp(me)> 0)
+		if (ReadGameClock() > nexteventcheck)
+			nexteventcheck:=readgameclock()+60;
+		endif
+		mhp := GetHp(me);
+		if(getproperty("shadowwisp"))
+			if(getmana(master) < getmaxmana(master))
+				if(randomint(10) == 1)
+					if(Distance(me, master) < 3)
+						PlayObjectCenteredEffect( me, 0x376a, 10,45 );
+						PlayObjectCenteredEffect( master, 0x376a, 10,45 );
+						mana  := getmana(master) + 10 + Randomint(10);
+						if(mana > getmaxmana(master))
+							mana := getmaxmana(master);
+						endif
+						setmana(master, mana);
+					endif
+				endif
+			endif
+		endif
+		if(!following)
+			following := master;
+			guarding := master;
+		else
+			ev := os::wait_for_event(waittime);
+		endif
+		if(!master)
+			release();
+		endif
+		following := master;
+		guarding := master;
+		if(following)
+			waittime := 1;
+			Follow();
+		elseif(guarding)
+			waittime := 5;
+		else
+			waittime := 120;
+			EraseObjProperty(me,"#flees");
+		endif
+		if(Distance(me, following) > 8)
+			MoveObjectToLocation(me, following.x, following.y, following.z, me.realm);
+		endif
+		sleepms(500);
+	endwhile
+endfunction
+
+///////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+function Follow()
+  if(following.hidden || following.concealed)
+  me.concealed := 1;
+  else
+  me.concealed:= 0;
+  endif
+  var d := Distance(me, following);
+    if (!master)
+  	release();
+	following := 0;
+  endif
+
+  if (master.dead)
+  	release();
+	following := 0;
+  endif
+  
+  if(d <= 1)
+    WalkAwayFrom(following);
+  elseif(d == 2)
+    waittime := 1;
+ // elseif(d > 15)
+  //  MoveObjectToLocation( me, CInt(following.x), CInt(following.y), CInt(following.z),
+	//			MOVEOBJECT_FORCELOCATION );
+  //  waittime := 1;
+  elseif(d < 10);
+    if(GetObjProperty(me, "Pause"))
+      waittime := 2;
+    else
+      var ma := 800 - CInt(GetDexterity(me));
+      SetDexterityMod(me, CInt(GetDexterityMod(me))+ ma);
+    RunToward(following);
+    RunToward(following);
+    RunToward(following);
+      SetDexterityMod(me, CInt(GetDexterityMod(me))- ma);
+      waittime := 0;
+    endif
+  else
+  var x ;
+  var y;
+  if(me.x < following.x - 6)
+  x := following.x - 6;
+  elseif(me.x > following.x + 6)
+  x := following.x + 6;
+  else
+  x := me.x;
+  endif
+  if(me.y < following.y - 6)
+  y := following.y - 6;
+  elseif(me.y > following.y + 6)
+  y := following.y+ 6;
+  else
+  y := me.y;
+  endif
+  MoveObjectToLocation(me, x, y, following.z, me.realm);
+  RunToward(following);
+
+    endif
+
+    if(me.stamina < 10)
+    SetStamina(me, GetMaxStamina(me));
+  endif
+  return;
+endfunction
+
+
+function release()
+	ApplyRawDamage(me, 6000);
+endfunction
+
+function EnableMainEvents()
+  if(getproperty("hordeminion"))
+  EnableEvents(SYSEVENT_SPEECH);
+  endif
+  RegisterForSpeechEvents(master, 10);
+  EnableEvents(0x12);
+  EnableEvents(SYSEVENT_DAMAGED);
+  EnableEvents(SYSEVENT_DOUBLECLICKED);
+  EnableEvents(SYSEVENT_ITEM_GIVEN);
+endfunction
+

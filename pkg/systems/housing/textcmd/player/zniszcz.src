@@ -1,0 +1,59 @@
+use uo;
+
+program zniszcz(who)
+
+	SendSysMessage(who, "Wskaz slupek.");
+	var nejm := SplitWords(who.name);
+	var cel := Target(who);
+	var ofner := SplitWords(GetObjProperty(cel, "owner"));
+	var ownerstone := Cint(GetObjProperty(cel, "Wlasciciel"));
+
+	if(ownerstone)
+		BankStoneDestroy(who, cel);
+		return 0;
+	endif
+	if(nejm[1] != ofner[1])
+		SendSysMessage(who, "To nie Twoje.");
+		return 0;
+	endif
+
+	if(cel.objtype != 0x19b && cel.color != 1154)
+		SendSysMessage(who, "To nie slupek.");
+		return 0;
+	endif
+
+	var stolik := ListItemsNearLocation(cel.x, cel.y, cel.z, 1);
+
+	foreach stoliczeq in stolik
+		if(stoliczeq.objtype == 0x19B)
+			DestroyItem(stoliczeq);
+		endif
+
+		if(stoliczeq.objtype == 0xB7C)
+			DestroyItem(stoliczeq);
+		endif
+
+	endforeach
+
+
+	If(CreateItemInContainer(who.backpack, 0x6FF3, 1));
+		SendSysMessage(who, "Zwinales stoisko do deeda i wlozyles do plecaka.");
+	else
+		SendSysMessage(who, "Nie udalo Ci sie zwinac stoiska do plecaka.");
+		return 0;
+	endif
+
+endprogram
+
+function BankStoneDestroy(who, cel)
+	var ownerstone := Cint(GetObjProperty(cel, "owner"));
+
+	if(cel.objtype == 0x1184)
+		if(who.serial == ownerstone)
+			DestroyItem(cel);
+			CreateItemInBackpack(who, 0x6262);
+		endif
+	endif
+
+endfunction
+

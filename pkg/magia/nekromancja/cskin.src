@@ -1,0 +1,50 @@
+use uo;
+use vitals;
+
+include "include/spellRestrictions";
+
+program chrcast_cskin( parms )
+  var circle := 2;
+  var delivery := "direct";
+  var noto := "helpful";
+  var result := maincast(parms, delivery, circle, noto, 103);
+
+  if(result == 0)
+    return 0;
+  endif
+
+  var caster := result[1];
+  var cast_on := result[2];
+
+var nek := Cint(GetEffectiveSkill(caster, SKILLID_NECROMANCY));
+var sspeak := Cint(GetEffectiveSkill(caster, SKILLID_SPIRITSPEAK));
+var int := GetIntelligence(caster);
+
+
+
+
+if(!cast_on.isa(POLCLASS_MOBILE))
+SendSysMessage(caster, "Nie mozesz rzucac tego czaru na przedmioty.");
+return 0;
+endif
+
+
+  
+var duration := 0;
+var mod_amount := Cint(nek/8);
+
+if(caster.serial == cast_on.serial)
+duration :=  (nek + sspeak + int)-RandomInt(50);
+else
+duration :=  (nek + sspeak + int)-RandomInt(50);
+endif
+
+PlaySoundEffect(caster, 517);
+PlayObjectCenteredEffect( cast_on, 0x373A, 20,15 );
+
+if(CanMod(cast_on, "ar"))
+    DoTempMod(cast_on, "ar", mod_amount, duration);
+endif
+
+
+endprogram

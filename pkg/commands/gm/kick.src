@@ -1,0 +1,17 @@
+//
+// .kick {target} - Kick a user offline (doesn't ban, though)
+//
+
+use uo;
+use os;
+
+program textcmd_kick( who )
+    SendSysMessage( who, "Whom do you want to kick?" );
+
+    var victim := Target( who );
+    if (victim)
+        PrintTextAbove(who, "Used kick command on " + victim.name + ". Kick has been logged into pol.log");
+        syslog(who.name + " used kick command on " + victim.name);
+        DisconnectClient( victim );
+    endif
+endprogram

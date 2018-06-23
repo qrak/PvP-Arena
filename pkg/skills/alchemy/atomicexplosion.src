@@ -1,0 +1,72 @@
+use uo;
+use os;
+use vitals;
+
+include "include/yesNo";
+
+Const MOVING_EFFECT_PURPLE_POTION  := 0x0F0D; 
+Const SOUND_EFFECT_EXPLOSION	   := 0x208; 
+Const EFFECT_EXPLOSION             := 0x36b0;
+
+program atomicexplosion(who, lookout)
+	var iks;
+	var ygrek;
+	var obszar := 100;
+	if (!Accessible (who, lookout))
+		SendSysmessage (who, "Nie mozesz tego dosiegnac.", 3, 40);
+		return;
+	endif
+	if (!ReserveItem (lookout) )
+		SendSysMessage (who, "Nie mozesz tego uzyc w tym momencie.", 3, 40);
+		return;
+	endif
+	if(!yesNo(who, "Napewno chcesz dotknac tej bomby?"))
+		return 0;
+	endif
+	if(Distance(who, lookout) > 2)
+		return 0;
+	endif
+	lookout.movable := 0;
+	Detach();
+	PrintTextAbove( who, "*przez pomylke uruchamia mechanizm bomby*");
+	sleep(5);
+	PrintTextAbove( lookout, "*na ekranie od bomby ukazuje sie napis: SPIERDALAJ JAK NAJSZYBCIEJ!*");
+	sleep(3);
+	PrintTextAbove( lookout, "*10*");
+	sleep(1);
+	PrintTextAbove( lookout, "*9*");
+	sleep(1);
+	PrintTextAbove( lookout, "*8*");
+  sleep(1);
+	PrintTextAbove( lookout, "*7*");
+	sleep(1);
+	PrintTextAbove( lookout, "*6*");
+	sleep(1);
+	PrintTextAbove( lookout, "*5*");
+  sleep(1);
+		PrintTextAbove( lookout, "*4*");
+	sleep(1);
+	PrintTextAbove( lookout, "*3*");
+	sleep(1);
+	PrintTextAbove( lookout, "*2*");
+  sleep(1);
+	PrintTextAbove( lookout, "*1*");
+	BroadCast("Zaczyna sie trzasc ziemia!", 3, 40);
+	for( iks:= who.x-100; iks <= who.x + obszar ; iks := iks + 1)
+		for( ygrek:= who.y-100; ygrek <= who.y + obszar ; ygrek := ygrek + 1)
+			PlayStationaryEffect(  iks, ygrek, lookout.z, 0x3709, 1,15 );
+			PlayStationaryEffect(  iks, ygrek, lookout.z, EFFECT_EXPLOSION, 7,0x10 );
+			PlayObjectCenteredEffect( lookout, EFFECT_EXPLOSION, 7 , 0x10 );
+			foreach critter in ListMobilesNearLocationEx (iks, ygrek, who.z, 1, LISTEX_FLAG_NORMAL + LISTEX_FLAG_HIDDEN );
+				PlayObjectCenteredEffect( critter, EFFECT_EXPLOSION, 7 , 0x10 );
+				var dmg := 1000;
+				ApplyRawDamage(critter, dmg );
+			endforeach
+		endfor
+		sleepms(100);
+	endfor
+	
+
+	lookout.movable := 1;
+	DestroyItem ( lookout );
+endprogram

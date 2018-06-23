@@ -1,0 +1,100 @@
+File 0: 
+File 1: e:\gry\pol\skrypty\wod\099\pkg\world\weather\textcmd\gm\snow.src
+File 2: ./modules/uo.em
+File 3: ./modules/os.em
+File 4: ./modules/util.em
+File 5: ./modules/basic.em
+File 6: ./modules/basicio.em
+Ins 0: File 1, Line 36, Block 1 StatementBegin
+Ins 1: File 1, Line 6, Block 1 StatementBegin
+Ins 2: File 1, Line 6, Block 1 
+Ins 3: File 2, Line 371, Block 1 
+Ins 4: File 2, Line 371, Block 1 
+Ins 5: File 1, Line 6, Block 1 
+Ins 6: File 1, Line 6, Block 1 
+Ins 7: File 1, Line 7, Block 1 StatementBegin
+Ins 8: File 1, Line 7, Block 1 
+Ins 9: File 1, Line 7, Block 1 
+Ins 10: File 1, Line 8, Block 1 StatementBegin
+Ins 11: File 1, Line 8, Block 1 
+Ins 12: File 2, Line 371, Block 1 
+Ins 13: File 2, Line 371, Block 1 
+Ins 14: File 1, Line 8, Block 1 
+Ins 15: File 1, Line 8, Block 1 
+Ins 16: File 1, Line 9, Block 1 
+Ins 17: File 1, Line 9, Block 0 
+Ins 18: File 1, Line 13, Block 0 StatementBegin
+Ins 19: File 1, Line 13, Block 0 
+Ins 20: File 1, Line 13, Block 0 
+Ins 21: File 1, Line 13, Block 0 
+Ins 22: File 1, Line 14, Block 0 StatementBegin
+Ins 23: File 1, Line 14, Block 0 
+Ins 24: File 1, Line 14, Block 0 
+Ins 25: File 1, Line 15, Block 0 StatementBegin
+Ins 26: File 1, Line 15, Block 0 
+Ins 27: File 1, Line 15, Block 0 
+Ins 28: File 1, Line 15, Block 0 
+Ins 29: File 1, Line 16, Block 0 StatementBegin
+Ins 30: File 1, Line 16, Block 0 
+Ins 31: File 1, Line 16, Block 0 
+Ins 32: File 1, Line 17, Block 0 StatementBegin
+Ins 33: File 1, Line 17, Block 0 
+Ins 34: File 1, Line 17, Block 0 
+Ins 35: File 1, Line 17, Block 0 
+Ins 36: File 1, Line 18, Block 0 StatementBegin
+Ins 37: File 1, Line 18, Block 0 
+Ins 38: File 1, Line 18, Block 0 
+Ins 39: File 1, Line 19, Block 0 StatementBegin
+Ins 40: File 1, Line 19, Block 0 
+Ins 41: File 1, Line 19, Block 0 
+Ins 42: File 1, Line 19, Block 0 
+Ins 43: File 1, Line 20, Block 0 StatementBegin
+Ins 44: File 1, Line 20, Block 0 
+Ins 45: File 1, Line 20, Block 0 
+Ins 46: File 1, Line 21, Block 0 StatementBegin
+Ins 47: File 1, Line 21, Block 0 
+Ins 48: File 1, Line 21, Block 0 
+Ins 49: File 1, Line 21, Block 0 
+Ins 50: File 1, Line 22, Block 0 
+Ins 51: File 1, Line 22, Block 0 
+Ins 52: File 1, Line 27, Block 2 
+Ins 53: File 1, Line 28, Block 2 StatementBegin
+Ins 54: File 1, Line 28, Block 2 
+Ins 55: File 1, Line 28, Block 2 
+Ins 56: File 1, Line 28, Block 2 
+Ins 57: File 1, Line 29, Block 2 StatementBegin
+Ins 58: File 1, Line 29, Block 3 
+Ins 59: File 1, Line 30, Block 3 StatementBegin
+Ins 60: File 1, Line 30, Block 3 
+Ins 61: File 1, Line 30, Block 3 
+Ins 62: File 1, Line 30, Block 3 
+Ins 63: File 1, Line 30, Block 3 
+Ins 64: File 1, Line 31, Block 3 StatementBegin
+Ins 65: File 1, Line 31, Block 3 
+Ins 66: File 1, Line 31, Block 3 
+Ins 67: File 1, Line 31, Block 3 
+Ins 68: File 1, Line 33, Block 3 
+Ins 69: File 1, Line 33, Block 3 
+Ins 70: File 1, Line 34, Block 2 
+Ins 71: File 1, Line 34, Block 2 
+Block 0:
+  Parent block: 0
+  Local variables 0-4294967295: 
+Block 1:
+  Parent block: 0
+  Local variables 0-0: 
+      0: character
+Block 2:
+  Parent block: 0
+  Local variables 0-0: 
+      0: weather
+Block 3:
+  Parent block: 2
+  Local variables 1-3: 
+      1: player
+      2: _player_expr
+      3: _player_counter
+Function 0: DoSnowStorm
+  FirstPC=18, lastPC=51
+Function 1: SendWeatherPacket
+  FirstPC=52, lastPC=71
